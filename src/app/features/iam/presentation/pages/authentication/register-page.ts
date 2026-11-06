@@ -2,15 +2,15 @@ import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, inject
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { AuthFacade } from '../application/services/auth.facade';
-import { type RegisterAccountRequest } from '../domain/model/auth.model';
-import { Icon } from '../../../shared/presentation/icon';
-import { AccountAccessFrame } from './account-access-frame';
+import { AuthFacade } from '../../../application/services/auth.facade';
+import { type RegisterAccountRequest } from '../../../domain/model/auth.model';
+import { Icon } from '../../../../../shared/presentation/icon';
+import { AccountAccessFrame } from '../../components/account-access-frame';
 
 @Component({
   selector: 'ichu-register-page', standalone: true,
   imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame],
-  templateUrl: './register-page.html', styleUrls: ['./login-form.scss', './account-forms.scss', './auth-register-review.scss'],
+  templateUrl: './register-page.html', styleUrls: ['../../login-form.scss', '../../account-forms.scss', '../../auth-register-review.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPage {

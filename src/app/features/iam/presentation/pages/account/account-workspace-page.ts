@@ -8,8 +8,8 @@ import type {
   GrantHerdAdvisory,
   HerdAdvisoryRecord,
   RequestHerdAdvisory,
-} from '../domain/model/herd-advisory.model';
-import { AccountWorkspaceFacade } from '../application/services/account-workspace.facade';
+} from '../../../domain/model/herd-advisory.model';
+import { AccountWorkspaceFacade } from '../../../application/services/account-workspace.facade';
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 

@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthFacade } from '../application/services/auth.facade';
-import { Icon } from '../../../shared/presentation/icon';
-import { EntryTransition } from './entry-transition';
+import { AuthFacade } from '../../../application/services/auth.facade';
+import { Icon } from '../../../../../shared/presentation/icon';
+import { EntryTransition } from '../../components/entry-transition';
 
 @Component({
   selector: 'ichu-login-page', standalone: true,
   imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, EntryTransition],
-  templateUrl: './login-page.html', styleUrls: ['./login-page.scss', './login-form.scss', './login-photo.scss', './auth-motion.scss', './login-responsive.scss'],
+  templateUrl: './login-page.html', styleUrls: ['../../login-page.scss', '../../login-form.scss', '../../login-photo.scss', '../../auth-motion.scss', '../../login-responsive.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
