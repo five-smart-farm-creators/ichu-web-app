@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Shared Angular theme and runtime configuration for API and Firebase setup.
+
 - Initial Angular web application and visual theme.
 - Contributor guidance covering Domain-Driven Design, Git Flow, Conventional Commits, Semantic Versioning, and pull request practices.
 - Proprietary license notice for the closed-source project.
