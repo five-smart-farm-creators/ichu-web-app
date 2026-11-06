@@ -1,0 +1,111 @@
+<ichu-account-access-frame headingId="register-title" [wide]="true">
+  <header class="account-heading">
+    <span class="account-step">{{ reviewing() ? 'Step 2 of 2' : 'Step 1 of 2' }}</span>
+    <h1 id="register-title">Create an account</h1>
+    <p>Set up your ICHU account.</p>
+  </header>
+
+  @if (registrationComplete()) {
+    <section class="review-profile" aria-labelledby="registration-success-title">
+      <h2 id="registration-success-title" tabindex="-1">Verify your email</h2>
+      <p class="account-note">Your account was created. Check your inbox for a Firebase verification email before signing in.</p>
+      <a mat-flat-button class="btn primary login-submit" routerLink="/login">Continue to sign in</a>
+    </section>
+  } @else if (!reviewing()) {
+    <form #registrationForm class="access-form" [formGroup]="form" (ngSubmit)="review(registrationForm)" novalidate>
+      <div class="account-grid">
+        <div class="field">
+          <label for="register-name">Full name</label>
+          <input id="register-name" type="text" formControlName="name" autocomplete="name" maxlength="80" [attr.aria-invalid]="form.controls.name.touched && form.controls.name.invalid" aria-describedby="register-name-error">
+          <p class="form-error" id="register-name-error">@if (form.controls.name.touched && form.controls.name.invalid) { Enter 2–80 characters without surrounding spaces. }</p>
+        </div>
+        <div class="field">
+          <label for="register-email">Email</label>
+          <input id="register-email" type="email" inputmode="email" formControlName="email" autocomplete="email" autocapitalize="none" [spellcheck]="false" maxlength="120" placeholder="you@example.com" [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" aria-describedby="register-email-error">
+          <p class="form-error" id="register-email-error">@if (form.controls.email.touched && form.controls.email.invalid) { Enter a valid email address. }</p>
+        </div>
+        <div class="field">
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password" formControlName="password" autocomplete="new-password" minlength="8" maxlength="128" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="register-password-error">
+          <p class="form-error" id="register-password-error">@if (form.controls.password.touched && form.controls.password.invalid) { Use 8–128 characters. }</p>
+        </div>
+        <div class="field">
+          <label for="register-confirm-password">Confirm password</label>
+          <input id="register-confirm-password" type="password" formControlName="confirmPassword" autocomplete="new-password" maxlength="128" [attr.aria-invalid]="form.controls.confirmPassword.touched && form.hasError('passwordMismatch')" aria-describedby="register-confirm-password-error">
+          <p class="form-error" id="register-confirm-password-error">@if (form.hasError('passwordMismatch') && form.controls.confirmPassword.touched) { Passwords do not match. }</p>
+        </div>
+        <div class="field">
+          <label for="register-role">Account role</label>
+          <select id="register-role" formControlName="role">
+            <option value="rancher">Ranch manager</option>
+            <option value="veterinarian">Veterinarian</option>
+          </select>
+        </div>
+      </div>
+
+      @if (form.controls.role.value === 'rancher') {
+        <h2>Ranch details</h2>
+        <p class="text-muted">These details create your initial ranch account.</p>
+        <div class="account-grid">
+          <div class="field">
+            <label for="register-ranch-name">Ranch name</label>
+            <input id="register-ranch-name" type="text" maxlength="120" formControlName="ranchName" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && !form.controls.ranchName.value.trim()">
+          </div>
+          <div class="field">
+            <label for="register-region">Region</label>
+            <select id="register-region" formControlName="region" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && !form.controls.region.value">
+              <option value="">Choose a region</option>
+              <option value="Junín">Junín</option>
+              <option value="Puno">Puno</option>
+              <option value="Cusco">Cusco</option>
+              <option value="other">Other region</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="register-district">District</label>
+            <input id="register-district" type="text" maxlength="120" formControlName="district" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && !form.controls.district.value.trim()">
+          </div>
+          <div class="field">
+            <label for="register-head-count">Estimated herd size</label>
+            <input id="register-head-count" type="number" min="1" max="1000000" step="1" formControlName="estimatedHeadCount" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && form.controls.estimatedHeadCount.invalid">
+          </div>
+        </div>
+        @if (form.touched && form.hasError('ranchDetailsRequired')) { <p class="form-error" role="alert">Complete all ranch details and enter a positive whole number for herd size.</p> }
+      }
+
+      <div class="field">
+        <label class="account-consent" for="register-terms">
+          <input id="register-terms" type="checkbox" formControlName="terms" [attr.aria-invalid]="form.controls.terms.touched && form.controls.terms.invalid" aria-describedby="register-terms-error">
+          <span>I agree to the ICHU Terms of Use.</span>
+        </label>
+        <p class="form-error" id="register-terms-error">@if (form.controls.terms.touched && form.controls.terms.invalid) { Confirm that you agree before continuing. }</p>
+      </div>
+      @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error.message }}</p> }
+      <button mat-flat-button class="btn primary login-submit" type="submit">Review account</button>
+    </form>
+  } @else {
+    <section class="review-profile" aria-labelledby="review-title">
+      <h2 id="review-title" tabindex="-1">Review your details</h2>
+      <dl>
+        <div><dt>Name</dt><dd>{{ form.controls.name.value }}</dd></div>
+        <div><dt>Email</dt><dd>{{ form.controls.email.value }}</dd></div>
+        <div><dt>Role</dt><dd>{{ form.controls.role.value === 'rancher' ? 'Ranch manager' : 'Veterinarian' }}</dd></div>
+        @if (form.controls.role.value === 'rancher') {
+          <div><dt>Ranch</dt><dd>{{ form.controls.ranchName.value }}</dd></div>
+          <div><dt>Region</dt><dd>{{ form.controls.region.value === 'other' ? 'Other region' : form.controls.region.value }}</dd></div>
+          <div><dt>District</dt><dd>{{ form.controls.district.value }}</dd></div>
+          <div><dt>Estimated herd size</dt><dd>{{ form.controls.estimatedHeadCount.value }}</dd></div>
+        }
+      </dl>
+      <p class="account-note">Your password is sent to Firebase Authentication and is never included in this review.</p>
+      @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error.message }}</p> }
+      <div class="review-actions">
+        <button mat-flat-button class="btn primary login-submit" type="button" (click)="confirm()" [disabled]="entering()">
+          {{ entering() ? 'Creating account…' : auth.error()?.message?.startsWith('Account setup did not finish.') ? 'Retry account setup' : 'Create account' }}
+        </button>
+        <button mat-button class="btn secondary" type="button" (click)="editDetails()" [disabled]="entering()">Edit details</button>
+      </div>
+    </section>
+  }
+  <a class="account-back" routerLink="/login"><ichu-icon name="arrow" />Back to sign in</a>
+</ichu-account-access-frame>

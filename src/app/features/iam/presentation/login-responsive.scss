@@ -1,0 +1,12 @@
+@media (max-width: 680px) {
+  .login-scene { padding: 16px 12px 6px; }
+  .login-layout { grid-template-areas: 'photo' 'form'; grid-template-columns: minmax(0, 1fr); max-width: 440px; padding: 8px; border-radius: 18px; }
+  .login-photo { min-height: clamp(118px, 38vw, 170px); border-radius: 11px; }
+  .login-photo img { object-position: 53% 70%; }
+  .login-photo-caption { padding: 12px 14px; }
+  .login-photo-caption p { max-width: none; font-size: 17px; letter-spacing: -.02em; }
+  .login-photo-caption span { display: none; }
+  .login-card { padding: 18px 16px 14px; }
+  .login-card-header { margin-bottom: 18px; }
+  .login-footer { max-width: 440px; }
+}

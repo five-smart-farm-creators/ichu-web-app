@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Sign-in, registration, password recovery, and authenticated account workspace screens.
+
 - Firebase authentication, guarded account state, and authenticated IAM REST adapters.
 
 - Shared Angular theme and runtime configuration for API and Firebase setup.

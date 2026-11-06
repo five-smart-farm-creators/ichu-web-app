@@ -1,0 +1,48 @@
+.login-mode { display: flex; align-items: center; justify-content: center; min-height: 42px; margin-bottom: 17px; padding: 3px; border: 1px solid #e9e1d0; border-radius: 24px; background: #f6f0e2; color: var(--login-action); font-size: 12px; font-weight: 650; }
+
+.access-form { display: grid; gap: 12px; }
+.field { display: grid; gap: 6px; min-width: 0; scroll-margin-block: 24px; }
+.field label { color: var(--login-ink); font-size: 13px; font-weight: 650; line-height: 1.5; }
+
+.field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 12px;
+  border: 1px solid var(--login-border);
+  border-radius: 20px;
+  background: #faf7ef;
+  color: var(--login-ink);
+  font-size: 16px;
+  line-height: 1.4;
+  transition: box-shadow .16s, border-color .16s;
+}
+.field input::placeholder { color: #67766b; font-size: 14px; }
+.field input:focus { border-color: #4a7758; background: var(--login-surface); box-shadow: 0 0 0 3px rgb(74 119 88 / .14); outline: none; }
+.field input[aria-invalid="true"] { border-color: #ad5244; }
+
+.password-field { position: relative; }
+.password-field input { padding-right: 48px; }
+.password-toggle { position: absolute; top: 50%; right: 2px; display: grid; place-items: center; width: 44px; height: 44px; transform: translateY(-50%); padding: 0; border: 0; border-radius: 50%; background: transparent; color: #526759; }
+.password-toggle:hover, .password-toggle:focus-visible, .password-toggle[aria-pressed="true"] { background: #edf3ed; color: var(--login-action); }
+.password-toggle ichu-icon { width: 19px; height: 19px; }
+
+.form-error { color: #973f33; font-size: 12px; line-height: 1.5; }
+.form-error:empty { display: none; }
+.login-card > .form-error { margin-top: 10px; }
+
+.login-submit {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 2px;
+  border: 1px solid var(--login-action);
+  border-radius: 24px;
+  background: var(--login-action);
+  color: #fff;
+  --mat-button-filled-container-height: 48px;
+  --mat-button-filled-container-shape: 24px;
+  --mat-button-filled-container-color: var(--login-action);
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-label-text-font: var(--login-body);
+  --mat-button-filled-label-text-size: 14px;
+}
+.login-submit:hover { background: var(--login-action-hover); border-color: var(--login-action-hover); }
