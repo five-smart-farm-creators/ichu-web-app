@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Standardized text file line endings across development platforms.
+
 - Updated project dependencies.
 
 ### Fixed
