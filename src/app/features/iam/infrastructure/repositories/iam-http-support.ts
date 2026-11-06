@@ -3,6 +3,8 @@ import { AuthError } from '../../domain/model/auth.model';
 import type { IamConfig } from '../configuration/iam-config';
 import type { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
 
+export const iamRequestTimeout = 15000;
+
 export function iamEndpoint(config: IamConfig, resource: string): string {
   const baseUrl = config.apiBaseUrl.trim().replace(/\/+$/, '');
   if (!baseUrl) throw new AuthError('configuration', 'The IAM API base URL is not configured. Add it to runtime settings.');

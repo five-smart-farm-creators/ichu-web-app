@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = async (_route, state) => {
   const authentication = inject(AuthFacade);
   const router = inject(Router);
   await authentication.ready();
-  return authentication.authenticated()
+  return authentication.authenticated() && !authentication.loading() && !authentication.busy()
     ? true
     : router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
 };

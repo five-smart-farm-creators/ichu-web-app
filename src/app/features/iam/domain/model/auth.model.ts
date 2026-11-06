@@ -1,5 +1,7 @@
-/** A Firebase identity that has passed application-account verification. */
 import type { ProfessionalProfile } from './professional-profile.model';
+
+/** A Firebase identity that has passed application-account verification. */
+
 
 export interface AuthUser {
   readonly uid: string;

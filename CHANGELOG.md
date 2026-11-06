@@ -22,3 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated project dependencies.
+
+### Fixed
+
+- Kept registration sessions valid through provisioning and allowed verification-email retries.
+- Rejected stale account responses and navigation during session changes, with regression coverage.
+- Reused IAM request handling and limited stalled API requests.

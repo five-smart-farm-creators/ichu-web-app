@@ -5,19 +5,19 @@ import type { IamAccount } from '../../domain/model/auth.model';
 import type { CompleteProfessionalProfile } from '../../domain/model/professional-profile.model';
 import { ProfessionalProfileRepository } from '../../domain/repositories/professional-profile.repository';
 import { IAM_CONFIG } from '../configuration/iam-config';
-import { FirebaseAuthRepository } from './firebase-auth.repository';
-import { iamAuthorizationHeaders, iamEndpoint, toIamRequestError } from './iam-http-support';
+import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
+import { iamAuthorizationHeaders, iamEndpoint, iamRequestTimeout, toIamRequestError } from './iam-http-support';
 
 @Injectable()
 export class IamProfessionalProfileRepository extends ProfessionalProfileRepository {
   private readonly http = inject(HttpClient);
   private readonly config = inject(IAM_CONFIG);
-  private readonly authentication = inject(FirebaseAuthRepository);
+  private readonly authentication = inject(AuthenticationRepository);
 
   override async current(): Promise<IamAccount> {
     const headers = await iamAuthorizationHeaders(this.authentication);
     try {
-      return await firstValueFrom(this.http.get<IamAccount>(iamEndpoint(this.config, 'profiles/me'), { headers }));
+      return await firstValueFrom(this.http.get<IamAccount>(iamEndpoint(this.config, 'profiles/me'), { headers, timeout: iamRequestTimeout }));
     } catch (error) {
       throw toIamRequestError(error);
     }
@@ -26,7 +26,7 @@ export class IamProfessionalProfileRepository extends ProfessionalProfileReposit
   override async complete(profile: CompleteProfessionalProfile): Promise<IamAccount> {
     const headers = await iamAuthorizationHeaders(this.authentication);
     try {
-      return await firstValueFrom(this.http.put<IamAccount>(iamEndpoint(this.config, 'profiles/me'), profile, { headers }));
+      return await firstValueFrom(this.http.put<IamAccount>(iamEndpoint(this.config, 'profiles/me'), profile, { headers, timeout: iamRequestTimeout }));
     } catch (error) {
       throw toIamRequestError(error);
     }

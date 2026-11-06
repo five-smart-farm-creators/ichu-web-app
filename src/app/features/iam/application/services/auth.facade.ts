@@ -15,6 +15,8 @@ export class AuthFacade {
   private stopObserving: (() => void) | null = null;
   private registrationInProgress = false;
   private initialStateResolved = false;
+  private stateGeneration = 0;
+  private suppressedUid: string | null = null;
 
   readonly authenticated = signal(false);
   readonly currentUser = signal<AuthUser | null>(null);
@@ -58,6 +60,8 @@ export class AuthFacade {
     if (this.busy()) return false;
     this.busy.set(true);
     this.error.set(null);
+    this.stateGeneration++;
+    this.clearAuthenticatedState();
     let signedInUser: AuthUser | null = null;
     try {
       this.requireRuntimeConfiguration();
@@ -93,6 +97,8 @@ export class AuthFacade {
     this.busy.set(true);
     this.error.set(null);
     this.registrationInProgress = true;
+    this.stateGeneration++;
+    this.clearAuthenticatedState();
     let createdIdentity = false;
     let openedIdentitySession = false;
     let provisioningStarted = false;
@@ -110,14 +116,20 @@ export class AuthFacade {
       this.suppressedUid = this.authentication.currentUser()?.uid ?? null;
       if (createdIdentity) await this.authentication.updateDisplayName(displayName.trim());
       provisioningStarted = true;
-      await this.accounts.registerAccount(request);
+      try {
+        await this.accounts.registerAccount(request);
+      } catch (error) {
+        // Retrying verification is safe only after credentials prove ownership of the identity.
+        if (createdIdentity || !(error instanceof AuthError) || error.code !== 'account-unavailable'
+          || this.authentication.currentUser()?.emailVerified) throw error;
+      }
       accountProvisioned = true;
       try {
         await this.authentication.sendEmailVerification();
       } catch {
         throw new AuthError(
           'service-unavailable',
-          'The account was created, but the verification email could not be sent. Contact support to continue.',
+          'The account was created, but verification email delivery failed. Retry account setup with the same credentials to resend it.',
         );
       }
       await this.authentication.signOut();
@@ -165,6 +177,8 @@ export class AuthFacade {
 
   /** Signs out of Firebase and clears the backend account snapshot. */
   async signOut(): Promise<void> {
+    this.stateGeneration++;
+    this.clearAuthenticatedState();
     this.error.set(null);
     this.busy.set(true);
     try {
@@ -181,48 +195,51 @@ export class AuthFacade {
   }
 
   private async handleAuthState(user: AuthUser | null): Promise<void> {
-    if (this.registrationInProgress || (user && user.uid === this.suppressedUid)) {
-      if (user && this.authentication.currentUser()?.uid === user.uid) {
+    // Registration owns the identity until provisioning and verification delivery finish.
+    if (this.registrationInProgress) return;
+    const generation = ++this.stateGeneration;
+    if (user && user.uid === this.suppressedUid) {
+      if (this.authentication.currentUser()?.uid === user.uid) {
         await this.authentication.signOut().catch(() => undefined);
       }
       return;
     }
+    this.clearAuthenticatedState();
     if (!user) {
-      this.clearAuthenticatedState();
-      this.loading.set(false);
       this.finishInitialState();
       return;
     }
     this.loading.set(true);
     try {
       await this.verifyApplicationAccount(user);
-      this.error.set(null);
+      if (generation === this.stateGeneration) this.error.set(null);
     } catch (error) {
-      const authError = this.asAuthError(error);
+      if (generation !== this.stateGeneration) return;
       if (this.authentication.currentUser()?.uid === user.uid) {
-        this.error.set(authError);
+        this.error.set(this.asAuthError(error));
         await this.authentication.signOut().catch(() => undefined);
       }
-      this.clearAuthenticatedState();
+      if (generation === this.stateGeneration) this.clearAuthenticatedState();
     } finally {
-      this.loading.set(false);
-      this.finishInitialState();
+      if (generation === this.stateGeneration) this.finishInitialState();
     }
   }
 
   private async verifyApplicationAccount(user: AuthUser): Promise<void> {
-    const pending = this.validationByUid.get(user.uid);
+    const key = `${user.uid}:${this.stateGeneration}`;
+    const pending = this.validationByUid.get(key);
     if (pending) return pending;
     const validation = this.loadApplicationAccount(user);
-    this.validationByUid.set(user.uid, validation);
+    this.validationByUid.set(key, validation);
     try {
       await validation;
     } finally {
-      if (this.validationByUid.get(user.uid) === validation) this.validationByUid.delete(user.uid);
+      if (this.validationByUid.get(key) === validation) this.validationByUid.delete(key);
     }
   }
 
   private async loadApplicationAccount(user: AuthUser): Promise<void> {
+    const generation = this.stateGeneration;
     if (!user.emailVerified) {
       throw new AuthError('email-not-verified', 'Verify your email address before signing in.');
     }
@@ -233,7 +250,8 @@ export class AuthFacade {
       this.accounts.currentAccount(),
       this.accounts.ranchAccess(),
     ]);
-    if (this.authentication.currentUser()?.uid !== user.uid
+    if (generation !== this.stateGeneration || this.registrationInProgress || user.uid === this.suppressedUid
+      || this.authentication.currentUser()?.uid !== user.uid
       || account.email.trim().toLowerCase() !== user.email.trim().toLowerCase()) {
       throw new AuthError('account-unavailable', 'The application account does not match this Firebase identity.');
     }
@@ -279,7 +297,6 @@ export class AuthFacade {
     this.ranchAccess.set([]);
   }
 
-  private suppressedUid: string | null = null;
 
   private finishInitialState(): void {
     this.loading.set(false);
