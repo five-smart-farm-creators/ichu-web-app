@@ -1,0 +1,292 @@
+import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { AuthError, type AuthUser, type IamAccount, type RanchAccess, type RegisterAccountRequest } from '../../domain/model/auth.model';
+import { AccountRepository } from '../../domain/repositories/account.repository';
+import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
+
+/** Coordinates Firebase identity with the backend account and ranch-access contracts. */
+@Injectable()
+export class AuthFacade {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly authentication = inject(AuthenticationRepository);
+  private readonly accounts = inject(AccountRepository);
+  private readonly validationByUid = new Map<string, Promise<void>>();
+  private readonly initialState: Promise<void>;
+  private resolveInitialState: () => void = () => undefined;
+  private stopObserving: (() => void) | null = null;
+  private registrationInProgress = false;
+  private initialStateResolved = false;
+
+  readonly authenticated = signal(false);
+  readonly currentUser = signal<AuthUser | null>(null);
+  readonly account = signal<IamAccount | null>(null);
+  readonly ranchAccess = signal<readonly RanchAccess[]>([]);
+  readonly loading = signal(true);
+  readonly readyState = signal(false);
+  readonly busy = signal(false);
+  readonly error = signal<AuthError | null>(null);
+  readonly displayName = computed(() => this.currentUser()?.displayName?.trim() || null);
+  readonly name = computed(() => this.displayName() || this.currentUser()?.email || '');
+
+  constructor() {
+    this.initialState = new Promise(resolve => { this.resolveInitialState = resolve; });
+    if (!this.authentication.isConfigured()) {
+      this.error.set(new AuthError(
+        'configuration',
+        'Firebase Authentication is not configured. Add Firebase runtime settings to enable sign-in.',
+      ));
+      this.finishInitialState();
+      return;
+    }
+    try {
+      this.stopObserving = this.authentication.observeAuthState(
+        user => { void this.handleAuthState(user); },
+        error => this.handleAuthError(error),
+      );
+      this.destroyRef.onDestroy(() => this.stopObserving?.());
+    } catch (error) {
+      this.handleAuthError(this.asAuthError(error));
+    }
+  }
+
+  /** Resolves after Firebase's initial state and backend account check complete. */
+  ready(): Promise<void> {
+    return this.initialState;
+  }
+
+  /** Authenticates through the backend lockout check before opening the Firebase SDK session. */
+  async signIn(email: string, password: string): Promise<boolean> {
+    if (this.busy()) return false;
+    this.busy.set(true);
+    this.error.set(null);
+    let signedInUser: AuthUser | null = null;
+    try {
+      this.requireRuntimeConfiguration();
+      const session = await this.accounts.createSession(email.trim(), password);
+      if (!session.idToken.trim() || session.tokenType.toLowerCase() !== 'bearer') {
+        throw new AuthError('service-unavailable', 'The account service returned an invalid sign-in response.');
+      }
+      this.suppressedUid = null;
+      signedInUser = await this.authentication.signIn(email.trim(), password);
+      await this.verifyApplicationAccount(signedInUser);
+      return this.authenticated();
+    } catch (error) {
+      const authError = this.asAuthError(error);
+      if (signedInUser && this.authentication.currentUser()?.uid === signedInUser.uid) {
+        await this.authentication.signOut().catch(() => undefined);
+        this.clearAuthenticatedState();
+      }
+      this.error.set(authError);
+      return false;
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  /** Creates a Firebase identity and provisions its backend account before sending verification email. */
+  async register(
+    email: string,
+    password: string,
+    displayName: string,
+    request: RegisterAccountRequest,
+  ): Promise<boolean> {
+    if (this.busy()) return false;
+    this.busy.set(true);
+    this.error.set(null);
+    this.registrationInProgress = true;
+    let createdIdentity = false;
+    let openedIdentitySession = false;
+    let provisioningStarted = false;
+    let accountProvisioned = false;
+    try {
+      this.requireRuntimeConfiguration();
+      try {
+        await this.authentication.createUser(email.trim(), password);
+        createdIdentity = true;
+      } catch (error) {
+        if (!(error instanceof AuthError) || error.code !== 'email-already-in-use') throw error;
+        await this.authentication.signIn(email.trim(), password);
+      }
+      openedIdentitySession = true;
+      this.suppressedUid = this.authentication.currentUser()?.uid ?? null;
+      if (createdIdentity) await this.authentication.updateDisplayName(displayName.trim());
+      provisioningStarted = true;
+      await this.accounts.registerAccount(request);
+      accountProvisioned = true;
+      try {
+        await this.authentication.sendEmailVerification();
+      } catch {
+        throw new AuthError(
+          'service-unavailable',
+          'The account was created, but the verification email could not be sent. Contact support to continue.',
+        );
+      }
+      await this.authentication.signOut();
+      this.clearAuthenticatedState();
+      return true;
+    } catch (error) {
+      if (openedIdentitySession) {
+        this.suppressedUid = this.authentication.currentUser()?.uid ?? this.suppressedUid;
+        await this.authentication.signOut().catch(() => undefined);
+        this.clearAuthenticatedState();
+      }
+      if (openedIdentitySession && provisioningStarted && !accountProvisioned
+        && !(error instanceof AuthError && error.code === 'account-unavailable')) {
+        this.error.set(new AuthError(
+          'service-unavailable',
+          'Account setup did not finish. Your Firebase identity was kept; retry with the same email and password.',
+        ));
+      } else {
+        this.error.set(this.asAuthError(error));
+      }
+      return false;
+    } finally {
+      this.registrationInProgress = false;
+      this.busy.set(false);
+      this.finishInitialState();
+    }
+  }
+
+  /** Sends a Firebase password-reset email without retaining the address. */
+  async sendPasswordReset(email: string): Promise<boolean> {
+    if (this.busy()) return false;
+    this.busy.set(true);
+    this.error.set(null);
+    try {
+      if (!this.authentication.isConfigured()) throw this.configurationError();
+      await this.authentication.sendPasswordReset(email.trim());
+      return true;
+    } catch (error) {
+      this.error.set(this.asAuthError(error));
+      return false;
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  /** Signs out of Firebase and clears the backend account snapshot. */
+  async signOut(): Promise<void> {
+    this.error.set(null);
+    this.busy.set(true);
+    try {
+      if (this.authentication.isConfigured()) {
+        this.suppressedUid = this.authentication.currentUser()?.uid ?? null;
+        await this.authentication.signOut();
+      }
+    } catch (error) {
+      this.error.set(this.asAuthError(error));
+    } finally {
+      this.clearAuthenticatedState();
+      this.busy.set(false);
+    }
+  }
+
+  private async handleAuthState(user: AuthUser | null): Promise<void> {
+    if (this.registrationInProgress || (user && user.uid === this.suppressedUid)) {
+      if (user && this.authentication.currentUser()?.uid === user.uid) {
+        await this.authentication.signOut().catch(() => undefined);
+      }
+      return;
+    }
+    if (!user) {
+      this.clearAuthenticatedState();
+      this.loading.set(false);
+      this.finishInitialState();
+      return;
+    }
+    this.loading.set(true);
+    try {
+      await this.verifyApplicationAccount(user);
+      this.error.set(null);
+    } catch (error) {
+      const authError = this.asAuthError(error);
+      if (this.authentication.currentUser()?.uid === user.uid) {
+        this.error.set(authError);
+        await this.authentication.signOut().catch(() => undefined);
+      }
+      this.clearAuthenticatedState();
+    } finally {
+      this.loading.set(false);
+      this.finishInitialState();
+    }
+  }
+
+  private async verifyApplicationAccount(user: AuthUser): Promise<void> {
+    const pending = this.validationByUid.get(user.uid);
+    if (pending) return pending;
+    const validation = this.loadApplicationAccount(user);
+    this.validationByUid.set(user.uid, validation);
+    try {
+      await validation;
+    } finally {
+      if (this.validationByUid.get(user.uid) === validation) this.validationByUid.delete(user.uid);
+    }
+  }
+
+  private async loadApplicationAccount(user: AuthUser): Promise<void> {
+    if (!user.emailVerified) {
+      throw new AuthError('email-not-verified', 'Verify your email address before signing in.');
+    }
+    if (this.authentication.currentUser()?.uid !== user.uid) {
+      throw new AuthError('account-unavailable', 'The Firebase identity changed before account verification completed.');
+    }
+    const [account, ranchAccess] = await Promise.all([
+      this.accounts.currentAccount(),
+      this.accounts.ranchAccess(),
+    ]);
+    if (this.authentication.currentUser()?.uid !== user.uid
+      || account.email.trim().toLowerCase() !== user.email.trim().toLowerCase()) {
+      throw new AuthError('account-unavailable', 'The application account does not match this Firebase identity.');
+    }
+    if (account.status.trim().toLowerCase() !== 'active') {
+      throw new AuthError('account-unavailable', 'This ICHU account is not active. Contact your administrator.');
+    }
+    this.currentUser.set(user);
+    this.account.set(account);
+    this.ranchAccess.set(ranchAccess);
+    this.authenticated.set(true);
+  }
+
+  private handleAuthError(error: AuthError): void {
+    this.error.set(error);
+    this.clearAuthenticatedState();
+    this.loading.set(false);
+    this.finishInitialState();
+  }
+
+  private requireRuntimeConfiguration(): void {
+    if (!this.authentication.isConfigured()) throw this.configurationError();
+    if (!this.accounts.isConfigured()) {
+      throw new AuthError('configuration', 'The IAM API base URL is not configured. Add it to runtime settings.');
+    }
+  }
+
+  private configurationError(): AuthError {
+    return new AuthError(
+      'configuration',
+      'Firebase Authentication is not configured. Add Firebase runtime settings to enable sign-in.',
+    );
+  }
+
+  private asAuthError(error: unknown): AuthError {
+    if (error instanceof AuthError) return error;
+    return new AuthError('unknown', 'Authentication could not be completed. Try again.');
+  }
+
+  private clearAuthenticatedState(): void {
+    this.authenticated.set(false);
+    this.currentUser.set(null);
+    this.account.set(null);
+    this.ranchAccess.set([]);
+  }
+
+  private suppressedUid: string | null = null;
+
+  private finishInitialState(): void {
+    this.loading.set(false);
+    this.readyState.set(true);
+    if (!this.initialStateResolved) {
+      this.initialStateResolved = true;
+      this.resolveInitialState();
+    }
+  }
+}
