@@ -10,7 +10,7 @@ import { AccountAccessFrame } from '../../components/account-access-frame';
 @Component({
   selector: 'ichu-register-page', standalone: true,
   imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame],
-  templateUrl: './register-page.html', styleUrls: ['../../login-form.scss', '../../account-forms.scss', '../../auth-register-review.scss'],
+  templateUrl: './register-page.html', styleUrls: ['../../styles/auth-controls.scss', '../../styles/auth-motion.scss', './register-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPage {

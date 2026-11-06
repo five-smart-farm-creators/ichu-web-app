@@ -59,3 +59,31 @@ h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--fo
 .login-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; max-width: var(--login-width); margin-top: 6px; padding: 0 4px; color: var(--login-muted); font-size: 12px; }
 .login-footer a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
 .login-footer a:hover { text-decoration: underline; }
+.login-photo {
+  grid-area: photo;
+  position: relative;
+  display: flex;
+  align-items: end;
+  min-height: 505px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 15px;
+  background: #294e39;
+}
+.login-photo img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 58%; }
+.login-photo::after { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, #173f2e 0%, rgb(23 63 46 / .88) 12%, rgb(23 63 46 / .33) 33%, transparent 59%); }
+.login-photo-caption { padding: clamp(20px, 3.8vw, 42px); color: #fffdf4; }
+.login-photo-caption p { max-width: 19ch; font-size: clamp(1.65rem, 3.4vw, 2.65rem); line-height: 1.06; letter-spacing: -.045em; }
+.login-photo-caption span { display: block; margin-top: 12px; color: #e3eadb; font-size: 12px; font-weight: 650; }
+@media (max-width: 680px) {
+  .login-scene { padding: 16px 12px 6px; }
+  .login-layout { grid-template-areas: 'photo' 'form'; grid-template-columns: minmax(0, 1fr); max-width: 440px; padding: 8px; border-radius: 18px; }
+  .login-photo { min-height: clamp(118px, 38vw, 170px); border-radius: 11px; }
+  .login-photo img { object-position: 53% 70%; }
+  .login-photo-caption { padding: 12px 14px; }
+  .login-photo-caption p { max-width: none; font-size: 17px; letter-spacing: -.02em; }
+  .login-photo-caption span { display: none; }
+  .login-card { padding: 18px 16px 14px; }
+  .login-card-header { margin-bottom: 18px; }
+  .login-footer { max-width: 440px; }
+}

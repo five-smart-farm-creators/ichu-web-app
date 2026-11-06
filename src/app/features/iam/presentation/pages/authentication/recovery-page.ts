@@ -9,7 +9,7 @@ import { AccountAccessFrame } from '../../components/account-access-frame';
 @Component({
   selector: 'ichu-recovery-page', standalone: true,
   imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame],
-  templateUrl: './recovery-page.html', styleUrls: ['../../login-form.scss', '../../account-forms.scss', '../../auth-motion.scss'],
+  templateUrl: './recovery-page.html', styleUrls: ['../../styles/auth-controls.scss', '../../styles/auth-motion.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecoveryPage {

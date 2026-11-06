@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Grouped IAM pages and reusable presentation components into focused directories.
+- Consolidated shared authentication styles and removed duplicate presentation stylesheets.
 
 - Standardized text file line endings across development platforms.
 

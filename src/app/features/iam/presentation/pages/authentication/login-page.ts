@@ -9,7 +9,7 @@ import { EntryTransition } from '../../components/entry-transition';
 @Component({
   selector: 'ichu-login-page', standalone: true,
   imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, EntryTransition],
-  templateUrl: './login-page.html', styleUrls: ['../../login-page.scss', '../../login-form.scss', '../../login-photo.scss', '../../auth-motion.scss', '../../login-responsive.scss'],
+  templateUrl: './login-page.html', styleUrls: ['../../styles/auth-layout.scss', '../../styles/auth-controls.scss', '../../styles/auth-motion.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
