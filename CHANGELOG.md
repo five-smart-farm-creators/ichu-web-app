@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- IAM setup documentation and contributor and agent instructions for DDD and Git Flow.
+
 - Sign-in, registration, password recovery, and authenticated account workspace screens.
 
 - Firebase authentication, guarded account state, and authenticated IAM REST adapters.
