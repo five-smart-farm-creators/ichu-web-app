@@ -1,0 +1,3 @@
+* text=auto eol=lf
+# Keep Git hooks executable by POSIX shells on every platform.
+.githooks/* text eol=lf

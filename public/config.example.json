@@ -1,0 +1,9 @@
+{
+  "apiBaseUrl": "http://localhost:5099/api/v1",
+  "firebase": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "appId": ""
+  }
+}

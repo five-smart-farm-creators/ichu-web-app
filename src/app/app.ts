@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
+  selector: 'ichu-root',
   imports: [RouterOutlet],
-  selector: 'app-root',
-  styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('ichu-web-app');
-}
+export class App {}
