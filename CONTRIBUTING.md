@@ -41,17 +41,20 @@ Use Git Flow to keep ongoing work separate from releasable code:
 | `main` | Production-ready, released code |
 | `develop` | Integration branch for the next release |
 | `feature/<short-description>` | New work; branch from and merge back into `develop` |
-| `release/<version>` | Stabilization and release preparation; branch from `develop`, then merge into `main` and back into `develop` |
-| `hotfix/<short-description>` | Urgent production fixes; branch from `main`, then merge into `main` and `develop` |
+| `bugfix/<short-description>` | Non-urgent fixes; branch from and merge back into `develop` |
+| `release/vX.Y.Z` | Stabilization and release preparation; branch from `develop`, then merge into `main` and back into `develop` |
+| `hotfix/vX.Y.Z` | Urgent production fixes; branch from `main`, then merge into `main` and `develop` |
 
-Use lowercase, descriptive branch names with hyphens, for example `feature/irrigation-schedule` or `hotfix/login-validation`. Do not push directly to `main` or `develop`; open a pull request to the appropriate target branch. Keep branches current, resolve conflicts deliberately, and delete merged branches.
+Use lowercase, descriptive branch names with hyphens, for example `feature/irrigation-schedule` or `bugfix/login-validation`. Do not push directly to `main` or `develop`; open a pull request to the appropriate target branch. Keep branches current, resolve conflicts deliberately, and delete merged branches.
+
+Never open a pull request from `develop` to `main`; releases always go through `release/vX.Y.Z`. Do not use other branch prefixes, such as `fix/`, `docs/`, `refactor/`, `chore/`, or `audit/`.
 
 ## Commit messages: Conventional Commits
 
 Write each commit message in this format:
 
 ```text
-<type>[optional scope][!]: <imperative summary>
+<type>(<scope>)[!]: <imperative summary>
 
 [optional body]
 
@@ -70,21 +73,38 @@ Use a concise, imperative summary. Common types:
 - `build`: change build or dependency configuration
 - `ci`: change automation or CI configuration
 - `chore`: maintenance that does not fit another type
+- `revert`: revert a previous commit
 
-Use an optional scope to identify the affected area, preferably using domain language, such as `feat(irrigation): schedule watering`. Examples:
+Use a scope to identify the affected area, preferably using domain language, such as `feat(planning): schedule vaccination activities`. Examples:
 
 ```text
-feat(inventory): track seed stock
-fix(auth): reject expired sessions
+feat(cattle-information): register cattle in a lot
+fix(iam): reject expired sessions
 docs: clarify local setup
+```
+
+Commit messages must also follow these rules:
+
+- Start the summary with a lowercase letter, without a trailing period, and keep the header at most 72 characters.
+- Use only these scopes: `iam`, `cattle-information`, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, `subscription-plans`, `shared`, `i18n`.
+- Use `feat` only for new functionality, `docs` for documentation and diagram changes, and `chore` for changelog, version, or maintenance changes.
+- Do not use the default message of the GitHub web editor, such as `Update file.md`.
+
+Invalid examples:
+
+```text
+(Docs): Add user personas
+Update chapter02.md
+feat: add controllers.
+faet: add planning service
 ```
 
 Mark a breaking change with `!` after the type/scope and explain it in the footer using `BREAKING CHANGE:`:
 
 ```text
-feat(api)!: replace the legacy crop status
+feat(operations-monitoring)!: replace the legacy alert status
 
-BREAKING CHANGE: clients must use the new crop status values.
+BREAKING CHANGE: clients must use the new alert status values.
 ```
 
 Do not use a `feat` or `fix` type merely to influence versioning; the commit must accurately describe the change. Keep commits coherent and avoid bundling unrelated work.
@@ -111,3 +131,9 @@ Open pull requests against `develop` for normal work, or the branch prescribed a
 - Screenshots or recordings for visible UI changes when useful.
 
 Keep pull requests reviewable and focused. Link related issues, respond constructively to feedback, and make sure automated checks pass. Reviewers should assess correctness, tests, domain consistency, accessibility where relevant, and whether documentation or migration notes are needed. Do not merge until required approvals and checks are complete.
+
+## Enforcement
+
+- After cloning, run once: `git config core.hooksPath .githooks`. The `commit-msg` hook rejects invalid messages locally.
+- The `Git Flow checks` GitHub Actions workflow validates the branch name, the pull request target, and every commit message on pull requests to `main` and `develop`.
+- Configure Git with your real name and the email linked to your GitHub account (`git config user.name` and `git config user.email`). `.mailmap` maps previously used alternative identities.
