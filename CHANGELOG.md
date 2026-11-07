@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- IAM setup documentation and contributor and agent instructions for DDD and Git Flow.
+
+- Sign-in, registration, password recovery, and authenticated account workspace screens.
+
+- Firebase authentication, guarded account state, and authenticated IAM REST adapters.
+
+- Shared Angular theme and runtime configuration for API and Firebase setup.
+
 - Initial Angular web application and visual theme.
 - Contributor guidance covering Domain-Driven Design, Git Flow, Conventional Commits, Semantic Versioning, and pull request practices.
 - Proprietary license notice for the closed-source project.
@@ -17,5 +25,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Grouped IAM pages and reusable presentation components into focused directories.
+- Consolidated shared authentication styles and removed duplicate presentation stylesheets.
+
+- Standardized text file line endings across development platforms.
+
 - Updated project dependencies.
 - Contribution guide aligned with the team's Git Flow, Conventional Commits and Semantic Versioning conventions.
+
+### Fixed
+
+- Kept registration sessions valid through provisioning and allowed verification-email retries.
+- Rejected stale account responses and navigation during session changes, with regression coverage.
+- Reused IAM request handling and limited stalled API requests.
+
+### Removed
+
+- Obsolete authentication styles that were no longer referenced by any component.

@@ -1,36 +1,60 @@
-# Contributing to IchuWebApp
+# Contributing
 
-Thank you for contributing. This guide describes how to propose changes, structure domain-oriented code, and keep our Git history and releases predictable.
+Keep changes focused, preserve existing behavior and visual design, and follow the current IAM scope.
 
-## Development setup
+## Setup and checks
 
-Use the Node.js version supported by the project and npm version declared in `package.json`. Install dependencies and start the Angular development server:
+Use a Node.js version allowed by `package.json` and npm `11.19.0`. Keep `public/config.json` local and uncommitted. Start the app with `npm start`; start the backend separately when validating REST calls.
 
-```bash
-npm ci
-npm start
-```
+Run the checks relevant to your change:
 
-Before opening a pull request, run the checks relevant to your change:
-
-```bash
-npm test
+```sh
+npm run typecheck
 npm run build
+npm test -- --watch=false
 ```
 
-Keep changes focused, follow the existing Angular and TypeScript conventions, and update tests and documentation when behavior changes. Do not commit credentials, secrets, generated build output, or unrelated formatting changes.
+Do not claim live REST or end-to-end verification when the backend is unavailable. Report only checks actually performed.
 
 ## Domain-Driven Design
 
-Model code around the language and rules of the business, not just around screens or technical layers:
+Only `iam` is in the current frontend scope. The agreed future contexts are `cattle-information`, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, and `subscription-plans`; do not create their modules without an authorized task.
 
-- Use domain terminology consistently in names, user interfaces, tests, and discussions. Clarify ambiguous terms with the team before introducing competing names.
-- Group related behavior and data by domain capability or bounded context. Keep responsibilities and boundaries explicit; avoid a single catch-all model shared by unrelated features.
-- Put business rules close to the domain concepts they protect. Keep presentation and Angular-specific concerns at the edges, and avoid making domain rules depend unnecessarily on framework or infrastructure details.
-- Make invariants explicit and validate them at the appropriate boundary. Do not duplicate rules across components.
-- Prefer small, cohesive changes that preserve existing boundaries. Introduce abstractions only when they represent a real domain concept or remove meaningful coupling.
+As IAM code is added, use this structure when files are needed:
 
-Use the current project structure as a guide; do not create layers or bounded contexts solely to follow a pattern. Explain significant domain or architecture changes in the pull request.
+```text
+src/app/features/iam/
+  domain/
+    model/
+    repositories/
+  application/
+    services/
+  infrastructure/
+    repositories/
+  presentation/
+```
+
+- `domain/model/` contains framework-independent models and pure business rules. It must not import Angular, browser APIs, Firebase, HTTP clients, or infrastructure packages.
+- `domain/repositories/` defines ports owned by the domain.
+- `application/services/` coordinates use cases through domain contracts.
+- `infrastructure/repositories/` implements ports and contains Firebase or REST adapters when required. Identify mock data as fixtures; do not describe it as a backend integration.
+- `presentation/` contains Angular UI and calls application services.
+
+Keep dependencies directed inward. Put app-wide startup and runtime config in the existing `core/config/`. Keep `shared/` business-neutral. Reuse the existing `Icon` and SCSS tokens. Preserve the current screen design and interaction patterns.
+
+Use DDD as a guide to cohesive domain boundaries and inward dependencies. [eShopOnWeb](https://github.com/dotnet-architecture/eShopOnWeb/wiki/Architecture) is a principles reference only; do not copy its .NET project structure.
+
+## Naming, language, and comments
+
+| Element | Convention |
+| --- | --- |
+| Folders and filenames | `kebab-case` |
+| Classes, interfaces, type aliases, enums, and other types | `PascalCase` |
+| Methods, properties, fields, parameters, and local variables | `camelCase` |
+
+Use meaningful English identifiers and comments. Write all UI copy in English. Follow the [Angular style guide](https://angular.dev/style-guide) where it fits these rules. Use `UPPER_SNAKE_CASE` for injection tokens and fixed validation-pattern constants; keep local computed values in `camelCase`.
+
+Keep Angular components focused and consistent with the standalone app. Keep source files focused on one concept. Document public TypeScript contracts with concise JSDoc (`/** ... */`). Use `//` for a single-line note and `/* ... */` for a genuine multiline comment. Avoid decorative comments and commented-out code.
 
 ## Branching: Git Flow
 

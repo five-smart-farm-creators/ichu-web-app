@@ -1,0 +1,14 @@
+<div class="entry-backdrop" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+  <section class="entry-dialog" role="dialog" aria-modal="true" aria-labelledby="entry-title" aria-describedby="entry-status" tabindex="-1" cdkFocusInitial>
+    <h2 id="entry-title" class="entry-accessible-title">Welcome to ICHU</h2>
+    <div class="entry-logo">
+      <img src="/assets/images/ichu-logo.png" alt="ICHU" width="2400" height="2790" decoding="sync">
+    </div>
+    <div class="entry-message">
+      <p id="entry-status" role="status" aria-live="polite">Opening your herd…</p>
+      <div class="entry-progress" role="progressbar" aria-label="Opening workspace" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="progress()">
+        <span [style.transform]="'scaleX(' + progress() / 100 + ')' "></span>
+      </div>
+    </div>
+  </section>
+</div>

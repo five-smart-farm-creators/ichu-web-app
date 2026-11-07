@@ -42,3 +42,10 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Local runtime configuration
+/public/config.json
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
