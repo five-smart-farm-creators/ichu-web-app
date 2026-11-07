@@ -132,6 +132,21 @@ Open pull requests against `develop` for normal work, or the branch prescribed a
 
 Keep pull requests reviewable and focused. Link related issues, respond constructively to feedback, and make sure automated checks pass. Reviewers should assess correctness, tests, domain consistency, accessibility where relevant, and whether documentation or migration notes are needed. Do not merge until required approvals and checks are complete.
 
+## Commit granularity
+
+A commit is one complete logical change that can be described in a single sentence and leaves the project working.
+
+| Too fine | Balanced | Too coarse |
+| --- | --- | --- |
+| One commit per folder or file (`feat: add commands models`, `feat: add events models`, ...) | `feat(iot-assets): add device aggregate with commands and events` | `feat: implement iot assets` (a whole bounded context) |
+| Several consecutive typo commits | `docs(chapter-ii): add segment 1 interview analysis` | `docs: update report` |
+
+- Code: a feature branch usually has 3 to 8 commits of roughly 3 to 10 files each, split by layer or use case (for example domain model, persistence, REST endpoints, tests).
+- Documentation: one commit per complete artifact or section, not per paragraph and not per whole chapter.
+- Group typo fixes with the section they belong to; a later round of fixes goes in a single `docs(<scope>): fix typos in <section>` commit.
+- Before pushing a branch that only you use, squash local work-in-progress commits into logical commits. Never rewrite commits that are already published.
+- The convention is enforced for commits created from 2026-11-07, when it was adopted; older history is kept unchanged.
+
 ## Enforcement
 
 - After cloning, run once: `git config core.hooksPath .githooks`. The `commit-msg` hook rejects invalid messages locally.
