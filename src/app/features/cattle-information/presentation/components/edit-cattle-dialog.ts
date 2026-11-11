@@ -13,14 +13,15 @@ import {
   type Cattle, CATTLE_BREEDS, CATTLE_SEXES, type CattleBreed, type CattleSex, EAR_TAG_MAX_LENGTH,
   fromIsoDate, toIsoDate, VERSION_CONFLICT,
 } from '../../domain/model/cattle.model';
-import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../cattle-error-keys';
 import type { CattleDialogOutcome } from './cattle-dialog';
 
 /** Corrects an active animal's identification; a birth date may not come after the first recorded stage. */
 @Component({
   selector: 'ichu-edit-cattle-dialog',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -76,7 +77,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
           </mat-form-field>
         </div>
         @if (error(); as apiError) {
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -89,6 +90,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
   styles: '.dialog-lead{margin:0 0 16px;color:var(--muted);font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
 })
 export class EditCattleDialog {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   private readonly dialogRef = inject<MatDialogRef<EditCattleDialog, CattleDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(CattleProfileFacade);
   private readonly animal = inject<Cattle>(MAT_DIALOG_DATA);

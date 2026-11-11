@@ -11,7 +11,8 @@ import { CattleProfileFacade } from '../../application/services/cattle-profile.f
 import {
   type Cattle, earliestEffectiveDay, fromIsoDate, LIFE_STAGES, type LifeStage, toIsoDate, VERSION_CONFLICT,
 } from '../../domain/model/cattle.model';
-import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../cattle-error-keys';
 import type { CattleDialogOutcome } from './cattle-dialog';
 
 /** Rejects the stage the animal already has, which the API would refuse with a conflict. */
@@ -23,7 +24,7 @@ function differentFrom(current: LifeStage): ValidatorFn {
 @Component({
   selector: 'ichu-change-life-stage-dialog',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -68,7 +69,7 @@ function differentFrom(current: LifeStage): ValidatorFn {
           </mat-form-field>
         </div>
         @if (error(); as apiError) {
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -81,6 +82,7 @@ function differentFrom(current: LifeStage): ValidatorFn {
   styles: '.dialog-lead{margin:0 0 16px;color:var(--muted);font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
 })
 export class ChangeLifeStageDialog {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   private readonly dialogRef = inject<MatDialogRef<ChangeLifeStageDialog, CattleDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(CattleProfileFacade);
   private readonly animal = inject<Cattle>(MAT_DIALOG_DATA);

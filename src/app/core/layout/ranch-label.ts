@@ -1,5 +1,5 @@
 import type { TranslateService } from '@ngx-translate/core';
-import type { IamContextFacade } from '../../iam/application/acl/iam-context.facade';
+import type { IamContextFacade } from '../../features/iam/application/acl/iam-context.facade';
 
 /** Names the current ranch the way the shell does: its name, or a numbered fallback that never shows the ID. */
 export function currentRanchLabel(context: IamContextFacade, translate: TranslateService): string {

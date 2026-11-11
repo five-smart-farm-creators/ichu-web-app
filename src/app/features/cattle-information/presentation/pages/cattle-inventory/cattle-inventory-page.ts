@@ -27,14 +27,15 @@ import {
 } from '../../../domain/model/cattle.model';
 import { RegisterCattleDialog } from '../../components/register-cattle-dialog';
 import { CATTLE_DIALOG_CONFIG } from '../../components/cattle-dialog';
-import { currentRanchLabel } from '../../ranch-label';
-import { CattleErrorMessagePipe } from '../../pipes/cattle-error-message.pipe';
+import { currentRanchLabel } from '../../../../../core/layout/ranch-label';
+import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../../cattle-error-keys';
 
 /** Lists the ranch's animals with ear tag, status and lot filters, server paging, registration and exports. */
 @Component({
   selector: 'ichu-cattle-inventory-page',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     ExportMenu,
     Icon,
     MatFormFieldModule,
@@ -53,6 +54,7 @@ import { CattleErrorMessagePipe } from '../../pipes/cattle-error-message.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CattleInventoryPage {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   readonly facade = inject(CattleInventoryFacade);
   readonly context = inject(IamContextFacade);
   private readonly dialog = inject(MatDialog);

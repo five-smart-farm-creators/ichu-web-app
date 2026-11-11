@@ -11,14 +11,15 @@ import { CattleProfileFacade } from '../../application/services/cattle-profile.f
 import {
   type Cattle, earliestEffectiveDay, EXIT_REASONS, type ExitReason, fromIsoDate, toIsoDate, VERSION_CONFLICT,
 } from '../../domain/model/cattle.model';
-import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../cattle-error-keys';
 import type { CattleDialogOutcome } from './cattle-dialog';
 
 /** Records an animal's exit after an explicit confirmation; the record stays and becomes read-only. */
 @Component({
   selector: 'ichu-record-exit-dialog',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -59,7 +60,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
           </mat-form-field>
         </div>
         @if (error(); as apiError) {
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -72,6 +73,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
   styles: '.dialog-warning{margin:0 0 16px;padding:12px 14px;border:1px solid #eed7c9;border-radius:10px;background:#fbf1ec;color:#7d3b2f;font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
 })
 export class RecordExitDialog {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   private readonly dialogRef = inject<MatDialogRef<RecordExitDialog, CattleDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(CattleProfileFacade);
   private readonly animal = inject<Cattle>(MAT_DIALOG_DATA);

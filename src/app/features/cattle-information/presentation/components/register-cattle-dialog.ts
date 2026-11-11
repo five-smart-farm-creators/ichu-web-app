@@ -13,13 +13,14 @@ import {
   CATTLE_BREEDS, CATTLE_SEXES, type CattleBreed, type CattleSex, EAR_TAG_MAX_LENGTH, LIFE_STAGES, type LifeStage,
   toIsoDate,
 } from '../../domain/model/cattle.model';
-import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../cattle-error-keys';
 
 /** Adds an animal to the ranch; the dialog stays open when the API refuses the record, such as a duplicate ear tag. */
 @Component({
   selector: 'ichu-register-cattle-dialog',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -84,7 +85,7 @@ import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
           </mat-form-field>
         </div>
         @if (error(); as apiError) {
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -97,6 +98,7 @@ import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
   styles: '.dialog-lead{margin:0 0 16px;color:var(--muted);font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}.span-two{grid-column:1/-1}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
 })
 export class RegisterCattleDialog {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   private readonly dialogRef = inject<MatDialogRef<RegisterCattleDialog, 'saved'>>(MatDialogRef);
   private readonly facade = inject(CattleInventoryFacade);
   readonly breeds = CATTLE_BREEDS;

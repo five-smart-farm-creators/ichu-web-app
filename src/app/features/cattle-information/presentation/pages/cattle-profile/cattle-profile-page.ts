@@ -17,18 +17,20 @@ import { ChangeLifeStageDialog } from '../../components/change-life-stage-dialog
 import { CATTLE_DIALOG_CONFIG, type CattleDialogOutcome } from '../../components/cattle-dialog';
 import { EditCattleDialog } from '../../components/edit-cattle-dialog';
 import { RecordExitDialog } from '../../components/record-exit-dialog';
-import { CattleErrorMessagePipe } from '../../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../../cattle-error-keys';
 
 /** Shows one animal; write actions appear only for active animals in a ranch the account manages. */
 @Component({
   selector: 'ichu-cattle-profile-page',
-  imports: [CattleErrorMessagePipe, DatePipe, MatProgressBarModule, RouterLink, TranslatePipe],
+  imports: [ApiErrorMessagePipe, DatePipe, MatProgressBarModule, RouterLink, TranslatePipe],
   providers: [CattleProfileFacade],
   templateUrl: './cattle-profile-page.html',
   styleUrl: './cattle-profile-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CattleProfilePage {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   readonly facade = inject(CattleProfileFacade);
   readonly context = inject(IamContextFacade);
   private readonly route = inject(ActivatedRoute);

@@ -15,7 +15,7 @@
       <section class="panel">
         <div class="panel-body empty-state">
           <h1>{{ 'cattle.profile.title' | translate }}</h1>
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
           <a class="btn secondary" routerLink="/cattle">{{ 'cattle.profile.back' | translate }}</a>
         </div>
       </section>

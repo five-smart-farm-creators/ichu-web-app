@@ -65,7 +65,7 @@
       <p class="form-error" role="alert">{{ 'cattle.export.failed' | translate }}</p>
     }
     @if (facade.error(); as apiError) {
-      <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
     }
 
     <section class="panel table-panel" [attr.aria-busy]="facade.loading()">

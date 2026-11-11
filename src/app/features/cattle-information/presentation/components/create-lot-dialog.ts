@@ -7,13 +7,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { LotsFacade } from '../../application/services/lots.facade';
 import { LOT_CRITERION_MAX_LENGTH, LOT_NAME_MAX_LENGTH } from '../../domain/model/lot.model';
-import { CattleErrorMessagePipe } from '../pipes/cattle-error-message.pipe';
+import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../cattle-error-keys';
 import type { CattleDialogOutcome } from './cattle-dialog';
 
 /** Creates a management group; the criterion is optional and only describes how the group was formed. */
 @Component({
   selector: 'ichu-create-lot-dialog',
-  imports: [CattleErrorMessagePipe, MatDialogModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslatePipe],
+  imports: [ApiErrorMessagePipe, MatDialogModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<h2 mat-dialog-title>{{ 'cattle.lots.createTitle' | translate }}</h2>
     <form [formGroup]="form" (ngSubmit)="save()" novalidate>
@@ -33,7 +34,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
           </mat-form-field>
         </div>
         @if (error(); as apiError) {
-          <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -46,6 +47,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
   styles: '.dialog-grid{display:grid;gap:4px}.dialog-grid mat-form-field{width:100%}',
 })
 export class CreateLotDialog {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   private readonly dialogRef = inject<MatDialogRef<CreateLotDialog, CattleDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(LotsFacade);
   readonly maxNameLength = LOT_NAME_MAX_LENGTH;

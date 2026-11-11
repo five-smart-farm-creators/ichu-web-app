@@ -33,7 +33,7 @@
       <p class="form-error" role="alert">{{ 'cattle.export.failed' | translate }}</p>
     }
     @if (facade.error(); as apiError) {
-      <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
     }
 
     <div class="lots-layout">
@@ -116,7 +116,7 @@
               }
             }
             @if (actionError(); as apiError) {
-              <p class="form-error" role="alert">{{ apiError | cattleError }}</p>
+              <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
             }
           </div>
           <div class="table-scroll">

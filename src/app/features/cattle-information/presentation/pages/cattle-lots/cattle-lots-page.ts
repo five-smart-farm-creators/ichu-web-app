@@ -21,8 +21,9 @@ import { type CattleStatus } from '../../../domain/model/cattle.model';
 import type { Lot } from '../../../domain/model/lot.model';
 import { CATTLE_DIALOG_CONFIG } from '../../components/cattle-dialog';
 import { CreateLotDialog } from '../../components/create-lot-dialog';
-import { currentRanchLabel } from '../../ranch-label';
-import { CattleErrorMessagePipe } from '../../pipes/cattle-error-message.pipe';
+import { currentRanchLabel } from '../../../../../core/layout/ranch-label';
+import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
+import { CATTLE_ERROR_KEYS } from '../../cattle-error-keys';
 
 /** One exported row per membership; a lot without members still appears once, with empty animal columns. */
 interface LotExportRow {
@@ -41,7 +42,7 @@ function slicePage<T>(items: readonly T[], pageIndex: number, pageSize: number):
 @Component({
   selector: 'ichu-cattle-lots-page',
   imports: [
-    CattleErrorMessagePipe,
+    ApiErrorMessagePipe,
     DatePipe,
     ExportMenu,
     Icon,
@@ -59,6 +60,7 @@ function slicePage<T>(items: readonly T[], pageIndex: number, pageSize: number):
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CattleLotsPage {
+  readonly errorKeys = CATTLE_ERROR_KEYS;
   readonly facade = inject(LotsFacade);
   readonly context = inject(IamContextFacade);
   private readonly dialog = inject(MatDialog);
