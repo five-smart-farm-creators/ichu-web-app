@@ -98,6 +98,8 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-colo
 .soft-gold { background: #fbf5e7; }
 .mono { font-family: ui-monospace, Consolas, monospace; }
 .visually-hidden { position: absolute; left: 0; top: 0; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+.skip-link { position: fixed; top: 12px; left: 12px; z-index: 2000; padding: 10px 16px; border-radius: 9px; background: var(--forest); color: #fff; font-size: .8125rem; font-weight: 650; text-decoration: none; transform: translateY(-160%); }
+.skip-link:focus-visible { transform: none; }
 
 @media (max-width: 1080px) { .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .split-grid { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .page-heading { gap: 16px; } .form-grid { grid-template-columns: 1fr; } .stat { padding: 16px; } .stat-value { font-size: 1.9rem; } .panel-body { padding: 16px; } .toolbar { width: 100%; } .toolbar input { flex: 1; min-width: 0; } }
