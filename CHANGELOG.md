@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- English and Latin American Spanish interface, with a language menu; English is the default and the choice is remembered in this browser.
+- Application shell with navigation, ranch selector, role, account menu, and footer for signed-in pages.
+- Shared footer with terms and privacy link on public pages, plus a skip link on every page.
+- Translated page titles and meta description that follow the selected language.
+- Ranch names in navigation and account pages, with a numbered fallback when a ranch has no name.
+
+### Changed
+
+- Sign-in verifies the Firebase identity and then the ICHU account, without a separate backend session request.
+- Errors show the message from the ICHU service in the selected language, or a translated fallback.
+- Herd advisory requests and decisions use ranch-scoped endpoints.
+- Terms and privacy page describes how ICHU handles sign-in, ranch records, browser preferences, and payments.
+- Sign-in and account screens use the shared app layout and show no internal account or ranch identifiers.
+
+### Removed
+
+- Direct access grant form for ranch managers; access is granted by reviewing a pending request.
+
+### Fixed
+
+- The account workspace no longer nests a second main landmark inside the app shell.
+
 ## [0.1.0] - 2026-11-07
 
 ### Added
