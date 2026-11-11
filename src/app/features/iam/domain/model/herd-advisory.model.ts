@@ -19,23 +19,14 @@ export interface HerdAdvisoryRecord {
 
 export type AccessScope = 'Read' | 'ClinicalWrite' | 'Manage';
 
-/** Input accepted by POST /api/v1/herd-advisories. */
+/** Body accepted by POST ranches/{ranchId}/herd-advisories. */
 export interface RequestHerdAdvisory {
-  readonly ranchId: string;
   readonly reason: string;
 }
 
-/** Input accepted by PATCH /api/v1/herd-advisories/{id}. */
+/** Body accepted by PATCH ranches/{ranchId}/herd-advisories/{advisoryId}. */
 export interface DecideHerdAdvisory {
   readonly decision: 'grant' | 'reject' | 'revoke';
   readonly scope?: AccessScope;
   readonly expiresAt?: string;
-}
-
-/** Input accepted by POST /api/v1/herd-advisories/grants. */
-export interface GrantHerdAdvisory {
-  readonly ranchId: string;
-  readonly veterinarianId: string;
-  readonly scope: AccessScope;
-  readonly expiresAt: string;
 }
