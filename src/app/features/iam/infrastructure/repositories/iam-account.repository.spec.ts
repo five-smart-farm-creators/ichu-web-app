@@ -49,15 +49,21 @@ describe('IAM account API adapter', () => {
     await assertion;
   });
 
-  it('maps ranch names and leaves the name empty when the backend omits it', async () => {
+  it('maps ranch details and access codes, and leaves omitted fields empty', async () => {
     const result = repository.ranchAccess();
     http.expectOne('https://api.example.test/api/v1/accounts/me/ranches').flush([
-      { ranchId: 'ranch-1', scope: 'Read', expiresAt: null, name: '  North Pasture  ' },
-      { ranchId: 'ranch-2', scope: 'Manage', expiresAt: '2027-01-31T23:59:59.999Z' },
+      { ranchId: 'ranch-1', scope: 'Read', expiresAt: null, name: '  North Pasture  ', region: 'Puno', district: 'Melgar' },
+      { ranchId: 'ranch-2', scope: 'Manage', expiresAt: '2027-01-31T23:59:59.999Z', accessCode: 'ABCD2345' },
     ]);
     expect(await result).toEqual([
-      { ranchId: 'ranch-1', scope: 'Read', expiresAt: null, name: 'North Pasture' },
-      { ranchId: 'ranch-2', scope: 'Manage', expiresAt: '2027-01-31T23:59:59.999Z', name: null },
+      {
+        ranchId: 'ranch-1', scope: 'Read', expiresAt: null, name: 'North Pasture',
+        region: 'Puno', district: 'Melgar', accessCode: null,
+      },
+      {
+        ranchId: 'ranch-2', scope: 'Manage', expiresAt: '2027-01-31T23:59:59.999Z', name: null,
+        region: null, district: null, accessCode: 'ABCD2345',
+      },
     ]);
   });
 

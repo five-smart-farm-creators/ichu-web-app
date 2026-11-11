@@ -1,21 +1,21 @@
+import type { ProfessionalProfile } from './professional-profile.model';
+
 /** A backend advisory request or ranch-access decision. */
 export interface HerdAdvisoryRecord {
   readonly id: string;
   readonly veterinarianId: string;
   readonly ranchId: string;
   readonly reason: string;
-  readonly status: string;
+  readonly status: AdvisoryStatus;
   readonly scope: AccessScope;
   readonly requestedAt: string;
   readonly grantedAt: string | null;
   readonly expiresAt: string | null;
   readonly endedAt: string | null;
-  readonly veterinarianProfile: {
-    readonly specialty: string;
-    readonly licenseNumber: string;
-    readonly yearsOfExperience: number;
-  } | null;
+  readonly veterinarianProfile: ProfessionalProfile | null;
 }
+
+export type AdvisoryStatus = 'Pending' | 'Granted' | 'Rejected' | 'Revoked' | 'Expired';
 
 export type AccessScope = 'Read' | 'ClinicalWrite' | 'Manage';
 

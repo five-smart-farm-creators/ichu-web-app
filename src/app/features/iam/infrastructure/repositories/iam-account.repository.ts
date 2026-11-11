@@ -12,6 +12,9 @@ interface RanchAccessResponse {
   readonly scope: string;
   readonly expiresAt?: string | null;
   readonly name?: string | null;
+  readonly region?: string | null;
+  readonly district?: string | null;
+  readonly accessCode?: string | null;
 }
 
 @Injectable()
@@ -45,6 +48,9 @@ export class IamAccountRepository extends AccountRepository {
       scope: item.scope,
       expiresAt: item.expiresAt ?? null,
       name: item.name?.trim() || null,
+      region: item.region?.trim() || null,
+      district: item.district?.trim() || null,
+      accessCode: item.accessCode?.trim() || null,
     }));
   }
 
