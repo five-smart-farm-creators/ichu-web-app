@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>{{ 'iam.advisories.decision.title' | translate }}</h2>
+<mat-dialog-content>
+  <p class="dialog-lead">{{ 'iam.advisories.decision.lead' | translate }}</p>
+  <dl class="request-summary">
+    <div>
+      <dt>{{ 'iam.advisories.reason' | translate }}</dt>
+      <dd>{{ advisory.reason }}</dd>
+    </div>
+    @if (advisory.veterinarianProfile; as profile) {
+      <div>
+        <dt>{{ 'iam.account.specialty' | translate }}</dt>
+        <dd>{{ profile.specialty }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'iam.account.licenseNumber' | translate }}</dt>
+        <dd>{{ profile.licenseNumber }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'iam.account.yearsOfExperience' | translate }}</dt>
+        <dd>{{ profile.yearsOfExperience }}</dd>
+      </div>
+    }
+    <div>
+      <dt>{{ 'iam.advisories.requestedAt' | translate }}</dt>
+      <dd>{{ advisory.requestedAt | localizedDate }}</dd>
+    </div>
+  </dl>
+
+  <form class="decision-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'iam.advisories.decision.scope' | translate }}</mat-label>
+      <mat-select formControlName="scope">
+        <mat-option value="Read">{{ 'iam.scope.read' | translate }}</mat-option>
+        <mat-option value="ClinicalWrite">{{ 'iam.scope.clinicalWrite' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'iam.advisories.decision.expiresOn' | translate }}</mat-label>
+      <input matInput [matDatepicker]="expiryPicker" [min]="minimumExpiry" formControlName="expiresOn" autocomplete="off">
+      <mat-datepicker-toggle matIconSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+      <mat-datepicker #expiryPicker></mat-datepicker>
+      <mat-error>{{ 'iam.advisories.decision.expiryInvalid' | translate }}</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+  <button mat-stroked-button type="button" (click)="reject()">{{ 'iam.advisories.decision.reject' | translate }}</button>
+  <button mat-flat-button type="button" class="btn primary" (click)="grant()">{{ 'iam.advisories.decision.grant' | translate }}</button>
+</mat-dialog-actions>

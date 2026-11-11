@@ -1,0 +1,210 @@
+<div class="workspace-page">
+  <header class="page-heading">
+    <div>
+      <h1>{{ 'iam.advisories.title' | translate }}</h1>
+      <p class="page-lead">{{ 'iam.advisories.lead' | translate }}</p>
+    </div>
+  </header>
+
+  @if (auth.account(); as account) {
+    @if (account.role === 'Veterinarian') {
+      <section class="panel" aria-labelledby="request-heading">
+        <div class="panel-head">
+          <div>
+            <h2 id="request-heading">{{ 'iam.advisories.requestTitle' | translate }}</h2>
+            <p>{{ 'iam.advisories.requestLead' | translate }}</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          @if (!facade.profileComplete()) {
+            <p class="notice">
+              {{ 'iam.advisories.profileRequired' | translate }}
+              <a routerLink="/account">{{ 'iam.advisories.goToAccount' | translate }}</a>
+            </p>
+          }
+
+          <form class="request-step" [formGroup]="lookupForm" (ngSubmit)="findRanch()" novalidate>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'iam.advisories.accessCode' | translate }}</mat-label>
+              <input matInput formControlName="accessCode" class="code-input" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="8">
+              <mat-hint>{{ 'iam.advisories.accessCodeHint' | translate }}</mat-hint>
+              <mat-error>{{ 'iam.advisories.accessCodeInvalid' | translate }}</mat-error>
+            </mat-form-field>
+            <button mat-flat-button type="submit" class="btn primary" [disabled]="!facade.profileComplete() || facade.lookupBusy()">
+              {{ (facade.lookupBusy() ? 'iam.advisories.searching' : 'iam.advisories.findRanch') | translate }}
+            </button>
+          </form>
+
+          @if (facade.ranchNotFound()) {
+            <p class="form-error" role="alert">{{ 'iam.advisories.noRanchMatch' | translate }}</p>
+          }
+
+          @if (facade.foundRanch(); as ranch) {
+            <div class="found-ranch">
+              <span class="eyebrow">{{ 'iam.advisories.ranchFound' | translate }}</span>
+              <strong>{{ ranch.name || ('iam.advisories.unnamedRanch' | translate) }}</strong>
+              @if (ranchPlace(ranch); as place) {
+                <span class="text-muted">{{ place }}</span>
+              }
+            </div>
+            <form class="request-step" [formGroup]="reasonForm" (ngSubmit)="requestAccess()" novalidate>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'iam.advisories.reason' | translate }}</mat-label>
+                <textarea matInput formControlName="reason" rows="4" maxlength="1000"></textarea>
+                <mat-error>{{ 'iam.advisories.reasonInvalid' | translate }}</mat-error>
+              </mat-form-field>
+              <button mat-flat-button type="submit" class="btn primary" [disabled]="!facade.profileComplete() || facade.requestBusy()">
+                {{ (facade.requestBusy() ? 'iam.advisories.sendingRequest' : 'iam.advisories.requestAccess') | translate }}
+              </button>
+            </form>
+          }
+
+          @if (facade.requestedAdvisory(); as request) {
+            <div class="notice request-result" role="status">
+              <span>{{ 'iam.advisories.requestSent' | translate }}</span>
+              <span class="badge" [ngClass]="statusTone(request.status)">{{ statusLabelKey(request.status) | translate }}</span>
+            </div>
+          }
+          @if (facade.error(); as error) {
+            <p class="form-error" role="alert">{{ error | errorMessage }}</p>
+          }
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="my-ranches-heading">
+        <div class="panel-head">
+          <div>
+            <h2 id="my-ranches-heading">{{ 'iam.advisories.myRanchesTitle' | translate }}</h2>
+            <p>{{ 'iam.advisories.myRanchesLead' | translate }}</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          @if (context.ranches().length > 0) {
+            <ul class="ranch-list">
+              @for (access of context.ranches(); track access.ranchId; let position = $index) {
+                <li class="ranch-item">
+                  <strong>{{ access.name || ('shell.ranchFallback' | translate: { position: position + 1 }) }}</strong>
+                  @if (ranchPlace(access); as place) {
+                    <span class="text-muted">{{ place }}</span>
+                  }
+                  <span class="badge neutral">{{ scopeLabelKey(access.scope) | translate }}</span>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="text-muted">{{ 'iam.advisories.noMyRanches' | translate }}</p>
+          }
+        </div>
+      </section>
+    } @else {
+      <section class="panel" aria-labelledby="requests-heading">
+        <div class="panel-head advisory-head">
+          <div>
+            <h2 id="requests-heading">{{ 'iam.advisories.requestsTitle' | translate }}</h2>
+            <p>{{ 'iam.advisories.requestsLead' | translate }}</p>
+          </div>
+          @if (facade.manageableRanchId()) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="status-filter">
+              <mat-label>{{ 'iam.advisories.status' | translate }}</mat-label>
+              <mat-select [value]="statusFilter()" (selectionChange)="statusFilter.set($event.value)">
+                @for (filter of filters; track filter) {
+                  <mat-option [value]="filter">{{ (filter === 'all' ? 'iam.advisories.filterAll' : statusLabelKey(filter)) | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+        </div>
+        <div class="panel-body">
+          @if (facade.notice(); as notice) {
+            <p class="notice" role="status">{{ ('iam.advisories.notice.' + notice) | translate }}</p>
+          }
+          @if (facade.error(); as error) {
+            <p class="form-error" role="alert">{{ error | errorMessage }}</p>
+          }
+
+          @if (context.ranches().length === 0) {
+            <div class="empty-state">
+              <h3>{{ 'iam.advisories.noRanchTitle' | translate }}</h3>
+              <p>{{ 'iam.advisories.noRanchBody' | translate }}</p>
+            </div>
+          } @else if (!facade.manageableRanchId()) {
+            <div class="empty-state">
+              <h3>{{ 'iam.advisories.manageRequiredTitle' | translate }}</h3>
+              <p>{{ 'iam.advisories.manageRequiredBody' | translate }}</p>
+            </div>
+          } @else if (facade.listLoading()) {
+            <p class="text-muted" aria-live="polite">{{ 'iam.advisories.loading' | translate }}</p>
+          } @else if (facade.records().length === 0) {
+            <div class="empty-state">
+              <h3>{{ 'iam.advisories.noRequestsTitle' | translate }}</h3>
+              <p>{{ 'iam.advisories.noRequestsBody' | translate }}</p>
+            </div>
+          } @else if (visibleRecords().length === 0) {
+            <div class="empty-state">
+              <h3>{{ 'iam.advisories.noFilteredTitle' | translate }}</h3>
+            </div>
+          } @else {
+            <div class="table-scroll">
+              <table mat-table class="advisory-table" [dataSource]="visibleRecords()" aria-labelledby="requests-heading">
+                <ng-container matColumnDef="veterinarian">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.veterinarian' | translate }}</th>
+                  <td mat-cell *matCellDef="let record">
+                    @if (record.veterinarianProfile; as profile) {
+                      <strong>{{ profile.specialty }}</strong>
+                      <span class="text-muted">{{ 'iam.account.licenseNumber' | translate }}: {{ profile.licenseNumber }}</span>
+                      <span class="text-muted">{{ 'iam.account.yearsOfExperience' | translate }}: {{ profile.yearsOfExperience }}</span>
+                    } @else {
+                      <span class="text-muted">{{ 'iam.advisories.profileUnavailable' | translate }}</span>
+                    }
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="reason">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.reason' | translate }}</th>
+                  <td mat-cell *matCellDef="let record"><span class="advisory-reason">{{ record.reason }}</span></td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.status' | translate }}</th>
+                  <td mat-cell *matCellDef="let record">
+                    <span class="badge" [ngClass]="statusTone(record.status)">{{ statusLabelKey(record.status) | translate }}</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="requestedAt">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.requestedAt' | translate }}</th>
+                  <td mat-cell *matCellDef="let record">{{ record.requestedAt | localizedDate }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="expiresAt">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.expiresAt' | translate }}</th>
+                  <td mat-cell *matCellDef="let record">
+                    @if (record.expiresAt; as expiresAt) {
+                      {{ expiresAt | localizedDate }}
+                    } @else {
+                      {{ 'iam.account.noExpiry' | translate }}
+                    }
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'iam.advisories.actions' | translate }}</th>
+                  <td mat-cell *matCellDef="let record">
+                    @if (record.status === 'Pending') {
+                      <button class="btn secondary" type="button" [disabled]="facade.decisionBusy()" (click)="review(record)">{{ 'iam.advisories.review' | translate }}</button>
+                    } @else if (record.status === 'Granted') {
+                      <button class="btn danger" type="button" [disabled]="facade.decisionBusy()" (click)="revoke(record)">{{ 'iam.advisories.revoke' | translate }}</button>
+                    }
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

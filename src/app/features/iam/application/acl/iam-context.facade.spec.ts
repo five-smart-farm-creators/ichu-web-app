@@ -8,7 +8,7 @@ const firstRanchId = 'a1f0c3e2-1111-4a2b-9c3d-000000000001';
 const secondRanchId = 'a1f0c3e2-1111-4a2b-9c3d-000000000002';
 
 function ranchAccess(ranchId: string, scope = 'Read'): RanchAccess {
-  return { ranchId, scope, expiresAt: null, name: null };
+  return { ranchId, scope, expiresAt: null, name: null, region: null, district: null, accessCode: null };
 }
 
 describe('IamContextFacade', () => {
