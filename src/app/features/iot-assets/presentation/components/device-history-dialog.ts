@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
-import { dateLocaleTag } from '../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../shared/infrastructure/i18n/language.service';
 import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
 import { DeviceInventoryFacade } from '../../application/services/device-inventory.facade';
@@ -70,7 +70,7 @@ import { IOT_DIALOG_STYLES } from './iot-dialog';
 export class DeviceHistoryDialog {
   readonly facade = inject(DeviceInventoryFacade);
   readonly device = inject<Device>(MAT_DIALOG_DATA);
-  readonly dateLocale = dateLocaleTag(inject(LanguageService).current());
+  readonly dateLocale = formatLocaleTag(inject(LanguageService).current());
   readonly errorKeys = IOT_ERROR_KEYS;
   readonly assignments = signal<readonly DeviceAssignment[]>([]);
   readonly loading = signal(true);

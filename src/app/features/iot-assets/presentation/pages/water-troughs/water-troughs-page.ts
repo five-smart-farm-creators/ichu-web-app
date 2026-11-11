@@ -7,7 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { currentRanchLabel } from '../../../../../core/layout/ranch-label';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
-import { dateLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
@@ -45,7 +45,7 @@ export class WaterTroughsPage {
   readonly pageIndex = signal(0);
   readonly pageSize = signal(10);
   readonly canManage = computed(() => this.context.currentRanch()?.scope === 'Manage');
-  readonly dateLocale = computed(() => dateLocaleTag(this.language.current()));
+  readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly pagedTroughs = computed(() => slicePage(this.facade.troughs(), this.pageIndex(), this.pageSize()));
   readonly notice = signal<string | null>(null);
   readonly conflict = signal(false);

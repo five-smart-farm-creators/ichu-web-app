@@ -13,7 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
-import { dateLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
@@ -67,7 +67,7 @@ export class CattleInventoryPage {
   readonly displayedColumns = ['earTag', 'breed', 'sex', 'age', 'stage', 'lots', 'status'];
   readonly maxEarTagLength = EAR_TAG_MAX_LENGTH;
   readonly canManage = computed(() => this.context.currentRanch()?.scope === 'Manage');
-  readonly dateLocale = computed(() => dateLocaleTag(this.language.current()));
+  readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly filtersApplied = computed(() => Object.keys(this.facade.filter()).length > 0);
   /** Server paging knows only the rows it returned, so the length is a lower bound that keeps Next enabled. */
   readonly pageLength = computed(() =>

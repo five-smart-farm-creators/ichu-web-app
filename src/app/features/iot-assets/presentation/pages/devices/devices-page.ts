@@ -11,7 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { currentRanchLabel } from '../../../../../core/layout/ranch-label';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
 import { ApiError, toApiError } from '../../../../../shared/infrastructure/http/api-error';
-import { dateLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
@@ -69,7 +69,7 @@ export class DevicesPage {
   readonly pageIndex = signal(0);
   readonly pageSize = signal(10);
   readonly canManage = computed(() => this.context.currentRanch()?.scope === 'Manage');
-  readonly dateLocale = computed(() => dateLocaleTag(this.language.current()));
+  readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly filtersApplied = computed(() => Object.keys(this.facade.filter()).length > 0);
   readonly pagedDevices = computed(() => slicePage(this.facade.visibleDevices(), this.pageIndex(), this.pageSize()));
   readonly filterForm = new FormGroup({

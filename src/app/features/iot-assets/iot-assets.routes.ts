@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
+import { provideCattleInformation } from '../cattle-information/infrastructure/configuration/cattle-information.providers';
 import { provideIotAssets } from './infrastructure/configuration/iot-assets.providers';
 
-/** Loaded lazily under `/devices` so the REST adapters stay out of the initial bundle. */
+/** Loaded lazily under `/devices`; the cattle providers back the ACL facade that labels assignment targets. */
 export const iotAssetsRoutes: Routes = [
   {
     path: '',
-    providers: [provideIotAssets()],
+    providers: [provideCattleInformation(), provideIotAssets()],
     loadComponent: () => import('./presentation/components/devices-area-layout').then(module => module.DevicesAreaLayout),
     children: [
       {

@@ -9,7 +9,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
-import { dateLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import { CattleProfileFacade } from '../../../application/services/cattle-profile.facade';
 import { ageInMonths, toIsoDate } from '../../../domain/model/cattle.model';
@@ -41,7 +41,7 @@ export class CattleProfilePage {
     initialValue: '',
   });
   readonly canManage = computed(() => this.context.currentRanch()?.scope === 'Manage');
-  readonly dateLocale = computed(() => dateLocaleTag(this.language.current()));
+  readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly ageMonths = computed(() => {
     const animal = this.facade.animal();
     return animal ? ageInMonths(animal.birthDate, toIsoDate(new Date())) : 0;

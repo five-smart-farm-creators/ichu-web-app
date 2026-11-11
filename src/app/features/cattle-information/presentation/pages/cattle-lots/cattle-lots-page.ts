@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
 import { ApiError, toApiError } from '../../../../../shared/infrastructure/http/api-error';
-import { dateLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
+import { formatLocaleTag } from '../../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
@@ -76,7 +76,7 @@ export class CattleLotsPage {
   readonly memberPageIndex = signal(0);
   readonly memberPageSize = signal(10);
   readonly canManage = computed(() => this.context.currentRanch()?.scope === 'Manage');
-  readonly dateLocale = computed(() => dateLocaleTag(this.language.current()));
+  readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly pagedLots = computed(() => slicePage(this.facade.lots(), this.lotPageIndex(), this.lotPageSize()));
   readonly pagedMembers = computed(() => slicePage(this.facade.members(), this.memberPageIndex(), this.memberPageSize()));
   readonly addForm = new FormGroup({
