@@ -8,7 +8,17 @@ export const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./core/layout/app-shell/app-shell').then(module => module.AppShell),
-    children: iamWorkspaceRoutes,
+    children: [
+      ...iamWorkspaceRoutes,
+      {
+        path: 'cattle',
+        loadChildren: () => import('./features/cattle-information/cattle-information.routes').then(module => module.cattleInformationRoutes),
+      },
+      {
+        path: 'devices',
+        loadChildren: () => import('./features/iot-assets/iot-assets.routes').then(module => module.iotAssetsRoutes),
+      },
+    ],
   },
   {
     path: '',

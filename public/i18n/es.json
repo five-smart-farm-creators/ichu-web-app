@@ -2,7 +2,23 @@
   "common": {
     "language": "Idioma",
     "skipToContent": "Ir al contenido",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "export": "Exportar",
+    "exporting": "Preparando archivo…",
+    "exportExcel": "Descargar Excel",
+    "exportPdf": "Descargar PDF",
+    "saving": "Guardando…",
+    "required": "Este campo es obligatorio.",
+    "invalidDate": "Ingresa una fecha válida.",
+    "paginator": {
+      "itemsPerPage": "Elementos por página",
+      "next": "Página siguiente",
+      "previous": "Página anterior",
+      "first": "Primera página",
+      "last": "Última página",
+      "range": "{{start}} – {{end}}"
+    },
+    "exportFailed": "No se pudo crear el archivo. Inténtalo de nuevo."
   },
   "meta": {
     "description": "ICHU de SmartFarm: monitoreo de ganado con collares inteligentes, registros del hato e historial veterinario."
@@ -18,7 +34,13 @@
     "terms": "Términos y privacidad",
     "notFound": "Página no encontrada",
     "account": "Cuenta",
-    "advisories": "Asesorías"
+    "advisories": "Asesorías",
+    "animals": "Animales",
+    "lots": "Lotes",
+    "animalProfile": "Perfil del animal",
+    "iotDevices": "Dispositivos IoT",
+    "waterTroughs": "Abrevaderos",
+    "edgeGateways": "Nodos de borde"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -28,7 +50,9 @@
     "ranch": "Unidad productiva",
     "ranchFallback": "Unidad productiva {{position}}",
     "accountMenu": "Menú de la cuenta",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "animals": "Animales",
+    "iotDevices": "Dispositivos IoT"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -263,5 +287,374 @@
     "http-404": "No se encontró el elemento solicitado.",
     "http-409": "Este cambio entra en conflicto con datos existentes. Actualiza la página e inténtalo de nuevo.",
     "http-500": "El servicio de ICHU no está disponible temporalmente. Inténtalo más tarde."
+  },
+  "cattle": {
+    "areaNavigation": "Áreas de animales",
+    "tabs": {
+      "animals": "Animales",
+      "lots": "Lotes"
+    },
+    "breed": {
+      "BrownSwiss": "Brown Swiss",
+      "Fleckvieh": "Fleckvieh",
+      "Criollo": "Criollo",
+      "Crossbred": "Cruzado"
+    },
+    "sex": {
+      "Female": "Hembra",
+      "Male": "Macho"
+    },
+    "stage": {
+      "Calf": "Ternero",
+      "Heifer": "Vaquilla",
+      "MilkingCow": "Vaca en ordeño",
+      "FatteningBull": "Toro de engorde"
+    },
+    "status": {
+      "Active": "Activo",
+      "Inactive": "Inactivo"
+    },
+    "exitReason": {
+      "Death": "Muerte",
+      "Sale": "Venta",
+      "Theft": "Robo",
+      "Culling": "Descarte"
+    },
+    "fields": {
+      "earTag": "Arete",
+      "breed": "Raza",
+      "sex": "Sexo",
+      "birthDate": "Fecha de nacimiento",
+      "ageMonths": "Edad (meses)",
+      "stage": "Etapa productiva",
+      "lot": "Lote",
+      "status": "Estado",
+      "exitReason": "Motivo de baja",
+      "exitDate": "Fecha de baja",
+      "name": "Nombre",
+      "criterion": "Criterio"
+    },
+    "inventory": {
+      "title": "Animales",
+      "lead": "Busca animales por arete, estado o lote, registra nuevos animales y exporta la lista.",
+      "register": "Registrar animal",
+      "filters": "Filtros de animales",
+      "earTagHint": "Arete exacto",
+      "allStatuses": "Todos los estados",
+      "allLots": "Todos los lotes",
+      "search": "Buscar",
+      "clearFilters": "Limpiar filtros",
+      "loading": "Cargando animales",
+      "tableLabel": "Animales de la unidad productiva",
+      "noLot": "Sin lote",
+      "noRanchTitle": "No hay unidad productiva disponible",
+      "noRanch": "Tu cuenta no tiene acceso a ninguna unidad productiva, por eso no se muestran animales.",
+      "emptyTitle": "Aún no hay animales",
+      "empty": "No hay animales registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer animal para iniciar el inventario.",
+      "noMatchTitle": "No hay animales que coincidan",
+      "noMatch": "Cambia o limpia los filtros para ver más animales."
+    },
+    "register": {
+      "title": "Registrar animal",
+      "lead": "Ingresa la identificación y la primera etapa productiva. El arete debe ser único en esta unidad productiva.",
+      "submit": "Registrar",
+      "saved": "Animal registrado."
+    },
+    "edit": {
+      "title": "Editar datos del animal",
+      "lead": "Los cambios conservan el historial de etapas del animal.",
+      "submit": "Guardar cambios",
+      "saved": "Datos del animal guardados."
+    },
+    "lifeStage": {
+      "title": "Cambiar etapa productiva",
+      "lead": "La etapa anterior queda en el historial y se cierra el día que elijas.",
+      "newStage": "Nueva etapa",
+      "validFrom": "Vigente desde",
+      "submit": "Cambiar etapa",
+      "saved": "Etapa productiva cambiada."
+    },
+    "exit": {
+      "title": "Registrar baja",
+      "warning": "Registrar una baja no se puede deshacer. El animal permanece en los registros como inactivo y de solo lectura, con su historial.",
+      "reason": "Motivo de baja",
+      "exitDate": "Fecha de baja",
+      "submit": "Registrar baja",
+      "saved": "Baja registrada. El animal ahora es de solo lectura."
+    },
+    "validation": {
+      "earTagRequired": "Ingresa un arete de hasta 30 caracteres.",
+      "notInFuture": "La fecha no puede ser futura.",
+      "birthDateAfterStage": "La fecha de nacimiento no puede ser posterior a la primera etapa registrada.",
+      "beforeStage": "La fecha no puede ser anterior al nacimiento ni al inicio de la etapa actual.",
+      "stageUnchanged": "Elige una etapa distinta a la actual.",
+      "lotNameRequired": "Ingresa un nombre de lote de hasta 80 caracteres."
+    },
+    "profile": {
+      "title": "Animal",
+      "back": "Volver a animales",
+      "loading": "Cargando animal",
+      "details": "Datos generales",
+      "edit": "Editar datos",
+      "changeStage": "Cambiar etapa",
+      "recordExit": "Registrar baja",
+      "readOnly": "Este animal salió del hato el {{date}}. Su registro se conserva como referencia y no puede modificarse.",
+      "noLot": "Sin lote",
+      "collar": "Collar inteligente",
+      "collarUnavailable": "Los datos del collar no están disponibles en este momento. Inténtalo más tarde.",
+      "noCollar": "Sin collar asignado",
+      "assignCollar": "Asignar collar en dispositivos IoT",
+      "lastReading": "Última lectura: {{date}}",
+      "noReadings": "Todavía no llega ninguna lectura de este collar.",
+      "history": "Historial de etapas",
+      "fromDate": "Desde {{date}}",
+      "untilDate": "hasta {{date}}",
+      "current": "actual",
+      "noHistory": "No hay etapas registradas."
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    },
+    "lots": {
+      "title": "Lotes",
+      "lead": "Agrupa animales para su manejo. Un animal puede estar en varios lotes; quitarlo de un lote conserva su registro.",
+      "create": "Crear lote",
+      "createTitle": "Crear lote",
+      "submit": "Crear lote",
+      "created": "Lote creado.",
+      "criterionHint": "Opcional: cómo se formó el grupo.",
+      "listTitle": "Lotes de la unidad productiva",
+      "listNote": "Selecciona un lote para ver sus animales.",
+      "tableLabel": "Lotes de la unidad productiva",
+      "members": "Animales",
+      "noCriterion": "Sin criterio",
+      "open": "Abrir",
+      "actions": "Acciones",
+      "loading": "Cargando lotes",
+      "emptyTitle": "Aún no hay lotes",
+      "empty": "No hay lotes en esta unidad productiva.",
+      "emptyManage": "Crea un lote para agrupar animales.",
+      "addAnimal": "Animal activo",
+      "add": "Agregar al lote",
+      "noAssignable": "Todos los animales activos ya están en este lote.",
+      "membersTableLabel": "Animales del lote",
+      "unknownAnimal": "Animal desconocido",
+      "assignedOn": "Asignado el",
+      "remove": "Quitar",
+      "noAnimals": "Este lote aún no tiene animales."
+    },
+    "export": {
+      "failed": "No se pudo crear el archivo. Inténtalo de nuevo.",
+      "limited": "El archivo incluye solo los primeros 5000 animales del filtro."
+    }
+  },
+  "devices": {
+    "areaNavigation": "Áreas de dispositivos IoT",
+    "tabs": {
+      "devices": "Dispositivos",
+      "waterTroughs": "Abrevaderos",
+      "gateways": "Nodos de borde"
+    },
+    "type": {
+      "SmartCollar": "Collar inteligente",
+      "WaterController": "Controlador de agua"
+    },
+    "status": {
+      "Available": "Disponible",
+      "InService": "En servicio",
+      "Maintenance": "Mantenimiento"
+    },
+    "communication": {
+      "NeverReported": "Sin reportes",
+      "Communicating": "Comunicando",
+      "NoCommunication": "Sin comunicación"
+    },
+    "targetType": {
+      "Cattle": "Animal",
+      "WaterTrough": "Abrevadero"
+    },
+    "fields": {
+      "serial": "Número de serie",
+      "type": "Tipo de dispositivo",
+      "status": "Estado",
+      "communication": "Comunicación",
+      "battery": "Batería",
+      "firmware": "Firmware",
+      "assignedTo": "Asignado a",
+      "actions": "Acciones",
+      "lastSeen": "Último reporte",
+      "target": "Destino",
+      "startedAt": "Asignado el",
+      "endedAt": "Liberado el",
+      "releaseReason": "Motivo de liberación"
+    },
+    "inventory": {
+      "title": "Dispositivos IoT",
+      "lead": "Registra collares inteligentes y controladores de agua, asígnalos a animales y abrevaderos, y revisa la batería, la comunicación y el mantenimiento.",
+      "register": "Registrar dispositivo",
+      "filters": "Filtros de dispositivos",
+      "allTypes": "Todos los tipos",
+      "allStatuses": "Todos los estados",
+      "allCommunications": "Todas las comunicaciones",
+      "clearFilters": "Limpiar filtros",
+      "loading": "Cargando dispositivos",
+      "tableLabel": "Dispositivos IoT de la unidad productiva",
+      "noRanchTitle": "No hay unidad productiva disponible",
+      "noRanch": "Tu cuenta no tiene acceso a ninguna unidad productiva, por eso no se muestran dispositivos.",
+      "emptyTitle": "Aún no hay dispositivos",
+      "empty": "No hay dispositivos registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer dispositivo para iniciar el inventario.",
+      "noMatchTitle": "No hay dispositivos que coincidan",
+      "noMatch": "Cambia o limpia los filtros para ver más dispositivos."
+    },
+    "actions": {
+      "assign": "Asignar",
+      "release": "Liberar",
+      "history": "Historial",
+      "maintenanceOn": "Enviar a mantenimiento",
+      "maintenanceOff": "Terminar mantenimiento"
+    },
+    "battery": {
+      "percent": "{{value}} %",
+      "low": "Batería baja",
+      "none": "Sin lectura"
+    },
+    "lastSeen": "Último reporte {{time}}",
+    "notAssigned": "Sin asignar",
+    "unknownTarget": "Desconocido",
+    "notRecorded": "Sin registrar",
+    "maintenance": {
+      "on": "Dispositivo enviado a mantenimiento.",
+      "off": "El dispositivo volvió a estar disponible."
+    },
+    "register": {
+      "title": "Registrar dispositivo",
+      "lead": "El número de serie viene impreso en el dispositivo y debe ser único en la plataforma.",
+      "submit": "Registrar dispositivo",
+      "saved": "Dispositivo registrado."
+    },
+    "assign": {
+      "collarTitle": "Asignar collar",
+      "controllerTitle": "Asignar controlador de agua",
+      "collarLead": "Elige un animal activo que no tenga collar. El collar reporta la actividad y la ubicación del animal.",
+      "controllerLead": "Elige un abrevadero que no tenga controlador. El controlador reporta la temperatura del abrevadero.",
+      "animal": "Animal activo sin collar",
+      "trough": "Abrevadero sin controlador",
+      "noAnimals": "Todos los animales activos ya tienen collar.",
+      "noTroughs": "Todos los abrevaderos ya tienen controlador.",
+      "submit": "Asignar",
+      "saved": "Dispositivo asignado."
+    },
+    "release": {
+      "title": "Liberar dispositivo",
+      "warning": "Liberar termina la asignación actual. El dispositivo conserva su historial y vuelve a estar disponible.",
+      "reason": "Motivo de la liberación",
+      "submit": "Liberar dispositivo",
+      "saved": "Dispositivo liberado."
+    },
+    "history": {
+      "title": "Historial de asignaciones",
+      "lead": "Cada periodo en que este dispositivo prestó servicio, del más reciente al más antiguo.",
+      "loading": "Cargando historial",
+      "empty": "Este dispositivo todavía no tiene asignaciones.",
+      "current": "Vigente",
+      "close": "Cerrar"
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    },
+    "validation": {
+      "serialRequired": "Ingresa un número de serie de hasta 50 caracteres.",
+      "reasonRequired": "Ingresa un motivo de hasta 120 caracteres."
+    }
+  },
+  "waterTroughs": {
+    "noLot": "Sin lote",
+    "unknownLot": "Lote no listado",
+    "fields": {
+      "name": "Nombre",
+      "lot": "Lote",
+      "temperatureRange": "Rango de temperatura",
+      "minimum": "Mínimo (°C)",
+      "maximum": "Máximo (°C)"
+    },
+    "list": {
+      "title": "Abrevaderos",
+      "lead": "Nombra cada abrevadero y define el rango de temperatura con el que se revisará.",
+      "register": "Registrar abrevadero",
+      "loading": "Cargando abrevaderos",
+      "tableLabel": "Abrevaderos de la unidad productiva",
+      "actions": "Acciones",
+      "setRange": "Definir rango",
+      "rangeValue": "{{minimum}} °C a {{maximum}} °C",
+      "noRange": "Sin rango definido",
+      "emptyTitle": "Aún no hay abrevaderos",
+      "empty": "No hay abrevaderos registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer abrevadero para iniciar la lista."
+    },
+    "register": {
+      "title": "Registrar abrevadero",
+      "lead": "Registrar un abrevadero no usa un collar. El lote es opcional.",
+      "submit": "Registrar abrevadero",
+      "saved": "Abrevadero registrado."
+    },
+    "range": {
+      "title": "Definir rango de temperatura",
+      "lead": "Define el rango con el que se revisará el abrevadero. Esta versión todavía no muestra lecturas de temperatura.",
+      "submit": "Guardar rango",
+      "saved": "Rango de temperatura guardado."
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de hasta 80 caracteres.",
+      "temperatureLimits": "Ingresa una temperatura entre -10 y 60 °C.",
+      "temperatureOrder": "El mínimo debe ser menor que el máximo, con como máximo un decimal."
+    }
+  },
+  "gateways": {
+    "status": {
+      "Active": "Activo",
+      "Revoked": "Revocado"
+    },
+    "fields": {
+      "name": "Nombre",
+      "status": "Estado",
+      "registeredOn": "Registrado el",
+      "revokedOn": "Revocado el"
+    },
+    "notRevoked": "Sin revocar",
+    "list": {
+      "title": "Nodos de borde",
+      "lead": "Los nodos de borde conectan los dispositivos de campo de una unidad productiva con ICHU. La clave de cada nodo se muestra una sola vez, al registrarlo.",
+      "register": "Registrar nodo",
+      "loading": "Cargando nodos",
+      "tableLabel": "Nodos de borde de la unidad productiva",
+      "actions": "Acciones",
+      "revoke": "Revocar",
+      "emptyTitle": "Aún no hay nodos de borde",
+      "empty": "No hay nodos de borde registrados en esta unidad productiva.",
+      "emptyManage": "Registra un nodo para conectar un dispositivo de campo."
+    },
+    "register": {
+      "title": "Registrar nodo de borde",
+      "lead": "Nombra el nodo según su ubicación en la unidad productiva, por ejemplo Potrero norte.",
+      "submit": "Registrar nodo",
+      "keyTitle": "Clave del nodo",
+      "keyWarning": "Copia esta clave ahora. No volverá a mostrarse.",
+      "copy": "Copiar clave",
+      "copied": "Clave copiada.",
+      "copyFailed": "No se pudo copiar la clave. Selecciónala y cópiala manualmente.",
+      "done": "Listo",
+      "saved": "Nodo de borde registrado."
+    },
+    "revoke": {
+      "title": "Revocar nodo de borde",
+      "warning": "La clave del nodo deja de funcionar de inmediato. Revocar no se puede deshacer; para volver a conectar el dispositivo, registra un nodo nuevo.",
+      "submit": "Revocar nodo",
+      "saved": "Nodo de borde revocado."
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de hasta 80 caracteres."
+    }
   }
 }

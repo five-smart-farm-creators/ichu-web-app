@@ -26,6 +26,8 @@ const ICONS: Record<string, string> = {
   arrow: 'M4 12h16 M14 6l6 6-6 6',
   sun: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3 M5 5l2 2 M17 17l2 2 M5 19l2-2 M17 7l2-2',
   logout: 'M9 3H3v18h6 M9 12h13 M17 7l5 5-5 5',
+  download: 'M12 3v12 M7 10l5 5 5-5 M4 21h16',
+  alert: 'M12 3 2 21h20z M12 9v5 M12 17.5h.01',
 };
 
 @Component({
