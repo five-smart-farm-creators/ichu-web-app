@@ -1,0 +1,158 @@
+{
+  "common": {
+    "language": "Language",
+    "skipToContent": "Skip to content"
+  },
+  "meta": {
+    "description": "ICHU by SmartFarm: livestock monitoring with smart collars, herd records, and veterinary history."
+  },
+  "footer": {
+    "copyright": "© 2026 SmartFarm · ICHU",
+    "terms": "Terms and privacy"
+  },
+  "pages": {
+    "signIn": "Sign in",
+    "register": "Create account",
+    "recover": "Reset password",
+    "terms": "Terms and privacy",
+    "notFound": "Page not found",
+    "account": "Account",
+    "advisories": "Advisories"
+  },
+  "shell": {
+    "navigation": "Main navigation",
+    "openMenu": "Open navigation menu",
+    "myAccount": "My account",
+    "advisories": "Advisories",
+    "ranch": "Ranch",
+    "ranchFallback": "Ranch {{position}}",
+    "accountMenu": "Account menu",
+    "signOut": "Sign out"
+  },
+  "terms": {
+    "back": "Back to account",
+    "authenticationTitle": "Sign-in and accounts",
+    "authentication": "Sign-in is handled by Firebase Authentication. The ICHU API checks your account and ranch permissions before showing ranch data. Passwords are sent only to Firebase Authentication and are never stored by the application.",
+    "recordsTitle": "Ranch records",
+    "records": "ICHU stores collar telemetry and ranch records for each ranch, and shows them only to accounts with access to that ranch.",
+    "preferencesTitle": "Browser preferences",
+    "preferences": "Your selected language and ranch are stored in this browser.",
+    "paymentsTitle": "Payments",
+    "payments": "Payments are processed by Stripe. ICHU never stores card data.",
+    "contactTitle": "Contact",
+    "contact": "Contact SmartFarm about these terms or your data."
+  },
+  "notFound": {
+    "body": "Check the address or return to your ICHU account.",
+    "back": "Back to account"
+  },
+  "iam": {
+    "entry": {
+      "title": "Welcome to ICHU",
+      "status": "Opening your herd…",
+      "progress": "Opening workspace"
+    },
+    "roles": {
+      "ranchManager": "Ranch manager",
+      "veterinarian": "Veterinarian",
+      "fieldOperator": "Field operator"
+    },
+    "login": {
+      "mode": "Secure account sign-in",
+      "title": "Welcome back",
+      "lead": "Access your ICHU workspace.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "passwordInvalid": "Use 8–128 characters.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "newHere": "New to ICHU?",
+      "createAccount": "Create an account",
+      "note": "Sign-in is checked by the ICHU account service.",
+      "navigationFailed": "Your workspace could not open. Try again.",
+      "tagline": "Better care for every herd."
+    },
+    "register": {
+      "stepOne": "Step 1 of 2",
+      "stepTwo": "Step 2 of 2",
+      "title": "Create an account",
+      "lead": "Set up your ICHU account.",
+      "name": "Full name",
+      "nameInvalid": "Enter 2–80 characters without surrounding spaces.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "password": "Password",
+      "passwordInvalid": "Use 8–128 characters.",
+      "confirmPassword": "Confirm password",
+      "passwordMismatch": "Passwords do not match.",
+      "role": "Account role",
+      "ranchDetails": "Ranch details",
+      "ranchDetailsNote": "These details create your initial ranch account.",
+      "ranchName": "Ranch name",
+      "region": "Region",
+      "chooseRegion": "Choose a region",
+      "otherRegion": "Other region",
+      "district": "District",
+      "herdSize": "Estimated herd size",
+      "ranchDetailsRequired": "Complete all ranch details and enter a positive whole number for herd size.",
+      "terms": "I agree to the ICHU Terms of Use.",
+      "termsRequired": "Confirm that you agree before continuing.",
+      "review": "Review account",
+      "reviewTitle": "Review your details",
+      "reviewName": "Name",
+      "reviewEmail": "Email",
+      "reviewRole": "Role",
+      "reviewRanch": "Ranch",
+      "reviewRegion": "Region",
+      "reviewDistrict": "District",
+      "reviewHerdSize": "Estimated herd size",
+      "passwordNote": "Your password is sent to Firebase Authentication and is never included in this review.",
+      "edit": "Edit details",
+      "creating": "Creating account…",
+      "create": "Create account",
+      "retry": "Retry account setup",
+      "retryNotice": "Account setup is not complete. Retry with the same email and password to finish it.",
+      "verifyTitle": "Verify your email",
+      "verifyNotice": "Your account was created. Check your inbox for a Firebase verification email before signing in.",
+      "continueToSignIn": "Continue to sign in",
+      "backToSignIn": "Back to sign in"
+    },
+    "recovery": {
+      "title": "Reset your password",
+      "lead": "Enter the email address for your ICHU account.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "note": "If an account exists for this address, Firebase will send a password-reset email.",
+      "submit": "Send reset email",
+      "submitting": "Sending…",
+      "resultTitle": "Check your email.",
+      "resultBody": "If the address belongs to an account, a password-reset link is on its way.",
+      "back": "Back to sign in"
+    },
+    "errors": {
+      "configuration": "The application is not configured. Check the runtime settings.",
+      "invalid-credentials": "The email or password is incorrect.",
+      "email-already-in-use": "An account already uses this email address.",
+      "weak-password": "Choose a stronger password and try again.",
+      "email-not-verified": "Verify your email address before signing in.",
+      "account-unavailable": "This ICHU account is unavailable. Sign in instead, or contact your administrator.",
+      "service-unavailable": "The service is temporarily unavailable. Try again later.",
+      "network": "The service could not be reached. Check your connection and try again.",
+      "unknown": "Authentication could not be completed. Try again."
+    }
+  },
+  "errors": {
+    "network": "The ICHU service could not be reached. Check your connection and try again.",
+    "configuration": "The application is not configured. Check the runtime settings.",
+    "unknown": "The request could not be completed. Try again.",
+    "http-403": "Your account does not have permission for this action.",
+    "http-404": "The requested item was not found.",
+    "http-409": "This change conflicts with existing data. Refresh and try again.",
+    "http-500": "The ICHU service is temporarily unavailable. Try again later."
+  }
+}
