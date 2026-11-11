@@ -1,0 +1,169 @@
+<div class="workspace-page">
+  <header class="page-heading">
+    <div>
+      <h1>{{ 'iam.account.title' | translate }}</h1>
+      <p class="page-lead">{{ 'iam.account.lead' | translate }}</p>
+    </div>
+  </header>
+
+  @if (auth.account(); as account) {
+    <section class="panel" aria-labelledby="identity-heading">
+      <div class="panel-head">
+        <div>
+          <h2 id="identity-heading">{{ 'iam.account.identityTitle' | translate }}</h2>
+          <p>{{ 'iam.account.identityLead' | translate }}</p>
+        </div>
+        @if (auth.currentUser()?.emailVerified) {
+          <span class="badge success">{{ 'iam.account.emailVerified' | translate }}</span>
+        } @else {
+          <span class="badge warning">{{ 'iam.account.emailNotVerified' | translate }}</span>
+        }
+      </div>
+      <div class="panel-body">
+        <div class="identity-name">
+          <strong>{{ auth.name() }}</strong>
+          <span class="badge neutral">{{ roleLabelKey(account.role) | translate }}</span>
+        </div>
+        <dl class="details">
+          <div>
+            <dt>{{ 'iam.account.email' | translate }}</dt>
+            <dd>{{ account.email }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'iam.account.accountStatus' | translate }}</dt>
+            <dd>{{ statusLabelKey(account.status) | translate }}</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="ranches-heading">
+      <div class="panel-head">
+        <div>
+          <h2 id="ranches-heading">{{ 'iam.account.ranchesTitle' | translate }}</h2>
+          <p>{{ 'iam.account.ranchesLead' | translate }}</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        @if (context.ranches().length > 0) {
+          <div class="ranch-list">
+            @for (access of context.ranches(); track access.ranchId; let position = $index) {
+              <article class="ranch-card">
+                <div class="ranch-card-heading">
+                  <strong>{{ access.name || ('shell.ranchFallback' | translate: { position: position + 1 }) }}</strong>
+                  <span class="badge neutral">{{ scopeLabelKey(access.scope) | translate }}</span>
+                </div>
+                @if (ranchPlace(access); as place) {
+                  <p class="text-muted">{{ place }}</p>
+                }
+                <p class="text-muted">
+                  @if (access.expiresAt; as expiresAt) {
+                    {{ 'iam.account.expiresOn' | translate: { date: (expiresAt | localizedDate) } }}
+                  } @else {
+                    {{ 'iam.account.noExpiry' | translate }}
+                  }
+                </p>
+                <div class="ranch-card-actions">
+                  @if (context.currentRanchId() === access.ranchId) {
+                    <span class="badge success">{{ 'iam.account.current' | translate }}</span>
+                  } @else {
+                    <button class="btn secondary" type="button" (click)="context.selectRanch(access.ranchId)">{{ 'iam.account.useRanch' | translate }}</button>
+                  }
+                </div>
+                @if (access.accessCode; as code) {
+                  <div class="access-code">
+                    <span class="access-code-label">{{ 'iam.account.accessCode' | translate }}</span>
+                    <span class="access-code-value">{{ code }}</span>
+                    <p class="text-muted">{{ 'iam.account.accessCodeHint' | translate }}</p>
+                    <button class="btn secondary" type="button" (click)="copyAccessCode(code)">{{ 'iam.account.copyCode' | translate }}</button>
+                  </div>
+                }
+              </article>
+            }
+          </div>
+          <p class="copy-status" aria-live="polite">
+            @if (codeCopied()) {
+              {{ 'iam.account.codeCopied' | translate }}
+            }
+          </p>
+        } @else {
+          <div class="empty-state">
+            <h3>{{ 'iam.account.noRanchesTitle' | translate }}</h3>
+            <p>{{ 'iam.account.noRanchesBody' | translate }}</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    @if (account.role === 'Veterinarian') {
+      @if (account.profile; as profile) {
+        <section class="panel" aria-labelledby="profile-summary-heading">
+          <div class="panel-head">
+            <div>
+              <h2 id="profile-summary-heading">{{ 'iam.account.profileTitle' | translate }}</h2>
+              <p>{{ 'iam.account.profileLead' | translate }}</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <dl class="details">
+              <div>
+                <dt>{{ 'iam.account.specialty' | translate }}</dt>
+                <dd>{{ profile.specialty }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'iam.account.licenseNumber' | translate }}</dt>
+                <dd>{{ profile.licenseNumber }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'iam.account.yearsOfExperience' | translate }}</dt>
+                <dd>{{ profile.yearsOfExperience }}</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+      }
+
+      <section class="panel" aria-labelledby="profile-editor-heading">
+        <div class="panel-head">
+          <div>
+            <h2 id="profile-editor-heading">{{ 'iam.account.editProfileTitle' | translate }}</h2>
+            <p>{{ 'iam.account.editProfileLead' | translate }}</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          @if (!account.profile) {
+            <p class="notice">{{ 'iam.account.profileRequired' | translate }}</p>
+          }
+          @if (facade.notice() === 'profile-saved') {
+            <p class="notice" role="status">{{ 'iam.account.profileSaved' | translate }}</p>
+          }
+          @if (facade.error(); as error) {
+            <p class="form-error" role="alert">{{ error | errorMessage }}</p>
+          }
+          <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="saveProfessionalProfile()" novalidate>
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'iam.account.specialty' | translate }}</mat-label>
+                <input matInput formControlName="specialty" autocomplete="organization-title" maxlength="120">
+                <mat-error>{{ 'iam.account.specialtyInvalid' | translate }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'iam.account.licenseNumber' | translate }}</mat-label>
+                <input matInput formControlName="licenseNumber" autocomplete="off" maxlength="80">
+                <mat-error>{{ 'iam.account.licenseNumberInvalid' | translate }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'iam.account.yearsOfExperience' | translate }}</mat-label>
+                <input matInput type="number" formControlName="yearsOfExperience" min="0" max="70" step="1">
+                <mat-error>{{ 'iam.account.yearsOfExperienceInvalid' | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+            <button mat-flat-button type="submit" class="btn primary" [disabled]="facade.busy()">
+              {{ (facade.busy() ? 'iam.account.saving' : 'iam.account.saveProfile') | translate }}
+            </button>
+          </form>
+        </div>
+      </section>
+    }
+  }
+</div>

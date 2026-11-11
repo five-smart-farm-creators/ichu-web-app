@@ -237,10 +237,9 @@ export class AuthFacade {
     if (this.authentication.currentUser()?.uid !== user.uid) {
       throw new AuthError('account-unavailable');
     }
-    const [account, ranchAccess] = await Promise.all([
-      this.accounts.currentAccount(),
-      this.accounts.ranchAccess(),
-    ]);
+    // The first request activates a pending account, so a parallel call would conflict with that update (409).
+    const account = await this.accounts.currentAccount();
+    const ranchAccess = await this.accounts.ranchAccess();
     if (generation !== this.stateGeneration || this.registrationInProgress || user.uid === this.suppressedUid
       || this.authentication.currentUser()?.uid !== user.uid
       || account.email.trim().toLowerCase() !== user.email.trim().toLowerCase()) {

@@ -17,12 +17,15 @@ export interface IamAccount {
   readonly profile: ProfessionalProfile | null;
 }
 
-/** Ranch access granted to the current account; `name` stays null until the backend provides one. */
+/** Ranch access for the current account; `accessCode` arrives only with Manage scope. */
 export interface RanchAccess {
   readonly ranchId: string;
   readonly scope: string;
   readonly expiresAt: string | null;
   readonly name: string | null;
+  readonly region: string | null;
+  readonly district: string | null;
+  readonly accessCode: string | null;
 }
 
 /** Account details required by the backend registration endpoint. */

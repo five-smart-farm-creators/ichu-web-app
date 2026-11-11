@@ -23,7 +23,7 @@
       </mat-form-field>
     }
     @if (context.currentRole(); as role) {
-      <span class="badge neutral role-chip">{{ roleKey(role) | translate }}</span>
+      <span class="badge neutral role-chip">{{ roleLabelKey(role) | translate }}</span>
     }
     <ichu-language-menu />
     <button mat-button type="button" class="account-trigger" [matMenuTriggerFor]="accountMenu" [attr.aria-label]="'shell.accountMenu' | translate">

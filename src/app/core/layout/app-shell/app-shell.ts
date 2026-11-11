@@ -13,15 +13,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { IamContextFacade } from '../../../features/iam/application/acl/iam-context.facade';
 import { AuthFacade } from '../../../features/iam/application/services/auth.facade';
+import { roleLabelKey } from '../../../features/iam/presentation/iam-labels';
 import { Icon } from '../../../shared/presentation/icon';
 import { LanguageMenu } from '../../../shared/presentation/language-menu';
 import { AppFooter } from '../app-footer';
-
-const ROLE_KEYS: Readonly<Record<string, string>> = {
-  RanchManager: 'iam.roles.ranchManager',
-  Veterinarian: 'iam.roles.veterinarian',
-  FieldOperator: 'iam.roles.fieldOperator',
-};
 
 /** Frames authenticated pages with navigation, the ranch context, the language menu, and the account menu. */
 @Component({
@@ -57,10 +52,7 @@ export class AppShell {
     { initialValue: false },
   );
   readonly menuOpen = signal(false);
-
-  roleKey(role: string): string {
-    return ROLE_KEYS[role] ?? role;
-  }
+  readonly roleLabelKey = roleLabelKey;
 
   closeMenu(): void {
     this.menuOpen.set(false);

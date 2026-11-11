@@ -186,9 +186,10 @@ describe('AuthFacade', () => {
     accounts.currentAccount
       .mockImplementationOnce(() => accountA.promise)
       .mockImplementationOnce(() => accountB.promise);
+    // Ranches load only after the account, so user B asks first while user A is still waiting for its account.
     accounts.ranchAccess
-      .mockImplementationOnce(() => accessA.promise)
-      .mockImplementationOnce(() => accessB.promise);
+      .mockImplementationOnce(() => accessB.promise)
+      .mockImplementationOnce(() => accessA.promise);
 
     emitAuthState(userA);
     emitAuthState(userB);

@@ -9,6 +9,6 @@ export const iamPublicRoutes: Routes = [
 
 /** Account and advisory pages render inside the app shell, which applies the auth guard. */
 export const iamWorkspaceRoutes: Routes = [
-  { path: 'account', title: 'pages.account', loadComponent: () => import('./presentation/pages/account/account-workspace-page').then(module => module.AccountWorkspacePage) },
-  { path: 'advisories', title: 'pages.advisories', loadComponent: () => import('./presentation/pages/account/account-workspace-page').then(module => module.AccountWorkspacePage) },
+  { path: 'account', title: 'pages.account', loadComponent: () => import('./presentation/pages/account/account-page').then(module => module.AccountPage) },
+  { path: 'advisories', title: 'pages.advisories', loadComponent: () => import('./presentation/pages/advisories/herd-advisories-page').then(module => module.HerdAdvisoriesPage) },
 ];
