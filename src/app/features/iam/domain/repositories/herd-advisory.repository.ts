@@ -1,11 +1,10 @@
 import type {
-  DecideHerdAdvisory, GrantHerdAdvisory, HerdAdvisoryRecord, RequestHerdAdvisory,
+  DecideHerdAdvisory, HerdAdvisoryRecord, RequestHerdAdvisory,
 } from '../model/herd-advisory.model';
 
-/** Defines authenticated herd-advisory operations exposed by the IAM API. */
+/** Defines ranch-scoped herd-advisory operations exposed by the IAM API. */
 export abstract class HerdAdvisoryRepository {
   abstract list(ranchId: string): Promise<readonly HerdAdvisoryRecord[]>;
-  abstract request(advisory: RequestHerdAdvisory): Promise<HerdAdvisoryRecord>;
-  abstract decide(id: string, decision: DecideHerdAdvisory): Promise<HerdAdvisoryRecord>;
-  abstract grant(advisory: GrantHerdAdvisory): Promise<HerdAdvisoryRecord>;
+  abstract request(ranchId: string, advisory: RequestHerdAdvisory): Promise<HerdAdvisoryRecord>;
+  abstract decide(ranchId: string, id: string, decision: DecideHerdAdvisory): Promise<HerdAdvisoryRecord>;
 }

@@ -1,5 +1,5 @@
 <div class="auth-scene login-scene" [class.account-wide]="wide()">
-  <main class="login-layout">
+  <div class="login-layout">
     <section class="login-card" [attr.aria-labelledby]="headingId()">
       <a class="login-brand" routerLink="/login" aria-label="ICHU · SmartFarm">
         <span class="login-brand-mark"><img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790"></span>
@@ -10,12 +10,9 @@
     <div class="login-photo">
       <img src="/assets/images/login-andean-herd.webp" srcset="/assets/images/login-andean-herd-small.webp 864w, /assets/images/login-andean-herd.webp 1728w" sizes="(max-width: 800px) 560px, 860px" alt="" width="1728" height="964" decoding="async">
       <div class="login-photo-caption">
-        <p>Better care for every herd.</p>
+        <p>{{ 'iam.login.tagline' | translate }}</p>
         <span>ICHU · SmartFarm</span>
       </div>
     </div>
-  </main>
-  <footer class="login-footer">
-    <span>ICHU · SmartFarm</span><a routerLink="/terms">Privacy</a>
-  </footer>
+  </div>
 </div>

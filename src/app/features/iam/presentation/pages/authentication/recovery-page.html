@@ -1,25 +1,25 @@
 <ichu-account-access-frame headingId="recovery-title">
   <header class="account-heading">
-    <h1 id="recovery-title">Reset your password</h1>
-    <p>Enter the email address for your ICHU account.</p>
+    <h1 id="recovery-title">{{ 'iam.recovery.title' | translate }}</h1>
+    <p>{{ 'iam.recovery.lead' | translate }}</p>
   </header>
 
   <form class="access-form" [formGroup]="form" (ngSubmit)="sendInstructions()" novalidate aria-describedby="recovery-note">
     <div class="field">
-      <label for="recovery-email">Email</label>
+      <label for="recovery-email">{{ 'iam.recovery.email' | translate }}</label>
       <input id="recovery-email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" [spellcheck]="false" formControlName="email" maxlength="120" placeholder="you@example.com" [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" aria-describedby="recovery-email-error" (input)="instructionsVisible.set(false)">
-      <p class="form-error" id="recovery-email-error">@if (form.controls.email.touched && form.controls.email.invalid) { Enter a valid email address. }</p>
+      <p class="form-error" id="recovery-email-error">@if (form.controls.email.touched && form.controls.email.invalid) { {{ 'iam.recovery.emailInvalid' | translate }} }</p>
     </div>
-    <p id="recovery-note" class="account-note">If an account exists for this address, Firebase will send a password-reset email.</p>
-    @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error.message }}</p> }
-    <button mat-flat-button class="btn primary login-submit" type="submit" [disabled]="auth.busy()">{{ auth.busy() ? 'Sending…' : 'Send reset email' }}</button>
+    <p id="recovery-note" class="account-note">{{ 'iam.recovery.note' | translate }}</p>
+    @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error | errorMessage }}</p> }
+    <button mat-flat-button class="btn primary login-submit" type="submit" [disabled]="auth.busy()">{{ (auth.busy() ? 'iam.recovery.submitting' : 'iam.recovery.submit') | translate }}</button>
   </form>
 
   @if (instructionsVisible()) {
     <div class="account-note recovery-result" role="status">
-      <p><strong>Check your email.</strong></p>
-      <p>If the address belongs to an account, a password-reset link is on its way.</p>
+      <p><strong>{{ 'iam.recovery.resultTitle' | translate }}</strong></p>
+      <p>{{ 'iam.recovery.resultBody' | translate }}</p>
     </div>
   }
-  <a class="account-back" routerLink="/login"><ichu-icon name="arrow" />Back to sign in</a>
+  <a class="account-back" routerLink="/login"><ichu-icon name="arrow" />{{ 'iam.recovery.back' | translate }}</a>
 </ichu-account-access-frame>

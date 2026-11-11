@@ -1,5 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import type { DecideHerdAdvisory, GrantHerdAdvisory, HerdAdvisoryRecord, RequestHerdAdvisory } from '../../domain/model/herd-advisory.model';
+import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
+import { AuthError } from '../../domain/model/auth.model';
+import type { DecideHerdAdvisory, HerdAdvisoryRecord, RequestHerdAdvisory } from '../../domain/model/herd-advisory.model';
 import type { CompleteProfessionalProfile } from '../../domain/model/professional-profile.model';
 import { HerdAdvisoryRepository } from '../../domain/repositories/herd-advisory.repository';
 import { ProfessionalProfileRepository } from '../../domain/repositories/professional-profile.repository';
@@ -20,9 +22,6 @@ export class AccountWorkspaceFacade {
   readonly ranchAccess = computed(() => this.authentication.ranchAccess());
   readonly isVeterinarian = computed(() => this.account()?.role === 'Veterinarian');
   readonly isRanchManager = computed(() => this.account()?.role === 'RanchManager');
-  readonly manageableRanches = computed(() => this.isRanchManager()
-    ? this.ranchAccess().filter(access => access.scope === 'Manage')
-    : []);
   readonly selectedRanchCanBeManaged = computed(() => {
     const ranchId = this.selectedRanchId();
     return Boolean(ranchId && this.canManageRanch(ranchId));
@@ -34,8 +33,8 @@ export class AccountWorkspaceFacade {
   readonly selectedRanchId = signal('');
   readonly advisories = signal<readonly HerdAdvisoryRecord[]>([]);
   readonly requestResult = signal<HerdAdvisoryRecord | null>(null);
-  readonly workspaceError = signal<string | null>(null);
-  readonly advisoryError = signal<string | null>(null);
+  readonly workspaceError = signal<AuthError | ApiError | string | null>(null);
+  readonly advisoryError = signal<ApiError | string | null>(null);
   readonly successMessage = signal<string | null>(null);
 
   /** Waits for the verified session and optionally loads its first authorized ranch. */
@@ -74,7 +73,7 @@ export class AccountWorkspaceFacade {
       }
     } catch (error) {
       if (generation === this.listGeneration && this.isCurrentAccount(accountId)) {
-        this.advisoryError.set(this.errorMessage(error, 'Advisory requests could not be loaded. Try again.'));
+        this.advisoryError.set(toApiError(error));
       }
     } finally {
       if (generation === this.listGeneration) {
@@ -97,8 +96,8 @@ export class AccountWorkspaceFacade {
     );
   }
 
-  /** Submits a ranch access request and retains the record returned by the IAM service. */
-  async requestAccess(request: RequestHerdAdvisory): Promise<boolean> {
+  /** Submits an access request for a ranch and retains the record returned by the IAM service. */
+  async requestAccess(ranchId: string, request: RequestHerdAdvisory): Promise<boolean> {
     if (!this.isVeterinarian()) {
       this.workspaceError.set('Only veterinarian accounts can request advisory access.');
       return false;
@@ -106,23 +105,9 @@ export class AccountWorkspaceFacade {
 
     this.requestResult.set(null);
     return this.runAccountAction(
-      () => this.advisoryRepository.request(request),
+      () => this.advisoryRepository.request(ranchId, request),
       record => this.requestResult.set(record),
       'Access request submitted.',
-    );
-  }
-
-  /** Creates a direct ranch grant for a ranch the current manager can manage. */
-  async grantAccess(grant: GrantHerdAdvisory): Promise<boolean> {
-    if (!this.isRanchManager() || !this.canManageRanch(grant.ranchId)) {
-      this.workspaceError.set('Your account does not have Manage access for this ranch.');
-      return false;
-    }
-
-    return this.runAccountAction(
-      () => this.advisoryRepository.grant(grant),
-      record => this.upsertAdvisory(record),
-      'Ranch access grant saved.',
     );
   }
 
@@ -135,7 +120,7 @@ export class AccountWorkspaceFacade {
     }
 
     return this.runAccountAction(
-      () => this.advisoryRepository.decide(id, decision),
+      () => this.advisoryRepository.decide(ranchId, id, decision),
       record => this.upsertAdvisory(record),
       decision.decision === 'revoke' ? 'Ranch access revoked.' : 'Advisory decision saved.',
     );
@@ -158,7 +143,7 @@ export class AccountWorkspaceFacade {
       await this.authentication.signOut();
       return true;
     } catch (error) {
-      this.workspaceError.set(this.errorMessage(error, 'Sign out could not be completed. Try again.'));
+      this.workspaceError.set(error instanceof AuthError ? error : toApiError(error));
       return false;
     } finally {
       this.actionInProgress.set(false);
@@ -179,7 +164,7 @@ export class AccountWorkspaceFacade {
         }
       }
     } catch (error) {
-      this.workspaceError.set(this.errorMessage(error, 'The account workspace could not be loaded.'));
+      this.workspaceError.set(toApiError(error));
     } finally {
       this.sessionLoading.set(false);
     }
@@ -213,7 +198,7 @@ export class AccountWorkspaceFacade {
       return true;
     } catch (error) {
       if (this.isCurrentAccount(account.id)) {
-        this.workspaceError.set(this.errorMessage(error, 'The request could not be completed. Try again.'));
+        this.workspaceError.set(toApiError(error));
       }
       return false;
     } finally {
@@ -243,9 +228,5 @@ export class AccountWorkspaceFacade {
       current[index] = record;
     }
     this.advisories.set(current);
-  }
-
-  private errorMessage(error: unknown, fallback: string): string {
-    return error instanceof Error && error.message.trim() ? error.message : fallback;
   }
 }

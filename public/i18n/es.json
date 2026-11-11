@@ -1,0 +1,158 @@
+{
+  "common": {
+    "language": "Idioma",
+    "skipToContent": "Ir al contenido"
+  },
+  "meta": {
+    "description": "ICHU de SmartFarm: monitoreo de ganado con collares inteligentes, registros del hato e historial veterinario."
+  },
+  "footer": {
+    "copyright": "© 2026 SmartFarm · ICHU",
+    "terms": "Términos y privacidad"
+  },
+  "pages": {
+    "signIn": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "recover": "Restablecer contraseña",
+    "terms": "Términos y privacidad",
+    "notFound": "Página no encontrada",
+    "account": "Cuenta",
+    "advisories": "Asesorías"
+  },
+  "shell": {
+    "navigation": "Navegación principal",
+    "openMenu": "Abrir menú de navegación",
+    "myAccount": "Mi cuenta",
+    "advisories": "Asesorías",
+    "ranch": "Unidad productiva",
+    "ranchFallback": "Unidad productiva {{position}}",
+    "accountMenu": "Menú de la cuenta",
+    "signOut": "Cerrar sesión"
+  },
+  "terms": {
+    "back": "Volver a mi cuenta",
+    "authenticationTitle": "Inicio de sesión y cuentas",
+    "authentication": "El inicio de sesión lo gestiona Firebase Authentication. La API de ICHU verifica tu cuenta y tus permisos sobre cada unidad productiva antes de mostrar sus datos. Las contraseñas solo se envían a Firebase Authentication y la aplicación nunca las almacena.",
+    "recordsTitle": "Registros de la unidad productiva",
+    "records": "ICHU almacena los datos de los collares y los registros de cada unidad productiva, y solo los muestra a las cuentas con acceso a esa unidad productiva.",
+    "preferencesTitle": "Preferencias del navegador",
+    "preferences": "El idioma y la unidad productiva seleccionados se guardan en este navegador.",
+    "paymentsTitle": "Pagos",
+    "payments": "Los pagos son procesados por Stripe. ICHU nunca almacena los datos de tarjetas.",
+    "contactTitle": "Contacto",
+    "contact": "Comunícate con SmartFarm para consultas sobre estos términos o sobre tus datos."
+  },
+  "notFound": {
+    "body": "Revisa la dirección o vuelve a tu cuenta de ICHU.",
+    "back": "Volver a mi cuenta"
+  },
+  "iam": {
+    "entry": {
+      "title": "Te damos la bienvenida a ICHU",
+      "status": "Abriendo tu hato…",
+      "progress": "Abriendo el espacio de trabajo"
+    },
+    "roles": {
+      "ranchManager": "Administrador ganadero",
+      "veterinarian": "Médico veterinario",
+      "fieldOperator": "Operario de campo"
+    },
+    "login": {
+      "mode": "Inicio de sesión seguro",
+      "title": "Hola de nuevo",
+      "lead": "Accede a tu espacio de trabajo de ICHU.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "newHere": "¿Eres nuevo en ICHU?",
+      "createAccount": "Crear una cuenta",
+      "note": "El servicio de cuentas de ICHU verifica el inicio de sesión.",
+      "navigationFailed": "No se pudo abrir tu espacio de trabajo. Inténtalo de nuevo.",
+      "tagline": "Mejor cuidado para cada hato."
+    },
+    "register": {
+      "stepOne": "Paso 1 de 2",
+      "stepTwo": "Paso 2 de 2",
+      "title": "Crear una cuenta",
+      "lead": "Configura tu cuenta de ICHU.",
+      "name": "Nombre completo",
+      "nameInvalid": "Ingresa entre 2 y 80 caracteres, sin espacios al inicio ni al final.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "password": "Contraseña",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "confirmPassword": "Confirmar contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "role": "Rol de la cuenta",
+      "ranchDetails": "Datos de la unidad productiva",
+      "ranchDetailsNote": "Estos datos crean tu cuenta inicial de unidad productiva.",
+      "ranchName": "Nombre de la unidad productiva",
+      "region": "Región",
+      "chooseRegion": "Elige una región",
+      "otherRegion": "Otra región",
+      "district": "Distrito",
+      "herdSize": "Tamaño estimado del hato",
+      "ranchDetailsRequired": "Completa todos los datos de la unidad productiva e ingresa un número entero positivo para el tamaño del hato.",
+      "terms": "Acepto los Términos de uso de ICHU.",
+      "termsRequired": "Confirma que aceptas para continuar.",
+      "review": "Revisar cuenta",
+      "reviewTitle": "Revisa tus datos",
+      "reviewName": "Nombre",
+      "reviewEmail": "Correo electrónico",
+      "reviewRole": "Rol",
+      "reviewRanch": "Unidad productiva",
+      "reviewRegion": "Región",
+      "reviewDistrict": "Distrito",
+      "reviewHerdSize": "Tamaño estimado del hato",
+      "passwordNote": "Tu contraseña se envía a Firebase Authentication y no se incluye en esta revisión.",
+      "edit": "Editar datos",
+      "creating": "Creando cuenta…",
+      "create": "Crear cuenta",
+      "retry": "Reintentar la configuración de la cuenta",
+      "retryNotice": "La configuración de la cuenta no está completa. Reintenta con el mismo correo electrónico y contraseña para terminarla.",
+      "verifyTitle": "Verifica tu correo electrónico",
+      "verifyNotice": "Tu cuenta fue creada. Revisa tu bandeja de entrada para encontrar el correo de verificación de Firebase antes de iniciar sesión.",
+      "continueToSignIn": "Continuar al inicio de sesión",
+      "backToSignIn": "Volver al inicio de sesión"
+    },
+    "recovery": {
+      "title": "Restablece tu contraseña",
+      "lead": "Ingresa el correo electrónico de tu cuenta de ICHU.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "note": "Si existe una cuenta con esta dirección, Firebase enviará un correo para restablecer la contraseña.",
+      "submit": "Enviar correo de restablecimiento",
+      "submitting": "Enviando…",
+      "resultTitle": "Revisa tu correo electrónico.",
+      "resultBody": "Si la dirección pertenece a una cuenta, en breve recibirás un enlace para restablecer la contraseña.",
+      "back": "Volver al inicio de sesión"
+    },
+    "errors": {
+      "configuration": "La aplicación no está configurada. Revisa la configuración de ejecución.",
+      "invalid-credentials": "El correo electrónico o la contraseña son incorrectos.",
+      "email-already-in-use": "Ya existe una cuenta con este correo electrónico.",
+      "weak-password": "Elige una contraseña más segura e inténtalo de nuevo.",
+      "email-not-verified": "Verifica tu correo electrónico antes de iniciar sesión.",
+      "account-unavailable": "Esta cuenta de ICHU no está disponible. Inicia sesión o contacta a tu administrador.",
+      "service-unavailable": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
+      "network": "No se pudo conectar con el servicio. Revisa tu conexión e inténtalo de nuevo.",
+      "unknown": "No se pudo completar la autenticación. Inténtalo de nuevo."
+    }
+  },
+  "errors": {
+    "network": "No se pudo conectar con el servicio de ICHU. Revisa tu conexión e inténtalo de nuevo.",
+    "configuration": "La aplicación no está configurada. Revisa la configuración de ejecución.",
+    "unknown": "No se pudo completar la solicitud. Inténtalo de nuevo.",
+    "http-403": "Tu cuenta no tiene permiso para esta acción.",
+    "http-404": "No se encontró el elemento solicitado.",
+    "http-409": "Este cambio entra en conflicto con datos existentes. Actualiza la página e inténtalo de nuevo.",
+    "http-500": "El servicio de ICHU no está disponible temporalmente. Inténtalo más tarde."
+  }
+}

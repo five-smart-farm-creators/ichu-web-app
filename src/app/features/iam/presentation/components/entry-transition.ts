@@ -1,10 +1,11 @@
 import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, inject, output, signal } from '@angular/core';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'ichu-entry-transition',
   standalone: true,
-  imports: [CdkTrapFocus],
+  imports: [CdkTrapFocus, TranslatePipe],
   templateUrl: './entry-transition.html',
   styleUrl: './entry-transition.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

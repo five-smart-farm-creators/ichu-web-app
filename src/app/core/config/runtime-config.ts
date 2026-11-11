@@ -1,3 +1,4 @@
+import { InjectionToken } from '@angular/core';
 import type { FirebaseOptions } from 'firebase/app';
 
 /** Public browser configuration. Server credentials must never be included. */
@@ -5,6 +6,9 @@ export interface RuntimeConfig {
   readonly apiBaseUrl: string;
   readonly firebase: FirebaseOptions | null;
 }
+
+/** Lets adapters read deployment settings without knowing how they were loaded. */
+export const RUNTIME_CONFIG = new InjectionToken<RuntimeConfig>('RUNTIME_CONFIG');
 
 const defaultConfig: RuntimeConfig = { apiBaseUrl: '/api/v1', firebase: null };
 

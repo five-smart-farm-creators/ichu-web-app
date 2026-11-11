@@ -1,6 +1,6 @@
 # Contributing
 
-Keep changes focused, preserve existing behavior and visual design, and follow the current IAM scope.
+Keep changes focused, preserve existing behavior and visual design, and stay within the requested bounded context.
 
 ## Setup and checks
 
@@ -18,29 +18,40 @@ Do not claim live REST or end-to-end verification when the backend is unavailabl
 
 ## Domain-Driven Design
 
-Only `iam` is in the current frontend scope. The agreed future contexts are `cattle-information`, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, and `subscription-plans`; do not create their modules without an authorized task.
+`iam` is the only bounded context implemented in the frontend. The agreed future contexts are `cattle-information`, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, and `subscription-plans`; do not create their modules without an authorized task.
 
-As IAM code is added, use this structure when files are needed:
+Each context uses this structure when files are needed:
 
 ```text
-src/app/features/iam/
+src/app/features/<context>/
   domain/
     model/
     repositories/
   application/
     services/
+    acl/
   infrastructure/
     repositories/
+    http/
+    configuration/
   presentation/
 ```
 
 - `domain/model/` contains framework-independent models and pure business rules. It must not import Angular, browser APIs, Firebase, HTTP clients, or infrastructure packages.
 - `domain/repositories/` defines ports owned by the domain.
 - `application/services/` coordinates use cases through domain contracts.
+- `application/acl/` holds facades that other contexts inject, such as `IamContextFacade`. No context imports another context's services, repositories, or models.
 - `infrastructure/repositories/` implements ports and contains Firebase or REST adapters when required. Identify mock data as fixtures; do not describe it as a backend integration.
+- `infrastructure/http/` holds interceptors that belong to the context, such as the IAM authorization interceptor.
 - `presentation/` contains Angular UI and calls application services.
 
-Keep dependencies directed inward. Put app-wide startup and runtime config in the existing `core/config/`. Keep `shared/` business-neutral. Reuse the existing `Icon` and SCSS tokens. Preserve the current screen design and interaction patterns.
+Keep dependencies directed inward. Put app-wide startup, runtime config, layout, and routes in `core/`. Keep `shared/` business-neutral: i18n, HTTP endpoint and error helpers, and shared presentation. Reuse the existing `Icon` and SCSS tokens. Preserve the current screen design and interaction patterns.
+
+## Internationalization
+
+English is the default language and the source of every key. Every user-visible string goes through `translate` (templates) or `TranslateService` (code); do not hard-code copy in templates. Keys are nested by area: `common`, `shell`, `pages`, `iam.<page>`, `iam.errors.<code>`, and `errors.<code>`.
+
+`public/i18n/en.json` and `public/i18n/es.json` must define identical key sets, which the translation-files test enforces. Spanish is neutral Latin American Spanish with correct accents. Endonyms in the language menu stay in their own language.
 
 Use DDD as a guide to cohesive domain boundaries and inward dependencies. [eShopOnWeb](https://github.com/dotnet-architecture/eShopOnWeb/wiki/Architecture) is a principles reference only; do not copy its .NET project structure.
 
@@ -52,7 +63,7 @@ Use DDD as a guide to cohesive domain boundaries and inward dependencies. [eShop
 | Classes, interfaces, type aliases, enums, and other types | `PascalCase` |
 | Methods, properties, fields, parameters, and local variables | `camelCase` |
 
-Use meaningful English identifiers and comments. Write all UI copy in English. Follow the [Angular style guide](https://angular.dev/style-guide) where it fits these rules. Use `UPPER_SNAKE_CASE` for injection tokens and fixed validation-pattern constants; keep local computed values in `camelCase`.
+Use meaningful English identifiers and comments. Write UI copy in English in templates and in `public/i18n/en.json`; Spanish lives only in `public/i18n/es.json`. Follow the [Angular style guide](https://angular.dev/style-guide) where it fits these rules. Use `UPPER_SNAKE_CASE` for injection tokens and fixed validation-pattern constants; keep local computed values in `camelCase`.
 
 Keep Angular components focused and consistent with the standalone app. Keep source files focused on one concept. Document public TypeScript contracts with concise JSDoc (`/** ... */`). Use `//` for a single-line note and `/* ... */` for a genuine multiline comment. Avoid decorative comments and commented-out code.
 

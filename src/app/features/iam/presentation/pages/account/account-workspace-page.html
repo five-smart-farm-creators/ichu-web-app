@@ -1,4 +1,4 @@
-<main class="account-workspace">
+<div class="account-workspace">
   @if (facade.sessionLoading()) {
     <section class="panel" aria-live="polite">
       <div class="panel-body empty-state">
@@ -34,7 +34,7 @@
       </header>
 
       @if (facade.workspaceError()) {
-        <p class="form-error workspace-message" role="alert">{{ facade.workspaceError() }}</p>
+        <p class="form-error workspace-message" role="alert">{{ facade.workspaceError() | errorMessage }}</p>
       }
       @if (facade.successMessage()) {
         <p class="notice workspace-message" role="status">{{ facade.successMessage() }}</p>
@@ -65,10 +65,6 @@
             <div>
               <dt>Account status</dt>
               <dd>{{ account.status }}</dd>
-            </div>
-            <div>
-              <dt>Account ID</dt>
-              <dd class="mono">{{ account.id }}</dd>
             </div>
           </dl>
         </div>
@@ -103,7 +99,7 @@
         <div class="panel-head">
           <div>
             <h2 id="ranch-access-heading">Authorized ranches</h2>
-            <p>Only ranch IDs and scopes returned for your account are shown.</p>
+            <p>Only ranch names and scopes returned for your account are shown.</p>
           </div>
         </div>
         <div class="panel-body">
@@ -112,7 +108,7 @@
               @for (access of facade.ranchAccess(); track $index) {
                 <article class="account-list-item">
                   <div class="account-list-heading">
-                    <strong class="mono">{{ access.ranchId }}</strong>
+                    <strong>{{ access.name || ('shell.ranchFallback' | translate: { position: $index + 1 }) }}</strong>
                     <span class="badge neutral">{{ access.scope }}</span>
                   </div>
                   <p class="text-muted">
@@ -219,7 +215,6 @@
                 @if (facade.requestResult(); as request) {
                   <div class="notice request-result" role="status">
                     <strong>Request status: {{ request.status }}</strong>
-                    <p>Ranch <span class="mono">{{ request.ranchId }}</span></p>
                     <p>Submitted {{ request.requestedAt | date: 'medium' }}</p>
                   </div>
                 }
@@ -241,7 +236,7 @@
                     [formControl]="ranchSelectionControl"
                     (change)="loadSelectedRanch()">
                     @for (access of facade.ranchAccess(); track $index) {
-                      <option [value]="access.ranchId">{{ access.ranchId }} · {{ access.scope }}</option>
+                      <option [value]="access.ranchId">{{ access.name || ('shell.ranchFallback' | translate: { position: $index + 1 }) }} · {{ access.scope }}</option>
                     }
                   </select>
                   <button
@@ -263,7 +258,7 @@
               } @else if (facade.advisoryLoading()) {
                 <p class="text-muted" aria-live="polite">Loading advisory records…</p>
               } @else if (facade.advisoryError()) {
-                <p class="form-error" role="alert">{{ facade.advisoryError() }}</p>
+                <p class="form-error" role="alert">{{ facade.advisoryError() | errorMessage }}</p>
               } @else if (facade.advisories().length === 0) {
                 <div class="empty-state">
                   <h3>No advisory records</h3>
@@ -299,10 +294,6 @@
                         }
                       </div>
                       <dl class="advisory-details">
-                        <div>
-                          <dt>Veterinarian account</dt>
-                          <dd class="mono">{{ record.veterinarianId }}</dd>
-                        </div>
                         <div>
                           <dt>Scope</dt>
                           <dd>{{ record.scope }}</dd>
@@ -370,64 +361,6 @@
             </div>
           </section>
         </section>
-
-        @if (account.role === 'RanchManager') {
-          <section class="panel direct-grant" aria-labelledby="direct-grant-heading">
-            <div class="panel-head">
-              <div>
-                <h2 id="direct-grant-heading">Grant ranch access directly</h2>
-                <p>Issue a time-limited grant to a veterinarian account UUID.</p>
-              </div>
-            </div>
-            <div class="panel-body">
-              @if (facade.manageableRanches().length === 0) {
-                <p class="notice">This account has no ranch with Manage scope. Direct grants require an authorized Manage ranch.</p>
-              } @else {
-                <form [formGroup]="directGrantForm" (ngSubmit)="submitDirectGrant()">
-                  <div class="form-grid">
-                    <label class="field">
-                      <span>Managed ranch</span>
-                      <select formControlName="ranchId">
-                        @for (access of facade.manageableRanches(); track $index) {
-                          <option [value]="access.ranchId">{{ access.ranchId }}</option>
-                        }
-                      </select>
-                    </label>
-                    <label class="field">
-                      <span>Veterinarian account UUID</span>
-                      <input formControlName="veterinarianId" autocomplete="off" spellcheck="false" />
-                      @if (directGrantForm.controls.veterinarianId.touched && directGrantForm.controls.veterinarianId.invalid) {
-                        <span class="form-error">Enter a valid veterinarian account UUID.</span>
-                      }
-                    </label>
-                    <label class="field">
-                      <span>Access scope</span>
-                      <select formControlName="scope">
-                        <option value="Read">Read</option>
-                        <option value="ClinicalWrite">Clinical write</option>
-                      </select>
-                    </label>
-                    <label class="field">
-                      <span>Expires on</span>
-                      <input formControlName="expiresOn" type="date" [attr.min]="minimumExpiryDate" />
-                      @if (directGrantForm.controls.expiresOn.touched && directGrantForm.controls.expiresOn.invalid) {
-                        <span class="form-error">Choose an expiration date in the future.</span>
-                      }
-                    </label>
-                  </div>
-                  <div class="account-actions">
-                    <button
-                      class="btn primary"
-                      type="submit"
-                      [disabled]="facade.actionInProgress()">
-                      Grant access
-                    </button>
-                  </div>
-                </form>
-              }
-            </div>
-          </section>
-        }
       } @else {
         <section class="panel advisory-link">
           <div class="panel-body">
@@ -443,10 +376,10 @@
       <section class="panel">
         <div class="panel-body empty-state">
           <h1>My account</h1>
-          <p>{{ facade.workspaceError() || 'Sign in with a verified ICHU account to continue.' }}</p>
+          <p>{{ facade.workspaceError() ? (facade.workspaceError() | errorMessage) : 'Sign in with a verified ICHU account to continue.' }}</p>
           <a class="btn primary" routerLink="/login">Go to sign in</a>
         </div>
       </section>
     }
   }
-</main>
+</div>
