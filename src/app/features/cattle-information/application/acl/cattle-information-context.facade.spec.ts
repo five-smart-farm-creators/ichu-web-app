@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import type { Cattle } from '../../domain/model/cattle.model';
+import type { Lot } from '../../domain/model/lot.model';
 import { CattleRepository } from '../../domain/repositories/cattle.repository';
+import { LotRepository } from '../../domain/repositories/lot.repository';
 import { CattleInformationContextFacade } from './cattle-information-context.facade';
 
 function cattle(id: string, status: Cattle['status']): Cattle {
@@ -13,14 +15,17 @@ function cattle(id: string, status: Cattle['status']): Cattle {
 describe('CattleInformationContextFacade', () => {
   let facade: CattleInformationContextFacade;
   let cattleRepository: { list: ReturnType<typeof vi.fn> };
+  let lotRepository: { list: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     cattleRepository = { list: vi.fn() };
+    lotRepository = { list: vi.fn(async () => [] as Lot[]) };
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [
         CattleInformationContextFacade,
         { provide: CattleRepository, useValue: cattleRepository },
+        { provide: LotRepository, useValue: lotRepository },
       ],
     });
     facade = TestBed.inject(CattleInformationContextFacade);
@@ -49,5 +54,16 @@ describe('CattleInformationContextFacade', () => {
 
     expect(summaries).toHaveLength(101);
     expect(cattleRepository.list).toHaveBeenNthCalledWith(2, 'ranch-1', {}, 2, 100);
+  });
+
+  it('publishes only the identity and name of each lot', async () => {
+    const lot: Lot = {
+      id: 'lot-1', ranchId: 'ranch-1', name: 'Heifers', criterion: 'Age', version: 'v1',
+      memberships: [{ cattleId: 'cattle-1', assignedAt: '2026-01-01T00:00:00Z' }],
+    };
+    lotRepository.list.mockResolvedValue([lot]);
+
+    expect(await facade.lotSummaries('ranch-1')).toEqual([{ lotId: 'lot-1', name: 'Heifers' }]);
+    expect(lotRepository.list).toHaveBeenCalledWith('ranch-1');
   });
 });
