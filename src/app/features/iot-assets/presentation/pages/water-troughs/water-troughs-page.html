@@ -1,0 +1,103 @@
+<div class="iot-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.waterTroughs' | translate }}</span>
+      <h1>{{ 'waterTroughs.list.title' | translate }}</h1>
+      <p class="page-lead">{{ 'waterTroughs.list.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.troughs().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage()) {
+          <button type="button" class="btn primary" (click)="openRegister()">
+            <ichu-icon name="plus" />
+            <span>{{ 'waterTroughs.list.register' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'devices.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'devices.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (conflict()) {
+      <p class="form-error" role="alert">{{ 'devices.errors.versionConflict' | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'waterTroughs.list.loading' | translate" />
+      }
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="pagedTroughs()" [attr.aria-label]="'waterTroughs.list.tableLabel' | translate">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.fields.name' | translate }}</th>
+            <td mat-cell *matCellDef="let trough"><strong>{{ trough.name }}</strong></td>
+          </ng-container>
+          <ng-container matColumnDef="lot">
+            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.fields.lot' | translate }}</th>
+            <td mat-cell *matCellDef="let trough">
+              @if (trough.lotId) {
+                {{ facade.lotName(trough.lotId) ?? ('waterTroughs.unknownLot' | translate) }}
+              } @else {
+                <span class="text-muted">{{ 'waterTroughs.noLot' | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="range">
+            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.fields.temperatureRange' | translate }}</th>
+            <td mat-cell *matCellDef="let trough">
+              @if (trough.temperatureRange; as range) {
+                {{ 'waterTroughs.list.rangeValue' | translate: { minimum: range.minimumCelsius, maximum: range.maximumCelsius } }}
+              } @else {
+                <span class="text-muted">{{ 'waterTroughs.list.noRange' | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'waterTroughs.list.actions' | translate }}</span></th>
+            <td mat-cell *matCellDef="let trough">
+              @if (canManage()) {
+                <button type="button" class="btn secondary" [attr.aria-label]="('waterTroughs.list.setRange' | translate) + ': ' + trough.name"
+                  (click)="openRange(trough)">
+                  {{ 'waterTroughs.list.setRange' | translate }}
+                </button>
+              }
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let trough; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && !facade.error() && facade.troughs().length === 0) {
+        <div class="empty-state">
+          <h2>{{ 'waterTroughs.list.emptyTitle' | translate }}</h2>
+          <p>{{ (canManage() ? 'waterTroughs.list.emptyManage' : 'waterTroughs.list.empty') | translate }}</p>
+        </div>
+      }
+
+      <mat-paginator
+        [length]="facade.troughs().length"
+        [pageIndex]="pageIndex()"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPage($event)" />
+    </section>
+  }
+</div>

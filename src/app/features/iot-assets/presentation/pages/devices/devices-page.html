@@ -1,0 +1,198 @@
+<div class="iot-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.iotDevices' | translate }}</span>
+      <h1>{{ 'devices.inventory.title' | translate }}</h1>
+      <p class="page-lead">{{ 'devices.inventory.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.visibleDevices().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage()) {
+          <button type="button" class="btn primary" (click)="openRegister()">
+            <ichu-icon name="plus" />
+            <span>{{ 'devices.inventory.register' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'devices.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'devices.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'devices.inventory.filters' | translate">
+      <form class="filter-form" role="search" [formGroup]="filterForm">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'devices.fields.type' | translate }}</mat-label>
+          <mat-select formControlName="type" (selectionChange)="applyFilters()">
+            <mat-option value="">{{ 'devices.inventory.allTypes' | translate }}</mat-option>
+            @for (type of types; track type) {
+              <mat-option [value]="type">{{ ('devices.type.' + type) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'devices.fields.status' | translate }}</mat-label>
+          <mat-select formControlName="status" (selectionChange)="applyFilters()">
+            <mat-option value="">{{ 'devices.inventory.allStatuses' | translate }}</mat-option>
+            @for (status of statuses; track status) {
+              <mat-option [value]="status">{{ ('devices.status.' + status) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'devices.fields.communication' | translate }}</mat-label>
+          <mat-select formControlName="communication" (selectionChange)="applyFilters()">
+            <mat-option value="">{{ 'devices.inventory.allCommunications' | translate }}</mat-option>
+            @for (communication of communications; track communication) {
+              <mat-option [value]="communication">{{ ('devices.communication.' + communication) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <div class="filter-actions">
+          <button type="button" class="btn secondary" (click)="clearFilters()">{{ 'devices.inventory.clearFilters' | translate }}</button>
+        </div>
+      </form>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (conflict()) {
+      <p class="form-error" role="alert">{{ 'devices.errors.versionConflict' | translate }}</p>
+    }
+    @if (actionError(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'devices.inventory.loading' | translate" />
+      }
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="pagedDevices()" [attr.aria-label]="'devices.inventory.tableLabel' | translate">
+          <ng-container matColumnDef="serial">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.serial' | translate }}</th>
+            <td mat-cell *matCellDef="let device"><strong>{{ device.serial }}</strong></td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.type' | translate }}</th>
+            <td mat-cell *matCellDef="let device">{{ ('devices.type.' + device.type) | translate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.status' | translate }}</th>
+            <td mat-cell *matCellDef="let device">
+              <span class="badge" [class.success]="device.status === 'Available'" [class.warning]="device.status === 'Maintenance'" [class.neutral]="device.status === 'InService'">
+                {{ ('devices.status.' + device.status) | translate }}
+              </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="communication">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.communication' | translate }}</th>
+            <td mat-cell *matCellDef="let device">
+              <span class="badge" [class.success]="device.communicationStatus === 'Communicating'" [class.danger]="device.communicationStatus === 'NoCommunication'" [class.neutral]="device.communicationStatus === 'NeverReported'">
+                {{ ('devices.communication.' + device.communicationStatus) | translate }}
+              </span>
+              @if (lastSeen(device); as ago) {
+                <span class="meta">{{ 'devices.lastSeen' | translate: { time: ago } }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="battery">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.battery' | translate }}</th>
+            <td mat-cell *matCellDef="let device">
+              @if (device.batteryPercentage === null) {
+                <span class="text-muted">{{ 'devices.battery.none' | translate }}</span>
+              } @else {
+                <span>{{ 'devices.battery.percent' | translate: { value: device.batteryPercentage } }}</span>
+                @if (device.isBatteryLow) {
+                  <span class="battery-low"><ichu-icon name="alert" />{{ 'devices.battery.low' | translate }}</span>
+                }
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="firmware">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.firmware' | translate }}</th>
+            <td mat-cell *matCellDef="let device">
+              {{ device.firmwareVersion ?? ('devices.notRecorded' | translate) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="assignedTo">
+            <th mat-header-cell *matHeaderCellDef>{{ 'devices.fields.assignedTo' | translate }}</th>
+            <td mat-cell *matCellDef="let device">
+              @if (device.currentAssignment) {
+                {{ assignedText(device) }}
+              } @else {
+                <span class="text-muted">{{ 'devices.notAssigned' | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'devices.fields.actions' | translate }}</span></th>
+            <td mat-cell *matCellDef="let device">
+              <div class="row-actions">
+                @if (canManage()) {
+                  @if (device.currentAssignment) {
+                    <button type="button" class="btn secondary" [disabled]="busyDeviceId() === device.id"
+                      [attr.aria-label]="('devices.actions.release' | translate) + ': ' + device.serial" (click)="openRelease(device)">
+                      {{ 'devices.actions.release' | translate }}
+                    </button>
+                  } @else {
+                    @if (device.status === 'Available') {
+                      <button type="button" class="btn secondary" [disabled]="busyDeviceId() === device.id"
+                        [attr.aria-label]="('devices.actions.assign' | translate) + ': ' + device.serial" (click)="openAssign(device)">
+                        {{ 'devices.actions.assign' | translate }}
+                      </button>
+                    }
+                    <button type="button" class="btn secondary" [disabled]="busyDeviceId() === device.id"
+                      [attr.aria-label]="(device.status === 'Maintenance' ? 'devices.actions.maintenanceOff' : 'devices.actions.maintenanceOn') + ': ' + device.serial"
+                      (click)="toggleMaintenance(device)">
+                      {{ (device.status === 'Maintenance' ? 'devices.actions.maintenanceOff' : 'devices.actions.maintenanceOn') | translate }}
+                    </button>
+                  }
+                }
+                <button type="button" class="btn secondary" [attr.aria-label]="('devices.actions.history' | translate) + ': ' + device.serial"
+                  (click)="openHistory(device)">
+                  {{ 'devices.actions.history' | translate }}
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let device; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && !facade.error() && facade.visibleDevices().length === 0) {
+        <div class="empty-state">
+          @if (filtersApplied()) {
+            <h2>{{ 'devices.inventory.noMatchTitle' | translate }}</h2>
+            <p>{{ 'devices.inventory.noMatch' | translate }}</p>
+          } @else {
+            <h2>{{ 'devices.inventory.emptyTitle' | translate }}</h2>
+            <p>{{ (canManage() ? 'devices.inventory.emptyManage' : 'devices.inventory.empty') | translate }}</p>
+          }
+        </div>
+      }
+
+      <mat-paginator
+        [length]="facade.visibleDevices().length"
+        [pageIndex]="pageIndex()"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPage($event)" />
+    </section>
+  }
+</div>

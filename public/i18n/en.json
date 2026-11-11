@@ -17,7 +17,8 @@
       "first": "First page",
       "last": "Last page",
       "range": "{{start}} – {{end}}"
-    }
+    },
+    "exportFailed": "The file could not be created. Try again."
   },
   "meta": {
     "description": "ICHU by SmartFarm: livestock monitoring with smart collars, herd records, and veterinary history."
@@ -36,7 +37,10 @@
     "advisories": "Advisories",
     "animals": "Animals",
     "lots": "Lots",
-    "animalProfile": "Animal profile"
+    "animalProfile": "Animal profile",
+    "iotDevices": "IoT devices",
+    "waterTroughs": "Water troughs",
+    "edgeGateways": "Edge gateways"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -47,7 +51,8 @@
     "ranchFallback": "Ranch {{position}}",
     "accountMenu": "Account menu",
     "signOut": "Sign out",
-    "animals": "Animals"
+    "animals": "Animals",
+    "iotDevices": "IoT devices"
   },
   "terms": {
     "back": "Back to account",
@@ -442,6 +447,214 @@
     "export": {
       "failed": "The file could not be created. Try again.",
       "limited": "The export holds the first 5000 animals of the filter."
+    }
+  },
+  "devices": {
+    "areaNavigation": "IoT device areas",
+    "tabs": {
+      "devices": "Devices",
+      "waterTroughs": "Water troughs",
+      "gateways": "Edge gateways"
+    },
+    "type": {
+      "SmartCollar": "Smart collar",
+      "WaterController": "Water controller"
+    },
+    "status": {
+      "Available": "Available",
+      "InService": "In service",
+      "Maintenance": "Maintenance"
+    },
+    "communication": {
+      "NeverReported": "Never reported",
+      "Communicating": "Communicating",
+      "NoCommunication": "No communication"
+    },
+    "targetType": {
+      "Cattle": "Animal",
+      "WaterTrough": "Water trough"
+    },
+    "fields": {
+      "serial": "Serial number",
+      "type": "Device type",
+      "status": "Status",
+      "communication": "Communication",
+      "battery": "Battery",
+      "firmware": "Firmware",
+      "assignedTo": "Assigned to",
+      "actions": "Actions",
+      "lastSeen": "Last seen",
+      "target": "Target",
+      "startedAt": "Assigned on",
+      "endedAt": "Released on",
+      "releaseReason": "Release reason"
+    },
+    "inventory": {
+      "title": "IoT devices",
+      "lead": "Register smart collars and water controllers, assign them to animals and troughs, and track battery, communication, and maintenance.",
+      "register": "Register device",
+      "filters": "Device filters",
+      "allTypes": "All types",
+      "allStatuses": "All statuses",
+      "allCommunications": "All communication states",
+      "clearFilters": "Clear filters",
+      "loading": "Loading devices",
+      "tableLabel": "IoT devices of the ranch",
+      "noRanchTitle": "No ranch available",
+      "noRanch": "Your account has no ranch access, so no devices are shown.",
+      "emptyTitle": "No devices yet",
+      "empty": "No devices are registered in this ranch.",
+      "emptyManage": "Register the first device to start the inventory.",
+      "noMatchTitle": "No matching devices",
+      "noMatch": "Change or clear the filters to see more devices."
+    },
+    "actions": {
+      "assign": "Assign",
+      "release": "Release",
+      "history": "History",
+      "maintenanceOn": "Put in maintenance",
+      "maintenanceOff": "End maintenance"
+    },
+    "battery": {
+      "percent": "{{value}}%",
+      "low": "Low battery",
+      "none": "No reading"
+    },
+    "lastSeen": "Last seen {{time}}",
+    "notAssigned": "Not assigned",
+    "unknownTarget": "Unknown",
+    "notRecorded": "Not recorded",
+    "maintenance": {
+      "on": "Device sent to maintenance.",
+      "off": "Device is available again."
+    },
+    "register": {
+      "title": "Register device",
+      "lead": "The serial number is printed on the device and must be unique on the platform.",
+      "submit": "Register device",
+      "saved": "Device registered."
+    },
+    "assign": {
+      "collarTitle": "Assign collar",
+      "controllerTitle": "Assign water controller",
+      "collarLead": "Choose an active animal that has no collar. The collar reports the animal's activity and location.",
+      "controllerLead": "Choose a water trough that has no controller. The controller reports the trough temperature.",
+      "animal": "Active animal without a collar",
+      "trough": "Water trough without a controller",
+      "noAnimals": "Every active animal already has a collar.",
+      "noTroughs": "Every water trough already has a controller.",
+      "submit": "Assign",
+      "saved": "Device assigned."
+    },
+    "release": {
+      "title": "Release device",
+      "warning": "Releasing ends the current assignment. The device keeps its history and becomes available again.",
+      "reason": "Reason for release",
+      "submit": "Release device",
+      "saved": "Device released."
+    },
+    "history": {
+      "title": "Assignment history",
+      "lead": "Every period this device served, newest first.",
+      "loading": "Loading history",
+      "empty": "This device has no assignments yet.",
+      "current": "Current",
+      "close": "Close"
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    },
+    "validation": {
+      "serialRequired": "Enter a serial number of up to 50 characters.",
+      "reasonRequired": "Enter a reason of up to 120 characters."
+    }
+  },
+  "waterTroughs": {
+    "noLot": "No lot",
+    "unknownLot": "Lot not listed",
+    "fields": {
+      "name": "Name",
+      "lot": "Lot",
+      "temperatureRange": "Temperature range",
+      "minimum": "Minimum (°C)",
+      "maximum": "Maximum (°C)"
+    },
+    "list": {
+      "title": "Water troughs",
+      "lead": "Name each drinking place and set the temperature band it will be checked against.",
+      "register": "Register water trough",
+      "loading": "Loading water troughs",
+      "tableLabel": "Water troughs of the ranch",
+      "actions": "Actions",
+      "setRange": "Set range",
+      "rangeValue": "{{minimum}} °C to {{maximum}} °C",
+      "noRange": "No range set",
+      "emptyTitle": "No water troughs yet",
+      "empty": "No water troughs are registered in this ranch.",
+      "emptyManage": "Register the first water trough to start the list."
+    },
+    "register": {
+      "title": "Register water trough",
+      "lead": "Registering a water trough does not use a collar. The lot is optional.",
+      "submit": "Register water trough",
+      "saved": "Water trough registered."
+    },
+    "range": {
+      "title": "Set temperature range",
+      "lead": "Set the band the trough will be checked against. Temperature readings are not shown in this version.",
+      "submit": "Save range",
+      "saved": "Temperature range saved."
+    },
+    "validation": {
+      "nameRequired": "Enter a name of up to 80 characters.",
+      "temperatureLimits": "Enter a temperature from -10 to 60 °C.",
+      "temperatureOrder": "The minimum must be lower than the maximum, with at most one decimal."
+    }
+  },
+  "gateways": {
+    "status": {
+      "Active": "Active",
+      "Revoked": "Revoked"
+    },
+    "fields": {
+      "name": "Name",
+      "status": "Status",
+      "registeredOn": "Registered on",
+      "revokedOn": "Revoked on"
+    },
+    "notRevoked": "Not revoked",
+    "list": {
+      "title": "Edge gateways",
+      "lead": "Edge gateways connect the field devices of a ranch to ICHU. A gateway key is shown once, when the gateway is registered.",
+      "register": "Register gateway",
+      "loading": "Loading gateways",
+      "tableLabel": "Edge gateways of the ranch",
+      "actions": "Actions",
+      "revoke": "Revoke",
+      "emptyTitle": "No edge gateways yet",
+      "empty": "No edge gateways are registered in this ranch.",
+      "emptyManage": "Register a gateway to connect a field device."
+    },
+    "register": {
+      "title": "Register gateway",
+      "lead": "Name the gateway by where it is on the ranch, such as North paddock.",
+      "submit": "Register gateway",
+      "keyTitle": "Gateway key",
+      "keyWarning": "Copy this key now. It will not be shown again.",
+      "copy": "Copy key",
+      "copied": "Key copied.",
+      "copyFailed": "The key could not be copied. Select it and copy it manually.",
+      "done": "Done",
+      "saved": "Gateway registered."
+    },
+    "revoke": {
+      "title": "Revoke gateway",
+      "warning": "The gateway key stops working right away. Revoking cannot be undone; register a new gateway to connect the device again.",
+      "submit": "Revoke gateway",
+      "saved": "Gateway revoked."
+    },
+    "validation": {
+      "nameRequired": "Enter a name of up to 80 characters."
     }
   }
 }
