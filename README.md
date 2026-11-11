@@ -28,7 +28,7 @@ Open http://localhost:4200. The interface opens in English; choose Español from
 
 ## Scope and current status
 
-All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing) and the Identity and Access Management (`iam`) context. The other six contexts, `cattle-information`, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, and `subscription-plans`, are not implemented yet.
+All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, and the animal and lot screens of the Cattle Information (`cattle-information`) context. The other five contexts, `iot-assets`, `operations-monitoring`, `planning`, `dashboard-analytics`, and `subscription-plans`, are not implemented yet.
 
 Sign-in uses Firebase Authentication, then the ICHU API checks the account and ranch access. A Firebase identity alone does not grant application or ranch access.
 
