@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+.lots-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.lots-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .lots-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+.lot-list,
+.lot-members {
+  min-width: 0;
+}
+
+.add-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.add-field {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.hint {
+  margin-top: 10px;
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 560px) {
+  .lots-page {
+    padding: 20px 14px;
+  }
+}

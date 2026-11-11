@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { cattleInformationRoutes } from './features/cattle-information/cattle-information.routes';
 import { authGuard } from './features/iam/application/guards/auth.guard';
 import { iamPublicRoutes, iamWorkspaceRoutes } from './features/iam/iam.routes';
 
@@ -8,7 +9,7 @@ export const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./core/layout/app-shell/app-shell').then(module => module.AppShell),
-    children: iamWorkspaceRoutes,
+    children: [...iamWorkspaceRoutes, ...cattleInformationRoutes],
   },
   {
     path: '',

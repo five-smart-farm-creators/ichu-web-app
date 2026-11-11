@@ -2,7 +2,22 @@
   "common": {
     "language": "Language",
     "skipToContent": "Skip to content",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "export": "Export",
+    "exporting": "Preparing file…",
+    "exportExcel": "Download Excel",
+    "exportPdf": "Download PDF",
+    "saving": "Saving…",
+    "required": "This field is required.",
+    "invalidDate": "Enter a valid date.",
+    "paginator": {
+      "itemsPerPage": "Items per page",
+      "next": "Next page",
+      "previous": "Previous page",
+      "first": "First page",
+      "last": "Last page",
+      "range": "{{start}} – {{end}}"
+    }
   },
   "meta": {
     "description": "ICHU by SmartFarm: livestock monitoring with smart collars, herd records, and veterinary history."
@@ -18,7 +33,10 @@
     "terms": "Terms and privacy",
     "notFound": "Page not found",
     "account": "Account",
-    "advisories": "Advisories"
+    "advisories": "Advisories",
+    "animals": "Animals",
+    "lots": "Lots",
+    "animalProfile": "Animal profile"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -28,7 +46,8 @@
     "ranch": "Ranch",
     "ranchFallback": "Ranch {{position}}",
     "accountMenu": "Account menu",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "animals": "Animals"
   },
   "terms": {
     "back": "Back to account",
@@ -263,5 +282,166 @@
     "http-404": "The requested item was not found.",
     "http-409": "This change conflicts with existing data. Refresh and try again.",
     "http-500": "The ICHU service is temporarily unavailable. Try again later."
+  },
+  "cattle": {
+    "areaNavigation": "Animal areas",
+    "tabs": {
+      "animals": "Animals",
+      "lots": "Lots"
+    },
+    "breed": {
+      "BrownSwiss": "Brown Swiss",
+      "Fleckvieh": "Fleckvieh",
+      "Criollo": "Criollo",
+      "Crossbred": "Crossbred"
+    },
+    "sex": {
+      "Female": "Female",
+      "Male": "Male"
+    },
+    "stage": {
+      "Calf": "Calf",
+      "Heifer": "Heifer",
+      "MilkingCow": "Milking cow",
+      "FatteningBull": "Fattening bull"
+    },
+    "status": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    },
+    "exitReason": {
+      "Death": "Death",
+      "Sale": "Sale",
+      "Theft": "Theft",
+      "Culling": "Culling"
+    },
+    "fields": {
+      "earTag": "Ear tag",
+      "breed": "Breed",
+      "sex": "Sex",
+      "birthDate": "Birth date",
+      "ageMonths": "Age (months)",
+      "stage": "Productive stage",
+      "lot": "Lot",
+      "status": "Status",
+      "exitReason": "Exit reason",
+      "exitDate": "Exit date",
+      "name": "Name",
+      "criterion": "Criterion"
+    },
+    "inventory": {
+      "title": "Animals",
+      "lead": "Find animals by ear tag, status or lot, register new animals and export the list.",
+      "register": "Register animal",
+      "filters": "Animal filters",
+      "earTagHint": "Exact ear tag",
+      "allStatuses": "All statuses",
+      "allLots": "All lots",
+      "search": "Search",
+      "clearFilters": "Clear filters",
+      "loading": "Loading animals",
+      "tableLabel": "Animals of the ranch",
+      "noLot": "No lot",
+      "noRanchTitle": "No ranch available",
+      "noRanch": "Your account has no ranch access, so no animals are shown.",
+      "emptyTitle": "No animals yet",
+      "empty": "No animals are registered in this ranch.",
+      "emptyManage": "Register the first animal to start the inventory.",
+      "noMatchTitle": "No matching animals",
+      "noMatch": "Change or clear the filters to see more animals."
+    },
+    "register": {
+      "title": "Register animal",
+      "lead": "Enter the identification and the first productive stage. The ear tag must be unique in this ranch.",
+      "submit": "Register",
+      "saved": "Animal registered."
+    },
+    "edit": {
+      "title": "Edit animal data",
+      "lead": "Changes keep the animal's stage history.",
+      "submit": "Save changes",
+      "saved": "Animal data saved."
+    },
+    "lifeStage": {
+      "title": "Change productive stage",
+      "lead": "The previous stage stays in the history and closes on the day you choose.",
+      "newStage": "New stage",
+      "validFrom": "Effective from",
+      "submit": "Change stage",
+      "saved": "Productive stage changed."
+    },
+    "exit": {
+      "title": "Record exit",
+      "warning": "Recording an exit cannot be undone. The animal stays in the records as inactive and read-only, with its history.",
+      "reason": "Exit reason",
+      "exitDate": "Exit date",
+      "submit": "Record exit",
+      "saved": "Exit recorded. The animal is now read-only."
+    },
+    "validation": {
+      "earTagRequired": "Enter an ear tag of up to 30 characters.",
+      "notInFuture": "The date cannot be in the future.",
+      "birthDateAfterStage": "The birth date cannot be after the first recorded stage.",
+      "beforeStage": "The date cannot be before the birth date or the start of the current stage.",
+      "stageUnchanged": "Choose a stage different from the current one.",
+      "lotNameRequired": "Enter a lot name of up to 80 characters."
+    },
+    "profile": {
+      "title": "Animal",
+      "back": "Back to animals",
+      "loading": "Loading animal",
+      "details": "Details",
+      "edit": "Edit data",
+      "changeStage": "Change stage",
+      "recordExit": "Record exit",
+      "readOnly": "This animal left the herd on {{date}}. Its record is kept for reference and cannot be changed.",
+      "noLot": "No lot",
+      "collar": "Smart collar",
+      "collarUnavailable": "Collar data is unavailable right now. Try again later.",
+      "noCollar": "No collar assigned",
+      "assignCollar": "Assign a collar in IoT devices",
+      "lastReading": "Last reading: {{date}}",
+      "noReadings": "No reading has arrived from this collar yet.",
+      "history": "Stage history",
+      "fromDate": "From {{date}}",
+      "untilDate": "until {{date}}",
+      "current": "current",
+      "noHistory": "No stage recorded."
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    },
+    "lots": {
+      "title": "Lots",
+      "lead": "Group animals for management. An animal can belong to several lots; removing it from a lot keeps its record.",
+      "create": "Create lot",
+      "createTitle": "Create lot",
+      "submit": "Create lot",
+      "created": "Lot created.",
+      "criterionHint": "Optional: how the group was formed.",
+      "listTitle": "Lots of the ranch",
+      "listNote": "Select a lot to see its animals.",
+      "tableLabel": "Lots of the ranch",
+      "members": "Animals",
+      "noCriterion": "No criterion",
+      "open": "Open",
+      "actions": "Actions",
+      "loading": "Loading lots",
+      "emptyTitle": "No lots yet",
+      "empty": "No lots exist in this ranch.",
+      "emptyManage": "Create a lot to group animals.",
+      "addAnimal": "Active animal",
+      "add": "Add to lot",
+      "noAssignable": "Every active animal is already in this lot.",
+      "membersTableLabel": "Animals in the lot",
+      "unknownAnimal": "Unknown animal",
+      "assignedOn": "Assigned on",
+      "remove": "Remove",
+      "noAnimals": "This lot has no animals yet."
+    },
+    "export": {
+      "failed": "The file could not be created. Try again.",
+      "limited": "The export holds the first 5000 animals of the filter."
+    }
   }
 }
