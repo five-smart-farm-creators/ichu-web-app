@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Animal profile with details, stage history, collar status, and actions to edit data, change the productive stage, and record an exit; exited animals are read-only.
 - Lots with member counts, the animals of each lot by ear tag, adding and removing animals, and Excel and PDF downloads.
 - Animals entry in the navigation menu.
+- IoT devices screen with serial, type, status, communication and battery, filters, registration, maintenance, collar and controller assignment, release with a reason, assignment history, and Excel and PDF downloads.
+- Water troughs with their lot, temperature bands, registration, and Excel and PDF downloads.
+- Edge gateways with registration, where the key is shown once, revocation, and Excel and PDF downloads.
+- IoT devices entry in the navigation menu.
 - English and Latin American Spanish interface, with a language menu; English is the default and the choice is remembered in this browser.
 - Application shell with navigation, ranch selector, role, account menu, and footer for signed-in pages.
 - Shared footer with terms and privacy link on public pages, plus a skip link on every page.
