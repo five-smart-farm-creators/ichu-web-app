@@ -98,8 +98,24 @@ main {
   .role-chip {
     display: none;
   }
+}
+
+/* Narrow screens give the ranch selector its own row and keep only icons in the first one. */
+@media (max-width: 600px) {
+  .shell-toolbar {
+    flex-wrap: wrap;
+    height: auto;
+    row-gap: 4px;
+    padding-block: 6px;
+  }
 
   .ranch-field {
-    width: min(180px, 42vw);
+    order: 1;
+    width: 100%;
+  }
+
+  .account-trigger span,
+  .brand strong {
+    display: none;
   }
 }

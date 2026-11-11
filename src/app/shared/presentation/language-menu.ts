@@ -15,7 +15,7 @@ const LANGUAGE_NAMES: Readonly<Record<AppLanguage, string>> = { en: 'English', e
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<button mat-button type="button" class="language-trigger" [matMenuTriggerFor]="languageMenu"
       [attr.aria-label]="('common.language' | translate) + ': ' + names[language.current()]">
-      <span>{{ names[language.current()] }}</span>
+      <span aria-hidden="true">{{ language.current().toUpperCase() }}</span>
       <ichu-icon name="chevron" />
     </button>
     <mat-menu #languageMenu="matMenu" [aria-label]="'common.language' | translate">
