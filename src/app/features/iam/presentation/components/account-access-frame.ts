@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'ichu-account-access-frame',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './account-access-frame.html',
   styleUrls: ['../styles/auth-layout.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

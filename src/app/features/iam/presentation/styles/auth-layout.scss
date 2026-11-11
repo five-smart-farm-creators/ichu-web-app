@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100svh;
+  flex: 1 0 auto;
   padding: 24px 20px 8px;
   background: var(--bg);
 }
@@ -56,9 +56,6 @@ h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--fo
 
 .login-note { margin-top: 6px; color: var(--login-muted); font-size: 12px; line-height: 1.5; }
 
-.login-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; max-width: var(--login-width); margin-top: 6px; padding: 0 4px; color: var(--login-muted); font-size: 12px; }
-.login-footer a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
-.login-footer a:hover { text-decoration: underline; }
 .login-photo {
   grid-area: photo;
   position: relative;
@@ -85,5 +82,4 @@ h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--fo
   .login-photo-caption span { display: none; }
   .login-card { padding: 18px 16px 14px; }
   .login-card-header { margin-bottom: 18px; }
-  .login-footer { max-width: 440px; }
 }

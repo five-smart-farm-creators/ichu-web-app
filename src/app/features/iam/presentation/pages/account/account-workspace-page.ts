@@ -2,14 +2,14 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import type {
   AccessScope,
   DecideHerdAdvisory,
-  GrantHerdAdvisory,
   HerdAdvisoryRecord,
-  RequestHerdAdvisory,
 } from '../../../domain/model/herd-advisory.model';
 import { AccountWorkspaceFacade } from '../../../application/services/account-workspace.facade';
+import { ErrorMessagePipe } from '../../pipes/error-message.pipe';
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -26,7 +26,7 @@ const futureDateValidator: ValidatorFn = control => {
 @Component({
   selector: 'ichu-account-workspace-page',
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, TranslatePipe, ErrorMessagePipe],
   providers: [AccountWorkspaceFacade],
   templateUrl: './account-workspace-page.html',
   styleUrl: './account-workspace-page.scss',
@@ -71,19 +71,6 @@ export class AccountWorkspacePage implements OnInit {
     }),
   });
 
-  readonly directGrantForm = new FormGroup({
-    ranchId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    veterinarianId: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.pattern(UUID_PATTERN)],
-    }),
-    scope: new FormControl<AccessScope>('Read', { nonNullable: true, validators: [Validators.required] }),
-    expiresOn: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, futureDateValidator],
-    }),
-  });
-
   readonly decisionForm = new FormGroup({
     scope: new FormControl<AccessScope>('Read', { nonNullable: true, validators: [Validators.required] }),
     expiresOn: new FormControl('', {
@@ -110,18 +97,14 @@ export class AccountWorkspacePage implements OnInit {
     });
   }
 
-  /** Submits a veterinarian's request using the selected ranch UUID and reason. */
+  /** Submits a veterinarian's request for the ranch UUID and reason entered in the form. */
   async submitAccessRequest(): Promise<void> {
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
       return;
     }
     const values = this.requestForm.getRawValue();
-    const request: RequestHerdAdvisory = {
-      ranchId: values.ranchId.trim(),
-      reason: values.reason.trim(),
-    };
-    if (await this.facade.requestAccess(request)) {
+    if (await this.facade.requestAccess(values.ranchId.trim(), { reason: values.reason.trim() })) {
       this.requestForm.reset({ ranchId: '', reason: '' });
     }
   }
@@ -131,29 +114,6 @@ export class AccountWorkspacePage implements OnInit {
     const ranchId = this.ranchSelectionControl.value;
     if (ranchId) {
       await this.facade.loadAdvisories(ranchId);
-    }
-  }
-
-  /** Prepares a manager-issued grant for an authorized ranch. */
-  async submitDirectGrant(): Promise<void> {
-    if (this.directGrantForm.invalid) {
-      this.directGrantForm.markAllAsTouched();
-      return;
-    }
-    const values = this.directGrantForm.getRawValue();
-    const grant: GrantHerdAdvisory = {
-      ranchId: values.ranchId,
-      veterinarianId: values.veterinarianId.trim(),
-      scope: values.scope,
-      expiresAt: this.expirationTimestamp(values.expiresOn),
-    };
-    if (await this.facade.grantAccess(grant)) {
-      this.directGrantForm.reset({
-        ranchId: values.ranchId,
-        veterinarianId: '',
-        scope: 'Read',
-        expiresOn: '',
-      });
     }
   }
 
@@ -255,10 +215,6 @@ export class AccountWorkspacePage implements OnInit {
       this.professionalProfileForm.patchValue(profile);
     }
     this.ranchSelectionControl.setValue(this.facade.selectedRanchId());
-    const firstManageableRanch = this.facade.manageableRanches()[0];
-    if (firstManageableRanch) {
-      this.directGrantForm.controls.ranchId.setValue(firstManageableRanch.ranchId);
-    }
   }
 
   private expirationTimestamp(date: string): string {

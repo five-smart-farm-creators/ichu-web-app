@@ -1,51 +1,48 @@
 <div class="auth-scene login-scene">
-  <main class="login-layout" [attr.inert]="entering() || transitioning() ? '' : null">
+  <div class="login-layout" [attr.inert]="entering() || transitioning() ? '' : null">
     <section class="auth-card login-card" aria-labelledby="login-title">
       <header class="login-card-header">
         <a class="login-brand" routerLink="/login" aria-label="ICHU · SmartFarm">
           <span class="login-brand-mark"><img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790"></span>
           <span class="login-brand-name"><strong>ICHU</strong><span>SmartFarm</span></span>
         </a>
-        <div class="login-mode" role="note">Secure account sign-in</div>
-        <h1 id="login-title">Welcome back</h1>
-        <p class="login-lead">Access your ICHU workspace.</p>
+        <div class="login-mode" role="note">{{ 'iam.login.mode' | translate }}</div>
+        <h1 id="login-title">{{ 'iam.login.title' | translate }}</h1>
+        <p class="login-lead">{{ 'iam.login.lead' | translate }}</p>
       </header>
 
       <form class="access-form" [formGroup]="credentials" (ngSubmit)="signIn()" novalidate aria-describedby="credential-note">
         <div class="field">
-          <label for="login-email">Email</label>
+          <label for="login-email">{{ 'iam.login.email' | translate }}</label>
           <input id="login-email" type="email" inputmode="email" enterkeyhint="next" autocapitalize="none" [spellcheck]="false" formControlName="email" autocomplete="email" placeholder="you@example.com" maxlength="120" [attr.aria-invalid]="credentials.controls.email.touched && credentials.controls.email.invalid" aria-describedby="login-email-error">
-          <p class="form-error" id="login-email-error">@if (credentials.controls.email.touched && credentials.controls.email.invalid) { Enter a valid email address. }</p>
+          <p class="form-error" id="login-email-error">@if (credentials.controls.email.touched && credentials.controls.email.invalid) { {{ 'iam.login.emailInvalid' | translate }} }</p>
         </div>
         <div class="field">
-          <label for="login-password">Password</label>
+          <label for="login-password">{{ 'iam.login.password' | translate }}</label>
           <div class="password-field">
-            <input id="login-password" [type]="passwordVisible() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" enterkeyhint="go" placeholder="Your password" minlength="8" maxlength="128" [attr.aria-invalid]="credentials.controls.password.touched && credentials.controls.password.invalid" aria-describedby="login-password-error">
-            <button class="password-toggle" type="button" (click)="passwordVisible.set(!passwordVisible())" [attr.aria-pressed]="passwordVisible()" [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"><ichu-icon name="eye" /></button>
+            <input id="login-password" [type]="passwordVisible() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" enterkeyhint="go" [placeholder]="'iam.login.passwordPlaceholder' | translate" minlength="8" maxlength="128" [attr.aria-invalid]="credentials.controls.password.touched && credentials.controls.password.invalid" aria-describedby="login-password-error">
+            <button class="password-toggle" type="button" (click)="passwordVisible.set(!passwordVisible())" [attr.aria-pressed]="passwordVisible()" [attr.aria-label]="(passwordVisible() ? 'iam.login.hidePassword' : 'iam.login.showPassword') | translate"><ichu-icon name="eye" /></button>
           </div>
-          <p class="form-error" id="login-password-error">@if (credentials.controls.password.touched && credentials.controls.password.invalid) { Use 8–128 characters. }</p>
-          <a class="account-link recover-link" routerLink="/recover">Forgot your password?</a>
+          <p class="form-error" id="login-password-error">@if (credentials.controls.password.touched && credentials.controls.password.invalid) { {{ 'iam.login.passwordInvalid' | translate }} }</p>
+          <a class="account-link recover-link" routerLink="/recover">{{ 'iam.login.forgotPassword' | translate }}</a>
         </div>
-        <button mat-flat-button class="btn primary login-submit" type="submit" [disabled]="entering() || transitioning()">{{ entering() ? 'Signing in…' : 'Sign in' }}</button>
+        <button mat-flat-button class="btn primary login-submit" type="submit" [disabled]="entering() || transitioning()">{{ (entering() ? 'iam.login.submitting' : 'iam.login.submit') | translate }}</button>
       </form>
       <p class="login-register">
-        <span>New to ICHU?</span>
-        <a class="account-link" routerLink="/register">Create an account</a>
+        <span>{{ 'iam.login.newHere' | translate }}</span>
+        <a class="account-link" routerLink="/register">{{ 'iam.login.createAccount' | translate }}</a>
       </p>
-      <p class="login-note" id="credential-note">Sign-in is checked by the ICHU account service.</p>
-      @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error.message }}</p> }
-      @if (navigationFailed()) { <p class="form-error" role="alert">Your workspace could not open. Try again.</p> }
+      <p class="login-note" id="credential-note">{{ 'iam.login.note' | translate }}</p>
+      @if (auth.error(); as error) { <p class="form-error" role="alert">{{ error | errorMessage }}</p> }
+      @if (navigationFailed()) { <p class="form-error" role="alert">{{ 'iam.login.navigationFailed' | translate }}</p> }
     </section>
     <div class="login-photo">
       <img src="/assets/images/login-andean-herd.webp" srcset="/assets/images/login-andean-herd-small.webp 864w, /assets/images/login-andean-herd.webp 1728w" sizes="(max-width: 680px) 440px, 860px" alt="" width="1728" height="964" decoding="async">
       <div class="login-photo-caption">
-        <p>Better care for every herd.</p>
+        <p>{{ 'iam.login.tagline' | translate }}</p>
         <span>ICHU · SmartFarm</span>
       </div>
     </div>
-  </main>
+  </div>
   @if (transitioning()) { <ichu-entry-transition (finished)="finishTransition()" /> }
-  <footer class="login-footer" [attr.inert]="entering() || transitioning() ? '' : null">
-    <span>ICHU · SmartFarm</span><a routerLink="/terms">Privacy</a>
-  </footer>
 </div>
