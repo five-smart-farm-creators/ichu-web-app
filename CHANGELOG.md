@@ -14,9 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shared footer with terms and privacy link on public pages, plus a skip link on every page.
 - Translated page titles and meta description that follow the selected language.
 - Ranch names in navigation and account pages, with a numbered fallback when a ranch has no name.
+- Veterinarians confirm a ranch by its access code before requesting access.
+- Ranch managers see the access code of each ranch they manage, with a button to copy it.
+- Ranch managers review advisory requests in a table filtered by status; granting access asks for a scope and last valid day.
+- Dates follow the selected language, English or Latin American Spanish.
 
 ### Changed
 
+- Account and advisories are separate pages: the account page shows identity, ranch access, and the professional profile; the advisories page handles access requests and decisions.
+- Professional profile changes are checked for specialty, license number, and years of experience before saving.
+- Granted access ends at the close of the selected day in local time.
 - Sign-in verifies the Firebase identity and then the ICHU account, without a separate backend session request.
 - Errors show the message from the ICHU service in the selected language, or a translated fallback.
 - Herd advisory requests and decisions use ranch-scoped endpoints.
@@ -26,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Direct access grant form for ranch managers; access is granted by reviewing a pending request.
+- Ranch ID entry for access requests; veterinarians enter the ranch access code instead.
+- The combined account workspace page; its content moved to the account and advisories pages.
 
 ### Fixed
 
