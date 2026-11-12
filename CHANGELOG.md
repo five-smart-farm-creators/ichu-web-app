@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Veterinarians can register again: the hidden head-count field no longer blocks the form when the account is not a ranch manager.
+- Every route of the deployed site revalidates its page on each visit, so visitors get a new release at once instead of a cached page for up to an hour.
 - The map draws on the deployed site; the production bundle exposed Leaflet only as its default export.
 - Sign-in and sign-up wait for a sleeping API to start: the app wakes it on load, allows 60 s per request and explains a slow start.
 
