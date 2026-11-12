@@ -1,0 +1,152 @@
+<div class="planning-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.planning' | translate }}</span>
+      <h1>{{ 'planning.calendar.title' | translate }}</h1>
+      <p class="page-lead">{{ 'planning.calendar.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.monthEntries().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage()) {
+          <button type="button" class="btn primary" (click)="openSchedule()">
+            <ichu-icon name="plus" />
+            <span>{{ 'planning.activities.schedule.open' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'planning.calendar.loading' | translate" />
+    }
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (facade.limited()) {
+      <p class="notice" role="note">{{ 'planning.calendar.limited' | translate: { limit: limit } }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+
+    <section class="reminder-grid" [attr.aria-label]="'planning.reminders.title' | translate">
+      <article class="panel reminder-card" aria-labelledby="upcoming-heading">
+        <div class="panel-head"><h2 id="upcoming-heading">{{ 'planning.reminders.upcoming' | translate }}</h2></div>
+        <div class="panel-body">
+          <ul class="activity-list">
+            @for (entry of facade.reminders().upcoming; track entry.activity.id) {
+              <li>
+                <ichu-planned-activity-row [entry]="entry" [animalLabel]="facade.earTag(entry.activity.cattleId)" (opened)="openActivity(entry)" />
+              </li>
+            } @empty {
+              <li class="text-muted">{{ 'planning.reminders.noUpcoming' | translate }}</li>
+            }
+          </ul>
+        </div>
+      </article>
+      <article class="panel reminder-card" aria-labelledby="overdue-heading">
+        <div class="panel-head"><h2 id="overdue-heading">{{ 'planning.reminders.overdue' | translate }}</h2></div>
+        <div class="panel-body">
+          <ul class="activity-list">
+            @for (entry of facade.reminders().overdue; track entry.activity.id) {
+              <li>
+                <ichu-planned-activity-row [entry]="entry" [animalLabel]="facade.earTag(entry.activity.cattleId)" (opened)="openActivity(entry)" />
+              </li>
+            } @empty {
+              <li class="text-muted">{{ 'planning.reminders.noOverdue' | translate }}</li>
+            }
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" [attr.aria-busy]="facade.loading()">
+      <div class="calendar-toolbar">
+        <div class="month-nav">
+          <button type="button" class="btn secondary previous" (click)="shift(-1)" [attr.aria-label]="'planning.calendar.previousMonth' | translate">
+            <ichu-icon name="chevron" />
+          </button>
+          <h2 class="calendar-title">{{ monthTitle() }}</h2>
+          <button type="button" class="btn secondary" (click)="shift(1)" [attr.aria-label]="'planning.calendar.nextMonth' | translate">
+            <ichu-icon name="chevron" />
+          </button>
+        </div>
+        <div class="view-toggle" role="group" [attr.aria-label]="'planning.calendar.view' | translate">
+          <button type="button" class="btn secondary" [attr.aria-pressed]="view() === 'calendar'" (click)="view.set('calendar')">
+            {{ 'planning.calendar.viewGrid' | translate }}
+          </button>
+          <button type="button" class="btn secondary" [attr.aria-pressed]="view() === 'agenda'" (click)="view.set('agenda')">
+            {{ 'planning.calendar.viewAgenda' | translate }}
+          </button>
+        </div>
+      </div>
+
+      @if (view() === 'calendar') {
+        <div class="calendar-grid" role="group" [attr.aria-label]="monthTitle()">
+          @for (name of weekdays(); track $index) {
+            <span class="weekday" aria-hidden="true">{{ name }}</span>
+          }
+          @for (week of weeks(); track $index) {
+            @for (cell of week; track cell.day) {
+              <button type="button" class="day"
+                [class.outside]="!cell.inMonth"
+                [class.today]="cell.day === todayKey()"
+                [class.selected]="cell.day === facade.selectedDay()"
+                [attr.aria-pressed]="cell.day === facade.selectedDay()"
+                [attr.aria-current]="cell.day === todayKey() ? 'date' : null"
+                [attr.aria-label]="dayLabel(cell)"
+                (click)="selectDay(cell.day)">
+                <span class="day-number" aria-hidden="true">{{ cell.date.getDate() }}</span>
+                @if (count(cell.day) > 0) {
+                  <span class="day-chip" aria-hidden="true">{{ count(cell.day) }}</span>
+                }
+              </button>
+            }
+          }
+        </div>
+
+        <div class="panel day-list-panel">
+          <div class="panel-head"><h2>{{ selectedHeading() || ('planning.calendar.pickDay' | translate) }}</h2></div>
+          <div class="panel-body">
+            <ul class="activity-list">
+              @for (entry of facade.selectedEntries(); track entry.activity.id) {
+                <li>
+                  <ichu-planned-activity-row [entry]="entry" [animalLabel]="facade.earTag(entry.activity.cattleId)" (opened)="openActivity(entry)" />
+                </li>
+              } @empty {
+                @if (facade.selectedDay()) {
+                  <li class="text-muted">{{ 'planning.calendar.noActivitiesOnDay' | translate }}</li>
+                }
+              }
+            </ul>
+          </div>
+        </div>
+      } @else {
+        <div class="panel-body">
+          <ul class="activity-list">
+            @for (entry of facade.monthEntries(); track entry.activity.id) {
+              <li>
+                <ichu-planned-activity-row [entry]="entry" [animalLabel]="facade.earTag(entry.activity.cattleId)" (opened)="openActivity(entry)" />
+              </li>
+            } @empty {
+              <li class="text-muted">{{ 'planning.calendar.noActivitiesMonth' | translate }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </section>
+  }
+</div>

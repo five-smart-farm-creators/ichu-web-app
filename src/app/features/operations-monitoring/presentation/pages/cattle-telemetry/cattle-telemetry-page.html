@@ -22,6 +22,9 @@
         }
       </div>
       <div class="toolbar">
+        @if (facade.animal(); as animal) {
+          <a class="btn secondary" [routerLink]="['/health/cattle', animal.cattleId]">{{ 'health.links.openHistory' | translate }}</a>
+        }
         <ichu-export-menu [disabled]="facade.readings().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
       </div>
     </header>

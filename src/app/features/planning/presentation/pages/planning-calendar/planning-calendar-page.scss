@@ -1,0 +1,9 @@
+@use '../../styles/planning-pages';
+
+:host {
+  display: block;
+}
+
+.previous ichu-icon {
+  transform: scaleX(-1);
+}

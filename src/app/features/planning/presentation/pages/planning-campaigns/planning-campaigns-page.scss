@@ -1,0 +1,9 @@
+@use '../../styles/planning-pages';
+
+:host {
+  display: block;
+}
+
+.table-panel .link-button {
+  min-height: 32px;
+}

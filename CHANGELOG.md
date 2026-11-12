@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Clinical history screen for each animal, with an animal picker, a 90-day, one-year or five-year period, a type filter, a timeline of field events and clinical interventions newest first, a health summary with the latest values, pending alerts and the current withdrawal period, Excel and PDF downloads, and registration of health events (managers) and clinical interventions (veterinarians with clinical access). Registering a record again after a failed attempt does not create a duplicate.
+- Health planning screen with a month calendar, a day list, an agenda view, reminders for the next 7 days and for overdue work, and Excel and PDF downloads of the visible month.
+- Planning campaigns, sanitary or reproductive, over an inclusive range of days, with their scheduled activities, applications linked to a clinical intervention of the same animal, and follow-ups; Excel and PDF downloads.
+- Withdrawal periods per animal with their bounds, state and days left, filtered by animal, recorded with explicit start and end instants.
+- Clinical history and Health planning entries in the navigation menu, and links to the clinical history from the animal profile and the animal monitoring page.
 - Herd monitoring with the latest body temperature, activity, rumination and last known position of each active animal, a lot filter, stale and missing values labelled instead of shown as zero, and Excel and PDF downloads.
 - Animal monitoring with latest values, a 24-hour, 7-day, 30-day or custom period, charts with the threshold band, statistics (valid readings, minimum, maximum, average, standard deviation and share outside the threshold), a readings table, and Excel and PDF downloads.
 - Normal ranges per productive stage and metric, with a table and a dialog to configure them; a range requires a minimum below its maximum.
