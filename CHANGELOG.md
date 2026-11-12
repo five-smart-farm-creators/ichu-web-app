@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The map draws on the deployed site; the production bundle exposed Leaflet only as its default export.
+- Sign-in and sign-up wait for a sleeping API to start: the app wakes it on load, allows 60 s per request and explains a slow start.
+
 ### Added
 
 - Firebase Hosting configuration and a deployment script that publishes the build with the production runtime configuration instead of the local one.
