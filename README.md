@@ -46,7 +46,7 @@ The landing page links to `/plans?tier=<Basic|Standard|Pro>&headCount=<n>&source
 
 ## Deployment
 
-The app is published on Firebase Hosting (`firebase.json`: the Angular build in `dist/ichu-web-app/browser`, every route served by `index.html`, hashed assets cached for a year, `index.html`, `config.json` and translations never cached). Sign in once with `npx -y firebase-tools@15.34.2 login`, then run:
+The app is published on Firebase Hosting (`firebase.json`: the Angular build in `dist/ichu-web-app/browser`, every route served by `index.html`, hashed scripts, styles and fonts cached for a year, everything else — including the `index.html` served for every route — revalidated on each visit). Sign in once with `npx -y firebase-tools@15.34.2 login`, then run:
 
 ```powershell
 ./scripts/deploy-hosting.ps1
