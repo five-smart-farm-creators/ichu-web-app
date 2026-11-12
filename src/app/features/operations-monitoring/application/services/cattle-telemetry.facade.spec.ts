@@ -29,7 +29,7 @@ function page(items: TelemetryReading[], totalCount: number) {
   return { from: period.from.toISOString(), to: period.to.toISOString(), oldestRetainedRecordedAt: null, page: 1, pageSize: 100, totalCount, items };
 }
 
-const animal: MonitoredCattleSummary = { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' };
+const animal: MonitoredCattleSummary = { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' };
 const latest = { cattleId: 'cattle-1' } as LatestTelemetry;
 const calfFever: MonitoringThreshold = {
   thresholdId: 'threshold-1', lifeStage: 'Calf', metric: 'BodyTemperature', minValue: 38, maxValue: 39.5, severity: 'Warning', revision: 1,

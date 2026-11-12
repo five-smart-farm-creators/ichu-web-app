@@ -38,6 +38,7 @@ function operation(operationId: string, type: LivestockOperation['type'], occurr
   return {
     operationId, cattleId: 'cattle-1', type, isClinical: clinical, occurredAt, receivedAt: occurredAt,
     observation: null, product: clinical ? 'Foot-and-mouth vaccine' : null, dose: clinical ? '2 ml' : null,
+    sireReference: null, pregnancyResult: null, expectedCalvingDate: null,
   };
 }
 
@@ -83,7 +84,7 @@ describe('ClinicalHistoryPage', () => {
         {
           provide: CattleInformationContextFacade,
           useValue: {
-            monitoredCattle: vi.fn(async () => [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' }]),
+            monitoredCattle: vi.fn(async () => [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' }]),
           },
         },
       ],

@@ -1,0 +1,218 @@
+<div class="monitoring-page reproduction-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.reproduction' | translate }}</span>
+      <h1>{{ 'reproduction.title' | translate }}</h1>
+      <p class="page-lead">{{ 'reproduction.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="!facade.history()" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (facade.animal()) {
+          @if (canRecord.service()) {
+            <button type="button" class="btn secondary" (click)="openRecord('service')">
+              <ichu-icon name="plus" />
+              <span>{{ 'reproduction.actions.service' | translate }}</span>
+            </button>
+          }
+          @if (canRecord.diagnosis()) {
+            <button type="button" class="btn secondary" (click)="openRecord('diagnosis')">
+              <ichu-icon name="plus" />
+              <span>{{ 'reproduction.actions.diagnosis' | translate }}</span>
+            </button>
+          }
+          @if (canRecord.event()) {
+            <button type="button" class="btn primary" (click)="openRecord('event')">
+              <ichu-icon name="plus" />
+              <span>{{ 'reproduction.actions.event' | translate }}</span>
+            </button>
+          }
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'reproduction.filters' | translate">
+      <div class="filter-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field filter-field-wide">
+          <mat-label>{{ 'reproduction.fields.female' | translate }}</mat-label>
+          <mat-select [value]="facade.animal()?.cattleId ?? ''" (selectionChange)="chooseFemale($event.value)">
+            <mat-option value="">{{ 'reproduction.chooseFemale' | translate }}</mat-option>
+            @for (animal of facade.females(); track animal.cattleId) {
+              <mat-option [value]="animal.cattleId">
+                {{ animal.earTag }}@if (animal.status !== 'Active') { · {{ ('cattle.status.' + animal.status) | translate }} }
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+
+    @if (!facade.animal()) {
+      <section class="panel">
+        <div class="panel-body empty-state">
+          <h2>{{ 'reproduction.noAnimalTitle' | translate }}</h2>
+          <p>{{ 'reproduction.noAnimal' | translate }}</p>
+        </div>
+      </section>
+    } @else if (facade.history(); as history) {
+      <section class="panel" aria-labelledby="figures-heading" [attr.aria-busy]="facade.loading()">
+        <div class="panel-head">
+          <h2 id="figures-heading">{{ 'reproduction.summary.title' | translate }}</h2>
+        </div>
+        <div class="panel-body">
+          <dl class="figure-grid">
+            <div>
+              <dt>{{ 'reproduction.kpi.pregnancies' | translate }}</dt>
+              <dd>{{ history.pregnanciesConfirmed }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'reproduction.kpi.services' | translate }}</dt>
+              <dd>{{ history.services.length }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'reproduction.kpi.servicesPerPregnancy' | translate }}</dt>
+              <dd>
+                @if (history.servicesPerPregnancy !== null) {
+                  {{ ratioFormat().format(history.servicesPerPregnancy) }}
+                } @else {
+                  –
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'reproduction.kpi.lastCalving' | translate }}</dt>
+              <dd>
+                @if (facade.lastCalving(); as calving) {
+                  {{ calving.occurredAt | localizedDate: 'mediumDate' }}
+                } @else {
+                  –
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'reproduction.kpi.daysOpen' | translate }}</dt>
+              <dd>
+                @if (facade.daysOpen() !== null) {
+                  {{ facade.daysOpen() }}
+                } @else {
+                  –
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'reproduction.kpi.expectedCalving' | translate }}</dt>
+              <dd>
+                @if (facade.pregnancy(); as pregnancy) {
+                  @if (pregnancy.expectedCalvingDate) {
+                    {{ pregnancy.expectedCalvingDate | localizedDate: 'mediumDate' }}
+                  } @else {
+                    –
+                  }
+                } @else {
+                  {{ 'reproduction.kpi.notPregnant' | translate }}
+                }
+              </dd>
+            </div>
+          </dl>
+          <p class="text-muted figure-note">{{ 'reproduction.kpi.note' | translate }}</p>
+        </div>
+      </section>
+
+      @if (history.hasHistory) {
+        <div class="reproduction-grid">
+          <section class="panel" aria-labelledby="intervals-heading">
+            <div class="panel-head">
+              <h2 id="intervals-heading">{{ 'reproduction.intervals.title' | translate }}</h2>
+            </div>
+            <div class="table-scroll">
+              <table mat-table class="data-table" [dataSource]="history.intervals" [attr.aria-label]="'reproduction.intervals.tableLabel' | translate">
+                <ng-container matColumnDef="calving">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'reproduction.intervals.calving' | translate }}</th>
+                  <td mat-cell *matCellDef="let interval">{{ interval.calvingAt | localizedDate: 'mediumDate' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="conception">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'reproduction.intervals.conception' | translate }}</th>
+                  <td mat-cell *matCellDef="let interval">
+                    @if (interval.conceptionServiceAt) {
+                      {{ interval.conceptionServiceAt | localizedDate: 'mediumDate' }}
+                    } @else {
+                      {{ 'reproduction.intervals.notYet' | translate }}
+                    }
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="daysOpen">
+                  <th mat-header-cell *matHeaderCellDef>{{ 'reproduction.intervals.daysOpen' | translate }}</th>
+                  <td mat-cell *matCellDef="let interval">{{ interval.daysOpen ?? '–' }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="intervalColumns"></tr>
+                <tr mat-row *matRowDef="let interval; columns: intervalColumns"></tr>
+              </table>
+            </div>
+            @if (history.intervals.length === 0) {
+              <p class="panel-body text-muted">{{ 'reproduction.intervals.empty' | translate }}</p>
+            }
+          </section>
+
+          <section class="panel" aria-labelledby="timeline-heading" [attr.aria-busy]="facade.loading()">
+            <div class="panel-head">
+              <h2 id="timeline-heading">{{ 'reproduction.timeline.title' | translate }}</h2>
+            </div>
+            <div class="panel-body">
+              <ol class="timeline">
+                @for (entry of facade.timeline(); track entry.kind + entry.occurredAt) {
+                  <li>
+                    <strong>{{ entry.occurredAt | localizedDate: 'short' }} · {{ ('reproduction.event.' + entry.kind) | translate }}</strong>
+                    @if (entry.method) {
+                      <span class="text-muted">{{ ('health.type.' + entry.method) | translate }}</span>
+                    }
+                    @if (entry.result) {
+                      <span class="text-muted">
+                        {{ ('reproduction.pregnancyResult.' + entry.result) | translate }}
+                        @if (entry.expectedCalvingDate) {
+                          · {{ 'health.fields.expectedCalvingDate' | translate }}: {{ entry.expectedCalvingDate | localizedDate: 'mediumDate' }}
+                        }
+                      </span>
+                    }
+                    @if (entry.sireReference) {
+                      <span class="text-muted">{{ 'health.fields.sireReference' | translate }}: {{ entry.sireReference }}</span>
+                    }
+                  </li>
+                } @empty {
+                  <li class="text-muted">{{ 'reproduction.timeline.empty' | translate }}</li>
+                }
+              </ol>
+            </div>
+          </section>
+        </div>
+      } @else {
+        <section class="panel">
+          <div class="panel-body empty-state">
+            <h2>{{ 'reproduction.noHistoryTitle' | translate }}</h2>
+            <p>{{ 'reproduction.noHistory' | translate: { months: history.ageInMonths, stage: ('cattle.stage.' + history.lifeStage | translate) } }}</p>
+          </div>
+        </section>
+      }
+    } @else if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'reproduction.loading' | translate" />
+    }
+  }
+</div>

@@ -8,7 +8,7 @@ import { HERD_LATEST_LIMIT, HerdMonitoringFacade } from './herd-monitoring.facad
 const unavailable: LatestIndicator = { status: 'Unavailable', value: null, unit: 'celsius', recordedAt: null, isStale: null };
 
 function animal(id: string): MonitoredCattleSummary {
-  return { cattleId: id, earTag: 'tag-' + id, status: 'Active', lifeStage: 'Calf' };
+  return { cattleId: id, earTag: 'tag-' + id, status: 'Active', lifeStage: 'Calf', sex: 'Female' };
 }
 
 function latest(cattleId: string): LatestTelemetry {

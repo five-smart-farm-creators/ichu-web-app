@@ -53,6 +53,28 @@ describe('RestLivestockOperationRepository', () => {
     await result;
   });
 
+  it('posts a breeding service with its sire and a pregnancy diagnosis with its calving date', async () => {
+    const service = repository.registerFieldEvent('ranch-1', {
+      operationId: 'op-3', cattleId: 'cattle-1', type: 'NaturalMating', occurredAt: '2026-11-10T06:00:00.000Z', observation: null,
+      sireReference: 'Bull 7',
+    });
+    const serviceRequest = http.expectOne(ranchUrl + '/field-events');
+
+    expect(serviceRequest.request.body).toMatchObject({ type: 'NaturalMating', sireReference: 'Bull 7' });
+    serviceRequest.flush({ operationId: 'op-3' });
+    await service;
+
+    const diagnosis = repository.registerClinicalIntervention('ranch-1', {
+      operationId: 'op-4', cattleId: 'cattle-1', type: 'PregnancyDiagnosis', occurredAt: '2026-11-10T06:00:00.000Z', observation: null,
+      product: null, dose: null, pregnancyResult: 'Pregnant', expectedCalvingDate: '2027-08-01',
+    });
+    const diagnosisRequest = http.expectOne(ranchUrl + '/clinical-interventions');
+
+    expect(diagnosisRequest.request.body).toMatchObject({ type: 'PregnancyDiagnosis', pregnancyResult: 'Pregnant', expectedCalvingDate: '2027-08-01' });
+    diagnosisRequest.flush({ operationId: 'op-4' });
+    await diagnosis;
+  });
+
   it('posts a clinical intervention with its product and dose', async () => {
     const result = repository.registerClinicalIntervention('ranch-1', {
       operationId: 'op-2', cattleId: 'cattle-1', type: 'Vaccination', occurredAt: '2026-11-10T06:00:00.000Z',
