@@ -62,8 +62,9 @@
           <p class="text-muted" role="status">{{ 'monitoring.map.loading' | translate }}</p>
         }
         @if (mapState() === 'ready') {
-          <ichu-monitoring-map [outlines]="outlines()" [markers]="markers()" [draft]="draftCorners()" [center]="mapCenter()"
-            [zoom]="mapZoom()" [accessibleLabel]="'locations.map.label' | translate" (mapClick)="onMapClick($event)" />
+          <ichu-monitoring-map [outlines]="outlines()" [markers]="markers()" [draft]="geofences.draft()"
+            [accessibleLabel]="'locations.map.label' | translate" (mapClick)="onMapClick($event)"
+            (vertexRemove)="removeCorner($event)" />
         }
         <p class="read-note">{{ (editing() ? 'locations.map.editHelp' : 'locations.map.viewHelp') | translate }}</p>
       </div>

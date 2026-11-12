@@ -15,7 +15,7 @@ describe('RestMonitoringThresholdRepository', () => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(), provideHttpClientTesting(), RestMonitoringThresholdRepository,
-        { provide: RUNTIME_CONFIG, useValue: { apiBaseUrl: 'https://api.example.test/api/v1', firebase: null, googleMaps: null } },
+        { provide: RUNTIME_CONFIG, useValue: { apiBaseUrl: 'https://api.example.test/api/v1', firebase: null } },
       ],
     });
     http = TestBed.inject(HttpTestingController);

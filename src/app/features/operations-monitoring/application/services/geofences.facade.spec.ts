@@ -62,6 +62,17 @@ describe('GeofencesFacade', () => {
     expect(facade.draft()).toBeNull();
   });
 
+  it('removes one corner by its position and ignores positions outside the boundary', async () => {
+    await facade.open('ranch-1');
+    facade.startDefining('lot-2');
+    square.forEach(point => facade.addVertex(point));
+
+    facade.removeVertex(1);
+    expect(facade.draft()?.vertices).toEqual([square[0], square[2]]);
+    facade.removeVertex(5);
+    expect(facade.draft()?.vertices).toEqual([square[0], square[2]]);
+  });
+
   it('defines a geofence for the chosen lot with the trimmed name and the drawn vertices', async () => {
     await facade.open('ranch-1');
     facade.startDefining('lot-2');

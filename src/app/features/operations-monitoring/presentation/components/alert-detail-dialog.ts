@@ -9,10 +9,10 @@ import { LanguageService } from '../../../../shared/infrastructure/i18n/language
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
 import { LocalizedDatePipe } from '../../../../shared/presentation/localized-date.pipe';
-import { GoogleMapsLoader } from '../../../../shared/infrastructure/maps/google-maps-loader';
+import { LeafletLoader } from '../../../../shared/infrastructure/maps/leaflet-loader';
 import { AlertsFacade } from '../../application/services/alerts.facade';
 import { type Alert, ALERT_TEXT_MAX_LENGTH } from '../../domain/model/alert.model';
-import type { Geofence } from '../../domain/model/geofence.model';
+import type { Geofence, GeoPoint } from '../../domain/model/geofence.model';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 import { MONITORING_ERROR_KEYS } from '../monitoring-error-keys';
 import { durationParts, formatMeasure } from '../monitoring-format';
@@ -84,7 +84,7 @@ export interface AlertDialogData {
       @if (hasPosition) {
         @if (mapState() === 'ready') {
           <ichu-monitoring-map class="alert-map" height="240px" [outlines]="outlines" [markers]="markers"
-            [center]="center" [zoom]="16" [accessibleLabel]="'monitoring.alerts.detail.mapLabel' | translate" />
+            [accessibleLabel]="'monitoring.alerts.detail.mapLabel' | translate" />
         } @else if (mapState() === 'unavailable') {
           <p class="notice" role="note">{{ 'monitoring.map.unavailable' | translate }}</p>
         }
@@ -153,18 +153,23 @@ export class AlertDetailDialog {
   private readonly dialogRef = inject<MatDialogRef<AlertDetailDialog, MonitoringDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(AlertsFacade);
   private readonly language = inject(LanguageService);
-  private readonly loader = inject(GoogleMapsLoader);
+  private readonly loader = inject(LeafletLoader);
   readonly mapState = signal<'loading' | 'ready' | 'unavailable'>('loading');
   readonly saving = signal(false);
   readonly error = signal<ApiError | null>(null);
   readonly canAcknowledge = this.data.canManage && this.data.alert.status === 'Pending';
   readonly hasPosition = this.data.alert.latitude !== null && this.data.alert.longitude !== null;
-  readonly center = { latitude: this.data.alert.latitude ?? 0, longitude: this.data.alert.longitude ?? 0 };
+  readonly position: GeoPoint = { latitude: this.data.alert.latitude ?? 0, longitude: this.data.alert.longitude ?? 0 };
   readonly markers: MapMarker[] = this.hasPosition
-    ? [{ id: this.data.alert.alertId, title: this.data.earTag, position: this.center }]
+    ? [{ id: this.data.alert.alertId, title: this.data.earTag, position: this.position, recordedAt: this.data.alert.raisedAt, stale: false }]
     : [];
   readonly outlines: MapOutline[] = this.data.geofence
-    ? [{ id: this.data.geofence.geofenceId, vertices: this.data.geofence.vertices }]
+    ? [{
+      id: this.data.geofence.geofenceId,
+      title: this.data.geofence.name,
+      toleranceMeters: this.data.geofence.toleranceMeters,
+      vertices: this.data.geofence.vertices,
+    }]
     : [];
   readonly locale = computed(() => formatLocaleTag(this.language.current()));
   readonly detectedText = computed(() => formatMeasure(this.data.alert.detectedValue, this.locale()));

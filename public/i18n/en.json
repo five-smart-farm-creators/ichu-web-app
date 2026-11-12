@@ -680,7 +680,7 @@
     "map": {
       "label": "Map of grazing zones and last known positions",
       "viewHelp": "Grazing zones and last known positions. A position is a past observation, not a live location.",
-      "editHelp": "Click the map to add a corner. Drag a corner to move it. Right-click a corner to remove it, or use Undo last point."
+      "editHelp": "Click the map to add a corner. Drag a corner to move it. Click a corner, or focus it with Tab and press Enter, to remove it, or use Undo last point."
     },
     "editor": {
       "defineTitle": "New grazing zone",
@@ -718,8 +718,12 @@
       "thresholds": "Thresholds"
     },
     "map": {
-      "unavailable": "The map is not available. Check the Google Maps settings; the tables still show the same data.",
-      "loading": "Loading the map…"
+      "unavailable": "The map is not available. Reload the page to try again; the tables still show the same data.",
+      "loading": "Loading the map…",
+      "geofenceTooltip": "{{name}} · tolerance {{tolerance}} m",
+      "animalTooltip": "Ear tag {{earTag}} · last known position {{time}}",
+      "staleAnimalTooltip": "Ear tag {{earTag}} · position from {{time}}, older than 24 hours",
+      "vertex": "Vertex {{number}}"
     },
     "metric": {
       "BodyTemperature": "Body temperature",

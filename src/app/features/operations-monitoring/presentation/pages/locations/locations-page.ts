@@ -18,7 +18,7 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
-import { GoogleMapsLoader } from '../../../../../shared/infrastructure/maps/google-maps-loader';
+import { LeafletLoader } from '../../../../../shared/infrastructure/maps/leaflet-loader';
 import { GeofencesFacade } from '../../../application/services/geofences.facade';
 import { HERD_LATEST_LIMIT, HerdMonitoringFacade, type HerdRow } from '../../../application/services/herd-monitoring.facade';
 import { ALERT_SEVERITIES, type AlertSeverity } from '../../../domain/model/alert.model';
@@ -59,7 +59,7 @@ export class LocationsPage {
   readonly herd = inject(HerdMonitoringFacade);
   readonly geofences = inject(GeofencesFacade);
   readonly context = inject(IamContextFacade);
-  private readonly loader = inject(GoogleMapsLoader);
+  private readonly loader = inject(LeafletLoader);
   private readonly exportService = inject(TableExportService);
   private readonly translate = inject(TranslateService);
   private readonly language = inject(LanguageService);
@@ -95,23 +95,17 @@ export class LocationsPage {
     const lotId = this.herd.lotId();
     return this.geofences.geofences().filter(geofence => !lotId || geofence.lotId === lotId);
   });
-  /** The boundary being redefined is hidden from the map while it is edited, and shown as the draft instead. */
-  readonly outlines = computed<MapOutline[]>(() => {
-    const draftId = this.geofences.draft()?.geofenceId ?? null;
-    return this.lotGeofences()
-      .filter(geofence => geofence.geofenceId !== draftId)
-      .map(geofence => ({ id: geofence.geofenceId, vertices: geofence.vertices }));
-  });
+  /** Independent of the draft, so the map refits only when the lot or saved geofences change, never while drawing. */
+  readonly outlines = computed<MapOutline[]>(() => this.lotGeofences().map(geofence => ({
+    id: geofence.geofenceId,
+    title: geofence.name,
+    toleranceMeters: geofence.toleranceMeters,
+    vertices: geofence.vertices,
+  })));
   readonly markers = computed<MapMarker[]>(() => this.herd.rows().flatMap(row => {
-    const position = positionOf(row);
-    return position ? [{ id: row.animal.cattleId, title: row.animal.earTag, position }] : [];
+    const marker = markerOf(row);
+    return marker ? [marker] : [];
   }));
-  /** The view follows the boundaries and positions, not the drawing, so clicking the map never moves it. */
-  readonly mapCenter = computed<GeoPoint>(() => centroid([
-    ...this.lotGeofences().flatMap(geofence => geofence.vertices),
-    ...this.markers().map(marker => marker.position),
-  ]));
-  readonly mapZoom = computed(() => (this.lotGeofences().length + this.markers().length > 0 ? 15 : 2));
   readonly form = new FormGroup({
     lotId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(GEOFENCE_NAME_MAX_LENGTH)] }),
@@ -183,6 +177,12 @@ export class LocationsPage {
 
   clearCorners(): void {
     this.geofences.clearVertices();
+  }
+
+  /** Corners dragged on the map are read back first, so the remaining ones keep their dragged positions. */
+  removeCorner(index: number): void {
+    this.syncCornersFromMap();
+    this.geofences.removeVertex(index);
   }
 
   async save(): Promise<void> {
@@ -291,11 +291,16 @@ function positionOf(row: HerdRow): GeoPoint | null {
   return { latitude: position.latitude, longitude: position.longitude };
 }
 
-function centroid(points: readonly GeoPoint[]): GeoPoint {
-  if (points.length === 0) return { latitude: 0, longitude: 0 };
-  const sum = points.reduce((total, point) => ({
-    latitude: total.latitude + point.latitude,
-    longitude: total.longitude + point.longitude,
-  }), { latitude: 0, longitude: 0 });
-  return { latitude: sum.latitude / points.length, longitude: sum.longitude / points.length };
+/** The map marker of an animal with a known position; the freshness flag lets the map mute an old position. */
+function markerOf(row: HerdRow): MapMarker | null {
+  const position = positionOf(row);
+  if (!position) return null;
+  const known = row.latest?.lastKnownPosition;
+  return {
+    id: row.animal.cattleId,
+    title: row.animal.earTag,
+    position,
+    recordedAt: known?.recordedAt ?? null,
+    stale: known?.isStale === true,
+  };
 }

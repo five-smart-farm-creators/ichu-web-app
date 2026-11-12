@@ -84,6 +84,12 @@ export class GeofencesFacade {
     this.draft.update(draft => (draft && draft.vertices.length > 0 ? { ...draft, vertices: draft.vertices.slice(0, -1) } : draft));
   }
 
+  removeVertex(index: number): void {
+    this.draft.update(draft => (draft && index >= 0 && index < draft.vertices.length
+      ? { ...draft, vertices: draft.vertices.filter((_, position) => position !== index) }
+      : draft));
+  }
+
   clearVertices(): void {
     this.draft.update(draft => (draft ? { ...draft, vertices: [] } : draft));
   }

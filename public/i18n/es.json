@@ -680,7 +680,7 @@
     "map": {
       "label": "Mapa de zonas de pastoreo y últimas posiciones conocidas",
       "viewHelp": "Zonas de pastoreo y últimas posiciones conocidas. Una posición es una observación pasada, no una ubicación en vivo.",
-      "editHelp": "Haz clic en el mapa para agregar un vértice. Arrastra un vértice para moverlo. Haz clic derecho sobre un vértice para quitarlo, o usa Deshacer último punto."
+      "editHelp": "Haz clic en el mapa para agregar un vértice. Arrastra un vértice para moverlo. Haz clic en un vértice, o selecciónalo con Tab y presiona Enter, para quitarlo, o usa Deshacer último punto."
     },
     "editor": {
       "defineTitle": "Nueva zona de pastoreo",
@@ -718,8 +718,12 @@
       "thresholds": "Umbrales"
     },
     "map": {
-      "unavailable": "El mapa no está disponible. Revisa la configuración de Google Maps; las tablas siguen mostrando los mismos datos.",
-      "loading": "Cargando el mapa…"
+      "unavailable": "El mapa no está disponible. Recarga la página para intentarlo de nuevo; las tablas siguen mostrando los mismos datos.",
+      "loading": "Cargando el mapa…",
+      "geofenceTooltip": "{{name}} · tolerancia {{tolerance}} m",
+      "animalTooltip": "Arete {{earTag}} · última posición conocida {{time}}",
+      "staleAnimalTooltip": "Arete {{earTag}} · posición del {{time}}, con más de 24 horas",
+      "vertex": "Vértice {{number}}"
     },
     "metric": {
       "BodyTemperature": "Temperatura corporal",
