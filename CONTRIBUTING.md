@@ -18,7 +18,7 @@ Do not claim live REST or end-to-end verification when the backend is unavailabl
 
 ## Domain-Driven Design
 
-`iam`, `cattle-information`, `iot-assets`, and `operations-monitoring` are implemented in the frontend. The agreed future contexts are `planning`, `dashboard-analytics`, and `subscription-plans`; do not create their modules without an authorized task.
+`iam`, `cattle-information`, `iot-assets`, `operations-monitoring`, and `planning` are implemented in the frontend. The agreed future contexts are `dashboard-analytics` and `subscription-plans`; do not create their modules without an authorized task.
 
 Each context uses this structure when files are needed:
 

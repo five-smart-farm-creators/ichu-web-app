@@ -28,7 +28,7 @@ Open http://localhost:4200. The interface opens in English; choose Español from
 
 ## Scope and current status
 
-All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, the animal and lot screens of the Cattle Information (`cattle-information`) context, the device, water trough, and edge gateway screens of the IoT Assets (`iot-assets`) context, and the monitoring screens of the Operations and Monitoring (`operations-monitoring`) context: herd overview, animal telemetry, alerts, normal ranges, and location and fences. The other three contexts, `planning`, `dashboard-analytics`, and `subscription-plans`, are not implemented yet.
+All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, the animal and lot screens of the Cattle Information (`cattle-information`) context, the device, water trough, and edge gateway screens of the IoT Assets (`iot-assets`) context, the monitoring screens of the Operations and Monitoring (`operations-monitoring`) context: herd overview, animal telemetry, alerts, normal ranges, location and fences, and the clinical history of each animal, and the planning screens of the Planning (`planning`) context: calendar, campaigns, and withdrawal periods. The other two contexts, `dashboard-analytics` and `subscription-plans`, are not implemented yet.
 
 ## Map
 
