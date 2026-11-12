@@ -35,7 +35,8 @@ export class RegisterPage {
     ranchName: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(120)] }),
     region: new FormControl('', { nonNullable: true }),
     district: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(120)] }),
-    estimatedHeadCount: new FormControl(0, { nonNullable: true, validators: [Validators.min(1), Validators.max(1000000)] }),
+    // The minimum lives in ranchDetailsRequired, which applies it only to ranch managers; this field is hidden for veterinarians.
+    estimatedHeadCount: new FormControl(0, { nonNullable: true, validators: [Validators.max(1000000)] }),
     terms: new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue }),
   }, { validators: registrationFormRules });
   readonly reviewing = signal(false);
