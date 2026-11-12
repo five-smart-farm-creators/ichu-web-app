@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import type { CattleStatus } from '../../domain/model/cattle.model';
+import type { Cattle, CattleFilter, CattleStatus } from '../../domain/model/cattle.model';
 import { CattleRepository } from '../../domain/repositories/cattle.repository';
 import { LotRepository } from '../../domain/repositories/lot.repository';
 import { readAllCattle } from '../services/read-all-cattle';
@@ -9,6 +9,11 @@ export interface CattleSummary {
   readonly cattleId: string;
   readonly earTag: string;
   readonly status: CattleStatus;
+}
+
+/** Animal data monitoring needs: the summary plus the productive stage, which selects the thresholds. */
+export interface MonitoredCattleSummary extends CattleSummary {
+  readonly lifeStage: string;
 }
 
 /** The only lot data other contexts receive: identity and name, for labelling. */
@@ -34,4 +39,28 @@ export class CattleInformationContextFacade {
     const lots = await this.lotRepository.list(ranchId);
     return lots.map(lot => ({ lotId: lot.id, name: lot.name }));
   }
+
+  /** Lists animals for monitoring; the filters narrow the list at the API and `limit` bounds how many animals are read. */
+  async monitoredCattle(
+    ranchId: string,
+    scope: { readonly activeOnly: boolean; readonly lotId?: string | null },
+    limit: number,
+  ): Promise<readonly MonitoredCattleSummary[]> {
+    const filter: CattleFilter = {
+      ...(scope.activeOnly ? { status: 'Active' as const } : {}),
+      ...(scope.lotId ? { lotId: scope.lotId } : {}),
+    };
+    const animals = await readAllCattle(this.cattleRepository, ranchId, filter, limit);
+    return animals.map(toMonitoredSummary);
+  }
+
+  /** Reads one animal's identity, ear tag, status and productive stage without its collar or history. */
+  async monitoredCattleById(ranchId: string, cattleId: string): Promise<MonitoredCattleSummary> {
+    const profile = await this.cattleRepository.profile(ranchId, cattleId);
+    return toMonitoredSummary(profile.cattle);
+  }
+}
+
+function toMonitoredSummary(animal: Cattle): MonitoredCattleSummary {
+  return { cattleId: animal.id, earTag: animal.earTag, status: animal.status, lifeStage: animal.currentStage };
 }

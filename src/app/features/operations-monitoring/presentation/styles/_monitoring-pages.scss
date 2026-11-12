@@ -1,0 +1,131 @@
+// Layout shared by the operations and monitoring pages, matching the animal and IoT pages so the areas read as one product.
+.monitoring-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.filter-panel {
+  margin-bottom: 20px;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 22px;
+}
+
+.filter-field {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.filter-note {
+  align-self: center;
+  font-size: .8125rem;
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 56px;
+}
+
+.table-panel {
+  margin-top: 16px;
+}
+
+.table-panel .data-table td a {
+  color: var(--forest-deep);
+}
+
+.table-panel .data-table td strong {
+  font-weight: 650;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--forest);
+  font-size: .8125rem;
+  font-weight: 650;
+}
+
+.section-gap {
+  margin-top: 20px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.chart-panel .panel-body {
+  padding: 16px 18px;
+}
+
+.read-note {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.editor-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 16px;
+}
+
+.editor-form mat-form-field {
+  width: 100%;
+}
+
+.editor-form .span-two {
+  grid-column: 1 / -1;
+}
+
+.editor-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.editor-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+@media (max-width: 960px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .monitoring-page {
+    padding: 20px 14px;
+  }
+
+  .filter-field {
+    flex: 1 1 100%;
+  }
+
+  .editor-form {
+    grid-template-columns: 1fr;
+  }
+}

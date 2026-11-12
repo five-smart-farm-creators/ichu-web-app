@@ -14,11 +14,11 @@ function cattle(id: string, status: Cattle['status']): Cattle {
 
 describe('CattleInformationContextFacade', () => {
   let facade: CattleInformationContextFacade;
-  let cattleRepository: { list: ReturnType<typeof vi.fn> };
+  let cattleRepository: { list: ReturnType<typeof vi.fn>; profile: ReturnType<typeof vi.fn> };
   let lotRepository: { list: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    cattleRepository = { list: vi.fn() };
+    cattleRepository = { list: vi.fn(), profile: vi.fn() };
     lotRepository = { list: vi.fn(async () => [] as Lot[]) };
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
@@ -65,5 +65,34 @@ describe('CattleInformationContextFacade', () => {
 
     expect(await facade.lotSummaries('ranch-1')).toEqual([{ lotId: 'lot-1', name: 'Heifers' }]);
     expect(lotRepository.list).toHaveBeenCalledWith('ranch-1');
+  });
+
+  it('lists active animals of one lot with their productive stage, reading no more than the limit', async () => {
+    cattleRepository.list.mockResolvedValue([cattle('cattle-1', 'Active')]);
+
+    expect(await facade.monitoredCattle('ranch-1', { activeOnly: true, lotId: 'lot-1' }, 201)).toEqual([
+      { cattleId: 'cattle-1', earTag: 'tag-cattle-1', status: 'Active', lifeStage: 'Calf' },
+    ]);
+    expect(cattleRepository.list).toHaveBeenCalledWith('ranch-1', { status: 'Active', lotId: 'lot-1' }, 1, 100);
+  });
+
+  it('lists every animal without filters when monitoring asks for the whole ranch', async () => {
+    cattleRepository.list.mockResolvedValue([cattle('cattle-1', 'Active')]);
+
+    await facade.monitoredCattle('ranch-1', { activeOnly: false }, Number.POSITIVE_INFINITY);
+
+    expect(cattleRepository.list).toHaveBeenCalledWith('ranch-1', {}, 1, 100);
+  });
+
+  it('reads one animal for monitoring from its profile without the collar data', async () => {
+    cattleRepository.profile.mockResolvedValue({
+      cattle: cattle('cattle-7', 'Inactive'),
+      device: { isAvailable: false, collarId: 'collar-9', lastReadingReceivedAt: null },
+    });
+
+    expect(await facade.monitoredCattleById('ranch-1', 'cattle-7')).toEqual({
+      cattleId: 'cattle-7', earTag: 'tag-cattle-7', status: 'Inactive', lifeStage: 'Calf',
+    });
+    expect(cattleRepository.profile).toHaveBeenCalledWith('ranch-1', 'cattle-7');
   });
 });

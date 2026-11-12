@@ -1,0 +1,125 @@
+<div class="monitoring-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.alerts' | translate }}</span>
+      <h1>{{ 'monitoring.alerts.title' | translate }}</h1>
+      <p class="page-lead">{{ 'monitoring.alerts.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.totalCount() === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'monitoring.alerts.filters' | translate">
+      <div class="filter-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'monitoring.fields.status' | translate }}</mat-label>
+          <mat-select [value]="facade.filter().status ?? ''" (selectionChange)="filterByStatus($event.value)">
+            <mat-option value="">{{ 'monitoring.alerts.allStatuses' | translate }}</mat-option>
+            @for (status of statuses; track status) {
+              <mat-option [value]="status">{{ ('monitoring.alertStatus.' + status) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'monitoring.alerts.animal' | translate }}</mat-label>
+          <mat-select [value]="facade.filter().cattleId ?? ''" (selectionChange)="filterByAnimal($event.value)">
+            <mat-option value="">{{ 'monitoring.alerts.allAnimals' | translate }}</mat-option>
+            @for (animal of facade.animals(); track animal.cattleId) {
+              <mat-option [value]="animal.cattleId">{{ animal.earTag }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (conflict()) {
+      <p class="form-error" role="alert">{{ 'monitoring.errors.versionConflict' | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'monitoring.alerts.loading' | translate" />
+      }
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="facade.rows()" [attr.aria-label]="'monitoring.alerts.tableLabel' | translate">
+          <ng-container matColumnDef="raisedAt">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.raisedAt' | translate }}</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.raisedAt | localizedDate: 'short' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="animal">
+            <th mat-header-cell *matHeaderCellDef>{{ 'cattle.fields.earTag' | translate }}</th>
+            <td mat-cell *matCellDef="let alert"><strong>{{ facade.earTag(alert.cattleId) || '–' }}</strong></td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.type' | translate }}</th>
+            <td mat-cell *matCellDef="let alert">{{ ('monitoring.alertType.' + alert.type) | translate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="severity">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.severity' | translate }}</th>
+            <td mat-cell *matCellDef="let alert">
+              <span class="badge" [class]="'badge ' + severityTone(alert.severity)">{{ ('monitoring.severity.' + alert.severity) | translate }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.status' | translate }}</th>
+            <td mat-cell *matCellDef="let alert">
+              <span class="badge" [class]="'badge ' + statusTone(alert.status)">{{ ('monitoring.alertStatus.' + alert.status) | translate }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.value' | translate }}</th>
+            <td mat-cell *matCellDef="let alert">
+              {{ valueText(alert) }}
+              @if (alert.type === 'Geofence') {
+                {{ 'monitoring.units.meters' | translate }}
+              } @else {
+                {{ ('monitoring.units.' + alert.unit) | translate }}
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'common.actions' | translate }}</span></th>
+            <td mat-cell *matCellDef="let alert">
+              <button type="button" class="btn secondary" (click)="openAlert(alert)">
+                {{ 'monitoring.alerts.open' | translate }}
+                <span class="visually-hidden">{{ facade.earTag(alert.cattleId) }}</span>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let alert; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && !facade.error() && facade.rows().length === 0) {
+        <div class="empty-state">
+          <h2>{{ 'monitoring.alerts.emptyTitle' | translate }}</h2>
+          <p>{{ 'monitoring.alerts.empty' | translate }}</p>
+        </div>
+      }
+
+      <mat-paginator [length]="facade.totalCount()" [pageIndex]="facade.pageIndex()" [pageSize]="facade.pageSize()"
+        [pageSizeOptions]="pageSizeOptions" (page)="onPage($event)" />
+    </section>
+  }
+</div>

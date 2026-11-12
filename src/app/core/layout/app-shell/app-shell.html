@@ -56,6 +56,18 @@
           <ichu-icon matListItemIcon name="cattle" />
           <span matListItemTitle>{{ 'shell.animals' | translate }}</span>
         </a>
+        <a mat-list-item routerLink="/locations" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="pin" />
+          <span matListItemTitle>{{ 'shell.locations' | translate }}</span>
+        </a>
+        <a mat-list-item routerLink="/monitoring" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="pulse" />
+          <span matListItemTitle>{{ 'shell.monitoring' | translate }}</span>
+        </a>
+        <a mat-list-item routerLink="/alerts" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="alert" />
+          <span matListItemTitle>{{ 'shell.alerts' | translate }}</span>
+        </a>
         <a mat-list-item routerLink="/devices" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
           <ichu-icon matListItemIcon name="radio" />
           <span matListItemTitle>{{ 'shell.iotDevices' | translate }}</span>

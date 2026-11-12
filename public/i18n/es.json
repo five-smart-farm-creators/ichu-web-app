@@ -18,7 +18,14 @@
       "last": "Última página",
       "range": "{{start}} – {{end}}"
     },
-    "exportFailed": "No se pudo crear el archivo. Inténtalo de nuevo."
+    "exportFailed": "No se pudo crear el archivo. Inténtalo de nuevo.",
+    "actions": "Acciones",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "chart": {
+      "summary": "{{label}}: mínimo {{minimum}}, máximo {{maximum}}, promedio {{average}}",
+      "noData": "No hay lecturas en este periodo."
+    }
   },
   "meta": {
     "description": "ICHU de SmartFarm: monitoreo de ganado con collares inteligentes, registros del hato e historial veterinario."
@@ -40,7 +47,12 @@
     "animalProfile": "Perfil del animal",
     "iotDevices": "Dispositivos IoT",
     "waterTroughs": "Abrevaderos",
-    "edgeGateways": "Nodos de borde"
+    "edgeGateways": "Nodos de borde",
+    "monitoring": "Monitoreo",
+    "monitoringCattle": "Monitoreo del animal",
+    "locations": "Ubicación y cercas",
+    "alerts": "Alertas",
+    "thresholds": "Umbrales"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -52,7 +64,10 @@
     "accountMenu": "Menú de la cuenta",
     "signOut": "Cerrar sesión",
     "animals": "Animales",
-    "iotDevices": "Dispositivos IoT"
+    "iotDevices": "Dispositivos IoT",
+    "locations": "Ubicación y cercas",
+    "monitoring": "Monitoreo",
+    "alerts": "Alertas"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -655,6 +670,241 @@
     },
     "validation": {
       "nameRequired": "Ingresa un nombre de hasta 80 caracteres."
+    }
+  },
+  "locations": {
+    "title": "Ubicación y cercas",
+    "lead": "Zonas de pastoreo en el mapa con la última posición conocida de cada animal activo. Las tablas muestran los mismos datos.",
+    "filters": "Filtros de ubicación",
+    "draw": "Dibujar zona de pastoreo",
+    "map": {
+      "label": "Mapa de zonas de pastoreo y últimas posiciones conocidas",
+      "viewHelp": "Zonas de pastoreo y últimas posiciones conocidas. Una posición es una observación pasada, no una ubicación en vivo.",
+      "editHelp": "Haz clic en el mapa para agregar un vértice. Arrastra un vértice para moverlo. Haz clic en un vértice, o selecciónalo con Tab y presiona Enter, para quitarlo, o usa Deshacer último punto."
+    },
+    "editor": {
+      "defineTitle": "Nueva zona de pastoreo",
+      "redefineTitle": "Redefinir zona de pastoreo",
+      "undo": "Deshacer último punto",
+      "clear": "Limpiar",
+      "corners": "{{count}} vértices (se necesitan al menos {{minimum}})",
+      "minimumCorners": "Una zona de pastoreo necesita al menos {{minimum}} vértices.",
+      "saved": "La zona de pastoreo se guardó."
+    },
+    "geofences": {
+      "title": "Zonas de pastoreo",
+      "tableLabel": "Zonas de pastoreo de la unidad productiva",
+      "emptyTitle": "No hay zonas de pastoreo",
+      "empty": "No hay zonas de pastoreo definidas para esta selección.",
+      "emptyManage": "Dibuja una zona de pastoreo en el mapa para un lote y empieza a recibir alertas de geocerca."
+    },
+    "positions": {
+      "title": "Últimas posiciones conocidas",
+      "tableLabel": "Últimas posiciones conocidas de los animales activos",
+      "position": "Posición",
+      "emptyTitle": "No hay posiciones",
+      "empty": "Ningún animal activo tiene una posición conocida en esta selección.",
+      "known": "Posición conocida",
+      "noPosition": "Sin posición",
+      "failed": "No se pudo cargar",
+      "current": "Vigente",
+      "stale": "Con más de 24 horas"
+    }
+  },
+  "monitoring": {
+    "areaNavigation": "Áreas de monitoreo",
+    "tabs": {
+      "overview": "Resumen",
+      "thresholds": "Umbrales"
+    },
+    "map": {
+      "unavailable": "El mapa no está disponible. Recarga la página para intentarlo de nuevo; las tablas siguen mostrando los mismos datos.",
+      "loading": "Cargando el mapa…",
+      "geofenceTooltip": "{{name}} · tolerancia {{tolerance}} m",
+      "animalTooltip": "Arete {{earTag}} · última posición conocida {{time}}",
+      "staleAnimalTooltip": "Arete {{earTag}} · posición del {{time}}, con más de 24 horas",
+      "vertex": "Vértice {{number}}"
+    },
+    "metric": {
+      "BodyTemperature": "Temperatura corporal",
+      "ActivityIndex": "Índice de actividad",
+      "RuminationMinutes": "Rumia (minutos)",
+      "BatteryLevel": "Nivel de batería"
+    },
+    "units": {
+      "celsius": "°C",
+      "index": "índice",
+      "minutes": "min",
+      "percent": "%",
+      "meters": "m"
+    },
+    "duration": {
+      "hours": "horas",
+      "minutes": "minutos",
+      "seconds": "segundos"
+    },
+    "state": {
+      "noReading": "Sin lectura",
+      "stale": "Desactualizado"
+    },
+    "measurement": {
+      "Valid": "Válida",
+      "Invalid": "No válida",
+      "Absent": "Sin lectura"
+    },
+    "severity": {
+      "Informative": "Informativa",
+      "Warning": "Advertencia",
+      "Critical": "Crítica"
+    },
+    "alertType": {
+      "Temperature": "Temperatura corporal",
+      "Activity": "Actividad",
+      "Geofence": "Geocerca"
+    },
+    "alertStatus": {
+      "Pending": "Pendiente",
+      "Acknowledged": "Atendida"
+    },
+    "fields": {
+      "lifeStage": "Etapa productiva",
+      "metric": "Métrica",
+      "minValue": "Mínimo",
+      "maxValue": "Máximo",
+      "severity": "Severidad",
+      "status": "Estado",
+      "type": "Tipo",
+      "value": "Valor",
+      "raisedAt": "Generada",
+      "recordedAt": "Registrada",
+      "acknowledgedAt": "Atendida",
+      "lastReading": "Última lectura",
+      "detectedValue": "Valor detectado",
+      "normalRange": "Rango normal",
+      "geofence": "Geocerca",
+      "unknownGeofence": "Geocerca ya no listada",
+      "distanceToBoundary": "Distancia al límite",
+      "outsideFor": "Fuera de la zona por",
+      "finding": "Hallazgo",
+      "action": "Acción",
+      "noAction": "Sin acción registrada",
+      "responseTime": "Tiempo de respuesta",
+      "responseTimeSeconds": "Tiempo de respuesta (segundos)",
+      "tolerance": "Tolerancia (m)",
+      "position": "Posición"
+    },
+    "links": {
+      "openMonitoring": "Abrir monitoreo"
+    },
+    "overview": {
+      "title": "Monitoreo del hato",
+      "lead": "Última temperatura corporal, actividad, rumia y posición de cada animal activo. Los valores desactualizados o ausentes se indican, nunca como cero.",
+      "filters": "Filtros del hato",
+      "lot": "Lote",
+      "allLots": "Todos los lotes",
+      "limitHint": "Los hatos de más de {{limit}} animales muestran valores al elegir un lote.",
+      "tooMany": "Este hato tiene más de {{limit}} animales activos. Filtra por lote para cargar sus últimos valores.",
+      "loading": "Cargando los últimos valores",
+      "tableLabel": "Últimos valores de los animales activos",
+      "emptyTitle": "No hay animales activos",
+      "empty": "Registra animales y asigna collares para ver sus valores aquí.",
+      "status": {
+        "current": "Vigente",
+        "stale": "Valores desactualizados",
+        "noReading": "Sin lectura",
+        "failed": "No se pudo cargar"
+      }
+    },
+    "telemetry": {
+      "title": "Monitoreo del animal",
+      "back": "Volver al monitoreo del hato",
+      "latest": "Últimos valores",
+      "lastKnownPosition": "Última posición conocida",
+      "noPosition": "Sin posición",
+      "range": "Periodo",
+      "presets": {
+        "24h": "Últimas 24 horas",
+        "7d": "Últimos 7 días",
+        "30d": "Últimos 30 días",
+        "custom": "Personalizado"
+      },
+      "fromDay": "Desde el día",
+      "toDay": "Hasta el día (incluido)",
+      "apply": "Aplicar periodo",
+      "invalidRange": "Elige ambos días, con el primero antes del último.",
+      "noThresholds": "No hay umbral configurado para la etapa de este animal, así que sus lecturas no se comparan con un rango normal.",
+      "truncated": "Solo se cargan las {{limit}} lecturas más recientes de {{total}} de este periodo. Elige un periodo más corto para ver las anteriores.",
+      "temperatureChart": "Lecturas de temperatura corporal en el tiempo, con los límites del umbral",
+      "activityChart": "Lecturas del índice de actividad en el tiempo, con los límites del umbral",
+      "statistics": "Estadísticas del periodo",
+      "metric": "Métrica",
+      "readings": "Lecturas del periodo",
+      "loading": "Cargando lecturas",
+      "noReadingsTitle": "No hay lecturas en este periodo",
+      "noReadings": "Elige un periodo más largo o revisa que el collar esté enviando lecturas."
+    },
+    "stats": {
+      "count": "Lecturas válidas",
+      "minimum": "Mínimo",
+      "maximum": "Máximo",
+      "mean": "Promedio",
+      "standardDeviation": "Desviación estándar",
+      "outsideBand": "Fuera del umbral"
+    },
+    "chart": {
+      "minimum": "Umbral mínimo",
+      "maximum": "Umbral máximo"
+    },
+    "alerts": {
+      "title": "Alertas",
+      "lead": "Alertas generadas por temperatura corporal, actividad y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
+      "filters": "Filtros de alertas",
+      "allStatuses": "Todos los estados",
+      "animal": "Animal",
+      "allAnimals": "Todos los animales",
+      "tableLabel": "Alertas de la unidad productiva",
+      "loading": "Cargando alertas",
+      "open": "Abrir",
+      "emptyTitle": "No hay alertas",
+      "empty": "No hay alertas que coincidan con los filtros.",
+      "acknowledged": "La alerta fue atendida.",
+      "acknowledge": "Atender alerta",
+      "detail": {
+        "title": "Alerta",
+        "animal": "Animal {{earTag}}",
+        "mapLabel": "Posición de la alerta y su geocerca"
+      }
+    },
+    "geofences": {
+      "name": "Nombre de la zona de pastoreo",
+      "corners": "Vértices",
+      "redefine": "Redefinir",
+      "toleranceHint": "Mayor error de GPS, en metros, que puede tener una posición para contar."
+    },
+    "thresholds": {
+      "title": "Rangos normales",
+      "lead": "Rangos normales por etapa productiva y métrica. Las lecturas fuera de un rango generan alertas de umbral; ICHU no trae rangos predeterminados.",
+      "add": "Agregar umbral",
+      "edit": "Editar",
+      "saved": "El umbral se guardó.",
+      "tableLabel": "Rangos normales de la unidad productiva",
+      "loading": "Cargando umbrales",
+      "emptyTitle": "Aún no hay umbrales",
+      "empty": "No hay rangos normales configurados en esta unidad productiva.",
+      "emptyManage": "Agrega un umbral por etapa y métrica para generar alertas de umbral.",
+      "dialog": {
+        "title": "Rango normal",
+        "lead": "Las lecturas por debajo del mínimo o por encima del máximo generan una alerta con esta severidad.",
+        "submit": "Guardar rango"
+      }
+    },
+    "validation": {
+      "rangeOrder": "El mínimo debe ser menor que el máximo.",
+      "findingRequired": "Describe el hallazgo antes de atender la alerta.",
+      "tolerance": "Ingresa un número entero de metros de 1 a {{maximum}}."
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
     }
   }
 }

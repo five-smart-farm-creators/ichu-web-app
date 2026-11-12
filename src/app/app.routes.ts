@@ -15,6 +15,18 @@ export const routes: Routes = [
         loadChildren: () => import('./features/cattle-information/cattle-information.routes').then(module => module.cattleInformationRoutes),
       },
       {
+        path: 'locations',
+        loadChildren: () => import('./features/operations-monitoring/operations-monitoring.routes').then(module => module.locationRoutes),
+      },
+      {
+        path: 'monitoring',
+        loadChildren: () => import('./features/operations-monitoring/operations-monitoring.routes').then(module => module.monitoringRoutes),
+      },
+      {
+        path: 'alerts',
+        loadChildren: () => import('./features/operations-monitoring/operations-monitoring.routes').then(module => module.alertRoutes),
+      },
+      {
         path: 'devices',
         loadChildren: () => import('./features/iot-assets/iot-assets.routes').then(module => module.iotAssetsRoutes),
       },

@@ -1,0 +1,238 @@
+<div class="monitoring-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.locations' | translate }}</span>
+      <h1>{{ 'locations.title' | translate }}</h1>
+      <p class="page-lead">{{ 'locations.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="lotGeofences().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage() && !editing()) {
+          <button type="button" class="btn primary" [disabled]="mapState() !== 'ready'" (click)="startDefining()">
+            <ichu-icon name="plus" />
+            <span>{{ 'locations.draw' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'locations.filters' | translate">
+      <div class="filter-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'monitoring.overview.lot' | translate }}</mat-label>
+          <mat-select [value]="herd.lotId() ?? ''" (selectionChange)="selectLot($event.value)">
+            <mat-option value="">{{ 'monitoring.overview.allLots' | translate }}</mat-option>
+            @for (lot of herd.lots(); track lot.lotId) {
+              <mat-option [value]="lot.lotId">{{ lot.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (mapState() === 'unavailable') {
+      <p class="notice" role="note">{{ 'monitoring.map.unavailable' | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (herd.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+    @if (geofences.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    <section class="panel map-panel" [attr.aria-busy]="mapState() === 'loading'">
+      <div class="panel-body">
+        @if (mapState() === 'loading') {
+          <p class="text-muted" role="status">{{ 'monitoring.map.loading' | translate }}</p>
+        }
+        @if (mapState() === 'ready') {
+          <ichu-monitoring-map [outlines]="outlines()" [markers]="markers()" [draft]="geofences.draft()"
+            [accessibleLabel]="'locations.map.label' | translate" (mapClick)="onMapClick($event)"
+            (vertexRemove)="removeCorner($event)" />
+        }
+        <p class="read-note">{{ (editing() ? 'locations.map.editHelp' : 'locations.map.viewHelp') | translate }}</p>
+      </div>
+    </section>
+
+    @if (editing()) {
+      <section class="panel section-gap" aria-labelledby="editor-heading">
+        <div class="panel-head">
+          <h2 id="editor-heading">{{ (drawingNew() ? 'locations.editor.defineTitle' : 'locations.editor.redefineTitle') | translate }}</h2>
+        </div>
+        <div class="panel-body">
+          <form class="editor-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'cattle.fields.lot' | translate }}</mat-label>
+              <mat-select formControlName="lotId">
+                @for (lot of lotOptions(); track lot.lotId) {
+                  <mat-option [value]="lot.lotId">{{ lot.name }}</mat-option>
+                }
+              </mat-select>
+              <mat-error>{{ 'common.required' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'monitoring.geofences.name' | translate }}</mat-label>
+              <input matInput formControlName="name" autocomplete="off" [maxlength]="nameMaxLength">
+              @if (form.controls.name.hasError('required') || nameError()) {
+                <mat-error>{{ 'common.required' | translate }}</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'monitoring.fields.tolerance' | translate }}</mat-label>
+              <input matInput type="number" formControlName="toleranceMeters" step="1" [min]="1" [max]="toleranceMaximum"
+                aria-describedby="tolerance-hint">
+              <mat-hint id="tolerance-hint">{{ 'monitoring.geofences.toleranceHint' | translate }}</mat-hint>
+              @if (form.controls.toleranceMeters.hasError('required') || toleranceError()) {
+                <mat-error>{{ 'monitoring.validation.tolerance' | translate: { maximum: toleranceMaximum } }}</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'monitoring.fields.severity' | translate }}</mat-label>
+              <mat-select formControlName="severity">
+                @for (severity of severities; track severity) {
+                  <mat-option [value]="severity">{{ ('monitoring.severity.' + severity) | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <div class="editor-actions">
+              <button type="button" class="btn secondary" (click)="undo()" [disabled]="draftCount() === 0">
+                {{ 'locations.editor.undo' | translate }}
+              </button>
+              <button type="button" class="btn secondary" (click)="clearCorners()" [disabled]="draftCount() === 0">
+                {{ 'locations.editor.clear' | translate }}
+              </button>
+              <button type="button" class="btn secondary" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+              <button type="submit" class="btn primary" [disabled]="saving()">
+                {{ (saving() ? 'common.saving' : 'common.save') | translate }}
+              </button>
+            </div>
+            <p class="editor-count" role="status">
+              {{ 'locations.editor.corners' | translate: { count: draftCount(), minimum: minimumCorners } }}
+            </p>
+            @if (cornerError()) {
+              <p class="form-error" role="alert">{{ 'locations.editor.minimumCorners' | translate: { minimum: minimumCorners } }}</p>
+            }
+            @if (editorError(); as apiError) {
+              <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+            }
+          </form>
+        </div>
+      </section>
+    }
+
+    <div class="split-grid section-gap">
+      <section class="panel" aria-labelledby="geofences-heading">
+        <div class="panel-head"><h2 id="geofences-heading">{{ 'locations.geofences.title' | translate }}</h2></div>
+        <div class="table-scroll">
+          <table mat-table class="data-table" [dataSource]="lotGeofences()" [attr.aria-label]="'locations.geofences.tableLabel' | translate">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.geofences.name' | translate }}</th>
+              <td mat-cell *matCellDef="let geofence"><strong>{{ geofence.name }}</strong></td>
+            </ng-container>
+            <ng-container matColumnDef="lot">
+              <th mat-header-cell *matHeaderCellDef>{{ 'cattle.fields.lot' | translate }}</th>
+              <td mat-cell *matCellDef="let geofence">{{ lotName(geofence.lotId) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="tolerance">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.tolerance' | translate }}</th>
+              <td mat-cell *matCellDef="let geofence">{{ geofence.toleranceMeters }} {{ 'monitoring.units.meters' | translate }}</td>
+            </ng-container>
+            <ng-container matColumnDef="severity">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.severity' | translate }}</th>
+              <td mat-cell *matCellDef="let geofence">
+                <span class="badge" [class]="'badge ' + (geofence.severity === 'Critical' ? 'danger' : geofence.severity === 'Warning' ? 'warning' : 'neutral')">
+                  {{ ('monitoring.severity.' + geofence.severity) | translate }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="corners">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.geofences.corners' | translate }}</th>
+              <td mat-cell *matCellDef="let geofence">{{ geofence.vertices.length }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'common.actions' | translate }}</span></th>
+              <td mat-cell *matCellDef="let geofence">
+                @if (canManage() && !editing()) {
+                  <button type="button" class="btn secondary" (click)="startRedefining(geofence)">
+                    {{ 'monitoring.geofences.redefine' | translate }}
+                    <span class="visually-hidden">{{ geofence.name }}</span>
+                  </button>
+                }
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="geofenceColumns"></tr>
+            <tr mat-row *matRowDef="let geofence; columns: geofenceColumns"></tr>
+          </table>
+        </div>
+        @if (lotGeofences().length === 0) {
+          <div class="empty-state">
+            <h2>{{ 'locations.geofences.emptyTitle' | translate }}</h2>
+            <p>{{ (canManage() ? 'locations.geofences.emptyManage' : 'locations.geofences.empty') | translate }}</p>
+          </div>
+        }
+      </section>
+
+      <section class="panel" aria-labelledby="positions-heading">
+        <div class="panel-head"><h2 id="positions-heading">{{ 'locations.positions.title' | translate }}</h2></div>
+        @if (herd.tooManyAnimals()) {
+          <div class="panel-body"><p class="notice" role="status">{{ 'monitoring.overview.tooMany' | translate: { limit: herdLimit } }}</p></div>
+        }
+        <div class="table-scroll">
+          <table mat-table class="data-table" [dataSource]="herd.rows()" [attr.aria-label]="'locations.positions.tableLabel' | translate">
+            <ng-container matColumnDef="earTag">
+              <th mat-header-cell *matHeaderCellDef>{{ 'cattle.fields.earTag' | translate }}</th>
+              <td mat-cell *matCellDef="let row"><a [routerLink]="['/monitoring/cattle', row.animal.cattleId]"><strong>{{ row.animal.earTag }}</strong></a></td>
+            </ng-container>
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef>{{ 'locations.positions.position' | translate }}</th>
+              <td mat-cell *matCellDef="let row">
+                @if (coordinatesOf(row); as coordinates) {
+                  {{ coordinates }}
+                } @else {
+                  <span class="text-muted">{{ positionStatus(row) | translate }}</span>
+                }
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="recordedAt">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.lastReading' | translate }}</th>
+              <td mat-cell *matCellDef="let row">{{ (row.latest?.lastKnownPosition?.recordedAt | localizedDate: 'short') || '–' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="freshness">
+              <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.status' | translate }}</th>
+              <td mat-cell *matCellDef="let row">
+                @if (freshness(row); as state) {
+                  <span class="badge" [class]="'badge ' + state.tone">{{ state.key | translate }}</span>
+                }
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="positionColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: positionColumns"></tr>
+          </table>
+        </div>
+        @if (!herd.loading() && herd.rows().length === 0 && !herd.tooManyAnimals()) {
+          <div class="empty-state">
+            <h2>{{ 'locations.positions.emptyTitle' | translate }}</h2>
+            <p>{{ 'locations.positions.empty' | translate }}</p>
+          </div>
+        }
+      </section>
+    </div>
+  }
+</div>
