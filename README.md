@@ -30,15 +30,9 @@ Open http://localhost:4200. The interface opens in English; choose Español from
 
 All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, the animal and lot screens of the Cattle Information (`cattle-information`) context, the device, water trough, and edge gateway screens of the IoT Assets (`iot-assets`) context, and the monitoring screens of the Operations and Monitoring (`operations-monitoring`) context: herd overview, animal telemetry, alerts, normal ranges, and location and fences. The other three contexts, `planning`, `dashboard-analytics`, and `subscription-plans`, are not implemented yet.
 
-## Google Maps
+## Map
 
-The location and fences screen draws grazing zones and shows last known positions on Google Maps. Add the optional `googleMaps` entry to `public/config.json`:
-
-```json
-"googleMaps": { "apiKey": "<browser key>", "mapId": "<optional map ID>" }
-```
-
-Enable the Maps JavaScript API for the project and restrict the key by HTTP referrer in Google Cloud, so that only the deployed origins and `localhost` can use it. The map ID is optional; without one, the demo map ID is used for advanced markers. If the entry is absent or the library fails to load, the location screen shows a notice and its tables keep working.
+The location and fences screen draws grazing zones and last known positions with Leaflet on OpenStreetMap. The map needs no key, account, or entry in `public/config.json`. Its tiles come from `tile.openstreetmap.org`, a third-party service; keep the OpenStreetMap attribution visible, as the tile usage policy requires. This app serves the Leaflet stylesheet from `/vendor/leaflet/` and bundles the library as a lazy chunk; both load only when that screen opens. If they cannot load, the location screen shows a notice and its tables keep working.
 
 Sign-in uses Firebase Authentication, then the ICHU API checks the account and ranch access. A Firebase identity alone does not grant application or ranch access.
 
