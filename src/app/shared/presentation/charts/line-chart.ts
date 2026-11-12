@@ -2,7 +2,7 @@ import {
   afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, effect, ElementRef, inject, input, untracked, viewChild,
 } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import type { Chart, ChartDataset } from 'chart.js';
+import type { Chart, ChartDataset, Plugin } from 'chart.js';
 import { formatLocaleTag } from '../../infrastructure/i18n/language';
 import { LanguageService } from '../../infrastructure/i18n/language.service';
 import { cssColor, loadChartJs } from './chart-loader';
@@ -28,6 +28,12 @@ export interface ChartBand {
   readonly max: number;
   readonly minLabel: string;
   readonly maxLabel: string;
+}
+
+/** A dashed vertical line at a moment, such as a ration change, with its label at the top. */
+export interface ChartMarker {
+  readonly x: Date;
+  readonly label: string;
 }
 
 interface SeriesSummary {
@@ -57,6 +63,7 @@ export class LineChart {
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   readonly series = input<readonly ChartSeries[]>([]);
   readonly band = input<ChartBand | null>(null);
+  readonly markers = input<readonly ChartMarker[]>([]);
   readonly yAxisLabel = input('');
   readonly accessibleLabel = input('');
   private chart: Chart | null = null;
@@ -84,6 +91,7 @@ export class LineChart {
     effect(() => {
       this.series();
       this.band();
+      this.markers();
       this.yAxisLabel();
       this.language.current();
       untracked(() => {
@@ -136,6 +144,36 @@ export class LineChart {
         },
         plugins: { legend: { position: 'bottom' } },
       },
+      plugins: [markerPlugin(this.markers(), cssColor('--muted'))],
     });
   }
+}
+
+/** Draws each marker behind the series as a dashed line across the plot, with its label at the top. */
+function markerPlugin(markers: readonly ChartMarker[], color: string): Plugin<'line'> {
+  return {
+    id: 'ichuMarkers',
+    afterDatasetsDraw(chart) {
+      const area = chart.chartArea;
+      const scale = chart.scales['x'];
+      if (!area || !scale || markers.length === 0) return;
+      const context = chart.ctx;
+      context.save();
+      context.strokeStyle = color;
+      context.fillStyle = color;
+      context.lineWidth = 1.5;
+      context.setLineDash([4, 4]);
+      context.font = '12px sans-serif';
+      for (const marker of markers) {
+        const position = scale.getPixelForValue(marker.x.getTime());
+        if (position < area.left || position > area.right) continue;
+        context.beginPath();
+        context.moveTo(position, area.top);
+        context.lineTo(position, area.bottom);
+        context.stroke();
+        context.fillText(marker.label, position + 4, area.top + 12);
+      }
+      context.restore();
+    },
+  };
 }

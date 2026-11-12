@@ -6,7 +6,6 @@ import {
 import { PlanningContextFacade, type WithdrawalSummary } from '../../../planning/application/acl/planning-context.facade';
 import {
   DAY_MILLISECONDS, type LivestockOperation, type OperationPeriod, type OperationType,
-  type RecordClinicalIntervention, type RecordFieldEvent,
 } from '../../domain/model/livestock-operation.model';
 import { type LatestTelemetry } from '../../domain/model/telemetry.model';
 import { AlertRepository } from '../../domain/repositories/alert.repository';
@@ -26,10 +25,7 @@ export interface AnimalHealthSummary {
   readonly incomplete: boolean;
 }
 
-export type FieldEventInput = Omit<RecordFieldEvent, 'operationId'>;
-export type ClinicalInterventionInput = Omit<RecordClinicalIntervention, 'operationId'>;
-
-/** Coordinates the clinical history of one animal: the timeline, its period and type filter, the health summary and registrations. */
+/** Coordinates the clinical history of one animal: the timeline, its period and type filter, and the health summary. */
 @Injectable()
 export class ClinicalHistoryFacade {
   private readonly records = inject(LivestockOperationRepository);
@@ -41,7 +37,6 @@ export class ClinicalHistoryFacade {
   private cattleId: string | null = null;
   private historyRequest = 0;
   private summaryRequest = 0;
-  private pendingAttempt: { readonly key: string; readonly operationId: string } | null = null;
 
   readonly animals = signal<readonly MonitoredCattleSummary[]>([]);
   readonly animal = signal<MonitoredCattleSummary | null>(null);
@@ -80,7 +75,7 @@ export class ClinicalHistoryFacade {
     const animal = this.animals().find(item => item.cattleId === cattleId) ?? null;
     this.animal.set(animal);
     if (!animal) return;
-    await Promise.all([this.loadHistory(), this.loadSummary()]);
+    await this.refresh();
   }
 
   async setPeriod(period: HistoryPeriod): Promise<void> {
@@ -93,29 +88,9 @@ export class ClinicalHistoryFacade {
     this.typeFilter.set(type);
   }
 
-  registerFieldEvent(input: FieldEventInput): Promise<void> {
-    const ranchId = this.requireSelection();
-    return this.submit(input, operationId => this.records.registerFieldEvent(ranchId, { operationId, ...input }));
-  }
-
-  registerClinicalIntervention(input: ClinicalInterventionInput): Promise<void> {
-    const ranchId = this.requireSelection();
-    return this.submit(input, operationId => this.records.registerClinicalIntervention(ranchId, { operationId, ...input }));
-  }
-
-  /** Each new record gets a new operation ID; a retry of the same record reuses it, so a replay answered with 200 counts as saved. */
-  private async submit(input: object, send: (operationId: string) => Promise<LivestockOperation>): Promise<void> {
-    const key = JSON.stringify(input);
-    const operationId = this.pendingAttempt?.key === key ? this.pendingAttempt.operationId : crypto.randomUUID();
-    this.pendingAttempt = { key, operationId };
-    await send(operationId);
-    this.pendingAttempt = null;
+  /** Reloads the history and the summary, for example after a record was saved from a dialog. */
+  async refresh(): Promise<void> {
     await Promise.all([this.loadHistory(), this.loadSummary()]);
-  }
-
-  private requireSelection(): string {
-    if (!this.ranchId || !this.cattleId) throw new ApiError(0, 'configuration', null);
-    return this.ranchId;
   }
 
   private resetAnimal(): void {

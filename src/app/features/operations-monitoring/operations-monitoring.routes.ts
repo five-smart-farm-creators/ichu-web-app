@@ -88,3 +88,24 @@ export const healthRoutes: Routes = [
     ],
   },
 ];
+
+/** Loaded lazily under `/reproduction`; the females are named through the cattle facade and their history is read through this context. */
+export const reproductionRoutes: Routes = [
+  {
+    path: '',
+    providers: [provideCattleInformation(), provideOperationsMonitoring()],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'pages.reproduction',
+        loadComponent: () => import('./presentation/pages/reproduction/reproduction-page').then(module => module.ReproductionPage),
+      },
+      {
+        path: 'cattle/:cattleId',
+        title: 'pages.reproduction',
+        loadComponent: () => import('./presentation/pages/reproduction/reproduction-page').then(module => module.ReproductionPage),
+      },
+    ],
+  },
+];

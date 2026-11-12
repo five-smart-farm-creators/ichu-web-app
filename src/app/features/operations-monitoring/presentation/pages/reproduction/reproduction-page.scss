@@ -1,0 +1,82 @@
+@use '../../styles/monitoring-pages';
+
+:host {
+  display: block;
+}
+
+.figure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 18px;
+  margin: 0;
+}
+
+.figure-grid dt {
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 650;
+}
+
+.figure-grid dd {
+  margin: 4px 0 0;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.figure-note {
+  margin: 14px 0 0;
+  font-size: .8125rem;
+}
+
+.reproduction-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.filter-field-wide {
+  flex: 2 1 240px;
+}
+
+.timeline {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--border);
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  font-size: .8125rem;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -28px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--forest);
+}
+
+@media (max-width: 960px) {
+  .reproduction-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .figure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -90,6 +90,14 @@
           <ichu-icon matListItemIcon name="calendar" />
           <span matListItemTitle>{{ 'shell.healthPlanning' | translate }}</span>
         </a>
+        <a mat-list-item routerLink="/nutrition" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="leaf" />
+          <span matListItemTitle>{{ 'shell.nutrition' | translate }}</span>
+        </a>
+        <a mat-list-item routerLink="/reproduction" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="cattle" />
+          <span matListItemTitle>{{ 'shell.reproduction' | translate }}</span>
+        </a>
         @if (context.currentRanch()) {
           <a mat-list-item routerLink="/reports" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
             <ichu-icon matListItemIcon name="chart" />

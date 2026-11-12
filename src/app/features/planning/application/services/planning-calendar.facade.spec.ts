@@ -6,7 +6,7 @@ import type { ActivityApplication, PlannedActivity } from '../../domain/model/pl
 import { PlannedActivityRepository } from '../../domain/repositories/planned-activity.repository';
 import { PLANNING_STATE_LIMIT, PlanningCalendarFacade } from './planning-calendar.facade';
 
-const animals: MonitoredCattleSummary[] = [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' }];
+const animals: MonitoredCattleSummary[] = [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' }];
 
 function activity(id: string, scheduledAt: Date, cattleId: string | null = null): PlannedActivity {
   return { id, campaignId: null, cattleId, title: 'Activity ' + id, scheduledAt: scheduledAt.toISOString() };

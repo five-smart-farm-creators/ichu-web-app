@@ -19,7 +19,7 @@ function pageOf(items: Alert[], totalCount = items.length): AlertPage {
   return { page: 1, pageSize: ALERT_PAGE_SIZE, totalCount, items };
 }
 
-const animals: MonitoredCattleSummary[] = [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' }];
+const animals: MonitoredCattleSummary[] = [{ cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' }];
 
 describe('AlertsFacade', () => {
   let facade: AlertsFacade;

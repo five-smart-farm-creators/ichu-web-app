@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Reproduction screen for each female, with the breeding services, pregnancy diagnoses, calvings, abortions and heats in a timeline newest first, the calving intervals with the days open after each calving, confirmed pregnancies, services per pregnancy, the expected calving date of a pregnancy in progress, and Excel and PDF downloads.
+- Breeding services, pregnancy diagnoses, calvings, abortions and heats are recorded from the reproduction screen and the clinical history, with the sire, the pregnancy result and the expected calving date; only females take reproductive records, and the dialog offers the types that the account may register.
+- Clinical history timeline shows the sire, the pregnancy result and the expected calving date of each record.
+- Nutrition plan screen for each lot, with the plan in force, its feed per head and the estimated daily feed of the lot, the target daily gain, the plan history with ration change markers, and the rumination of the lot before and after the latest ration change in a chart.
+- Nutrition plan registration for managers, with several feeds per ration, a target daily gain and an optional end date; an overlap with another plan shows the message of the ICHU service.
+- Nutrition and Reproduction entries in the navigation menu, after Health planning.
 - Plan comparison with the annual price of each plan for a head count, quoted by the ICHU service; a plan recommended for the herd, its device limit and its features, with a comparison table for screen readers.
 - Subscription request for ranch managers: a confirmation with the quoted amounts and the Terms of Service version, then the hosted Stripe Checkout page. A retry after a failed step reuses the same request.
 - My plan screen with the status, validity, amounts, device limit and features of the ranch subscription, payment of a pending subscription, and cancellation with a reason.

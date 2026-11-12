@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import type { LivestockOperation } from '../../domain/model/livestock-operation.model';
+import { isClinicalType, type LivestockOperation } from '../../domain/model/livestock-operation.model';
 import { LivestockOperationRepository } from '../../domain/repositories/livestock-operation.repository';
 import { OperationsMonitoringContextFacade } from './operations-monitoring-context.facade';
 
 function operation(id: string, type: LivestockOperation['type']): LivestockOperation {
-  const clinical = type !== 'Birth' && type !== 'HealthEvent';
+  const clinical = isClinicalType(type);
   return {
     operationId: id, cattleId: 'cattle-1', type, isClinical: clinical, occurredAt: '2026-11-10T10:00:00.000Z',
     receivedAt: '2026-11-10T10:00:00.000Z', observation: 'Note', product: clinical ? 'Vaccine' : null, dose: null,
+    sireReference: null, pregnancyResult: null, expectedCalvingDate: null,
   };
 }
 

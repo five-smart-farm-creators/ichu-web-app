@@ -62,4 +62,16 @@ describe('LineChart', () => {
 
     expect(fixture.nativeElement.querySelector('li')?.textContent.trim()).toBe('No readings in this period.');
   });
+
+  it('hands Chart.js a plugin that draws the markers, such as a ration change, over the plot', async () => {
+    const chart = (await import('chart.js/auto')).default as unknown as ReturnType<typeof vi.fn>;
+    chart.mockClear();
+    const fixture = TestBed.createComponent(LineChart);
+    fixture.componentRef.setInput('markers', [{ x: new Date('2026-11-05T00:00:00'), label: 'Ration change' }]);
+    fixture.detectChanges();
+
+    await vi.waitFor(() => expect(chart).toHaveBeenCalled());
+    const config = chart.mock.calls[0][1] as { plugins: { id: string }[] };
+    expect(config.plugins.map(plugin => plugin.id)).toEqual(['ichuMarkers']);
+  });
 });

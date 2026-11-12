@@ -8,18 +8,20 @@ import { DAY_MILLISECONDS, type LivestockOperation, type OperationType } from '.
 import { AlertRepository } from '../../domain/repositories/alert.repository';
 import { LivestockOperationRepository } from '../../domain/repositories/livestock-operation.repository';
 import { TelemetryRepository } from '../../domain/repositories/telemetry.repository';
-import { ClinicalHistoryFacade, type FieldEventInput } from './clinical-history.facade';
+import { ClinicalHistoryFacade } from './clinical-history.facade';
 
 const animals: MonitoredCattleSummary[] = [
-  { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' },
-  { cattleId: 'cattle-2', earTag: '102', status: 'Inactive', lifeStage: 'MilkingCow' },
+  { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' },
+  { cattleId: 'cattle-2', earTag: '102', status: 'Inactive', lifeStage: 'MilkingCow', sex: 'Female' },
 ];
 
 function operation(id: string, type: OperationType, occurredAt: string): LivestockOperation {
-  const clinical = type === 'Vaccination' || type === 'Treatment' || type === 'Insemination';
+  const clinical = type === 'Vaccination' || type === 'Treatment' || type === 'Insemination' || type === 'PregnancyDiagnosis';
+  const hasProduct = type === 'Vaccination' || type === 'Treatment';
   return {
     operationId: id, cattleId: 'cattle-1', type, isClinical: clinical, occurredAt, receivedAt: occurredAt,
-    observation: null, product: clinical ? 'Vaccine' : null, dose: clinical ? '2 ml' : null,
+    observation: null, product: hasProduct ? 'Vaccine' : null, dose: hasProduct ? '2 ml' : null,
+    sireReference: null, pregnancyResult: null, expectedCalvingDate: null,
   };
 }
 
@@ -27,24 +29,16 @@ function withdrawal(state: WithdrawalSummary['state']): WithdrawalSummary {
   return { state, startsAt: '2026-11-10T00:00:00Z', endsAt: '2026-11-13T00:00:00Z', daysRemaining: state === 'Active' ? 2 : null };
 }
 
-const fieldEvent: FieldEventInput = {
-  cattleId: 'cattle-1', type: 'HealthEvent', occurredAt: '2026-11-10T10:00:00.000Z', observation: 'Limping on the left leg',
-};
-
 describe('ClinicalHistoryFacade', () => {
   let facade: ClinicalHistoryFacade;
-  let records: { list: ReturnType<typeof vi.fn>; registerFieldEvent: ReturnType<typeof vi.fn>; registerClinicalIntervention: ReturnType<typeof vi.fn> };
+  let records: { list: ReturnType<typeof vi.fn> };
   let telemetry: { latest: ReturnType<typeof vi.fn> };
   let alerts: { list: ReturnType<typeof vi.fn> };
   let planning: { withdrawalPeriodsFor: ReturnType<typeof vi.fn> };
   let cattleContext: { monitoredCattle: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    records = {
-      list: vi.fn(async () => []),
-      registerFieldEvent: vi.fn(async (_ranchId: string, request: { operationId: string }) => operation(request.operationId, 'HealthEvent', fieldEvent.occurredAt)),
-      registerClinicalIntervention: vi.fn(async (_ranchId: string, request: { operationId: string }) => operation(request.operationId, 'Vaccination', fieldEvent.occurredAt)),
-    };
+    records = { list: vi.fn(async () => []) };
     telemetry = { latest: vi.fn(async () => ({ cattleId: 'cattle-1' })) };
     alerts = { list: vi.fn(async () => ({ page: 1, pageSize: 1, totalCount: 2, items: [] })) };
     planning = { withdrawalPeriodsFor: vi.fn(async () => []) };
@@ -105,44 +99,14 @@ describe('ClinicalHistoryFacade', () => {
     expect((quarterWindow.to.getTime() - quarterWindow.from.getTime()) / DAY_MILLISECONDS).toBe(91);
   });
 
-  it('reuses the operation ID when the same record is retried after a failure', async () => {
+  it('reloads the history and the summary on refresh, after a record was saved', async () => {
     await facade.open('ranch-1', 'cattle-1');
-    records.registerFieldEvent.mockRejectedValueOnce(new ApiError(0, 'network', null));
+    records.list.mockResolvedValueOnce([operation('saved', 'HealthEvent', '2026-11-10T10:00:00.000Z')]);
 
-    await expect(facade.registerFieldEvent(fieldEvent)).rejects.toMatchObject({ code: 'network' });
-    await facade.registerFieldEvent(fieldEvent);
+    await facade.refresh();
 
-    const first = records.registerFieldEvent.mock.calls[0][1];
-    const retry = records.registerFieldEvent.mock.calls[1][1];
-    expect(retry.operationId).toBe(first.operationId);
-    expect(retry).toMatchObject({ cattleId: 'cattle-1', type: 'HealthEvent', observation: 'Limping on the left leg' });
-  });
-
-  it('uses a new operation ID for a changed record and for the next record after a save', async () => {
-    await facade.open('ranch-1', 'cattle-1');
-    records.registerFieldEvent.mockRejectedValueOnce(new ApiError(0, 'network', null));
-    await expect(facade.registerFieldEvent(fieldEvent)).rejects.toBeInstanceOf(ApiError);
-
-    await facade.registerFieldEvent({ ...fieldEvent, observation: 'Changed observation' });
-    await facade.registerFieldEvent({ ...fieldEvent, observation: 'Changed observation' });
-
-    const [failed, changed, next] = records.registerFieldEvent.mock.calls.map(call => call[1].operationId);
-    expect(changed).not.toBe(failed);
-    expect(next).not.toBe(changed);
-  });
-
-  it('registers a clinical intervention with its product and dose', async () => {
-    await facade.open('ranch-1', 'cattle-1');
-
-    await facade.registerClinicalIntervention({
-      cattleId: 'cattle-1', type: 'Vaccination', occurredAt: '2026-11-10T10:00:00.000Z', observation: null,
-      product: 'Foot-and-mouth vaccine', dose: '2 ml',
-    });
-
-    expect(records.registerClinicalIntervention).toHaveBeenCalledWith('ranch-1', expect.objectContaining({
-      cattleId: 'cattle-1', type: 'Vaccination', product: 'Foot-and-mouth vaccine', dose: '2 ml',
-      operationId: expect.stringMatching(/^[0-9a-f-]{36}$/),
-    }));
+    expect(facade.timeline().map(item => item.operationId)).toEqual(['saved']);
+    expect(telemetry.latest).toHaveBeenCalledTimes(2);
   });
 
   it('keeps the other summary values when one of them cannot be read', async () => {

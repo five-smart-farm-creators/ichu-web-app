@@ -8,8 +8,8 @@ import { WithdrawalPeriodRepository } from '../../domain/repositories/withdrawal
 import { WithdrawalPeriodsFacade } from './withdrawal-periods.facade';
 
 const animals: MonitoredCattleSummary[] = [
-  { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf' },
-  { cattleId: 'cattle-2', earTag: '102', status: 'Inactive', lifeStage: 'MilkingCow' },
+  { cattleId: 'cattle-1', earTag: '101', status: 'Active', lifeStage: 'Calf', sex: 'Female' },
+  { cattleId: 'cattle-2', earTag: '102', status: 'Inactive', lifeStage: 'MilkingCow', sex: 'Female' },
 ];
 
 const period: WithdrawalPeriod = {

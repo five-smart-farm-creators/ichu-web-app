@@ -17,14 +17,24 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
+import { LivestockOperationRecorder } from '../../../application/services/livestock-operation-recorder';
 import {
   ClinicalHistoryFacade, HISTORY_PERIODS, type HistoryPeriod,
 } from '../../../application/services/clinical-history.facade';
-import { type LivestockOperation, OPERATION_TYPES } from '../../../domain/model/livestock-operation.model';
+import {
+  CLINICAL_INTERVENTION_TYPES, FIELD_EVENT_TYPES, type LivestockOperation, OPERATION_TYPES, type OperationType, registrableTypes,
+} from '../../../domain/model/livestock-operation.model';
 import { IndicatorValue } from '../../components/indicator-value';
 import { MONITORING_DIALOG_CONFIG, type MonitoringDialogOutcome } from '../../components/monitoring-dialog';
-import { RecordOperationDialog } from '../../components/record-operation-dialog';
+import { RecordOperationDialog, type RecordOperationCopy, type RecordOperationData } from '../../components/record-operation-dialog';
 import { MONITORING_ERROR_KEYS } from '../../monitoring-error-keys';
+
+const FIELD_COPY: RecordOperationCopy = {
+  titleKey: 'health.records.fieldTitle', leadKey: 'health.records.fieldLead', submitKey: 'health.records.fieldSubmit',
+};
+const CLINICAL_COPY: RecordOperationCopy = {
+  titleKey: 'health.records.clinicalTitle', leadKey: 'health.records.clinicalLead', submitKey: 'health.records.clinicalSubmit',
+};
 
 /** An animal's field events and clinical interventions, newest first, with its health summary and registrations. */
 @Component({
@@ -41,7 +51,7 @@ import { MONITORING_ERROR_KEYS } from '../../monitoring-error-keys';
     RouterLink,
     TranslatePipe,
   ],
-  providers: [ClinicalHistoryFacade],
+  providers: [ClinicalHistoryFacade, LivestockOperationRecorder],
   templateUrl: './clinical-history-page.html',
   styleUrl: './clinical-history-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,8 +101,16 @@ export class ClinicalHistoryPage {
 
   openRecord(kind: 'field' | 'clinical'): void {
     const animal = this.facade.animal();
-    if (!animal) return;
-    this.dialog.open(RecordOperationDialog, { ...MONITORING_DIALOG_CONFIG, injector: this.injector, data: { kind, animal } })
+    const ranchId = this.context.currentRanchId();
+    if (!animal || !ranchId) return;
+    const types: readonly OperationType[] = registrableTypes(
+      kind === 'field' ? FIELD_EVENT_TYPES : CLINICAL_INTERVENTION_TYPES,
+      { canRecordField: this.canRecordField(), canRecordClinical: this.canRecordClinical() },
+      animal.sex,
+    );
+    if (types.length === 0) return;
+    const data: RecordOperationData = { ranchId, animal, types, copy: kind === 'field' ? FIELD_COPY : CLINICAL_COPY };
+    this.dialog.open(RecordOperationDialog, { ...MONITORING_DIALOG_CONFIG, injector: this.injector, data })
       .afterClosed()
       .subscribe(outcome => this.showOutcome(outcome, kind));
   }
@@ -130,6 +148,7 @@ export class ClinicalHistoryPage {
   private showOutcome(outcome: MonitoringDialogOutcome | undefined, kind: 'field' | 'clinical'): void {
     if (outcome !== 'saved') return;
     this.notice.set(kind === 'field' ? 'health.records.fieldSaved' : 'health.records.clinicalSaved');
+    void this.facade.refresh();
   }
 
   private exportColumns(): ExportColumn<LivestockOperation>[] {
@@ -140,6 +159,15 @@ export class ClinicalHistoryPage {
       { header: text('health.fields.kind'), value: operation => text(operation.isClinical ? 'health.kind.clinical' : 'health.kind.field') },
       { header: text('health.fields.product'), value: operation => operation.product },
       { header: text('health.fields.dose'), value: operation => operation.dose },
+      { header: text('health.fields.sireReference'), value: operation => operation.sireReference },
+      {
+        header: text('health.fields.pregnancyResult'),
+        value: operation => (operation.pregnancyResult ? text('reproduction.pregnancyResult.' + operation.pregnancyResult) : null),
+      },
+      {
+        header: text('health.fields.expectedCalvingDate'),
+        value: operation => (operation.expectedCalvingDate ? new Date(`${operation.expectedCalvingDate}T00:00:00`) : null),
+      },
       { header: text('health.fields.observation'), value: operation => operation.observation },
     ];
   }

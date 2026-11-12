@@ -63,7 +63,9 @@
     "plans": "Plans",
     "mySubscription": "My plan",
     "paymentSuccess": "Payment received",
-    "paymentCancel": "Payment cancelled"
+    "paymentCancel": "Payment cancelled",
+    "nutrition": "Nutrition plan",
+    "reproduction": "Reproduction"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -85,7 +87,9 @@
     "reports": "Reports",
     "portfolio": "Portfolio",
     "mySubscription": "My plan",
-    "plans": "Plans"
+    "plans": "Plans",
+    "nutrition": "Nutrition",
+    "reproduction": "Reproduction"
   },
   "terms": {
     "back": "Back to account",
@@ -959,7 +963,10 @@
       "occurredAt": "Date and time",
       "product": "Product",
       "dose": "Dose",
-      "observation": "Observation"
+      "observation": "Observation",
+      "sireReference": "Sire",
+      "pregnancyResult": "Pregnancy result",
+      "expectedCalvingDate": "Expected calving date"
     },
     "periods": {
       "90d": "Last 90 days",
@@ -971,7 +978,11 @@
       "Birth": "Birth",
       "Vaccination": "Vaccination",
       "Treatment": "Treatment",
-      "Insemination": "Insemination"
+      "Insemination": "Insemination",
+      "NaturalMating": "Natural mating",
+      "HeatObserved": "Heat observed",
+      "Abortion": "Abortion",
+      "PregnancyDiagnosis": "Pregnancy diagnosis"
     },
     "kind": {
       "field": "Field event",
@@ -984,10 +995,10 @@
       "openField": "Record health event",
       "openClinical": "Record clinical intervention",
       "fieldTitle": "Record health event",
-      "fieldLead": "Record an event observed on animal {{earTag}}, such as a health observation or a birth.",
+      "fieldLead": "Record an event observed on animal {{earTag}}, such as a health observation, a birth, a heat, an abortion or a breeding service.",
       "fieldSubmit": "Save event",
       "clinicalTitle": "Record clinical intervention",
-      "clinicalLead": "Record a vaccination, treatment or insemination applied to animal {{earTag}}.",
+      "clinicalLead": "Record a vaccination, treatment, insemination or pregnancy diagnosis applied to animal {{earTag}}.",
       "clinicalSubmit": "Save intervention",
       "fieldSaved": "The health event was recorded.",
       "clinicalSaved": "The clinical intervention was recorded."
@@ -1154,6 +1165,167 @@
       "rangeOrder": "The end day cannot be before the start day.",
       "titleRequired": "Enter a title.",
       "withdrawalRangeOrder": "The end cannot be before the start."
+    }
+  },
+  "reproduction": {
+    "title": "Reproduction",
+    "lead": "Breeding services, pregnancy diagnoses, calvings and heats of each female, with the days open after each calving.",
+    "filters": "Reproduction filters",
+    "loading": "Loading the reproductive history.",
+    "fields": {
+      "female": "Female"
+    },
+    "chooseFemale": "Choose a female",
+    "noAnimalTitle": "No female selected",
+    "noAnimal": "Choose a female to see her reproductive history.",
+    "actions": {
+      "service": "Record service",
+      "diagnosis": "Record pregnancy diagnosis",
+      "event": "Record calving, abortion or heat"
+    },
+    "summary": {
+      "title": "Figures"
+    },
+    "kpi": {
+      "pregnancies": "Confirmed pregnancies",
+      "services": "Breeding services",
+      "servicesPerPregnancy": "Services per pregnancy",
+      "lastCalving": "Last calving",
+      "daysOpen": "Current days open",
+      "expectedCalving": "Expected calving",
+      "notPregnant": "Not pregnant",
+      "note": "Current days open count from the last calving while no pregnancy is in progress. Services per pregnancy divides the services by the confirmed pregnancies."
+    },
+    "intervals": {
+      "title": "Calving intervals",
+      "tableLabel": "Calving intervals of the animal",
+      "calving": "Calving",
+      "conception": "Conception service",
+      "daysOpen": "Days open",
+      "notYet": "Not yet",
+      "empty": "No calvings are recorded yet."
+    },
+    "timeline": {
+      "title": "Events",
+      "empty": "No events are recorded."
+    },
+    "noHistoryTitle": "No reproductive history",
+    "noHistory": "This animal has no breeding services or calvings yet. It is {{months}} months old and is in the {{stage}} stage.",
+    "event": {
+      "service": "Breeding service",
+      "diagnosis": "Pregnancy diagnosis",
+      "calving": "Calving",
+      "abortion": "Abortion",
+      "heat": "Heat observed"
+    },
+    "pregnancyResult": {
+      "Pregnant": "Pregnant",
+      "Open": "Open"
+    },
+    "columns": {
+      "event": "Event",
+      "detail": "Method or result"
+    },
+    "export": {
+      "subtitle": "{{earTag}} · {{stage}} · {{months}} months old · {{date}}"
+    },
+    "records": {
+      "serviceTitle": "Record breeding service",
+      "serviceLead": "Record a natural mating or an insemination of animal {{earTag}}, and the sire when you know it.",
+      "serviceSubmit": "Save service",
+      "diagnosisTitle": "Record pregnancy diagnosis",
+      "diagnosisLead": "Record the result of the pregnancy check of animal {{earTag}}.",
+      "diagnosisSubmit": "Save diagnosis",
+      "eventTitle": "Record calving, abortion or heat",
+      "eventLead": "Record a calving, an abortion or an observed heat of animal {{earTag}}.",
+      "eventSubmit": "Save record",
+      "saved": "The reproductive record was saved."
+    },
+    "validation": {
+      "calvingNotAfterDiagnosis": "The expected calving date must fall after the diagnosis day.",
+      "calvingTooFar": "The expected calving date must fall within 300 days after the diagnosis day."
+    }
+  },
+  "nutrition": {
+    "title": "Nutrition plan",
+    "lead": "The ration of each lot, its feed per head and the estimated feed of the lot, with the rumination of the lot around its ration changes.",
+    "filters": "Nutrition filters",
+    "loading": "Loading the nutrition plan.",
+    "chooseLot": "Choose a lot",
+    "noLotTitle": "No lot selected",
+    "noLot": "Choose a lot to see its nutrition plan.",
+    "fields": {
+      "lot": "Lot",
+      "feed": "Feed",
+      "kind": "Kind",
+      "kilogramsPerHead": "kg per head per day",
+      "kilogramsForLot": "kg per day for the lot (estimate)"
+    },
+    "kind": {
+      "Forage": "Forage",
+      "Concentrate": "Concentrate",
+      "Supplement": "Supplement",
+      "Mineral": "Mineral"
+    },
+    "units": {
+      "kilogramsPerDay": "kg per day"
+    },
+    "current": {
+      "title": "Current plan",
+      "validity": "From {{from}} until {{to}}",
+      "openEnded": "From {{from}}, open-ended",
+      "target": "Target daily gain",
+      "noTarget": "Not set",
+      "total": "Estimated feed for the lot",
+      "utcNote": "The plan in force is taken for today's UTC date, because ranches have no time zone yet.",
+      "noneTitle": "No current plan",
+      "none": "No nutrition plan covers today for this lot."
+    },
+    "estimate": {
+      "heads": "Estimate for {{count}} active animals in the lot.",
+      "unknown": "The number of active animals could not be read, so the estimate is not shown."
+    },
+    "items": {
+      "tableLabel": "Ration items of the current plan"
+    },
+    "rumination": {
+      "title": "Rumination evolution",
+      "lead": "The daily mean rumination of the lot in minutes, around its ration changes.",
+      "series": "Lot daily mean",
+      "changeMarker": "Ration change",
+      "axis": "Minutes",
+      "chartLabel": "Daily mean rumination of the lot, with its ration changes marked",
+      "before": "Mean before the change",
+      "after": "Mean from the change",
+      "noChange": "No ration change falls inside this period.",
+      "since": "The period starts on {{date}}.",
+      "unavailable": "The API has no rumination readings for this lot in this period."
+    },
+    "history": {
+      "title": "Plan history",
+      "change": "Ration change on {{date}}",
+      "empty": "No plans are registered for this lot."
+    },
+    "record": {
+      "open": "Register nutrition plan",
+      "title": "Register nutrition plan",
+      "lead": "Register the ration of lot {{lot}}. A new plan ends an open-ended plan the day before it starts.",
+      "name": "Plan name",
+      "validFrom": "Valid from",
+      "validTo": "Valid to (optional)",
+      "targetGain": "Target daily gain in kg (optional)",
+      "itemsTitle": "Ration items",
+      "addItem": "Add feed",
+      "removeItem": "Remove feed",
+      "notes": "Notes (optional)",
+      "submit": "Save plan",
+      "saved": "The nutrition plan was registered."
+    },
+    "validation": {
+      "gain": "Enter more than 0 and at most 3 kg per day.",
+      "quantity": "Enter more than 0 and at most 100 kg per head per day.",
+      "validityOrder": "The end date cannot be before the start date.",
+      "itemsRequired": "Add at least one feed."
     }
   },
   "analytics": {

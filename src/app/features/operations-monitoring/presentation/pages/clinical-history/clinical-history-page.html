@@ -169,6 +169,17 @@
                         @if (operation.dose) { · {{ operation.dose }} }
                       </span>
                     }
+                    @if (operation.sireReference) {
+                      <span class="text-muted">{{ 'health.fields.sireReference' | translate }}: {{ operation.sireReference }}</span>
+                    }
+                    @if (operation.pregnancyResult) {
+                      <span class="text-muted">
+                        {{ ('reproduction.pregnancyResult.' + operation.pregnancyResult) | translate }}
+                        @if (operation.expectedCalvingDate) {
+                          · {{ 'health.fields.expectedCalvingDate' | translate }}: {{ operation.expectedCalvingDate | localizedDate: 'mediumDate' }}
+                        }
+                      </span>
+                    }
                     @if (operation.observation) {
                       <p class="observation">{{ operation.observation }}</p>
                     }

@@ -71,7 +71,7 @@ describe('CattleInformationContextFacade', () => {
     cattleRepository.list.mockResolvedValue([cattle('cattle-1', 'Active')]);
 
     expect(await facade.monitoredCattle('ranch-1', { activeOnly: true, lotId: 'lot-1' }, 201)).toEqual([
-      { cattleId: 'cattle-1', earTag: 'tag-cattle-1', status: 'Active', lifeStage: 'Calf' },
+      { cattleId: 'cattle-1', earTag: 'tag-cattle-1', status: 'Active', lifeStage: 'Calf', sex: 'Male' },
     ]);
     expect(cattleRepository.list).toHaveBeenCalledWith('ranch-1', { status: 'Active', lotId: 'lot-1' }, 1, 100);
   });
@@ -91,7 +91,7 @@ describe('CattleInformationContextFacade', () => {
     });
 
     expect(await facade.monitoredCattleById('ranch-1', 'cattle-7')).toEqual({
-      cattleId: 'cattle-7', earTag: 'tag-cattle-7', status: 'Inactive', lifeStage: 'Calf',
+      cattleId: 'cattle-7', earTag: 'tag-cattle-7', status: 'Inactive', lifeStage: 'Calf', sex: 'Male',
     });
     expect(cattleRepository.profile).toHaveBeenCalledWith('ranch-1', 'cattle-7');
   });
