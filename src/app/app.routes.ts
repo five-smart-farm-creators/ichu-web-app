@@ -47,6 +47,14 @@ export const routes: Routes = [
         loadChildren: () => import('./features/planning/planning.routes').then(module => module.planningRoutes),
       },
       {
+        path: 'nutrition',
+        loadChildren: () => import('./features/planning/planning.routes').then(module => module.nutritionRoutes),
+      },
+      {
+        path: 'reproduction',
+        loadChildren: () => import('./features/operations-monitoring/operations-monitoring.routes').then(module => module.reproductionRoutes),
+      },
+      {
         path: 'devices',
         loadChildren: () => import('./features/iot-assets/iot-assets.routes').then(module => module.iotAssetsRoutes),
       },

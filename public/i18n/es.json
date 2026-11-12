@@ -63,7 +63,9 @@
     "plans": "Planes",
     "mySubscription": "Mi plan",
     "paymentSuccess": "Pago recibido",
-    "paymentCancel": "Pago cancelado"
+    "paymentCancel": "Pago cancelado",
+    "nutrition": "Plan nutricional",
+    "reproduction": "Reproducción"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -85,7 +87,9 @@
     "reports": "Reportes",
     "portfolio": "Portafolio",
     "mySubscription": "Mi plan",
-    "plans": "Planes"
+    "plans": "Planes",
+    "nutrition": "Nutrición",
+    "reproduction": "Reproducción"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -959,7 +963,10 @@
       "occurredAt": "Fecha y hora",
       "product": "Producto",
       "dose": "Dosis",
-      "observation": "Observación"
+      "observation": "Observación",
+      "sireReference": "Semental",
+      "pregnancyResult": "Resultado de preñez",
+      "expectedCalvingDate": "Fecha probable de parto"
     },
     "periods": {
       "90d": "Últimos 90 días",
@@ -971,7 +978,11 @@
       "Birth": "Parto",
       "Vaccination": "Vacunación",
       "Treatment": "Tratamiento",
-      "Insemination": "Inseminación"
+      "Insemination": "Inseminación",
+      "NaturalMating": "Monta natural",
+      "HeatObserved": "Celo observado",
+      "Abortion": "Aborto",
+      "PregnancyDiagnosis": "Diagnóstico de preñez"
     },
     "kind": {
       "field": "Evento de campo",
@@ -984,10 +995,10 @@
       "openField": "Registrar evento de salud",
       "openClinical": "Registrar intervención clínica",
       "fieldTitle": "Registrar evento de salud",
-      "fieldLead": "Registra un evento observado en el animal {{earTag}}, como una observación de salud o un parto.",
+      "fieldLead": "Registra un evento observado en el animal {{earTag}}, como una observación de salud, un parto, un celo, un aborto o un servicio reproductivo.",
       "fieldSubmit": "Guardar evento",
       "clinicalTitle": "Registrar intervención clínica",
-      "clinicalLead": "Registra una vacunación, un tratamiento o una inseminación aplicados al animal {{earTag}}.",
+      "clinicalLead": "Registra una vacunación, un tratamiento, una inseminación o un diagnóstico de preñez aplicado al animal {{earTag}}.",
       "clinicalSubmit": "Guardar intervención",
       "fieldSaved": "El evento de salud se registró.",
       "clinicalSaved": "La intervención clínica se registró."
@@ -1154,6 +1165,167 @@
       "rangeOrder": "El día final no puede ser anterior al día inicial.",
       "titleRequired": "Ingresa un título.",
       "withdrawalRangeOrder": "El fin no puede ser anterior al inicio."
+    }
+  },
+  "reproduction": {
+    "title": "Reproducción",
+    "lead": "Servicios reproductivos, diagnósticos de preñez, partos y celos de cada hembra, con los días abiertos después de cada parto.",
+    "filters": "Filtros de reproducción",
+    "loading": "Cargando el historial reproductivo.",
+    "fields": {
+      "female": "Hembra"
+    },
+    "chooseFemale": "Elige una hembra",
+    "noAnimalTitle": "Ninguna hembra seleccionada",
+    "noAnimal": "Elige una hembra para ver su historial reproductivo.",
+    "actions": {
+      "service": "Registrar servicio",
+      "diagnosis": "Registrar diagnóstico de preñez",
+      "event": "Registrar parto, aborto o celo"
+    },
+    "summary": {
+      "title": "Indicadores"
+    },
+    "kpi": {
+      "pregnancies": "Preñeces confirmadas",
+      "services": "Servicios reproductivos",
+      "servicesPerPregnancy": "Servicios por preñez",
+      "lastCalving": "Último parto",
+      "daysOpen": "Días abiertos actuales",
+      "expectedCalving": "Fecha probable de parto",
+      "notPregnant": "No preñada",
+      "note": "Los días abiertos actuales se cuentan desde el último parto mientras no haya una preñez en curso. Los servicios por preñez dividen los servicios entre las preñeces confirmadas."
+    },
+    "intervals": {
+      "title": "Intervalos entre partos",
+      "tableLabel": "Intervalos entre partos del animal",
+      "calving": "Parto",
+      "conception": "Servicio de concepción",
+      "daysOpen": "Días abiertos",
+      "notYet": "Todavía no",
+      "empty": "Aún no hay partos registrados."
+    },
+    "timeline": {
+      "title": "Eventos",
+      "empty": "No hay eventos registrados."
+    },
+    "noHistoryTitle": "Sin historial reproductivo",
+    "noHistory": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{months}} meses y está en la etapa {{stage}}.",
+    "event": {
+      "service": "Servicio reproductivo",
+      "diagnosis": "Diagnóstico de preñez",
+      "calving": "Parto",
+      "abortion": "Aborto",
+      "heat": "Celo observado"
+    },
+    "pregnancyResult": {
+      "Pregnant": "Preñada",
+      "Open": "Vacía"
+    },
+    "columns": {
+      "event": "Evento",
+      "detail": "Monta o resultado"
+    },
+    "export": {
+      "subtitle": "{{earTag}} · {{stage}} · {{months}} meses · {{date}}"
+    },
+    "records": {
+      "serviceTitle": "Registrar servicio reproductivo",
+      "serviceLead": "Registra una monta natural o una inseminación del animal {{earTag}}, y el semental si lo conoces.",
+      "serviceSubmit": "Guardar servicio",
+      "diagnosisTitle": "Registrar diagnóstico de preñez",
+      "diagnosisLead": "Registra el resultado de la revisión de preñez del animal {{earTag}}.",
+      "diagnosisSubmit": "Guardar diagnóstico",
+      "eventTitle": "Registrar parto, aborto o celo",
+      "eventLead": "Registra un parto, un aborto o un celo observado del animal {{earTag}}.",
+      "eventSubmit": "Guardar registro",
+      "saved": "El registro reproductivo se guardó."
+    },
+    "validation": {
+      "calvingNotAfterDiagnosis": "La fecha probable de parto debe caer después del día del diagnóstico.",
+      "calvingTooFar": "La fecha probable de parto debe caer dentro de los 300 días posteriores al día del diagnóstico."
+    }
+  },
+  "nutrition": {
+    "title": "Plan nutricional",
+    "lead": "La ración de cada lote, su alimento por cabeza y el alimento estimado del lote, con la rumia del lote alrededor de sus cambios de ración.",
+    "filters": "Filtros nutricionales",
+    "loading": "Cargando el plan nutricional.",
+    "chooseLot": "Elige un lote",
+    "noLotTitle": "Ningún lote seleccionado",
+    "noLot": "Elige un lote para ver su plan nutricional.",
+    "fields": {
+      "lot": "Lote",
+      "feed": "Alimento",
+      "kind": "Tipo",
+      "kilogramsPerHead": "kg por cabeza al día",
+      "kilogramsForLot": "kg al día para el lote (estimado)"
+    },
+    "kind": {
+      "Forage": "Forraje",
+      "Concentrate": "Concentrado",
+      "Supplement": "Suplemento",
+      "Mineral": "Mineral"
+    },
+    "units": {
+      "kilogramsPerDay": "kg al día"
+    },
+    "current": {
+      "title": "Plan vigente",
+      "validity": "Del {{from}} al {{to}}",
+      "openEnded": "Desde el {{from}}, sin fecha de fin",
+      "target": "Ganancia diaria objetivo",
+      "noTarget": "Sin definir",
+      "total": "Alimento estimado para el lote",
+      "utcNote": "El plan vigente se toma con la fecha UTC de hoy, porque las unidades productivas todavía no tienen zona horaria.",
+      "noneTitle": "Sin plan vigente",
+      "none": "Ningún plan nutricional cubre hoy a este lote."
+    },
+    "estimate": {
+      "heads": "Estimación para {{count}} animales activos del lote.",
+      "unknown": "No se pudo leer el número de animales activos, así que no se muestra la estimación."
+    },
+    "items": {
+      "tableLabel": "Alimentos de la ración vigente"
+    },
+    "rumination": {
+      "title": "Evolución de la rumia",
+      "lead": "La media diaria de rumia del lote en minutos, alrededor de sus cambios de ración.",
+      "series": "Media diaria del lote",
+      "changeMarker": "Cambio de ración",
+      "axis": "Minutos",
+      "chartLabel": "Media diaria de rumia del lote, con sus cambios de ración marcados",
+      "before": "Media antes del cambio",
+      "after": "Media desde el cambio",
+      "noChange": "Ningún cambio de ración cae dentro de este periodo.",
+      "since": "El periodo empieza el {{date}}.",
+      "unavailable": "La API no tiene lecturas de rumia para este lote en este periodo."
+    },
+    "history": {
+      "title": "Historial de planes",
+      "change": "Cambio de ración el {{date}}",
+      "empty": "No hay planes registrados para este lote."
+    },
+    "record": {
+      "open": "Registrar plan nutricional",
+      "title": "Registrar plan nutricional",
+      "lead": "Registra la ración del lote {{lot}}. Un plan nuevo cierra el plan sin fecha de fin el día anterior a su inicio.",
+      "name": "Nombre del plan",
+      "validFrom": "Válido desde",
+      "validTo": "Válido hasta (opcional)",
+      "targetGain": "Ganancia diaria objetivo en kg (opcional)",
+      "itemsTitle": "Alimentos de la ración",
+      "addItem": "Agregar alimento",
+      "removeItem": "Quitar alimento",
+      "notes": "Notas (opcional)",
+      "submit": "Guardar plan",
+      "saved": "El plan nutricional se registró."
+    },
+    "validation": {
+      "gain": "Escribe un valor mayor que 0 y como máximo 3 kg al día.",
+      "quantity": "Escribe un valor mayor que 0 y como máximo 100 kg por cabeza al día.",
+      "validityOrder": "La fecha de fin no puede ser anterior a la de inicio.",
+      "itemsRequired": "Agrega al menos un alimento."
     }
   },
   "analytics": {

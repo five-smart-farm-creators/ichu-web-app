@@ -1,0 +1,223 @@
+<div class="planning-page nutrition-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.nutrition' | translate }}</span>
+      <h1>{{ 'nutrition.title' | translate }}</h1>
+      <p class="page-lead">{{ 'nutrition.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId() && facade.selectedLot() && canManage()) {
+      <div class="toolbar">
+        <button type="button" class="btn primary" (click)="openRegister()">
+          <ichu-icon name="plus" />
+          <span>{{ 'nutrition.record.open' | translate }}</span>
+        </button>
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'nutrition.filters' | translate">
+      <div class="filter-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'nutrition.fields.lot' | translate }}</mat-label>
+          <mat-select [value]="facade.lotId() ?? ''" (selectionChange)="choose($event.value)">
+            <mat-option value="">{{ 'nutrition.chooseLot' | translate }}</mat-option>
+            @for (lot of facade.lots(); track lot.lotId) {
+              <mat-option [value]="lot.lotId">{{ lot.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+
+    @if (!facade.selectedLot()) {
+      <section class="panel">
+        <div class="panel-body empty-state">
+          <h2>{{ 'nutrition.noLotTitle' | translate }}</h2>
+          <p>{{ 'nutrition.noLot' | translate }}</p>
+        </div>
+      </section>
+    } @else {
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'nutrition.loading' | translate" />
+      }
+
+      <div class="nutrition-grid" [attr.aria-busy]="facade.loading()">
+        <section class="panel" aria-labelledby="current-heading">
+          <div class="panel-head">
+            <h2 id="current-heading">{{ 'nutrition.current.title' | translate }}</h2>
+          </div>
+          <div class="panel-body">
+            @if (facade.current(); as plan) {
+              <h3 class="plan-name">{{ plan.name }}</h3>
+              <p class="text-muted">
+                @if (plan.validTo) {
+                  {{ 'nutrition.current.validity' | translate: { from: (plan.validFrom | localizedDate: 'mediumDate'), to: (plan.validTo | localizedDate: 'mediumDate') } }}
+                } @else {
+                  {{ 'nutrition.current.openEnded' | translate: { from: (plan.validFrom | localizedDate: 'mediumDate') } }}
+                }
+              </p>
+
+              <dl class="plan-facts">
+                <div>
+                  <dt>{{ 'nutrition.current.target' | translate }}</dt>
+                  <dd>
+                    @if (plan.targetDailyGainKilograms !== null) {
+                      {{ gainDecimals().format(plan.targetDailyGainKilograms) }} {{ 'nutrition.units.kilogramsPerDay' | translate }}
+                    } @else {
+                      {{ 'nutrition.current.noTarget' | translate }}
+                    }
+                  </dd>
+                </div>
+                <div>
+                  <dt>{{ 'nutrition.current.total' | translate }}</dt>
+                  <dd>
+                    @if (lotTotal(plan) !== null) {
+                      {{ formatted(oneDecimal(), lotTotal(plan)) }} {{ 'nutrition.units.kilogramsPerDay' | translate }}
+                    } @else {
+                      –
+                    }
+                  </dd>
+                </div>
+              </dl>
+
+              <div class="table-scroll">
+                <table mat-table class="data-table" [dataSource]="plan.items" [attr.aria-label]="'nutrition.items.tableLabel' | translate">
+                  <ng-container matColumnDef="feed">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'nutrition.fields.feed' | translate }}</th>
+                    <td mat-cell *matCellDef="let item">{{ item.feed }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="kind">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'nutrition.fields.kind' | translate }}</th>
+                    <td mat-cell *matCellDef="let item">{{ ('nutrition.kind.' + item.kind) | translate }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="perHead">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'nutrition.fields.kilogramsPerHead' | translate }}</th>
+                    <td mat-cell *matCellDef="let item">{{ twoDecimals().format(item.kilogramsPerHeadPerDay) }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="perLot">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'nutrition.fields.kilogramsForLot' | translate }}</th>
+                    <td mat-cell *matCellDef="let item">
+                      @if (lotKilograms(item) !== null) {
+                        {{ formatted(oneDecimal(), lotKilograms(item)) }}
+                      } @else {
+                        –
+                      }
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="itemColumns"></tr>
+                  <tr mat-row *matRowDef="let item; columns: itemColumns"></tr>
+                </table>
+              </div>
+
+              <p class="text-muted figure-note">
+                @if (facade.headCount() !== null) {
+                  {{ 'nutrition.estimate.heads' | translate: { count: facade.headCount() } }}
+                } @else {
+                  {{ 'nutrition.estimate.unknown' | translate }}
+                }
+              </p>
+              <p class="text-muted figure-note">{{ 'nutrition.current.utcNote' | translate }}</p>
+            } @else {
+              <div class="empty-state">
+                <h2>{{ 'nutrition.current.noneTitle' | translate }}</h2>
+                <p>{{ 'nutrition.current.none' | translate }}</p>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="rumination-heading">
+          <div class="panel-head">
+            <h2 id="rumination-heading">{{ 'nutrition.rumination.title' | translate }}</h2>
+          </div>
+          <div class="panel-body">
+            <p class="text-muted">{{ 'nutrition.rumination.lead' | translate }}</p>
+            @if (facade.ruminationError(); as apiError) {
+              <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+            } @else if (facade.rumination(); as evolution) {
+              @if (evolution.unavailableReason) {
+                <p class="notice" role="note">{{ 'nutrition.rumination.unavailable' | translate }}</p>
+              }
+              <ichu-line-chart
+                [series]="chartSeries()"
+                [markers]="chartMarkers()"
+                [yAxisLabel]="'nutrition.rumination.axis' | translate"
+                [accessibleLabel]="'nutrition.rumination.chartLabel' | translate" />
+              @if (evolution.around; as around) {
+                <dl class="around-list">
+                  <div>
+                    <dt>{{ 'nutrition.rumination.before' | translate }}</dt>
+                    <dd>
+                      @if (around.before !== null) {
+                        {{ oneDecimal().format(around.before) }}
+                      } @else {
+                        –
+                      }
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{{ 'nutrition.rumination.after' | translate }}</dt>
+                    <dd>
+                      @if (around.after !== null) {
+                        {{ oneDecimal().format(around.after) }}
+                      } @else {
+                        –
+                      }
+                    </dd>
+                  </div>
+                </dl>
+              } @else {
+                <p class="text-muted">{{ 'nutrition.rumination.noChange' | translate }}</p>
+              }
+              <p class="text-muted figure-note">{{ 'nutrition.rumination.since' | translate: { date: (evolution.from | localizedDate: 'mediumDate') } }}</p>
+            }
+          </div>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="history-heading">
+        <div class="panel-head">
+          <h2 id="history-heading">{{ 'nutrition.history.title' | translate }}</h2>
+        </div>
+        <div class="panel-body">
+          <ol class="timeline">
+            @for (plan of facade.history(); track plan.id) {
+              <li>
+                <strong>{{ plan.name }}</strong>
+                <span class="text-muted">
+                  @if (plan.validTo) {
+                    {{ 'nutrition.current.validity' | translate: { from: (plan.validFrom | localizedDate: 'mediumDate'), to: (plan.validTo | localizedDate: 'mediumDate') } }}
+                  } @else {
+                    {{ 'nutrition.current.openEnded' | translate: { from: (plan.validFrom | localizedDate: 'mediumDate') } }}
+                  }
+                </span>
+                @if (facade.changeDays().has(plan.validFrom)) {
+                  <span class="badge neutral">
+                    {{ 'nutrition.history.change' | translate: { date: (plan.validFrom | localizedDate: 'mediumDate') } }}
+                  </span>
+                }
+              </li>
+            } @empty {
+              <li class="text-muted">{{ 'nutrition.history.empty' | translate }}</li>
+            }
+          </ol>
+        </div>
+      </section>
+    }
+  }
+</div>

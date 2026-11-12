@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { provideCattleInformation } from '../cattle-information/infrastructure/configuration/cattle-information.providers';
+import { provideDashboardAnalytics } from '../dashboard-analytics/infrastructure/configuration/dashboard-analytics.providers';
 import { provideOperationsMonitoring } from '../operations-monitoring/infrastructure/configuration/operations-monitoring.providers';
 import { providePlanning } from './infrastructure/configuration/planning.providers';
 
@@ -33,6 +34,27 @@ export const planningRoutes: Routes = [
               .then(module => module.WithdrawalPeriodsPage),
           },
         ],
+      },
+    ],
+  },
+];
+
+/** Loaded lazily under `/nutrition`; the lots come through the cattle facade and the rumination readings through the dashboard ACL facade. */
+export const nutritionRoutes: Routes = [
+  {
+    path: '',
+    providers: [provideCattleInformation(), providePlanning(), provideDashboardAnalytics()],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'pages.nutrition',
+        loadComponent: () => import('./presentation/pages/nutrition/nutrition-page').then(module => module.NutritionPage),
+      },
+      {
+        path: 'lots/:lotId',
+        title: 'pages.nutrition',
+        loadComponent: () => import('./presentation/pages/nutrition/nutrition-page').then(module => module.NutritionPage),
       },
     ],
   },

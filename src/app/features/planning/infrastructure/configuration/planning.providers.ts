@@ -1,8 +1,10 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { PlanningContextFacade } from '../../application/acl/planning-context.facade';
+import { NutritionPlanRepository } from '../../domain/repositories/nutrition-plan.repository';
 import { PlanningCampaignRepository } from '../../domain/repositories/planning-campaign.repository';
 import { PlannedActivityRepository } from '../../domain/repositories/planned-activity.repository';
 import { WithdrawalPeriodRepository } from '../../domain/repositories/withdrawal-period.repository';
+import { RestNutritionPlanRepository } from '../repositories/rest-nutrition-plan.repository';
 import { RestPlanningCampaignRepository } from '../repositories/rest-planning-campaign.repository';
 import { RestPlannedActivityRepository } from '../repositories/rest-planned-activity.repository';
 import { RestWithdrawalPeriodRepository } from '../repositories/rest-withdrawal-period.repository';
@@ -16,6 +18,8 @@ export function providePlanning(): EnvironmentProviders {
     { provide: PlannedActivityRepository, useExisting: RestPlannedActivityRepository },
     RestWithdrawalPeriodRepository,
     { provide: WithdrawalPeriodRepository, useExisting: RestWithdrawalPeriodRepository },
+    RestNutritionPlanRepository,
+    { provide: NutritionPlanRepository, useExisting: RestNutritionPlanRepository },
     PlanningContextFacade,
   ]);
 }
