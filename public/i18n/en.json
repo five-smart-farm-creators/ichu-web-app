@@ -56,7 +56,10 @@
     "clinicalHistory": "Clinical history",
     "planning": "Health planning",
     "planningCampaigns": "Campaigns",
-    "withdrawalPeriods": "Withdrawal periods"
+    "withdrawalPeriods": "Withdrawal periods",
+    "dashboard": "My herd",
+    "reports": "Reports",
+    "portfolio": "Portfolio"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -73,7 +76,10 @@
     "monitoring": "Monitoring",
     "alerts": "Alerts",
     "clinicalHistory": "Clinical history",
-    "healthPlanning": "Health planning"
+    "healthPlanning": "Health planning",
+    "dashboard": "My herd",
+    "reports": "Reports",
+    "portfolio": "Portfolio"
   },
   "terms": {
     "back": "Back to account",
@@ -1126,6 +1132,221 @@
       "rangeOrder": "The end day cannot be before the start day.",
       "titleRequired": "Enter a title.",
       "withdrawalRangeOrder": "The end cannot be before the start."
+    }
+  },
+  "analytics": {
+    "notAvailable": "Not available",
+    "source": "Data from {{source}}, updated {{updated}}",
+    "sources": {
+      "ichu-platform": "ICHU platform"
+    },
+    "showFormula": "How is this calculated?",
+    "hideFormula": "Hide the calculation",
+    "denominator": "Base of the calculation: {{count}}",
+    "units": {
+      "animals": "animals",
+      "percent": "%",
+      "events": "events",
+      "celsius": "°C",
+      "index": "index",
+      "minutes": "min",
+      "cases": "cases"
+    },
+    "indicators": {
+      "monitoredAnimals": "Monitored animals",
+      "outsideGeofenceAnimals": "Outside the grazing zone",
+      "mortalityRate": "Mortality rate",
+      "births": "Births",
+      "confirmedPregnancies": "Confirmed pregnancies"
+    },
+    "alertTypes": {
+      "temperature": "Temperature",
+      "activity": "Activity",
+      "geofence": "Geofence"
+    },
+    "export": {
+      "indicator": "Indicator",
+      "value": "Value",
+      "unit": "Unit",
+      "formula": "How it is calculated",
+      "denominator": "Base",
+      "note": "Note"
+    },
+    "period": {
+      "label": "Period",
+      "presets": {
+        "days7": "Last 7 days",
+        "days30": "Last 30 days",
+        "days90": "Last 90 days",
+        "days365": "Last 365 days"
+      },
+      "custom": "Custom range",
+      "fromDay": "From day",
+      "toDay": "To day (included)",
+      "apply": "Apply period",
+      "invalid": "Choose both days, with the first day on or before the last one.",
+      "showing": "Showing from {{from}} to {{to}}"
+    },
+    "dashboard": {
+      "title": "My herd",
+      "lead": "Herd indicators for the chosen period, each with its calculation, the coverage of its readings, and the work due next.",
+      "kpis": "Herd indicators",
+      "loading": "Loading indicators",
+      "openAlerts": "Open alerts by type",
+      "noOpenAlerts": "No open alerts in this period.",
+      "alertsLink": "Open alerts",
+      "locationsLink": "Locations and fences",
+      "coverage": "Coverage of readings",
+      "excluded": "Animals without valid readings in the period: {{count}}",
+      "missingReadings": "Missing readings: {{count}}",
+      "missingUnknown": "The number of missing readings is not available.",
+      "upcoming": "Next 7 days",
+      "planningLink": "Health planning",
+      "noUpcoming": "No work is scheduled in the next 7 days.",
+      "wholeHerd": "Whole herd"
+    },
+    "reports": {
+      "title": "Reports",
+      "lead": "Lot trends, the epidemiological curve and the executive report for the chosen period.",
+      "tabsLabel": "Report sections",
+      "tabs": {
+        "trends": "Lot trends",
+        "epidemiology": "Epidemiological curve",
+        "executive": "Executive report"
+      }
+    },
+    "trends": {
+      "controls": "Trend controls",
+      "lot": "Lot",
+      "metric": "Metric",
+      "metrics": {
+        "body-temperature": "Body temperature",
+        "activity-index": "Activity index",
+        "rumination-minutes": "Rumination"
+      },
+      "multiplier": "Outlier threshold (standard deviations)",
+      "multiplierValue": "{{value}} standard deviations",
+      "multiplierHelp": "An animal is flagged when its average differs from the lot average by more than this number of standard deviations of the animals' averages.",
+      "threshold": "Threshold at {{value}} standard deviations",
+      "lotAverage": "Lot average",
+      "spread": "Standard deviation of the animals",
+      "needTwoAnimals": "At least two animals with valid readings are needed to measure the spread.",
+      "noSpread": "All animals with readings have the same average, so none stands apart from the lot.",
+      "flagged": "Flagged animals",
+      "flaggedNote": "Averages beyond the threshold",
+      "chart": "Daily lot mean with the threshold band",
+      "chartLabel": "Lot daily mean",
+      "averageLine": "Lot average",
+      "outlierSeries": "Flagged animals",
+      "lowerLimit": "Lower limit",
+      "upperLimit": "Upper limit",
+      "dailyTable": "Daily lot means",
+      "day": "Day",
+      "lotDailyMean": "Lot daily mean",
+      "animalsCounted": "Animals counted",
+      "outliers": "Flagged animals",
+      "earTag": "Ear tag",
+      "animalAverage": "Animal average",
+      "difference": "Difference from the lot average",
+      "noOutliers": "No animal is beyond the threshold in this period.",
+      "unknownAnimal": "Unknown animal",
+      "comparison": "Compare an animal with its lot",
+      "animal": "Animal",
+      "noAnimal": "No animal selected",
+      "loading": "Loading lot readings",
+      "noLots": "This ranch has no lots yet. Create one under Animals, then Lots.",
+      "summary": "Lot summary",
+      "emptyTitle": "No readings yet",
+      "empty": "Choose a lot with readings in the period.",
+      "missingReadings": "Missing readings in the lot: {{count}}",
+      "missingUnknown": "The number of missing readings is not available."
+    },
+    "epidemiology": {
+      "condition": "Condition",
+      "conditions": {
+        "temperature": "Temperature alerts",
+        "activity": "Activity alerts"
+      },
+      "caseNote": "Each case is an alert of the condition, so an animal with several alerts counts more than once.",
+      "loading": "Loading the curve",
+      "summary": "Curve summary",
+      "total": "Cases in the period",
+      "peak": "Peak day",
+      "peakCases": "{{count}} cases",
+      "noPeak": "No cases",
+      "daysWithoutCases": "Days without new cases",
+      "attackRate": "Attack rate",
+      "attackRateFormula": "New cases among the animals in the herd, per 100",
+      "herdSizeUnavailable": "The herd size for this period is not available.",
+      "restriction": "Restriction lifting",
+      "restrictionYes": "The days without new cases cover the incubation period, so the restriction can be reviewed.",
+      "restrictionNo": "The days without new cases do not yet cover the incubation period.",
+      "newCases": "New cases",
+      "cumulative": "Cumulative cases",
+      "rollingAverage": "{{days}}-day moving average",
+      "rollingLabelShort": "{{days}}-day average",
+      "dailyChart": "New cases per day with the moving average",
+      "cumulativeChart": "Cumulative cases",
+      "table": "Daily values",
+      "day": "Day",
+      "emptyTitle": "No cases to show",
+      "empty": "Choose a condition and a period to review the alerts of that period."
+    },
+    "executive": {
+      "title": "Executive report",
+      "preview": "Report indicators",
+      "previewNote": "The same values as the CSV, Excel and PDF downloads.",
+      "csv": "Download CSV",
+      "loading": "Loading the report",
+      "empty": "The report is not available for this period.",
+      "generated": "Generated {{date}}"
+    },
+    "portfolio": {
+      "title": "Portfolio of advised ranches",
+      "lead": "The ranches you advise, with the ones that need attention first.",
+      "loading": "Loading ranches",
+      "tableLabel": "Ranches you advise",
+      "ranch": "Ranch",
+      "critical": "Critical alerts",
+      "warning": "Warning alerts",
+      "informative": "Informative alerts",
+      "unresponsive": "Unresponsive treatments",
+      "overdue": "Overdue campaigns",
+      "updated": "Updated",
+      "actions": "Actions",
+      "open": "Open",
+      "openNamed": "Open {{ranch}}",
+      "unnamedRanch": "Unnamed ranch",
+      "empty": "No advised ranches yet."
+    },
+    "links": {
+      "compareWithLot": "Compare with lot"
+    },
+    "chart": {
+      "showTable": "Show data as a table",
+      "hideTable": "Hide the table"
+    },
+    "texts": {
+      "populationIncomplete": "The population data is incomplete.",
+      "alertsIncomplete": "The alert data is incomplete.",
+      "geofenceIncomplete": "The grazing zone data is incomplete.",
+      "noAnimalsAtRisk": "There are no animals at risk in this period.",
+      "birthsUnavailable": "Birth records are not available.",
+      "pregnanciesUnavailable": "Confirmed pregnancies are not recorded yet.",
+      "expectedReadingsUnavailable": "The expected number of readings is not available.",
+      "formulaMonitored": "Animals with at least one valid reading in the period",
+      "formulaGeofence": "Animals outside their assigned grazing zone at the end of the period",
+      "formulaMortality": "100 × deaths in the period ÷ animals at risk in the period",
+      "formulaBirths": "Births recorded in the period",
+      "formulaPregnancies": "Confirmed pregnancies in the period",
+      "noLotReadings": "There are no valid readings for this lot and metric in the period.",
+      "lotExpectedUnavailable": "Expected readings are not available for part of the lot.",
+      "fiveAnimalsRequired": "At least five animals with valid readings are needed to compare an animal with its lot.",
+      "animalNoReadings": "This animal has no valid readings in this lot.",
+      "casesIncomplete": "The case data is incomplete.",
+      "noIncubationPeriod": "This condition has no configured incubation period.",
+      "twoCasesRequired": "At least two cases are needed to build a progression.",
+      "periodShorter": "The period is shorter than the incubation period."
     }
   }
 }

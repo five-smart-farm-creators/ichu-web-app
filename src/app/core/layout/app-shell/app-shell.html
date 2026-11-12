@@ -7,7 +7,7 @@
         <ichu-icon name="menu" />
       </button>
     }
-    <a class="brand" routerLink="/account">
+    <a class="brand" routerLink="/dashboard">
       <img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790">
       <strong>ICHU</strong>
     </a>
@@ -48,6 +48,10 @@
   <mat-sidenav id="app-navigation" [mode]="wide() ? 'side' : 'over'" [opened]="wide() || menuOpen()" (openedChange)="menuOpen.set($event)">
     <nav class="shell-navigation" [attr.aria-label]="'shell.navigation' | translate">
       <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="grid" />
+          <span matListItemTitle>{{ 'shell.dashboard' | translate }}</span>
+        </a>
         <a mat-list-item routerLink="/account" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
           <ichu-icon matListItemIcon name="users" />
           <span matListItemTitle>{{ 'shell.myAccount' | translate }}</span>
@@ -76,6 +80,18 @@
           <ichu-icon matListItemIcon name="calendar" />
           <span matListItemTitle>{{ 'shell.healthPlanning' | translate }}</span>
         </a>
+        @if (context.currentRanch()) {
+          <a mat-list-item routerLink="/reports" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="chart" />
+            <span matListItemTitle>{{ 'shell.reports' | translate }}</span>
+          </a>
+        }
+        @if (context.currentRole() === 'Veterinarian') {
+          <a mat-list-item routerLink="/portfolio" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="leaf" />
+            <span matListItemTitle>{{ 'shell.portfolio' | translate }}</span>
+          </a>
+        }
         <a mat-list-item routerLink="/devices" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
           <ichu-icon matListItemIcon name="radio" />
           <span matListItemTitle>{{ 'shell.iotDevices' | translate }}</span>

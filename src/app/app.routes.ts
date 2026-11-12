@@ -3,13 +3,25 @@ import { authGuard } from './features/iam/application/guards/auth.guard';
 import { iamPublicRoutes, iamWorkspaceRoutes } from './features/iam/iam.routes';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'account' },
+  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   {
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./core/layout/app-shell/app-shell').then(module => module.AppShell),
     children: [
       ...iamWorkspaceRoutes,
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./features/dashboard-analytics/dashboard-analytics.routes').then(module => module.dashboardRoutes),
+      },
+      {
+        path: 'reports',
+        loadChildren: () => import('./features/dashboard-analytics/dashboard-analytics.routes').then(module => module.reportRoutes),
+      },
+      {
+        path: 'portfolio',
+        loadChildren: () => import('./features/dashboard-analytics/dashboard-analytics.routes').then(module => module.portfolioRoutes),
+      },
       {
         path: 'cattle',
         loadChildren: () => import('./features/cattle-information/cattle-information.routes').then(module => module.cattleInformationRoutes),

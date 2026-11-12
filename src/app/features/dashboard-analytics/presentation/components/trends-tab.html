@@ -1,0 +1,198 @@
+<section class="panel filter-panel" [attr.aria-label]="'analytics.trends.controls' | translate">
+  <div class="filter-body controls">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="control">
+      <mat-label>{{ 'analytics.trends.lot' | translate }}</mat-label>
+      <mat-select [value]="facade.lotId()" (selectionChange)="facade.selectLot($event.value)">
+        @for (lot of facade.lots(); track lot.lotId) {
+          <mat-option [value]="lot.lotId">{{ lot.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="control">
+      <mat-label>{{ 'analytics.trends.metric' | translate }}</mat-label>
+      <mat-select [value]="facade.metric()" (selectionChange)="facade.selectMetric($event.value)">
+        @for (metric of metrics; track metric) {
+          <mat-option [value]="metric">{{ ('analytics.trends.metrics.' + metric) | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <div class="control range-control">
+      <label class="range-label" for="trend-multiplier">{{ 'analytics.trends.multiplier' | translate }}</label>
+      <input id="trend-multiplier" type="range" min="1" max="3" step="0.5" [value]="facade.multiplier()"
+        [attr.aria-valuetext]="'analytics.trends.multiplierValue' | translate: { value: displayedMultiplier() }"
+        (input)="previewMultiplier($event)" (change)="commitMultiplier($event)">
+      <span class="text-muted">{{ 'analytics.trends.multiplierValue' | translate: { value: displayedMultiplier() } }}</span>
+    </div>
+  </div>
+  <p class="filter-note text-muted">{{ 'analytics.trends.multiplierHelp' | translate }}</p>
+</section>
+
+@if (facade.lots().length === 0 && !facade.loading()) {
+  <p class="notice" role="note">{{ 'analytics.trends.noLots' | translate }}</p>
+}
+@if (facade.error(); as apiError) {
+  <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+}
+@if (facade.loading()) {
+  <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.trends.loading' | translate" />
+}
+
+@if (facade.series(); as series) {
+  <p class="source-note text-muted">
+    {{ 'analytics.source' | translate: { source: ('analytics.sources.' + series.source) | translate, updated: (series.updatedAt | localizedDate: 'short') } }}
+  </p>
+  @if (series.unavailableReason) {
+    <p class="notice section-gap" role="note">{{ reasonKey(series.unavailableReason) | translate }}</p>
+  }
+
+  <section class="stats-grid" [attr.aria-label]="'analytics.trends.summary' | translate">
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.trends.lotAverage' | translate }}</span>
+      @if (series.lotAverage !== null) {
+        <span class="stat-value">{{ number(series.lotAverage) }} <span class="unit">{{ ('analytics.units.' + series.unit) | translate }}</span></span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+      }
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.trends.spread' | translate }}</span>
+      @if (facade.spread() !== null) {
+        <span class="stat-value">{{ number(facade.spread()) }} <span class="unit">{{ ('analytics.units.' + series.unit) | translate }}</span></span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+        <span class="stat-note">{{ 'analytics.trends.needTwoAnimals' | translate }}</span>
+      }
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.trends.threshold' | translate: { value: facade.multiplier() } }}</span>
+      @if (facade.threshold() !== null) {
+        <span class="stat-value">{{ number(facade.threshold()) }} <span class="unit">{{ ('analytics.units.' + series.unit) | translate }}</span></span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+        <span class="stat-note">{{ thresholdNote() | translate }}</span>
+      }
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.trends.flagged' | translate }}</span>
+      <span class="stat-value">{{ series.outlierAnimals.length }}</span>
+      <span class="stat-note">{{ 'analytics.trends.flaggedNote' | translate }}</span>
+    </article>
+  </section>
+  @if (series.missingReadings !== null) {
+    <p class="text-muted">{{ 'analytics.trends.missingReadings' | translate: { count: series.missingReadings } }}</p>
+  } @else {
+    <p class="text-muted">{{ 'analytics.trends.missingUnknown' | translate }} {{ reasonKey(series.coverageReason) | translate }}</p>
+  }
+
+  <section class="panel chart-panel" aria-labelledby="trend-chart-heading">
+    <div class="panel-head">
+      <h2 id="trend-chart-heading">{{ 'analytics.trends.chart' | translate }}</h2>
+      <button type="button" class="btn secondary" [attr.aria-expanded]="showTable()" (click)="showTable.set(!showTable())">
+        {{ (showTable() ? 'analytics.chart.hideTable' : 'analytics.chart.showTable') | translate }}
+      </button>
+    </div>
+    <div class="panel-body">
+      <ichu-line-chart [series]="chartSeries()" [band]="band()" [yAxisLabel]="('analytics.units.' + series.unit) | translate"
+        [accessibleLabel]="'analytics.trends.chart' | translate" />
+      @if (showTable()) {
+        <div class="table-scroll section-gap">
+          <table class="data-table" [attr.aria-label]="'analytics.trends.dailyTable' | translate">
+            <thead>
+              <tr>
+                <th scope="col">{{ 'analytics.trends.day' | translate }}</th>
+                <th scope="col">{{ 'analytics.trends.lotDailyMean' | translate }}</th>
+                <th scope="col">{{ 'analytics.trends.animalsCounted' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (day of dailyMeans(); track day.day) {
+                <tr>
+                  <td>{{ dayDate(day.day) | localizedDate: 'mediumDate' }}</td>
+                  <td>{{ number(day.value) }}</td>
+                  <td>{{ day.animalCount }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="split-grid">
+    <section class="panel" aria-labelledby="outliers-heading">
+      <div class="panel-head"><h2 id="outliers-heading">{{ 'analytics.trends.outliers' | translate }}</h2></div>
+      <div class="table-scroll">
+        @if (facade.outliers().length > 0) {
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">{{ 'analytics.trends.earTag' | translate }}</th>
+                <th scope="col">{{ 'analytics.trends.animalAverage' | translate }}</th>
+                <th scope="col">{{ 'analytics.trends.difference' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (outlier of facade.outliers(); track outlier.cattleId) {
+                <tr>
+                  <td><strong>{{ outlier.earTag ?? ('analytics.trends.unknownAnimal' | translate) }}</strong></td>
+                  <td>{{ number(outlier.average) }} {{ ('analytics.units.' + series.unit) | translate }}</td>
+                  <td>{{ signed(outlier.deviation) }} {{ ('analytics.units.' + series.unit) | translate }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="empty-state">{{ 'analytics.trends.noOutliers' | translate }}</p>
+        }
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="comparison-heading">
+      <div class="panel-head"><h2 id="comparison-heading">{{ 'analytics.trends.comparison' | translate }}</h2></div>
+      <div class="panel-body">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="control">
+          <mat-label>{{ 'analytics.trends.animal' | translate }}</mat-label>
+          <mat-select [value]="facade.cattleId()" (selectionChange)="facade.selectAnimal($event.value)">
+            <mat-option [value]="null">{{ 'analytics.trends.noAnimal' | translate }}</mat-option>
+            @for (member of members(); track member.cattleId) {
+              <mat-option [value]="member.cattleId">{{ member.earTag }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (facade.comparison(); as comparison) {
+          @if (comparison.unavailableReason) {
+            <p class="notice section-gap" role="note">{{ reasonKey(comparison.unavailableReason) | translate }}</p>
+          } @else {
+            <dl class="comparison section-gap">
+              <div>
+                <dt>{{ 'analytics.trends.animalAverage' | translate }}</dt>
+                <dd>{{ number(comparison.animalAverage) }} {{ ('analytics.units.' + series.unit) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'analytics.trends.lotAverage' | translate }}</dt>
+                <dd>{{ number(comparison.reference.lotAverage) }} {{ ('analytics.units.' + series.unit) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'analytics.trends.difference' | translate }}</dt>
+                <dd>{{ signed(comparison.deviation) }} {{ ('analytics.units.' + series.unit) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'analytics.trends.animalsCounted' | translate }}</dt>
+                <dd>{{ comparison.referenceAnimalCount }}</dd>
+              </div>
+            </dl>
+          }
+        }
+      </div>
+    </section>
+  </section>
+} @else if (facade.lots().length > 0 && !facade.loading() && !facade.error()) {
+  <section class="panel section-gap">
+    <div class="panel-body empty-state">
+      <h2>{{ 'analytics.trends.emptyTitle' | translate }}</h2>
+      <p>{{ 'analytics.trends.empty' | translate }}</p>
+    </div>
+  </section>
+}

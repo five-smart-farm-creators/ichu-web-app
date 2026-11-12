@@ -56,7 +56,10 @@
     "clinicalHistory": "Historial clínico",
     "planning": "Planificación sanitaria",
     "planningCampaigns": "Campañas",
-    "withdrawalPeriods": "Periodos de retiro"
+    "withdrawalPeriods": "Periodos de retiro",
+    "dashboard": "Mi hato",
+    "reports": "Reportes",
+    "portfolio": "Portafolio"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -73,7 +76,10 @@
     "monitoring": "Monitoreo",
     "alerts": "Alertas",
     "clinicalHistory": "Historial clínico",
-    "healthPlanning": "Planificación sanitaria"
+    "healthPlanning": "Planificación sanitaria",
+    "dashboard": "Mi hato",
+    "reports": "Reportes",
+    "portfolio": "Portafolio"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -1126,6 +1132,221 @@
       "rangeOrder": "El día final no puede ser anterior al día inicial.",
       "titleRequired": "Ingresa un título.",
       "withdrawalRangeOrder": "El fin no puede ser anterior al inicio."
+    }
+  },
+  "analytics": {
+    "notAvailable": "No disponible",
+    "source": "Datos de {{source}}, actualizados {{updated}}",
+    "sources": {
+      "ichu-platform": "Plataforma ICHU"
+    },
+    "showFormula": "¿Cómo se calcula?",
+    "hideFormula": "Ocultar el cálculo",
+    "denominator": "Base del cálculo: {{count}}",
+    "units": {
+      "animals": "animales",
+      "percent": "%",
+      "events": "eventos",
+      "celsius": "°C",
+      "index": "índice",
+      "minutes": "min",
+      "cases": "casos"
+    },
+    "indicators": {
+      "monitoredAnimals": "Animales monitoreados",
+      "outsideGeofenceAnimals": "Fuera de la geocerca",
+      "mortalityRate": "Tasa de mortalidad",
+      "births": "Nacimientos",
+      "confirmedPregnancies": "Preñeces confirmadas"
+    },
+    "alertTypes": {
+      "temperature": "Temperatura",
+      "activity": "Actividad",
+      "geofence": "Geocerca"
+    },
+    "export": {
+      "indicator": "Indicador",
+      "value": "Valor",
+      "unit": "Unidad",
+      "formula": "Cálculo",
+      "denominator": "Base",
+      "note": "Nota"
+    },
+    "period": {
+      "label": "Periodo",
+      "presets": {
+        "days7": "Últimos 7 días",
+        "days30": "Últimos 30 días",
+        "days90": "Últimos 90 días",
+        "days365": "Últimos 365 días"
+      },
+      "custom": "Rango personalizado",
+      "fromDay": "Desde el día",
+      "toDay": "Hasta el día (incluido)",
+      "apply": "Aplicar periodo",
+      "invalid": "Elija ambos días; el primero debe ser anterior o igual al último.",
+      "showing": "Del {{from}} al {{to}}"
+    },
+    "dashboard": {
+      "title": "Mi hato",
+      "lead": "Indicadores del hato para el periodo elegido, cada uno con su cálculo, la cobertura de sus lecturas y el trabajo que sigue.",
+      "kpis": "Indicadores del hato",
+      "loading": "Cargando indicadores",
+      "openAlerts": "Alertas abiertas por tipo",
+      "noOpenAlerts": "No hay alertas abiertas en este periodo.",
+      "alertsLink": "Ver alertas",
+      "locationsLink": "Ubicación y cercas",
+      "coverage": "Cobertura de lecturas",
+      "excluded": "Animales sin lecturas válidas en el periodo: {{count}}",
+      "missingReadings": "Lecturas faltantes: {{count}}",
+      "missingUnknown": "El número de lecturas faltantes no está disponible.",
+      "upcoming": "Próximos 7 días",
+      "planningLink": "Planificación sanitaria",
+      "noUpcoming": "No hay trabajo programado en los próximos 7 días.",
+      "wholeHerd": "Todo el hato"
+    },
+    "reports": {
+      "title": "Reportes",
+      "lead": "Tendencias del lote, curva epidemiológica y reporte ejecutivo del periodo elegido.",
+      "tabsLabel": "Secciones del reporte",
+      "tabs": {
+        "trends": "Tendencias del lote",
+        "epidemiology": "Curva epidemiológica",
+        "executive": "Reporte ejecutivo"
+      }
+    },
+    "trends": {
+      "controls": "Controles de tendencia",
+      "lot": "Lote",
+      "metric": "Métrica",
+      "metrics": {
+        "body-temperature": "Temperatura corporal",
+        "activity-index": "Índice de actividad",
+        "rumination-minutes": "Rumia"
+      },
+      "multiplier": "Umbral de valor atípico (desviaciones estándar)",
+      "multiplierValue": "{{value}} desviaciones estándar",
+      "multiplierHelp": "Un animal se marca cuando su promedio se aleja del promedio del lote por más de este número de desviaciones estándar de los promedios de los animales.",
+      "threshold": "Umbral a {{value}} desviaciones estándar",
+      "lotAverage": "Promedio del lote",
+      "spread": "Desviación estándar de los animales",
+      "needTwoAnimals": "Se necesitan al menos dos animales con lecturas válidas para medir la dispersión.",
+      "noSpread": "Todos los animales con lecturas tienen el mismo promedio, así que ninguno se separa del lote.",
+      "flagged": "Animales marcados",
+      "flaggedNote": "Promedios más allá del umbral",
+      "chart": "Media diaria del lote con la banda del umbral",
+      "chartLabel": "Media diaria del lote",
+      "averageLine": "Promedio del lote",
+      "outlierSeries": "Animales marcados",
+      "lowerLimit": "Límite inferior",
+      "upperLimit": "Límite superior",
+      "dailyTable": "Medias diarias del lote",
+      "day": "Día",
+      "lotDailyMean": "Media diaria del lote",
+      "animalsCounted": "Animales contados",
+      "outliers": "Valores atípicos",
+      "earTag": "Arete",
+      "animalAverage": "Promedio del animal",
+      "difference": "Diferencia con el promedio del lote",
+      "noOutliers": "Ningún animal supera el umbral en este periodo.",
+      "unknownAnimal": "Animal sin arete",
+      "comparison": "Comparar un animal con su lote",
+      "animal": "Animal",
+      "noAnimal": "Ningún animal seleccionado",
+      "loading": "Cargando lecturas del lote",
+      "noLots": "Este hato aún no tiene lotes. Cree uno en Animales, luego en Lotes.",
+      "summary": "Resumen del lote",
+      "emptyTitle": "Aún no hay lecturas",
+      "empty": "Elija un lote con lecturas en el periodo.",
+      "missingReadings": "Lecturas faltantes en el lote: {{count}}",
+      "missingUnknown": "El número de lecturas faltantes no está disponible."
+    },
+    "epidemiology": {
+      "condition": "Condición",
+      "conditions": {
+        "temperature": "Alertas de temperatura",
+        "activity": "Alertas de actividad"
+      },
+      "caseNote": "Cada caso es una alerta de la condición; un animal con varias alertas cuenta más de una vez.",
+      "loading": "Cargando la curva",
+      "summary": "Resumen de la curva",
+      "total": "Casos en el periodo",
+      "peak": "Día pico",
+      "peakCases": "{{count}} casos",
+      "noPeak": "Sin casos",
+      "daysWithoutCases": "Días sin casos nuevos",
+      "attackRate": "Tasa de ataque",
+      "attackRateFormula": "Casos nuevos entre los animales del hato, por 100",
+      "herdSizeUnavailable": "El tamaño del hato en este periodo no está disponible.",
+      "restriction": "Levantamiento de restricción",
+      "restrictionYes": "Los días sin casos nuevos cubren el periodo de incubación, por lo que la restricción puede revisarse.",
+      "restrictionNo": "Los días sin casos nuevos todavía no cubren el periodo de incubación.",
+      "newCases": "Casos nuevos",
+      "cumulative": "Casos acumulados",
+      "rollingAverage": "Media móvil de {{days}} días",
+      "rollingLabelShort": "Media de {{days}} días",
+      "dailyChart": "Casos nuevos por día con su media móvil",
+      "cumulativeChart": "Casos acumulados",
+      "table": "Valores diarios",
+      "day": "Día",
+      "emptyTitle": "No hay casos que mostrar",
+      "empty": "Elija una condición y un periodo para revisar las alertas de ese periodo."
+    },
+    "executive": {
+      "title": "Reporte ejecutivo",
+      "preview": "Indicadores del reporte",
+      "previewNote": "Los mismos valores que las descargas en CSV, Excel y PDF.",
+      "csv": "Descargar CSV",
+      "loading": "Cargando el reporte",
+      "empty": "El reporte no está disponible para este periodo.",
+      "generated": "Generado {{date}}"
+    },
+    "portfolio": {
+      "title": "Portafolio de hatos asesorados",
+      "lead": "Los hatos que asesora, con los que necesitan atención primero.",
+      "loading": "Cargando hatos",
+      "tableLabel": "Hatos que asesora",
+      "ranch": "Hato",
+      "critical": "Alertas críticas",
+      "warning": "Alertas de advertencia",
+      "informative": "Alertas informativas",
+      "unresponsive": "Tratamientos sin respuesta",
+      "overdue": "Campañas atrasadas",
+      "updated": "Actualizado",
+      "actions": "Acciones",
+      "open": "Abrir",
+      "openNamed": "Abrir {{ranch}}",
+      "unnamedRanch": "Hato sin nombre",
+      "empty": "Aún no hay hatos asesorados."
+    },
+    "links": {
+      "compareWithLot": "Comparar con el lote"
+    },
+    "chart": {
+      "showTable": "Mostrar datos en tabla",
+      "hideTable": "Ocultar la tabla"
+    },
+    "texts": {
+      "populationIncomplete": "Los datos de la población están incompletos.",
+      "alertsIncomplete": "Los datos de alertas están incompletos.",
+      "geofenceIncomplete": "Los datos de la zona de pastoreo están incompletos.",
+      "noAnimalsAtRisk": "No hay animales en riesgo en este periodo.",
+      "birthsUnavailable": "Los registros de nacimientos no están disponibles.",
+      "pregnanciesUnavailable": "Las preñeces confirmadas todavía no se registran.",
+      "expectedReadingsUnavailable": "El número esperado de lecturas no está disponible.",
+      "formulaMonitored": "Animales con al menos una lectura válida en el periodo",
+      "formulaGeofence": "Animales fuera de su zona de pastoreo asignada al final del periodo",
+      "formulaMortality": "100 × muertes en el periodo ÷ animales en riesgo en el periodo",
+      "formulaBirths": "Nacimientos registrados en el periodo",
+      "formulaPregnancies": "Preñeces confirmadas en el periodo",
+      "noLotReadings": "No hay lecturas válidas para este lote y esta métrica en el periodo.",
+      "lotExpectedUnavailable": "Las lecturas esperadas no están disponibles para parte del lote.",
+      "fiveAnimalsRequired": "Se necesitan al menos cinco animales con lecturas válidas para comparar un animal con su lote.",
+      "animalNoReadings": "Este animal no tiene lecturas válidas en este lote.",
+      "casesIncomplete": "Los datos de casos están incompletos.",
+      "noIncubationPeriod": "Esta condición no tiene un periodo de incubación configurado.",
+      "twoCasesRequired": "Se necesitan al menos dos casos para construir una progresión.",
+      "periodShorter": "El periodo es más corto que el periodo de incubación."
     }
   }
 }

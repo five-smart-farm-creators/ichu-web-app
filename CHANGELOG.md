@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- My herd dashboard as the home page: monitored animals, open alerts by type with a link to alerts, animals outside the grazing zone, mortality rate, births and confirmed pregnancies, each with its calculation on request; a missing indicator reads "Not available" with its reason, never as zero. It also shows the coverage of readings, the work scheduled in the next 7 days, a period of 7, 30, 90 or 365 days or a custom range, and Excel and PDF downloads of the indicator table.
+- Reports screen with lot trends: the daily lot mean with a band of standard deviations, the flagged animals by ear tag, and the comparison of one animal with its lot.
+- Epidemiological curve for the alert conditions: new cases per day with a 7-day moving average, cumulative cases, peak day, days without new cases, an attack rate when the herd size is known, and a hint about lifting restrictions.
+- Executive report with a preview of the indicators and downloads in CSV, PDF and Excel.
+- Portfolio of advised ranches for veterinarians, ordered by critical, warning and informative alerts, with a button that opens the dashboard of each ranch, and Excel and PDF downloads.
+- Reports entry in the navigation menu for every role with a ranch, and Portfolio entry for veterinarians.
+- Compare with lot link on the animal monitoring page, which opens the trend comparison of that animal.
+- Charts of the reports with a textual summary for screen readers and a button that shows their data as a table.
 - Clinical history screen for each animal, with an animal picker, a 90-day, one-year or five-year period, a type filter, a timeline of field events and clinical interventions newest first, a health summary with the latest values, pending alerts and the current withdrawal period, Excel and PDF downloads, and registration of health events (managers) and clinical interventions (veterinarians with clinical access). Registering a record again after a failed attempt does not create a duplicate.
 - Health planning screen with a month calendar, a day list, an agenda view, reminders for the next 7 days and for overdue work, and Excel and PDF downloads of the visible month.
 - Planning campaigns, sanitary or reproductive, over an inclusive range of days, with their scheduled activities, applications linked to a clinical intervention of the same animal, and follow-ups; Excel and PDF downloads.
@@ -41,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Signed-in users land on My herd after sign-in, from the root address, and from the not-found and terms links; the brand opens My herd.
 - Account and advisories are separate pages: the account page shows identity, ranch access, and the professional profile; the advisories page handles access requests and decisions.
 - Professional profile changes are checked for specialty, license number, and years of experience before saving.
 - Granted access ends at the close of the selected day in local time.

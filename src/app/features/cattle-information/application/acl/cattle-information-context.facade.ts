@@ -22,6 +22,11 @@ export interface LotSummary {
   readonly name: string;
 }
 
+/** A lot with the identities of its animals, so a view can find the lot of one animal. */
+export interface LotMembersSummary extends LotSummary {
+  readonly cattleIds: readonly string[];
+}
+
 /** Publishes animal and lot identities to other bounded contexts, which never import this context's models. */
 @Injectable()
 export class CattleInformationContextFacade {
@@ -38,6 +43,16 @@ export class CattleInformationContextFacade {
   async lotSummaries(ranchId: string): Promise<readonly LotSummary[]> {
     const lots = await this.lotRepository.list(ranchId);
     return lots.map(lot => ({ lotId: lot.id, name: lot.name }));
+  }
+
+  /** Lists each lot with its animals, inactive ones included, so a view can open the lot an animal belongs to. */
+  async lotMembers(ranchId: string): Promise<readonly LotMembersSummary[]> {
+    const lots = await this.lotRepository.list(ranchId);
+    return lots.map(lot => ({
+      lotId: lot.id,
+      name: lot.name,
+      cattleIds: lot.memberships.map(membership => membership.cattleId),
+    }));
   }
 
   /** Lists animals for monitoring; the filters narrow the list at the API and `limit` bounds how many animals are read. */

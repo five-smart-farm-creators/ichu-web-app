@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'ichu-terms-page', standalone: true, imports: [RouterLink, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<article class="terms">
-    <a class="btn secondary" routerLink="/account">{{ 'terms.back' | translate }}</a>
+    <a class="btn secondary" routerLink="/dashboard">{{ 'terms.back' | translate }}</a>
     <h1>{{ 'pages.terms' | translate }}</h1>
     <section>
       <h2>{{ 'terms.authenticationTitle' | translate }}</h2>
