@@ -220,7 +220,7 @@
       "email-not-verified": "Verify your email address before signing in.",
       "account-unavailable": "This ICHU account is unavailable. Sign in instead, or contact your administrator.",
       "service-unavailable": "The service is temporarily unavailable. Try again later.",
-      "network": "The service could not be reached. Check your connection and try again.",
+      "network": "The service could not be reached. If ICHU has not been used for a while, its server can take up to a minute to start; try again in a moment.",
       "unknown": "Authentication could not be completed. Try again.",
       "current-password-incorrect": "The current password is incorrect.",
       "requires-recent-login": "For your security, sign in again before changing your password."
@@ -348,7 +348,7 @@
     }
   },
   "errors": {
-    "network": "The ICHU service could not be reached. Check your connection and try again.",
+    "network": "The ICHU service could not be reached. If it has not been used for a while, its server can take up to a minute to start; try again in a moment.",
     "configuration": "The application is not configured. Check the runtime settings.",
     "unknown": "The request could not be completed. Try again.",
     "http-403": "Your account does not have permission for this action.",

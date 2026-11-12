@@ -22,7 +22,8 @@ export class LeafletLoader {
   /** Resolves once the stylesheet and the library are both ready; a failed attempt is cleared so it can be retried. */
   load(): Promise<LeafletModule> {
     this.leaflet ??= Promise.all([this.loadStylesheet(), import('leaflet')])
-      .then(([, module]) => module)
+      // Leaflet ships as UMD: the production bundle exposes it only as `default`, the dev server as named exports.
+      .then(([, module]) => (module as { default?: LeafletModule }).default ?? module)
       .catch((error: unknown) => {
         this.leaflet = null;
         throw error;
