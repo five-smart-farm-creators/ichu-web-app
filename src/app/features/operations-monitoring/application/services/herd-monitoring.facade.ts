@@ -5,7 +5,7 @@ import {
 } from '../../../cattle-information/application/acl/cattle-information-context.facade';
 import type { LatestTelemetry } from '../../domain/model/telemetry.model';
 import { TelemetryRepository } from '../../domain/repositories/telemetry.repository';
-import { mapWithConcurrency } from './map-with-concurrency';
+import { mapWithConcurrency } from '../../../../shared/infrastructure/async/map-with-concurrency';
 
 /** Herds above this size are narrowed by lot before any latest value is requested. */
 export const HERD_LATEST_LIMIT = 200;
