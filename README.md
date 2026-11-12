@@ -28,13 +28,21 @@ Open http://localhost:4200. The interface opens in English; choose Español from
 
 ## Scope and current status
 
-All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, the animal and lot screens of the Cattle Information (`cattle-information`) context, the device, water trough, and edge gateway screens of the IoT Assets (`iot-assets`) context, the monitoring screens of the Operations and Monitoring (`operations-monitoring`) context: herd overview, animal telemetry, alerts, normal ranges, location and fences, and the clinical history of each animal, and the planning screens of the Planning (`planning`) context: calendar, campaigns, and withdrawal periods. The Dashboard and Analytics (`dashboard-analytics`) context adds the herd dashboard, the reports (lot trends, epidemiological curve, executive report), and the portfolio of advised ranches. The Subscription Plans (`subscription-plans`) context is not implemented yet.
+All seven bounded contexts of the ICHU product are in scope for the application. This repository implements the application foundation (routing, shell, languages, API plumbing), the Identity and Access Management (`iam`) context, the animal and lot screens of the Cattle Information (`cattle-information`) context, the device, water trough, and edge gateway screens of the IoT Assets (`iot-assets`) context, the monitoring screens of the Operations and Monitoring (`operations-monitoring`) context: herd overview, animal telemetry, alerts, normal ranges, location and fences, and the clinical history of each animal, and the planning screens of the Planning (`planning`) context: calendar, campaigns, and withdrawal periods. The Dashboard and Analytics (`dashboard-analytics`) context adds the herd dashboard, the reports (lot trends, epidemiological curve, executive report), and the portfolio of advised ranches. The Subscription Plans (`subscription-plans`) context adds the plan comparison with the annual price quoted for a head count, the subscription request with Stripe Checkout, My plan with payment and cancellation, and the pages where Stripe returns the visitor.
 
 ## Map
 
 The location and fences screen draws grazing zones and last known positions with Leaflet on OpenStreetMap. The map needs no key, account, or entry in `public/config.json`. Its tiles come from `tile.openstreetmap.org`, a third-party service; keep the OpenStreetMap attribution visible, as the tile usage policy requires. This app serves the Leaflet stylesheet from `/vendor/leaflet/` and bundles the library as a lazy chunk; both load only when that screen opens. If they cannot load, the location screen shows a notice and its tables keep working.
 
 Sign-in uses Firebase Authentication, then the ICHU API checks the account and ranch access. A Firebase identity alone does not grant application or ranch access.
+
+## Subscriptions
+
+`TERMS_VERSION` in `src/app/core/layout/terms.ts` (currently `2026-11`) is the Terms of Service version shown on the terms page and sent with each subscription request. It must equal the API setting `SubscriptionPlans:CurrentTermsVersion`; the API refuses a request that accepts another version.
+
+Stripe Checkout returns the visitor to `/subscriptions/payment/success` or `/subscriptions/payment/cancel`. These paths must match the API settings `Stripe:SuccessUrl` and `Stripe:CancelUrl`; the API appends the `session_id` parameter to the success URL.
+
+The landing page links to `/plans?tier=<Basic|Standard|Pro>&headCount=<n>&source=<text>`. The `source` value is stored as the acquisition source when it has at most 64 characters; otherwise `web-app` is stored. A visitor who is not signed in signs in first and then returns to the same address.
 
 ## Languages
 

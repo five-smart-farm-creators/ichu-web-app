@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Plan comparison with the annual price of each plan for a head count, quoted by the ICHU service; a plan recommended for the herd, its device limit and its features, with a comparison table for screen readers.
+- Subscription request for ranch managers: a confirmation with the quoted amounts and the Terms of Service version, then the hosted Stripe Checkout page. A retry after a failed step reuses the same request.
+- My plan screen with the status, validity, amounts, device limit and features of the ranch subscription, payment of a pending subscription, and cancellation with a reason.
+- Payment return pages: the success page waits for the plan to become active and explains how to check it later; the cancelled page confirms that nothing was charged and offers a retry.
+- Password change on the account page, which checks the current password before it changes it.
+- Terms of Service page shows its version.
+- Plans and My plan entries in the navigation menu for roles with a ranch, except veterinarians.
+- Plan prices read per smart collar: the collars with their unit price and one-time amount, the plan's annual fee, and the total, on the plan cards, the confirmation, and My plan.
+- Receipt PDF for a paid subscription and quote PDF for a pending one, downloadable from My plan and from the payment success page; they show the ranch, plan, payment dates, and terms version, never internal identifiers.
+- The plans page asks for the number of collars and shows a banner when the ranch already has a pending or active subscription, which disables the Subscribe buttons.
 - My herd dashboard as the home page: monitored animals, open alerts by type with a link to alerts, animals outside the grazing zone, mortality rate, births and confirmed pregnancies, each with its calculation on request; a missing indicator reads "Not available" with its reason, never as zero. It also shows the coverage of readings, the work scheduled in the next 7 days, a period of 7, 30, 90 or 365 days or a custom range, and Excel and PDF downloads of the indicator table.
 - Reports screen with lot trends: the daily lot mean with a band of standard deviations, the flagged animals by ear tag, and the comparison of one animal with its lot.
 - Epidemiological curve for the alert conditions: new cases per day with a 7-day moving average, cumulative cases, peak day, days without new cases, an attack rate when the herd size is known, and a hint about lifting restrictions.
