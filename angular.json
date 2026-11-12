@@ -23,6 +23,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "leaflet.css",
+                "input": "node_modules/leaflet/dist",
+                "output": "/vendor/leaflet"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images",
+                "output": "/vendor/leaflet/images"
               }
             ],
             "styles": [
@@ -32,6 +42,7 @@
               "canvg",
               "core-js",
               "html2canvas",
+              "leaflet",
               "raf",
               "rgbcolor"
             ]

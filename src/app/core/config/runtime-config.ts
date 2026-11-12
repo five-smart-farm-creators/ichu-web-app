@@ -5,19 +5,12 @@ import type { FirebaseOptions } from 'firebase/app';
 export interface RuntimeConfig {
   readonly apiBaseUrl: string;
   readonly firebase: FirebaseOptions | null;
-  readonly googleMaps: RuntimeGoogleMapsConfig | null;
-}
-
-/** Browser key for the Maps JavaScript API; the key must be restricted to the app's HTTP referrers. */
-export interface RuntimeGoogleMapsConfig {
-  readonly apiKey: string;
-  readonly mapId: string | null;
 }
 
 /** Lets adapters read deployment settings without knowing how they were loaded. */
 export const RUNTIME_CONFIG = new InjectionToken<RuntimeConfig>('RUNTIME_CONFIG');
 
-const defaultConfig: RuntimeConfig = { apiBaseUrl: '/api/v1', firebase: null, googleMaps: null };
+const defaultConfig: RuntimeConfig = { apiBaseUrl: '/api/v1', firebase: null };
 
 /** Loads deployment configuration without preventing the sign-in page from rendering. */
 export async function loadRuntimeConfig(): Promise<RuntimeConfig> {
@@ -35,17 +28,8 @@ export async function loadRuntimeConfig(): Promise<RuntimeConfig> {
     return {
       apiBaseUrl: apiUrl.href.replace(/\/$/, ''),
       firebase: firebase?.apiKey && firebase.projectId && firebase.authDomain ? firebase : null,
-      googleMaps: readGoogleMaps(config.googleMaps),
     };
   } catch {
     return defaultConfig;
   }
-}
-
-/** Keeps the map only when a key is present; a blank key or map ID falls back to the table-only screens. */
-function readGoogleMaps(value: Partial<RuntimeGoogleMapsConfig> | null | undefined): RuntimeGoogleMapsConfig | null {
-  const apiKey = typeof value?.apiKey === 'string' ? value.apiKey.trim() : '';
-  if (!apiKey) return null;
-  const mapId = typeof value?.mapId === 'string' ? value.mapId.trim() : '';
-  return { apiKey, mapId: mapId || null };
 }
