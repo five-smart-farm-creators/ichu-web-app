@@ -72,4 +72,8 @@ describe('IamContextFacade', () => {
     expect(facade.currentRole()).toBe('RanchManager');
     expect(facade.currentRanch()?.name).toBeNull();
   });
+
+  it('exposes the account email for documents issued to the account', () => {
+    expect(createFacade().currentAccountEmail()).toBe('manager@example.test');
+  });
 });
