@@ -1,0 +1,23 @@
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { AlertRepository } from '../../domain/repositories/alert.repository';
+import { GeofenceRepository } from '../../domain/repositories/geofence.repository';
+import { MonitoringThresholdRepository } from '../../domain/repositories/monitoring-threshold.repository';
+import { TelemetryRepository } from '../../domain/repositories/telemetry.repository';
+import { RestAlertRepository } from '../repositories/rest-alert.repository';
+import { RestGeofenceRepository } from '../repositories/rest-geofence.repository';
+import { RestMonitoringThresholdRepository } from '../repositories/rest-monitoring-threshold.repository';
+import { RestTelemetryRepository } from '../repositories/rest-telemetry.repository';
+
+/** Composes the REST adapters of the operations and monitoring context for a lazy route group. */
+export function provideOperationsMonitoring(): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    RestTelemetryRepository,
+    { provide: TelemetryRepository, useExisting: RestTelemetryRepository },
+    RestAlertRepository,
+    { provide: AlertRepository, useExisting: RestAlertRepository },
+    RestGeofenceRepository,
+    { provide: GeofenceRepository, useExisting: RestGeofenceRepository },
+    RestMonitoringThresholdRepository,
+    { provide: MonitoringThresholdRepository, useExisting: RestMonitoringThresholdRepository },
+  ]);
+}
