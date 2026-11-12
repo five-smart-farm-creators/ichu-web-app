@@ -5,5 +5,9 @@
     "authDomain": "",
     "projectId": "",
     "appId": ""
+  },
+  "googleMaps": {
+    "apiKey": "",
+    "mapId": ""
   }
 }
