@@ -95,4 +95,15 @@ describe('CattleInformationContextFacade', () => {
     });
     expect(cattleRepository.profile).toHaveBeenCalledWith('ranch-1', 'cattle-7');
   });
+
+  it('lists each lot with the identities of its members', async () => {
+    lotRepository.list.mockResolvedValueOnce([{
+      id: 'lot-1', ranchId: 'ranch-1', name: 'Milking group', criterion: null, version: 'v1',
+      memberships: [{ cattleId: 'cattle-1', assignedAt: '2026-11-01T00:00:00Z' }, { cattleId: 'cattle-2', assignedAt: '2026-11-02T00:00:00Z' }],
+    }]);
+
+    expect(await facade.lotMembers('ranch-1')).toEqual([
+      { lotId: 'lot-1', name: 'Milking group', cattleIds: ['cattle-1', 'cattle-2'] },
+    ]);
+  });
 });
