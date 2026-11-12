@@ -67,7 +67,7 @@
           </div>
           <div class="field">
             <label for="register-head-count">{{ 'iam.register.herdSize' | translate }}</label>
-            <input id="register-head-count" type="number" min="1" max="1000000" step="1" formControlName="estimatedHeadCount" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && form.controls.estimatedHeadCount.invalid">
+            <input id="register-head-count" type="number" max="1000000" step="1" formControlName="estimatedHeadCount" [attr.aria-invalid]="form.touched && form.hasError('ranchDetailsRequired') && form.controls.estimatedHeadCount.invalid">
           </div>
         </div>
         @if (form.touched && form.hasError('ranchDetailsRequired')) { <p class="form-error" role="alert">{{ 'iam.register.ranchDetailsRequired' | translate }}</p> }
