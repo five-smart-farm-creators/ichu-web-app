@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import * as Leaflet from 'leaflet';
 import { LeafletLoader } from './leaflet-loader';
 
-// The library is replaced by a stub so that no bundle is fetched; the loader's dynamic import resolves to it.
-vi.mock('leaflet', () => ({ version: 'stub' }));
+// The stub mirrors the production bundle, where the UMD library is exposed only as `default`.
+vi.mock('leaflet', () => ({ default: { version: 'stub' } }));
+
+const library = (Leaflet as unknown as { default: unknown }).default;
 
 function stylesheets(): HTMLLinkElement[] {
   return Array.from(document.querySelectorAll<HTMLLinkElement>('link[href="/vendor/leaflet/leaflet.css"]'));
@@ -30,8 +32,8 @@ describe('LeafletLoader', () => {
     expect(resolved).toBe(false);
 
     stylesheets()[0].dispatchEvent(new Event('load'));
-    await expect(first).resolves.toBe(Leaflet);
-    await expect(second).resolves.toBe(Leaflet);
+    await expect(first).resolves.toBe(library);
+    await expect(second).resolves.toBe(library);
   });
 
   it('rejects when the stylesheet fails and injects a fresh link on retry', async () => {
@@ -46,6 +48,6 @@ describe('LeafletLoader', () => {
     const retry = loader.load();
     expect(stylesheets()).toHaveLength(1);
     stylesheets()[0].dispatchEvent(new Event('load'));
-    await expect(retry).resolves.toBe(Leaflet);
+    await expect(retry).resolves.toBe(library);
   });
 });
