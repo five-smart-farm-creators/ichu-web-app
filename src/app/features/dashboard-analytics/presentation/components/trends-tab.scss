@@ -1,0 +1,67 @@
+@use '../styles/analytics-pages';
+
+:host {
+  display: block;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.control {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.range-control {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.range-label {
+  color: #4c5d4c;
+  font-size: .77rem;
+  font-weight: 600;
+}
+
+.range-control input[type='range'] {
+  width: 100%;
+  accent-color: var(--forest);
+}
+
+.filter-note {
+  margin: 0;
+  padding: 0 22px 18px;
+  font-size: .8125rem;
+}
+
+.unit {
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 0;
+}
+
+.comparison dt {
+  color: var(--muted);
+  font-size: .73rem;
+  font-weight: 600;
+}
+
+.comparison dd {
+  margin: 2px 0 0;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}

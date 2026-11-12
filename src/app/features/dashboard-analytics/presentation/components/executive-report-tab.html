@@ -1,0 +1,72 @@
+<section class="panel" aria-labelledby="executive-heading">
+  <div class="panel-head">
+    <div>
+      <h2 id="executive-heading">{{ 'analytics.executive.preview' | translate }}</h2>
+      <p>{{ 'analytics.executive.previewNote' | translate }}</p>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="btn secondary" [disabled]="!facade.preview() || busy() !== null" (click)="downloadCsv()">
+        {{ (busy() === 'csv' ? 'common.exporting' : 'analytics.executive.csv') | translate }}
+      </button>
+      <button type="button" class="btn secondary" [disabled]="!facade.preview() || busy() !== null" (click)="exportDocument('pdf')">
+        {{ (busy() === 'pdf' ? 'common.exporting' : 'common.exportPdf') | translate }}
+      </button>
+      <button type="button" class="btn secondary" [disabled]="!facade.preview() || busy() !== null" (click)="exportDocument('excel')">
+        {{ (busy() === 'excel' ? 'common.exporting' : 'common.exportExcel') | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+    @if (downloadError(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.executive.loading' | translate" />
+    }
+  </div>
+
+  @if (facade.preview(); as report) {
+    <p class="source-note text-muted panel-body">
+      {{ 'analytics.source' | translate: { source: ('analytics.sources.' + report.indicators.source) | translate, updated: (report.indicators.updatedAt | localizedDate: 'short') } }}
+    </p>
+    <div class="table-scroll">
+      <table class="data-table" [attr.aria-label]="'analytics.executive.preview' | translate">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'analytics.export.indicator' | translate }}</th>
+            <th scope="col">{{ 'analytics.export.value' | translate }}</th>
+            <th scope="col">{{ 'analytics.export.formula' | translate }}</th>
+            <th scope="col">{{ 'analytics.export.denominator' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.key) {
+            <tr>
+              <td><strong>{{ ('analytics.indicators.' + row.key) | translate }}</strong></td>
+              <td>
+                @if (isAvailable(row.indicator)) {
+                  {{ number(row.indicator.value) }} {{ ('analytics.units.' + row.indicator.unit) | translate }}
+                } @else {
+                  <span class="text-muted">{{ 'analytics.notAvailable' | translate }}: {{ reasonKey(row.indicator.unavailableReason) | translate }}</span>
+                }
+              </td>
+              <td class="formula-cell">{{ reasonKey(row.indicator.formula) | translate }}</td>
+              <td>{{ row.indicator.denominator ?? '–' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="panel-body text-muted generated">
+      {{ 'analytics.executive.generated' | translate: { date: (report.generatedAt | localizedDate: 'short') } }}
+    </p>
+  } @else if (!facade.loading() && !facade.error()) {
+    <div class="panel-body empty-state">
+      <p>{{ 'analytics.executive.empty' | translate }}</p>
+    </div>
+  }
+</section>

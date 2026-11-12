@@ -1,0 +1,112 @@
+<div class="analytics-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.dashboard' | translate }}</span>
+      <h1>{{ 'analytics.dashboard.title' | translate }}</h1>
+      <p class="page-lead">{{ 'analytics.dashboard.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="!facade.report()" [busy]="exporting()" (exportRequested)="export($event)" />
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'analytics.period.label' | translate">
+      <div class="filter-body">
+        <ichu-analytics-period-picker (period)="setPeriod($event)" />
+      </div>
+    </section>
+    <p class="period-range text-muted">
+      {{ 'analytics.period.showing' | translate: { from: periodLabel().from, to: periodLabel().to } }}
+    </p>
+
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.dashboard.loading' | translate" />
+    }
+
+    @if (facade.report(); as report) {
+      <p class="source-note text-muted">
+        {{ 'analytics.source' | translate: { source: ('analytics.sources.' + report.source) | translate, updated: updatedText() } }}
+      </p>
+
+      <section class="kpi-grid" [attr.aria-label]="'analytics.dashboard.kpis' | translate">
+        <ichu-indicator-tile [label]="'analytics.indicators.monitoredAnimals'" [indicator]="report.monitoredAnimals" [fractionDigits]="0" />
+        <article class="stat">
+          <span class="stat-label">{{ 'analytics.dashboard.openAlerts' | translate }}</span>
+          @if (report.openAlertsByType !== null) {
+            <ul class="plain-list">
+              @for (type of alertTypes(); track type) {
+                <li><span>{{ 'analytics.alertTypes.' + type | translate }}</span> <strong>{{ alertCount(type) }}</strong></li>
+              } @empty {
+                <li class="text-muted">{{ 'analytics.dashboard.noOpenAlerts' | translate }}</li>
+              }
+            </ul>
+          } @else {
+            <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+            <span class="stat-note">{{ reasonKey(report.alertsUnavailableReason) | translate }}</span>
+          }
+          <a class="card-link" routerLink="/alerts">{{ 'analytics.dashboard.alertsLink' | translate }}</a>
+        </article>
+        <ichu-indicator-tile [label]="'analytics.indicators.outsideGeofenceAnimals'" [indicator]="report.outsideGeofenceAnimals" [fractionDigits]="0">
+          <a class="card-link" routerLink="/locations">{{ 'analytics.dashboard.locationsLink' | translate }}</a>
+        </ichu-indicator-tile>
+        <ichu-indicator-tile [label]="'analytics.indicators.mortalityRate'" [indicator]="report.mortalityRate" />
+        <ichu-indicator-tile [label]="'analytics.indicators.births'" [indicator]="report.births" [fractionDigits]="0" />
+        <ichu-indicator-tile [label]="'analytics.indicators.confirmedPregnancies'" [indicator]="report.confirmedPregnancies" [fractionDigits]="0" />
+      </section>
+
+      <section class="split-grid">
+        <section class="panel" aria-labelledby="coverage-heading">
+          <div class="panel-head"><h2 id="coverage-heading">{{ 'analytics.dashboard.coverage' | translate }}</h2></div>
+          <div class="panel-body">
+            <p>{{ 'analytics.dashboard.excluded' | translate: { count: report.excludedAnimals } }}</p>
+            @if (report.missingReadings !== null) {
+              <p class="section-gap">{{ 'analytics.dashboard.missingReadings' | translate: { count: report.missingReadings } }}</p>
+            } @else {
+              <p class="section-gap text-muted">
+                {{ 'analytics.dashboard.missingUnknown' | translate }} {{ reasonKey(report.readingsCoverageReason) | translate }}
+              </p>
+            }
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="upcoming-heading">
+          <div class="panel-head">
+            <h2 id="upcoming-heading">{{ 'analytics.dashboard.upcoming' | translate }}</h2>
+            <a routerLink="/planning">{{ 'analytics.dashboard.planningLink' | translate }}</a>
+          </div>
+          <div class="panel-body">
+            @if (facade.upcomingError(); as apiError) {
+              <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+            }
+            <ul class="plain-list">
+              @for (work of facade.upcoming(); track $index) {
+                <li>
+                  <span><time [attr.datetime]="work.scheduledAt">{{ work.scheduledAt | localizedDate: 'short' }}</time> · {{ work.title }}</span>
+                  <span class="text-muted">{{ work.earTag ?? ('analytics.dashboard.wholeHerd' | translate) }}</span>
+                </li>
+              } @empty {
+                <li class="text-muted">{{ 'analytics.dashboard.noUpcoming' | translate }}</li>
+              }
+            </ul>
+          </div>
+        </section>
+      </section>
+    }
+  }
+</div>

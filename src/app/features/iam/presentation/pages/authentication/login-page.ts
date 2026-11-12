@@ -30,7 +30,7 @@ export class LoginPage {
   readonly transitioning = signal(false);
   readonly navigationFailed = signal(false);
   readonly passwordVisible = signal(false);
-  private destination = '/account';
+  private destination = '/dashboard';
 
   async signIn(): Promise<void> {
     this.credentials.markAllAsTouched();
@@ -45,7 +45,7 @@ export class LoginPage {
     try {
       if (await this.auth.signIn(email, password)) {
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-        this.destination = returnUrl?.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/account';
+        this.destination = returnUrl?.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/dashboard';
         this.transitioning.set(true);
       }
     } finally {

@@ -1,0 +1,64 @@
+<div class="analytics-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.portfolio' | translate }}</span>
+      <h1>{{ 'analytics.portfolio.title' | translate }}</h1>
+      <p class="page-lead">{{ 'analytics.portfolio.lead' | translate }}</p>
+    </div>
+    <div class="toolbar">
+      <ichu-export-menu [disabled]="facade.entries().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+    </div>
+  </header>
+
+  @if (facade.error(); as apiError) {
+    <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+  }
+  @if (exportFailed()) {
+    <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+  }
+
+  <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.portfolio.loading' | translate" />
+    }
+    <div class="table-scroll">
+      <table class="data-table" [attr.aria-label]="'analytics.portfolio.tableLabel' | translate">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'analytics.portfolio.ranch' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.critical' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.warning' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.informative' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.unresponsive' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.overdue' | translate }}</th>
+            <th scope="col">{{ 'analytics.portfolio.updated' | translate }}</th>
+            <th scope="col"><span class="visually-hidden">{{ 'analytics.portfolio.actions' | translate }}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of facade.entries(); track entry.ranchId) {
+            <tr>
+              <td><strong>{{ ranchLabel(entry.ranchId) }}</strong></td>
+              <td><span class="badge" [class.danger]="entry.criticalAlerts > 0">{{ count(entry.criticalAlerts) }}</span></td>
+              <td><span class="badge" [class.warning]="entry.warningAlerts > 0">{{ count(entry.warningAlerts) }}</span></td>
+              <td>{{ count(entry.informativeAlerts) }}</td>
+              <td>{{ entry.unresponsiveTreatmentAnimals === null ? ('analytics.notAvailable' | translate) : count(entry.unresponsiveTreatmentAnimals) }}</td>
+              <td>{{ entry.overdueCampaigns === null ? ('analytics.notAvailable' | translate) : count(entry.overdueCampaigns) }}</td>
+              <td>{{ entry.updatedAt | localizedDate: 'short' }}</td>
+              <td>
+                <button type="button" class="btn secondary" (click)="open(entry.ranchId)"
+                  [attr.aria-label]="('analytics.portfolio.openNamed' | translate: { ranch: ranchLabel(entry.ranchId) })">
+                  {{ 'analytics.portfolio.open' | translate }}
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            @if (!facade.loading() && !facade.error()) {
+              <tr><td colspan="8" class="empty-cell">{{ 'analytics.portfolio.empty' | translate }}</td></tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

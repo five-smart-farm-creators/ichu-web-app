@@ -1,0 +1,46 @@
+<div class="analytics-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.reports' | translate }}</span>
+      <h1>{{ 'analytics.reports.title' | translate }}</h1>
+      <p class="page-lead">{{ 'analytics.reports.lead' | translate }}</p>
+    </div>
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'analytics.period.label' | translate">
+      <div class="filter-body">
+        <ichu-analytics-period-picker (period)="setPeriod($event)" />
+      </div>
+    </section>
+    <p class="period-range text-muted">
+      {{ 'analytics.period.showing' | translate: { from: periodLabel().from, to: periodLabel().to } }}
+    </p>
+
+    <mat-tab-group animationDuration="0ms" [selectedIndex]="tabIndex()" (selectedIndexChange)="selectTab($event)"
+      [attr.aria-label]="'analytics.reports.tabsLabel' | translate">
+      <mat-tab [label]="'analytics.reports.tabs.trends' | translate">
+        <div class="tab-body">
+          <ichu-trends-tab [period]="period()" [preferredCattleId]="preferredCattleId()" />
+        </div>
+      </mat-tab>
+      <mat-tab [label]="'analytics.reports.tabs.epidemiology' | translate">
+        <div class="tab-body">
+          <ichu-epidemiology-tab [period]="period()" />
+        </div>
+      </mat-tab>
+      <mat-tab [label]="'analytics.reports.tabs.executive' | translate">
+        <div class="tab-body">
+          <ichu-executive-report-tab [period]="period()" />
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  }
+</div>
