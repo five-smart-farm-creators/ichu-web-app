@@ -8,6 +8,7 @@ import type { IndicatorValue } from '../../domain/model/herd-indicators.model';
 import { IndicatorTile } from './indicator-tile';
 
 const translations = JSON.parse(readFileSync(join(process.cwd(), 'public', 'i18n', 'en.json'), 'utf8')) as Record<string, unknown>;
+const spanishTranslations = JSON.parse(readFileSync(join(process.cwd(), 'public', 'i18n', 'es.json'), 'utf8')) as Record<string, unknown>;
 
 function render(indicator: IndicatorValue) {
   const fixture = TestBed.createComponent(IndicatorTile);
@@ -24,7 +25,7 @@ describe('IndicatorTile', () => {
       imports: [IndicatorTile],
       providers: [
         provideTranslateService({
-          loader: { provide: TranslateLoader, useValue: { getTranslation: () => of(translations) } },
+          loader: { provide: TranslateLoader, useValue: { getTranslation: (lang: string) => of(lang === 'es' ? spanishTranslations : translations) } },
           fallbackLang: 'en',
           lang: 'en',
         }),
@@ -42,6 +43,24 @@ describe('IndicatorTile', () => {
     const element: HTMLElement = render({ value: 3, unit: 'events', formula: 'recorded births during the period', denominator: null, unavailableReason: null }).nativeElement;
 
     expect(element.querySelector('.stat-value')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('3 events');
+  });
+
+  it('uses the singular unit for one animal', () => {
+    const element: HTMLElement = render({
+      value: 1, unit: 'animals', formula: 'distinct animals with valid period readings', denominator: 14, unavailableReason: null,
+    }).nativeElement;
+
+    expect(element.querySelector('.stat-value')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('1 animal');
+  });
+
+  it('uses the Spanish plural once Spanish is selected', async () => {
+    await TestBed.inject(LanguageService).use('es');
+
+    const element: HTMLElement = render({
+      value: 2, unit: 'events', formula: 'recorded births during the period', denominator: null, unavailableReason: null,
+    }).nativeElement;
+
+    expect(element.querySelector('.stat-value')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('2 eventos');
   });
 
   it('replaces a missing value with "Not available" and its reason, never with zero', () => {

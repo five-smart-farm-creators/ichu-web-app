@@ -18,6 +18,21 @@
       "last": "Last page",
       "range": "{{start}} – {{end}}"
     },
+    "datepicker": {
+      "calendar": "Calendar",
+      "openCalendar": "Open calendar",
+      "closeCalendar": "Close calendar",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "previousYear": "Previous year",
+      "nextYear": "Next year",
+      "previousYears": "Previous 24 years",
+      "nextYears": "Next 24 years",
+      "chooseDate": "Choose date",
+      "chooseMonthAndYear": "Choose month and year",
+      "yearRange": "{{start}} – {{end}}",
+      "yearRangeLabel": "{{start}} to {{end}}"
+    },
     "exportFailed": "The file could not be created. Try again.",
     "actions": "Actions",
     "close": "Close",
@@ -725,7 +740,10 @@
       "redefineTitle": "Redefine grazing zone",
       "undo": "Undo last point",
       "clear": "Clear",
-      "corners": "{{count}} corners (at least {{minimum}} needed)",
+      "corners": {
+        "one": "{{count}} corner (at least {{minimum}} needed)",
+        "other": "{{count}} corners (at least {{minimum}} needed)"
+      },
       "minimumCorners": "A grazing zone needs at least {{minimum}} corners.",
       "saved": "The grazing zone was saved."
     },
@@ -1146,7 +1164,10 @@
       "filters": "Withdrawal filters",
       "allAnimals": "All animals",
       "remaining": "Remaining",
-      "daysRemaining": "Days left: {{count}}",
+      "daysRemaining": {
+        "one": "Day left: {{count}}",
+        "other": "Days left: {{count}}"
+      },
       "startsDay": "Starts on",
       "endsDay": "Ends on",
       "emptyTitle": "No withdrawal periods yet",
@@ -1210,7 +1231,10 @@
       "empty": "No events are recorded."
     },
     "noHistoryTitle": "No reproductive history",
-    "noHistory": "This animal has no breeding services or calvings yet. It is {{months}} months old and is in the {{stage}} stage.",
+    "noHistory": {
+      "one": "This animal has no breeding services or calvings yet. It is {{count}} month old and is in the {{stage}} stage.",
+      "other": "This animal has no breeding services or calvings yet. It is {{count}} months old and is in the {{stage}} stage."
+    },
     "event": {
       "service": "Breeding service",
       "diagnosis": "Pregnancy diagnosis",
@@ -1227,7 +1251,10 @@
       "detail": "Method or result"
     },
     "export": {
-      "subtitle": "{{earTag}} · {{stage}} · {{months}} months old · {{date}}"
+      "subtitle": {
+        "one": "{{earTag}} · {{stage}} · {{count}} month old · {{date}}",
+        "other": "{{earTag}} · {{stage}} · {{count}} months old · {{date}}"
+      }
     },
     "records": {
       "serviceTitle": "Record breeding service",
@@ -1282,7 +1309,10 @@
       "none": "No nutrition plan covers today for this lot."
     },
     "estimate": {
-      "heads": "Estimate for {{count}} active animals in the lot.",
+      "heads": {
+        "one": "Estimate for {{count}} active animal in the lot.",
+        "other": "Estimate for {{count}} active animals in the lot."
+      },
       "unknown": "The number of active animals could not be read, so the estimate is not shown."
     },
     "items": {
@@ -1338,9 +1368,18 @@
     "hideFormula": "Hide the calculation",
     "denominator": "Base of the calculation: {{count}}",
     "units": {
-      "animals": "animals",
-      "percent": "%",
-      "events": "events",
+      "animals": {
+        "one": "animal",
+        "other": "animals"
+      },
+      "percent": {
+        "one": "%",
+        "other": "%"
+      },
+      "events": {
+        "one": "event",
+        "other": "events"
+      },
       "celsius": "°C",
       "index": "index",
       "minutes": "min",
@@ -1466,7 +1505,10 @@
       "summary": "Curve summary",
       "total": "Cases in the period",
       "peak": "Peak day",
-      "peakCases": "{{count}} cases",
+      "peakCases": {
+        "one": "{{count}} case",
+        "other": "{{count}} cases"
+      },
       "noPeak": "No cases",
       "daysWithoutCases": "Days without new cases",
       "attackRate": "Attack rate",

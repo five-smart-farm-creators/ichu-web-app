@@ -10,6 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { IamContextFacade } from '../../../../iam/application/acl/iam-context.facade';
 import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
 import { Icon } from '../../../../../shared/presentation/icon';
+import { PluralPipe } from '../../../../../shared/presentation/plural.pipe';
 import { PlansFacade } from '../../../application/services/plans.facade';
 import { SubscriptionFacade } from '../../../application/services/subscription.facade';
 import {
@@ -37,6 +38,7 @@ import { LocalizedMoneyPipe } from '../../localized-money.pipe';
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
+    PluralPipe,
     PriceBreakdown,
     ReactiveFormsModule,
     RouterLink,

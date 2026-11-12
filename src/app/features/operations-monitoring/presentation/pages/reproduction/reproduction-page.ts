@@ -18,6 +18,7 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe, pluralTranslationKey } from '../../../../../shared/presentation/plural.pipe';
 import { LivestockOperationRecorder } from '../../../application/services/livestock-operation-recorder';
 import { ReproductionFacade } from '../../../application/services/reproduction.facade';
 import { type OperationType, registrableTypes } from '../../../domain/model/livestock-operation.model';
@@ -60,6 +61,7 @@ const INTERVAL_COLUMNS = ['calving', 'conception', 'daysOpen'];
     MatProgressBarModule,
     MatSelectModule,
     MatTableModule,
+    PluralPipe,
     TranslatePipe,
   ],
   providers: [ReproductionFacade, LivestockOperationRecorder],
@@ -136,10 +138,13 @@ export class ReproductionPage {
       if (format === 'excel') {
         await this.exportService.exportExcel('ichu-reproduction', columns, rows);
       } else {
-        const details = this.translate.instant('reproduction.export.subtitle', {
+        const subtitleKey = pluralTranslationKey(
+          'reproduction.export.subtitle', history.ageInMonths, this.language.current(),
+        );
+        const details = this.translate.instant(subtitleKey, {
           earTag: animal.earTag,
           stage: this.translate.instant('cattle.stage.' + history.lifeStage),
-          months: history.ageInMonths,
+          count: history.ageInMonths,
           date: formatDate(new Date(), 'mediumDate', this.dateLocale()),
         });
         const subtitle = currentRanchLabel(this.context, this.translate) + ' · ' + details;

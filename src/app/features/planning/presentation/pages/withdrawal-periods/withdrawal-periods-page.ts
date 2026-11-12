@@ -15,6 +15,7 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe } from '../../../../../shared/presentation/plural.pipe';
 import { WithdrawalPeriodsFacade } from '../../../application/services/withdrawal-periods.facade';
 import {
   withdrawalProgress, type WithdrawalPeriod, type WithdrawalProgress, type WithdrawalState,
@@ -36,6 +37,7 @@ const STATE_TONE: Readonly<Record<WithdrawalState, string>> = { Active: 'success
     MatProgressBarModule,
     MatSelectModule,
     MatTableModule,
+    PluralPipe,
     TranslatePipe,
   ],
   providers: [WithdrawalPeriodsFacade],

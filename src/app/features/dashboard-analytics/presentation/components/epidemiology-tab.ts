@@ -11,6 +11,7 @@ import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-m
 import { BarChart, type BarChartSeries } from '../../../../shared/presentation/charts/bar-chart';
 import { type ChartSeries, LineChart } from '../../../../shared/presentation/charts/line-chart';
 import { LocalizedDatePipe } from '../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe } from '../../../../shared/presentation/plural.pipe';
 import { EpidemiologicalCurveFacade, ROLLING_WINDOW_DAYS } from '../../application/services/epidemiological-curve.facade';
 import { type AnalyticsPeriod, localDayStart } from '../../domain/model/analytics-period';
 import { CURVE_CONDITIONS, type CurveCondition } from '../../domain/model/epidemiological-curve.model';
@@ -28,6 +29,7 @@ import { analyticsTextKey } from '../analytics-text';
     MatFormFieldModule,
     MatProgressBarModule,
     MatSelectModule,
+    PluralPipe,
     TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

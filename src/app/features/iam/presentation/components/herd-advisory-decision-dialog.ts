@@ -1,16 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from '@ngx-translate/core';
-import { formatLocaleTag } from '../../../../shared/infrastructure/i18n/language';
-import { LanguageService } from '../../../../shared/infrastructure/i18n/language.service';
 import { LocalizedDatePipe } from '../../../../shared/presentation/localized-date.pipe';
+import { provideLocalizedDateAdapter } from '../../../../shared/presentation/localized-date-providers';
 import type { AccessScope, DecideHerdAdvisory, HerdAdvisoryRecord } from '../../domain/model/herd-advisory.model';
 
 export interface HerdAdvisoryDecisionData {
@@ -31,10 +29,7 @@ export interface HerdAdvisoryDecisionData {
     ReactiveFormsModule,
     TranslatePipe,
   ],
-  providers: [
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useFactory: () => formatLocaleTag(inject(LanguageService).current()) },
-  ],
+  providers: [provideLocalizedDateAdapter()],
   templateUrl: './herd-advisory-decision-dialog.html',
   styleUrl: './herd-advisory-decision-dialog.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

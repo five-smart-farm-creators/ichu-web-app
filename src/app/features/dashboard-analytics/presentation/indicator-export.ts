@@ -22,7 +22,7 @@ export function indicatorExportColumns(translate: TranslateService): ExportColum
   return [
     { header: text('analytics.export.indicator'), value: row => text(`analytics.indicators.${row.key}`) },
     { header: text('analytics.export.value'), value: row => (isIndicatorAvailable(row.indicator) ? row.indicator.value : null) },
-    { header: text('analytics.export.unit'), value: row => text(`analytics.units.${row.indicator.unit}`) },
+    { header: text('analytics.export.unit'), value: row => text(`analytics.units.${row.indicator.unit}.other`) },
     { header: text('analytics.export.formula'), value: row => text(analyticsTextKey(row.indicator.formula)) },
     { header: text('analytics.export.denominator'), value: row => row.indicator.denominator },
     {

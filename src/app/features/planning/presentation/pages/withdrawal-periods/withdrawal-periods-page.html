@@ -78,7 +78,7 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'planning.withdrawal.remaining' | translate }}</th>
             <td mat-cell *matCellDef="let period">
               @if (progressOf(period).daysRemaining !== null) {
-                {{ 'planning.withdrawal.daysRemaining' | translate: { count: progressOf(period).daysRemaining } }}
+                {{ 'planning.withdrawal.daysRemaining' | plural: (progressOf(period).daysRemaining ?? 0) }}
               } @else {
                 –
               }

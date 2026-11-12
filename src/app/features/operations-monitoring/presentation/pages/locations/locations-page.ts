@@ -18,6 +18,7 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe } from '../../../../../shared/presentation/plural.pipe';
 import { LeafletLoader } from '../../../../../shared/infrastructure/maps/leaflet-loader';
 import { GeofencesFacade } from '../../../application/services/geofences.facade';
 import { HERD_LATEST_LIMIT, HerdMonitoringFacade, type HerdRow } from '../../../application/services/herd-monitoring.facade';
@@ -46,6 +47,7 @@ const DEFAULT_TOLERANCE_METERS = 15;
     MatSelectModule,
     MatTableModule,
     MonitoringMap,
+    PluralPipe,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,

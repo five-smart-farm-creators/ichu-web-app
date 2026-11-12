@@ -11,6 +11,7 @@ import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-m
 import { saveBlob } from '../../../../shared/presentation/export/save-blob';
 import { TableExportService } from '../../../../shared/presentation/export/table-export.service';
 import { LocalizedDatePipe } from '../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe } from '../../../../shared/presentation/plural.pipe';
 import { ExecutiveReportFacade } from '../../application/services/executive-report.facade';
 import { addDays, type AnalyticsPeriod, localDay } from '../../domain/model/analytics-period';
 import { type IndicatorValue, isIndicatorAvailable } from '../../domain/model/herd-indicators.model';
@@ -23,7 +24,7 @@ type Download = 'csv' | 'pdf' | 'excel';
 /** The executive report of a period: an on-screen preview of its indicators and the three downloads. */
 @Component({
   selector: 'ichu-executive-report-tab',
-  imports: [ApiErrorMessagePipe, LocalizedDatePipe, MatProgressBarModule, TranslatePipe],
+  imports: [ApiErrorMessagePipe, LocalizedDatePipe, MatProgressBarModule, PluralPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './executive-report-tab.html',
   styleUrl: './executive-report-tab.scss',

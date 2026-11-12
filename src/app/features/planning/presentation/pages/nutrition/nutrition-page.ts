@@ -15,6 +15,7 @@ import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-erro
 import { type ChartMarker, type ChartSeries, LineChart } from '../../../../../shared/presentation/charts/line-chart';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
+import { PluralPipe } from '../../../../../shared/presentation/plural.pipe';
 import { NutritionFacade } from '../../../application/services/nutrition.facade';
 import { lotDailyKilograms, type NutritionPlan, type RationItem } from '../../../domain/model/nutrition-plan.model';
 import { parseLocalDay } from '../../../domain/model/planning-time';
@@ -33,6 +34,7 @@ import { RegisterNutritionPlanDialog } from '../../components/register-nutrition
     MatProgressBarModule,
     MatSelectModule,
     MatTableModule,
+    PluralPipe,
     TranslatePipe,
   ],
   providers: [NutritionFacade],
