@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import type { Chart, ChartDataset } from 'chart.js';
 import { formatLocaleTag } from '../../infrastructure/i18n/language';
 import { LanguageService } from '../../infrastructure/i18n/language.service';
+import { cssColor, loadChartJs } from './chart-loader';
 
 /** One plotted point; `y: null` is a gap for an absent or invalid reading, never a zero. */
 export interface ChartPoint {
@@ -12,11 +13,13 @@ export interface ChartPoint {
   readonly y: number | null;
 }
 
-/** A plotted series; `color` is a CSS custom property such as `--forest`, resolved when the chart is drawn. */
+/** A plotted series; `color` is a CSS custom property such as `--forest`, resolved when the chart is drawn.
+ * `markersOnly` draws the points without joining them, to highlight individual readings. */
 export interface ChartSeries {
   readonly label: string;
   readonly color: string;
   readonly points: readonly ChartPoint[];
+  readonly markersOnly?: boolean;
 }
 
 /** Dashed reference lines for the limits of a normal range. */
@@ -91,7 +94,7 @@ export class LineChart {
 
   private async draw(): Promise<void> {
     const request = ++this.drawRequest;
-    const { default: ChartConstructor } = await import('chart.js/auto');
+    const ChartConstructor = await loadChartJs();
     if (request !== this.drawRequest) return;
     this.chart?.destroy();
 
@@ -103,8 +106,9 @@ export class LineChart {
       data: item.points.map(point => ({ x: point.x.getTime(), y: point.y })),
       borderColor: cssColor(item.color),
       backgroundColor: cssColor(item.color),
-      borderWidth: 2,
-      pointRadius: 2,
+      borderWidth: item.markersOnly ? 0 : 2,
+      showLine: !item.markersOnly,
+      pointRadius: item.markersOnly ? 5 : 2,
       spanGaps: false,
       tension: 0.2,
     }));
@@ -134,10 +138,4 @@ export class LineChart {
       },
     });
   }
-}
-
-/** Canvas drawing takes literal colors, so design tokens are read from the document when the chart is drawn. */
-function cssColor(color: string): string {
-  if (!color.startsWith('--')) return color;
-  return getComputedStyle(document.documentElement).getPropertyValue(color).trim() || '#33513e';
 }
