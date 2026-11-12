@@ -220,7 +220,7 @@
       "email-not-verified": "Verifica tu correo electrónico antes de iniciar sesión.",
       "account-unavailable": "Esta cuenta de ICHU no está disponible. Inicia sesión o contacta a tu administrador.",
       "service-unavailable": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
-      "network": "No se pudo conectar con el servicio. Revisa tu conexión e inténtalo de nuevo.",
+      "network": "No se pudo conectar con el servicio. Si ICHU no se usó por un rato, su servidor puede tardar hasta un minuto en iniciar; inténtalo de nuevo en un momento.",
       "unknown": "No se pudo completar la autenticación. Inténtalo de nuevo.",
       "current-password-incorrect": "La contraseña actual es incorrecta.",
       "requires-recent-login": "Por tu seguridad, inicia sesión de nuevo antes de cambiar la contraseña."
@@ -348,7 +348,7 @@
     }
   },
   "errors": {
-    "network": "No se pudo conectar con el servicio de ICHU. Revisa tu conexión e inténtalo de nuevo.",
+    "network": "No se pudo conectar con el servicio de ICHU. Si no se usó por un rato, su servidor puede tardar hasta un minuto en iniciar; inténtalo de nuevo en un momento.",
     "configuration": "La aplicación no está configurada. Revisa la configuración de ejecución.",
     "unknown": "No se pudo completar la solicitud. Inténtalo de nuevo.",
     "http-403": "Tu cuenta no tiene permiso para esta acción.",

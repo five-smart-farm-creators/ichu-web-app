@@ -1,7 +1,7 @@
 import { ApiError } from './api-error';
 
-/** Stops a stalled request so the screen can offer a retry instead of waiting indefinitely. */
-export const API_REQUEST_TIMEOUT_MS = 15000;
+/** Long enough for a sleeping free-tier server to start (about a minute), short enough to surface a real outage. */
+export const API_REQUEST_TIMEOUT_MS = 60000;
 
 const API_VERSION_PATH = '/api/v1';
 
