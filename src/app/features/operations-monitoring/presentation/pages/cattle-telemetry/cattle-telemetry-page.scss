@@ -1,0 +1,23 @@
+@use '../../styles/monitoring-pages';
+
+:host {
+  display: block;
+}
+
+.stat-indicator {
+  margin-top: 10px;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 550;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-indicator > span {
+  font-size: inherit;
+}
+
+.stat-note .badge {
+  margin-left: 6px;
+}

@@ -18,7 +18,14 @@
       "last": "Last page",
       "range": "{{start}} – {{end}}"
     },
-    "exportFailed": "The file could not be created. Try again."
+    "exportFailed": "The file could not be created. Try again.",
+    "actions": "Actions",
+    "close": "Close",
+    "save": "Save",
+    "chart": {
+      "summary": "{{label}}: minimum {{minimum}}, maximum {{maximum}}, average {{average}}",
+      "noData": "No readings in this period."
+    }
   },
   "meta": {
     "description": "ICHU by SmartFarm: livestock monitoring with smart collars, herd records, and veterinary history."
@@ -40,7 +47,12 @@
     "animalProfile": "Animal profile",
     "iotDevices": "IoT devices",
     "waterTroughs": "Water troughs",
-    "edgeGateways": "Edge gateways"
+    "edgeGateways": "Edge gateways",
+    "monitoring": "Monitoring",
+    "monitoringCattle": "Animal monitoring",
+    "locations": "Location and fences",
+    "alerts": "Alerts",
+    "thresholds": "Thresholds"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -52,7 +64,10 @@
     "accountMenu": "Account menu",
     "signOut": "Sign out",
     "animals": "Animals",
-    "iotDevices": "IoT devices"
+    "iotDevices": "IoT devices",
+    "locations": "Location & fences",
+    "monitoring": "Monitoring",
+    "alerts": "Alerts"
   },
   "terms": {
     "back": "Back to account",
@@ -655,6 +670,237 @@
     },
     "validation": {
       "nameRequired": "Enter a name of up to 80 characters."
+    }
+  },
+  "locations": {
+    "title": "Location and fences",
+    "lead": "Grazing zones on the map with the last known position of each active animal. Tables list the same data.",
+    "filters": "Location filters",
+    "draw": "Draw grazing zone",
+    "map": {
+      "label": "Map of grazing zones and last known positions",
+      "viewHelp": "Grazing zones and last known positions. A position is a past observation, not a live location.",
+      "editHelp": "Click the map to add a corner. Drag a corner to move it. Right-click a corner to remove it, or use Undo last point."
+    },
+    "editor": {
+      "defineTitle": "New grazing zone",
+      "redefineTitle": "Redefine grazing zone",
+      "undo": "Undo last point",
+      "clear": "Clear",
+      "corners": "{{count}} corners (at least {{minimum}} needed)",
+      "minimumCorners": "A grazing zone needs at least {{minimum}} corners.",
+      "saved": "The grazing zone was saved."
+    },
+    "geofences": {
+      "title": "Grazing zones",
+      "tableLabel": "Grazing zones of the ranch",
+      "emptyTitle": "No grazing zones",
+      "empty": "No grazing zones are defined for this selection.",
+      "emptyManage": "Draw a grazing zone on the map for a lot to start geofence alerts."
+    },
+    "positions": {
+      "title": "Last known positions",
+      "tableLabel": "Last known positions of active animals",
+      "position": "Position",
+      "emptyTitle": "No positions",
+      "empty": "No active animal has a known position in this selection.",
+      "known": "Known position",
+      "noPosition": "No position",
+      "failed": "Could not load",
+      "current": "Current",
+      "stale": "Older than 24 hours"
+    }
+  },
+  "monitoring": {
+    "areaNavigation": "Monitoring areas",
+    "tabs": {
+      "overview": "Overview",
+      "thresholds": "Thresholds"
+    },
+    "map": {
+      "unavailable": "The map is not available. Check the Google Maps settings; the tables still show the same data.",
+      "loading": "Loading the map…"
+    },
+    "metric": {
+      "BodyTemperature": "Body temperature",
+      "ActivityIndex": "Activity index",
+      "RuminationMinutes": "Rumination (minutes)",
+      "BatteryLevel": "Battery level"
+    },
+    "units": {
+      "celsius": "°C",
+      "index": "index",
+      "minutes": "min",
+      "percent": "%",
+      "meters": "m"
+    },
+    "duration": {
+      "hours": "hours",
+      "minutes": "minutes",
+      "seconds": "seconds"
+    },
+    "state": {
+      "noReading": "No reading",
+      "stale": "Stale"
+    },
+    "measurement": {
+      "Valid": "Valid",
+      "Invalid": "Invalid",
+      "Absent": "No reading"
+    },
+    "severity": {
+      "Informative": "Informative",
+      "Warning": "Warning",
+      "Critical": "Critical"
+    },
+    "alertType": {
+      "Temperature": "Body temperature",
+      "Activity": "Activity",
+      "Geofence": "Geofence"
+    },
+    "alertStatus": {
+      "Pending": "Pending",
+      "Acknowledged": "Acknowledged"
+    },
+    "fields": {
+      "lifeStage": "Productive stage",
+      "metric": "Metric",
+      "minValue": "Minimum",
+      "maxValue": "Maximum",
+      "severity": "Severity",
+      "status": "Status",
+      "type": "Type",
+      "value": "Value",
+      "raisedAt": "Raised at",
+      "recordedAt": "Recorded at",
+      "acknowledgedAt": "Attended at",
+      "lastReading": "Last reading",
+      "detectedValue": "Detected value",
+      "normalRange": "Normal range",
+      "geofence": "Geofence",
+      "unknownGeofence": "Geofence no longer listed",
+      "distanceToBoundary": "Distance to boundary",
+      "outsideFor": "Outside the zone for",
+      "finding": "Finding",
+      "action": "Action",
+      "noAction": "No action recorded",
+      "responseTime": "Response time",
+      "responseTimeSeconds": "Response time (seconds)",
+      "tolerance": "Tolerance (m)",
+      "position": "Position"
+    },
+    "links": {
+      "openMonitoring": "Open monitoring"
+    },
+    "overview": {
+      "title": "Herd monitoring",
+      "lead": "Latest body temperature, activity, rumination and position of each active animal. Stale or missing values are labelled, never shown as zero.",
+      "filters": "Herd filters",
+      "lot": "Lot",
+      "allLots": "All lots",
+      "limitHint": "Herds above {{limit}} animals show values after a lot is chosen.",
+      "tooMany": "This herd has more than {{limit}} active animals. Filter by lot to load their latest values.",
+      "loading": "Loading latest values",
+      "tableLabel": "Latest values of active animals",
+      "emptyTitle": "No active animals",
+      "empty": "Register animals and assign collars to see their values here.",
+      "status": {
+        "current": "Current",
+        "stale": "Stale values",
+        "noReading": "No reading",
+        "failed": "Could not load"
+      }
+    },
+    "telemetry": {
+      "title": "Animal monitoring",
+      "back": "Back to herd monitoring",
+      "latest": "Latest values",
+      "lastKnownPosition": "Last known position",
+      "noPosition": "No position",
+      "range": "Period",
+      "presets": {
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days",
+        "custom": "Custom"
+      },
+      "fromDay": "From day",
+      "toDay": "To day (included)",
+      "apply": "Apply period",
+      "invalidRange": "Choose both days, with the first day before the last one.",
+      "noThresholds": "No threshold is configured for this animal's stage, so its readings are not compared with a normal range.",
+      "truncated": "Only the latest {{limit}} readings of {{total}} in this period are loaded. Choose a shorter period to see earlier ones.",
+      "temperatureChart": "Body temperature readings over time, with the threshold limits",
+      "activityChart": "Activity index readings over time, with the threshold limits",
+      "statistics": "Statistics of the period",
+      "metric": "Metric",
+      "readings": "Readings of the period",
+      "loading": "Loading readings",
+      "noReadingsTitle": "No readings in this period",
+      "noReadings": "Choose a longer period or check that the collar is sending readings."
+    },
+    "stats": {
+      "count": "Valid readings",
+      "minimum": "Minimum",
+      "maximum": "Maximum",
+      "mean": "Average",
+      "standardDeviation": "Standard deviation",
+      "outsideBand": "Outside threshold"
+    },
+    "chart": {
+      "minimum": "Minimum threshold",
+      "maximum": "Maximum threshold"
+    },
+    "alerts": {
+      "title": "Alerts",
+      "lead": "Alerts raised for body temperature, activity and geofences. Attend each alert with a finding and, when relevant, the action taken.",
+      "filters": "Alert filters",
+      "allStatuses": "All statuses",
+      "animal": "Animal",
+      "allAnimals": "All animals",
+      "tableLabel": "Alerts of the ranch",
+      "loading": "Loading alerts",
+      "open": "Open",
+      "emptyTitle": "No alerts",
+      "empty": "No alerts match the filters.",
+      "acknowledged": "The alert was attended.",
+      "acknowledge": "Attend alert",
+      "detail": {
+        "title": "Alert",
+        "animal": "Animal {{earTag}}",
+        "mapLabel": "Position of the alert and its geofence"
+      }
+    },
+    "geofences": {
+      "name": "Grazing zone name",
+      "corners": "Corners",
+      "redefine": "Redefine",
+      "toleranceHint": "Largest GPS error, in meters, that a position may have and still count."
+    },
+    "thresholds": {
+      "title": "Normal ranges",
+      "lead": "Normal ranges per productive stage and metric. Readings outside a range raise threshold alerts; ICHU provides no default ranges.",
+      "add": "Add threshold",
+      "edit": "Edit",
+      "saved": "The threshold was saved.",
+      "tableLabel": "Normal ranges of the ranch",
+      "loading": "Loading thresholds",
+      "emptyTitle": "No thresholds yet",
+      "empty": "No normal ranges are configured for this ranch.",
+      "emptyManage": "Add a threshold for each stage and metric to raise threshold alerts.",
+      "dialog": {
+        "title": "Normal range",
+        "lead": "Readings below the minimum or above the maximum raise an alert with this severity.",
+        "submit": "Save range"
+      }
+    },
+    "validation": {
+      "rangeOrder": "The minimum must be below the maximum.",
+      "findingRequired": "Describe the finding before attending the alert.",
+      "tolerance": "Enter a whole number of meters from 1 to {{maximum}}."
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
     }
   }
 }

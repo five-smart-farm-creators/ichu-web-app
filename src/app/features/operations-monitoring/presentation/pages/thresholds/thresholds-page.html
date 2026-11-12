@@ -1,0 +1,91 @@
+<div class="monitoring-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.thresholds' | translate }}</span>
+      <h1>{{ 'monitoring.thresholds.title' | translate }}</h1>
+      <p class="page-lead">{{ 'monitoring.thresholds.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.thresholds().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage()) {
+          <button type="button" class="btn primary" (click)="openEditor(null)">
+            <ichu-icon name="plus" />
+            <span>{{ 'monitoring.thresholds.add' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'monitoring.thresholds.loading' | translate" />
+      }
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="facade.thresholds()" [attr.aria-label]="'monitoring.thresholds.tableLabel' | translate">
+          <ng-container matColumnDef="stage">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.lifeStage' | translate }}</th>
+            <td mat-cell *matCellDef="let threshold">{{ ('cattle.stage.' + threshold.lifeStage) | translate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="metric">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.metric' | translate }}</th>
+            <td mat-cell *matCellDef="let threshold">{{ ('monitoring.metric.' + threshold.metric) | translate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="minimum">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.minValue' | translate }}</th>
+            <td mat-cell *matCellDef="let threshold">{{ threshold.minValue }}</td>
+          </ng-container>
+          <ng-container matColumnDef="maximum">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.maxValue' | translate }}</th>
+            <td mat-cell *matCellDef="let threshold">{{ threshold.maxValue }}</td>
+          </ng-container>
+          <ng-container matColumnDef="severity">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.severity' | translate }}</th>
+            <td mat-cell *matCellDef="let threshold">
+              <span class="badge" [class]="'badge ' + severityTone(threshold.severity)">{{ ('monitoring.severity.' + threshold.severity) | translate }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'common.actions' | translate }}</span></th>
+            <td mat-cell *matCellDef="let threshold">
+              @if (canManage()) {
+                <button type="button" class="btn secondary" (click)="openEditor(threshold)">
+                  {{ 'monitoring.thresholds.edit' | translate }}
+                  <span class="visually-hidden">{{ ('cattle.stage.' + threshold.lifeStage) | translate }} – {{ ('monitoring.metric.' + threshold.metric) | translate }}</span>
+                </button>
+              }
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let threshold; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && !facade.error() && facade.thresholds().length === 0) {
+        <div class="empty-state">
+          <h2>{{ 'monitoring.thresholds.emptyTitle' | translate }}</h2>
+          <p>{{ (canManage() ? 'monitoring.thresholds.emptyManage' : 'monitoring.thresholds.empty') | translate }}</p>
+        </div>
+      }
+    </section>
+  }
+</div>

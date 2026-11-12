@@ -118,6 +118,7 @@
             } @else {
               <p>{{ 'cattle.profile.noReadings' | translate }}</p>
             }
+            <a class="btn secondary" [routerLink]="['/monitoring/cattle', animal.id]">{{ 'monitoring.links.openMonitoring' | translate }}</a>
           </div>
         </section>
 
