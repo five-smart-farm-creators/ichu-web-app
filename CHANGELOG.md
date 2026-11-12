@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Firebase Hosting configuration and a deployment script that publishes the build with the production runtime configuration instead of the local one.
 - Reproduction screen for each female, with the breeding services, pregnancy diagnoses, calvings, abortions and heats in a timeline newest first, the calving intervals with the days open after each calving, confirmed pregnancies, services per pregnancy, the expected calving date of a pregnancy in progress, and Excel and PDF downloads.
 - Breeding services, pregnancy diagnoses, calvings, abortions and heats are recorded from the reproduction screen and the clinical history, with the sire, the pregnancy result and the expected calving date; only females take reproductive records, and the dialog offers the types that the account may register.
 - Clinical history timeline shows the sire, the pregnancy result and the expected calving date of each record.

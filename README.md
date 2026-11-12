@@ -44,6 +44,16 @@ Stripe Checkout returns the visitor to `/subscriptions/payment/success` or `/sub
 
 The landing page links to `/plans?tier=<Basic|Standard|Pro>&headCount=<n>&source=<text>`. The `source` value is stored as the acquisition source when it has at most 64 characters; otherwise `web-app` is stored. A visitor who is not signed in signs in first and then returns to the same address.
 
+## Deployment
+
+The app is published on Firebase Hosting (`firebase.json`: the Angular build in `dist/ichu-web-app/browser`, every route served by `index.html`, hashed assets cached for a year, `index.html`, `config.json` and translations never cached). Sign in once with `npx -y firebase-tools@15.34.2 login`, then run:
+
+```powershell
+./scripts/deploy-hosting.ps1
+```
+
+The script reads the user environment variables `Firebase__ProjectId` and `Firebase__ApiKey`, builds the app, replaces the copied `config.json` with the production one (API at `https://ichu-web-service.onrender.com/api/v1` unless `-ApiBaseUrl` says otherwise) and deploys. The local `public/config.json` is never published. After the first deployment, set the API's `Stripe:SuccessUrl` and `Stripe:CancelUrl` to the hosting address followed by `/subscriptions/payment/success` and `/subscriptions/payment/cancel`.
+
 ## Languages
 
 Interface copy lives in `public/i18n/en.json` (default) and `public/i18n/es.json` (Latin American Spanish). Both files must define the same keys; the test suite checks it. The language choice and the selected ranch are saved in this browser.
