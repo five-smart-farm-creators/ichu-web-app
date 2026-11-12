@@ -74,6 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Herd advisory requests and decisions use ranch-scoped endpoints.
 - Terms and privacy page describes how ICHU handles sign-in, ranch records, browser preferences, and payments.
 - Sign-in and account screens use the shared app layout and show no internal account or ranch identifiers.
+- Firebase Authentication loads on first use, so the initial download of the app is smaller.
+- Pull requests to develop and main run the typecheck, the production build, and the unit tests in continuous integration.
 
 ### Removed
 
@@ -84,6 +86,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - The account workspace no longer nests a second main landmark inside the app shell.
+- Counts show the singular for one in English and Spanish, so one animal, event, case, day, or collar never reads with a plural word.
+- Date picker controls, such as Open calendar and the month and year navigation, follow the selected language.
+- The Spanish message for lots without trends uses the same informal address as the rest of the interface.
 
 ## [0.1.0] - 2026-11-07
 

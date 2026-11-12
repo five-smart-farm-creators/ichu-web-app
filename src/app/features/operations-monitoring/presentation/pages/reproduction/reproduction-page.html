@@ -207,7 +207,7 @@
         <section class="panel">
           <div class="panel-body empty-state">
             <h2>{{ 'reproduction.noHistoryTitle' | translate }}</h2>
-            <p>{{ 'reproduction.noHistory' | translate: { months: history.ageInMonths, stage: ('cattle.stage.' + history.lifeStage | translate) } }}</p>
+            <p>{{ 'reproduction.noHistory' | plural: history.ageInMonths : { stage: ('cattle.stage.' + history.lifeStage | translate) } }}</p>
           </div>
         </section>
       }

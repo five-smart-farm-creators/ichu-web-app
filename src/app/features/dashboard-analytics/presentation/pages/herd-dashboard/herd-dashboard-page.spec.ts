@@ -84,7 +84,7 @@ describe('HerdDashboardPage', () => {
     const tiles: string[] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.indicator-tile .stat-value'))
       .map(element => element.textContent.replace(/\s+/g, ' ').trim());
 
-    expect(tiles).toEqual(['12 animals', '1 animals', '0 %', 'Not available', 'Not available']);
+    expect(tiles).toEqual(['12 animals', '1 animal', '0 %', 'Not available', 'Not available']);
   });
 
   it('never renders the ranch identifier', async () => {

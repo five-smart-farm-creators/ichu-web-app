@@ -126,7 +126,7 @@
 
               <p class="text-muted figure-note">
                 @if (facade.headCount() !== null) {
-                  {{ 'nutrition.estimate.heads' | translate: { count: facade.headCount() } }}
+                  {{ 'nutrition.estimate.heads' | plural: (facade.headCount() ?? 0) }}
                 } @else {
                   {{ 'nutrition.estimate.unknown' | translate }}
                 }

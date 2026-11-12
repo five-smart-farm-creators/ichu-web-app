@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatLocaleTag } from '../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../shared/infrastructure/i18n/language.service';
+import { PluralPipe } from '../../../../shared/presentation/plural.pipe';
 import { type IndicatorValue, isIndicatorAvailable } from '../../domain/model/herd-indicators.model';
 import { formatAnalyticsNumber } from '../analytics-format';
 import { analyticsTextKey } from '../analytics-text';
@@ -11,12 +12,12 @@ let nextTileId = 0;
 /** One indicator with its unit, or "Not available" with its reason; a toggle reveals the calculation. */
 @Component({
   selector: 'ichu-indicator-tile',
-  imports: [TranslatePipe],
+  imports: [PluralPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<article class="stat indicator-tile">
       <span class="stat-label">{{ label() | translate }}</span>
       @if (available()) {
-        <span class="stat-value">{{ number() }} <span class="unit">{{ 'analytics.units.' + indicator().unit | translate }}</span></span>
+        <span class="stat-value">{{ number() }} <span class="unit">{{ 'analytics.units.' + indicator().unit | plural: (indicator().value ?? 0) }}</span></span>
       } @else {
         <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
         <span class="stat-note">{{ reasonKey() | translate }}</span>

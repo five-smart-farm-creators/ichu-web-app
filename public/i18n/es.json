@@ -18,6 +18,21 @@
       "last": "Última página",
       "range": "{{start}} – {{end}}"
     },
+    "datepicker": {
+      "calendar": "Calendario",
+      "openCalendar": "Abrir calendario",
+      "closeCalendar": "Cerrar calendario",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "previousYear": "Año anterior",
+      "nextYear": "Año siguiente",
+      "previousYears": "24 años anteriores",
+      "nextYears": "24 años siguientes",
+      "chooseDate": "Elegir fecha",
+      "chooseMonthAndYear": "Elegir mes y año",
+      "yearRange": "{{start}} – {{end}}",
+      "yearRangeLabel": "{{start}} a {{end}}"
+    },
     "exportFailed": "No se pudo crear el archivo. Inténtalo de nuevo.",
     "actions": "Acciones",
     "close": "Cerrar",
@@ -725,7 +740,10 @@
       "redefineTitle": "Redefinir zona de pastoreo",
       "undo": "Deshacer último punto",
       "clear": "Limpiar",
-      "corners": "{{count}} vértices (se necesitan al menos {{minimum}})",
+      "corners": {
+        "one": "{{count}} vértice (se necesitan al menos {{minimum}})",
+        "other": "{{count}} vértices (se necesitan al menos {{minimum}})"
+      },
       "minimumCorners": "Una zona de pastoreo necesita al menos {{minimum}} vértices.",
       "saved": "La zona de pastoreo se guardó."
     },
@@ -1146,7 +1164,10 @@
       "filters": "Filtros de periodos de retiro",
       "allAnimals": "Todos los animales",
       "remaining": "Días restantes",
-      "daysRemaining": "Faltan {{count}} días",
+      "daysRemaining": {
+        "one": "Falta {{count}} día",
+        "other": "Faltan {{count}} días"
+      },
       "startsDay": "Inicia el día",
       "endsDay": "Termina el día",
       "emptyTitle": "Todavía no hay periodos de retiro",
@@ -1210,7 +1231,10 @@
       "empty": "No hay eventos registrados."
     },
     "noHistoryTitle": "Sin historial reproductivo",
-    "noHistory": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{months}} meses y está en la etapa {{stage}}.",
+    "noHistory": {
+      "one": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{count}} mes y está en la etapa {{stage}}.",
+      "other": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{count}} meses y está en la etapa {{stage}}."
+    },
     "event": {
       "service": "Servicio reproductivo",
       "diagnosis": "Diagnóstico de preñez",
@@ -1227,7 +1251,10 @@
       "detail": "Monta o resultado"
     },
     "export": {
-      "subtitle": "{{earTag}} · {{stage}} · {{months}} meses · {{date}}"
+      "subtitle": {
+        "one": "{{earTag}} · {{stage}} · {{count}} mes · {{date}}",
+        "other": "{{earTag}} · {{stage}} · {{count}} meses · {{date}}"
+      }
     },
     "records": {
       "serviceTitle": "Registrar servicio reproductivo",
@@ -1282,7 +1309,10 @@
       "none": "Ningún plan nutricional cubre hoy a este lote."
     },
     "estimate": {
-      "heads": "Estimación para {{count}} animales activos del lote.",
+      "heads": {
+        "one": "Estimación para {{count}} animal activo del lote.",
+        "other": "Estimación para {{count}} animales activos del lote."
+      },
       "unknown": "No se pudo leer el número de animales activos, así que no se muestra la estimación."
     },
     "items": {
@@ -1338,9 +1368,18 @@
     "hideFormula": "Ocultar el cálculo",
     "denominator": "Base del cálculo: {{count}}",
     "units": {
-      "animals": "animales",
-      "percent": "%",
-      "events": "eventos",
+      "animals": {
+        "one": "animal",
+        "other": "animales"
+      },
+      "percent": {
+        "one": "%",
+        "other": "%"
+      },
+      "events": {
+        "one": "evento",
+        "other": "eventos"
+      },
       "celsius": "°C",
       "index": "índice",
       "minutes": "min",
@@ -1448,7 +1487,7 @@
       "animal": "Animal",
       "noAnimal": "Ningún animal seleccionado",
       "loading": "Cargando lecturas del lote",
-      "noLots": "Este hato aún no tiene lotes. Cree uno en Animales, luego en Lotes.",
+      "noLots": "Este hato aún no tiene lotes. Crea uno en Animales, luego en Lotes.",
       "summary": "Resumen del lote",
       "emptyTitle": "Aún no hay lecturas",
       "empty": "Elige un lote con lecturas en el periodo.",
@@ -1466,7 +1505,10 @@
       "summary": "Resumen de la curva",
       "total": "Casos en el periodo",
       "peak": "Día pico",
-      "peakCases": "{{count}} casos",
+      "peakCases": {
+        "one": "{{count}} caso",
+        "other": "{{count}} casos"
+      },
       "noPeak": "Sin casos",
       "daysWithoutCases": "Días sin casos nuevos",
       "attackRate": "Tasa de ataque",

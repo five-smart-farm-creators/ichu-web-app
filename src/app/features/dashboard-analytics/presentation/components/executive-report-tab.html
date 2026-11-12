@@ -49,7 +49,7 @@
               <td><strong>{{ ('analytics.indicators.' + row.key) | translate }}</strong></td>
               <td>
                 @if (isAvailable(row.indicator)) {
-                  {{ number(row.indicator.value) }} {{ ('analytics.units.' + row.indicator.unit) | translate }}
+                  {{ number(row.indicator.value) }} {{ ('analytics.units.' + row.indicator.unit) | plural: (row.indicator.value ?? 0) }}
                 } @else {
                   <span class="text-muted">{{ 'analytics.notAvailable' | translate }}: {{ reasonKey(row.indicator.unavailableReason) | translate }}</span>
                 }

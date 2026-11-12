@@ -124,7 +124,7 @@
               </button>
             </div>
             <p class="editor-count" role="status">
-              {{ 'locations.editor.corners' | translate: { count: draftCount(), minimum: minimumCorners } }}
+              {{ 'locations.editor.corners' | plural: draftCount() : { minimum: minimumCorners } }}
             </p>
             @if (cornerError()) {
               <p class="form-error" role="alert">{{ 'locations.editor.minimumCorners' | translate: { minimum: minimumCorners } }}</p>

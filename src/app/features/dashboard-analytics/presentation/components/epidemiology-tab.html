@@ -36,7 +36,7 @@
       <span class="stat-label">{{ 'analytics.epidemiology.peak' | translate }}</span>
       @if (facade.peak(); as peak) {
         <span class="stat-value peak">{{ peakLabel() }}</span>
-        <span class="stat-note">{{ 'analytics.epidemiology.peakCases' | translate: { count: peak.cases } }}</span>
+        <span class="stat-note">{{ 'analytics.epidemiology.peakCases' | plural: peak.cases }}</span>
       } @else {
         <span class="stat-value unavailable">{{ 'analytics.epidemiology.noPeak' | translate }}</span>
       }

@@ -70,7 +70,7 @@
             </div>
           </div>
           <p class="plan-limit">
-            {{ (plan.deviceLimit === 1 ? 'plans.deviceLimit.one' : 'plans.deviceLimit.other') | translate: { count: plan.deviceLimit } }}
+            {{ 'plans.deviceLimit' | plural: plan.deviceLimit }}
           </p>
           <dl class="plan-prices">
             <div>

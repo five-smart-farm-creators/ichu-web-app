@@ -33,7 +33,10 @@ const translations = {
     event: { service: 'Breeding service', diagnosis: 'Pregnancy diagnosis', calving: 'Calving', abortion: 'Abortion', heat: 'Heat observed' },
     pregnancyResult: { Pregnant: 'Pregnant', Open: 'Open' },
     noHistoryTitle: 'No reproductive history',
-    noHistory: 'This animal has no breeding services or calvings yet. It is {{months}} months old and is in the {{stage}} stage.',
+    noHistory: {
+      one: 'This animal has no breeding services or calvings yet. It is {{count}} month old and is in the {{stage}} stage.',
+      other: 'This animal has no breeding services or calvings yet. It is {{count}} months old and is in the {{stage}} stage.',
+    },
     noAnimalTitle: 'No female selected',
     noAnimal: 'Choose a female to see her reproductive history.',
   },
@@ -134,6 +137,22 @@ describe('ReproductionPage', () => {
     const text: string = fixture.nativeElement.textContent ?? '';
     expect(text).toContain('No reproductive history');
     expect(text).toContain('It is 14 months old and is in the Heifer stage.');
+  });
+
+  it('uses the singular for an animal one month old', async () => {
+    histories.get.mockResolvedValueOnce({
+      ...history, lifeStage: 'Heifer', ageInMonths: 1, hasHistory: false, services: [], pregnancyDiagnoses: [], calvings: [],
+      intervals: [], servicesPerPregnancy: null, pregnanciesConfirmed: 0,
+    });
+    const fixture = create();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await fixture.componentInstance.facade.selectAnimal('cattle-1');
+    await new Promise(resolve => setTimeout(resolve));
+    fixture.detectChanges();
+
+    const text: string = fixture.nativeElement.textContent ?? '';
+    expect(text).toContain('It is 1 month old and is in the Heifer stage.');
   });
 
   it('lists the females only, so a male cannot be chosen for a reproductive record', async () => {
