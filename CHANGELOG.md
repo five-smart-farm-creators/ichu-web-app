@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Herd monitoring with the latest body temperature, activity, rumination and last known position of each active animal, a lot filter, stale and missing values labelled instead of shown as zero, and Excel and PDF downloads.
+- Animal monitoring with latest values, a 24-hour, 7-day, 30-day or custom period, charts with the threshold band, statistics (valid readings, minimum, maximum, average, standard deviation and share outside the threshold), a readings table, and Excel and PDF downloads.
+- Normal ranges per productive stage and metric, with a table and a dialog to configure them; a range requires a minimum below its maximum.
+- Alerts queue with status and animal filters, paging, severity and status badges, a detail drawer with values against their thresholds or the grazing zone, and attention given with a finding and an optional action.
+- Location and fences screen: grazing zones drawn on Google Maps with map clicks, moved and removed corners, redefinition, and the last known position of each active animal, with tables that list the same data.
+- Location & fences, Monitoring and Alerts entries in the navigation menu, and a Monitoring link on the animal profile.
+- Optional `googleMaps` runtime configuration for the map; without it the location screen still shows its tables and a notice.
 - Animals screen with exact ear tag, status and lot filters, paging, animal registration, and Excel and PDF downloads.
 - Animal profile with details, stage history, collar status, and actions to edit data, change the productive stage, and record an exit; exited animals are read-only.
 - Lots with member counts, the animals of each lot by ear tag, adding and removing animals, and Excel and PDF downloads.
