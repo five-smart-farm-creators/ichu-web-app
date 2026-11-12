@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { provideCattleInformation } from '../cattle-information/infrastructure/configuration/cattle-information.providers';
+import { providePlanning } from '../planning/infrastructure/configuration/planning.providers';
 import { provideOperationsMonitoring } from './infrastructure/configuration/operations-monitoring.providers';
 
 /** Loaded lazily under `/monitoring`; the cattle providers name animals and read their productive stage through the ACL facade. */
@@ -62,6 +63,27 @@ export const locationRoutes: Routes = [
         pathMatch: 'full',
         title: 'pages.locations',
         loadComponent: () => import('./presentation/pages/locations/locations-page').then(module => module.LocationsPage),
+      },
+    ],
+  },
+];
+
+/** Loaded lazily under `/health`; the animal picker and the `cattle/:cattleId` deep link open the same page. */
+export const healthRoutes: Routes = [
+  {
+    path: '',
+    providers: [provideCattleInformation(), providePlanning(), provideOperationsMonitoring()],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'pages.clinicalHistory',
+        loadComponent: () => import('./presentation/pages/clinical-history/clinical-history-page').then(module => module.ClinicalHistoryPage),
+      },
+      {
+        path: 'cattle/:cattleId',
+        title: 'pages.clinicalHistory',
+        loadComponent: () => import('./presentation/pages/clinical-history/clinical-history-page').then(module => module.ClinicalHistoryPage),
       },
     ],
   },

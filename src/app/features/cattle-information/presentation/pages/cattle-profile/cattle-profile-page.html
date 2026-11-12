@@ -31,13 +31,14 @@
             </span>
           </p>
         </div>
-        @if (canManage() && animal.status === 'Active') {
-          <div class="toolbar">
+        <div class="toolbar">
+          <a class="btn secondary" [routerLink]="['/health/cattle', animal.id]">{{ 'health.links.openHistory' | translate }}</a>
+          @if (canManage() && animal.status === 'Active') {
             <button type="button" class="btn secondary" (click)="editAnimal()">{{ 'cattle.profile.edit' | translate }}</button>
             <button type="button" class="btn secondary" (click)="changeStage()">{{ 'cattle.profile.changeStage' | translate }}</button>
             <button type="button" class="btn danger" (click)="recordExit()">{{ 'cattle.profile.recordExit' | translate }}</button>
-          </div>
-        }
+          }
+        </div>
       </header>
 
       @if (notice(); as key) {

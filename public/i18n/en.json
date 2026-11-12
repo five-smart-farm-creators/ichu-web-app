@@ -52,7 +52,11 @@
     "monitoringCattle": "Animal monitoring",
     "locations": "Location and fences",
     "alerts": "Alerts",
-    "thresholds": "Thresholds"
+    "thresholds": "Thresholds",
+    "clinicalHistory": "Clinical history",
+    "planning": "Health planning",
+    "planningCampaigns": "Campaigns",
+    "withdrawalPeriods": "Withdrawal periods"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -67,7 +71,9 @@
     "iotDevices": "IoT devices",
     "locations": "Location & fences",
     "monitoring": "Monitoring",
-    "alerts": "Alerts"
+    "alerts": "Alerts",
+    "clinicalHistory": "Clinical history",
+    "healthPlanning": "Health planning"
   },
   "terms": {
     "back": "Back to account",
@@ -905,6 +911,221 @@
     },
     "errors": {
       "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    }
+  },
+  "health": {
+    "title": "Clinical history",
+    "lead": "Field events and clinical interventions of each animal, newest first, with its latest values, pending alerts and withdrawal period.",
+    "filters": "Clinical history filters",
+    "chooseAnimal": "Choose an animal",
+    "allTypes": "All types",
+    "noAnimalTitle": "No animal selected",
+    "noAnimal": "Choose an animal to see its clinical history.",
+    "fields": {
+      "animal": "Animal",
+      "period": "Period",
+      "type": "Type",
+      "kind": "Kind",
+      "day": "Day",
+      "time": "Time",
+      "occurredAt": "Date and time",
+      "product": "Product",
+      "dose": "Dose",
+      "observation": "Observation"
+    },
+    "periods": {
+      "90d": "Last 90 days",
+      "1y": "Last year",
+      "5y": "Last 5 years"
+    },
+    "type": {
+      "HealthEvent": "Health event",
+      "Birth": "Birth",
+      "Vaccination": "Vaccination",
+      "Treatment": "Treatment",
+      "Insemination": "Insemination"
+    },
+    "kind": {
+      "field": "Field event",
+      "clinical": "Clinical intervention"
+    },
+    "links": {
+      "openHistory": "Clinical history"
+    },
+    "records": {
+      "openField": "Record health event",
+      "openClinical": "Record clinical intervention",
+      "fieldTitle": "Record health event",
+      "fieldLead": "Record an event observed on animal {{earTag}}, such as a health observation or a birth.",
+      "fieldSubmit": "Save event",
+      "clinicalTitle": "Record clinical intervention",
+      "clinicalLead": "Record a vaccination, treatment or insemination applied to animal {{earTag}}.",
+      "clinicalSubmit": "Save intervention",
+      "fieldSaved": "The health event was recorded.",
+      "clinicalSaved": "The clinical intervention was recorded."
+    },
+    "validation": {
+      "future": "The date and time cannot be in the future."
+    },
+    "summary": {
+      "title": "Health summary",
+      "stage": "Productive stage",
+      "pendingAlerts": "Pending alerts",
+      "withdrawal": "Withdrawal period",
+      "withdrawalActive": "In force until {{date}}",
+      "withdrawalUpcoming": "Starts {{date}}",
+      "noWithdrawal": "No withdrawal period",
+      "daysRemaining": "Days remaining: {{count}}",
+      "incomplete": "Some values could not be loaded. Try again later."
+    },
+    "timeline": {
+      "title": "Timeline",
+      "loading": "Loading history",
+      "empty": "No records in this period.",
+      "noProduct": "No product recorded"
+    },
+    "report": {
+      "subtitle": "Ear tag {{earTag}} · {{stage}} · {{from}} – {{to}}"
+    }
+  },
+  "planning": {
+    "areaNavigation": "Health planning areas",
+    "tabs": {
+      "calendar": "Calendar",
+      "campaigns": "Campaigns",
+      "withdrawal": "Withdrawal periods"
+    },
+    "fields": {
+      "name": "Name",
+      "kind": "Kind",
+      "status": "Status",
+      "state": "State",
+      "startsOn": "Starts on",
+      "endsOn": "Ends on",
+      "startsAt": "Starts",
+      "endsAt": "Ends",
+      "animal": "Animal",
+      "title": "Title",
+      "scheduledAt": "Scheduled",
+      "day": "Day",
+      "time": "Time",
+      "appliedDay": "Applied on",
+      "dueDay": "Due on",
+      "linkedIntervention": "Linked clinical intervention"
+    },
+    "kind": {
+      "Sanitary": "Sanitary",
+      "Reproductive": "Reproductive"
+    },
+    "campaignStatus": {
+      "Upcoming": "Upcoming",
+      "Active": "Active",
+      "Finished": "Finished"
+    },
+    "withdrawalState": {
+      "Active": "In force",
+      "Upcoming": "Upcoming",
+      "Ended": "Ended"
+    },
+    "state": {
+      "Done": "Done",
+      "Scheduled": "Scheduled",
+      "Overdue": "Overdue",
+      "overdueOne": "Overdue by 1 day",
+      "overdueDays": "Overdue by {{count}} days"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "lead": "Sanitary and reproductive work by day, with the reminders for the next 7 days and the overdue work.",
+      "loading": "Loading calendar",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "view": "Calendar view",
+      "viewGrid": "Month grid",
+      "viewAgenda": "Agenda",
+      "dayLabel": "{{date}}, activities: {{count}}",
+      "pickDay": "Select a day",
+      "noActivitiesOnDay": "No activities on this day.",
+      "noActivitiesMonth": "No activities in this month.",
+      "ranchWide": "Whole ranch",
+      "limited": "Only the first {{limit}} activities of this period are shown.",
+      "agendaTitle": "Agenda"
+    },
+    "reminders": {
+      "title": "Reminders",
+      "upcoming": "Upcoming 7 days",
+      "overdue": "Overdue",
+      "noUpcoming": "No activities due in the next 7 days.",
+      "noOverdue": "No overdue activities."
+    },
+    "activities": {
+      "schedule": {
+        "open": "Schedule activity",
+        "title": "Schedule activity",
+        "lead": "Schedule work for the whole ranch or for one active animal.",
+        "submit": "Schedule"
+      },
+      "scheduled": "The activity was scheduled.",
+      "open": "Open",
+      "loading": "Loading activity",
+      "applications": "Applications",
+      "noApplications": "No applications recorded yet.",
+      "recordApplication": "Record application",
+      "linkedOn": "Linked to intervention on {{date}}",
+      "linkedUnknown": "Linked to a clinical intervention",
+      "noIntervention": "No linked intervention",
+      "followUps": "Follow-ups",
+      "noFollowUps": "No follow-ups scheduled.",
+      "scheduleFollowUp": "Schedule follow-up"
+    },
+    "campaigns": {
+      "title": "Campaigns",
+      "lead": "Sanitary and reproductive campaigns over a range of days, with the activities scheduled inside each one.",
+      "loading": "Loading campaigns",
+      "tableLabel": "Campaigns of the ranch",
+      "emptyTitle": "No campaigns yet",
+      "empty": "No campaigns are planned for this ranch.",
+      "emptyManage": "Create a sanitary or reproductive campaign to group its activities.",
+      "created": "The campaign was created.",
+      "create": {
+        "open": "New campaign",
+        "title": "New campaign",
+        "lead": "A campaign groups activities over an inclusive range of days.",
+        "submit": "Create campaign"
+      },
+      "detail": {
+        "loading": "Loading campaign",
+        "activities": "Activities in this campaign",
+        "noActivities": "No activities are scheduled in this campaign yet."
+      }
+    },
+    "withdrawal": {
+      "title": "Withdrawal periods",
+      "lead": "Withdrawal intervals recorded for each animal, with their bounds, state and days left.",
+      "loading": "Loading withdrawal periods",
+      "tableLabel": "Withdrawal periods of the ranch",
+      "filters": "Withdrawal filters",
+      "allAnimals": "All animals",
+      "remaining": "Remaining",
+      "daysRemaining": "Days left: {{count}}",
+      "startsDay": "Starts on",
+      "endsDay": "Ends on",
+      "emptyTitle": "No withdrawal periods yet",
+      "empty": "No withdrawal periods are recorded for this ranch.",
+      "emptyRecord": "Record a withdrawal period after a clinical intervention to start one.",
+      "recorded": "The withdrawal period was recorded.",
+      "record": {
+        "open": "Record withdrawal period",
+        "title": "Record withdrawal period",
+        "lead": "Enter the start and end of the withdrawal interval. ICHU stores these bounds as given and does not calculate them.",
+        "submit": "Save period"
+      }
+    },
+    "validation": {
+      "nameRequired": "Enter a campaign name.",
+      "rangeOrder": "The end day cannot be before the start day.",
+      "titleRequired": "Enter a title.",
+      "withdrawalRangeOrder": "The end cannot be before the start."
     }
   }
 }

@@ -52,7 +52,11 @@
     "monitoringCattle": "Monitoreo del animal",
     "locations": "Ubicación y cercas",
     "alerts": "Alertas",
-    "thresholds": "Umbrales"
+    "thresholds": "Umbrales",
+    "clinicalHistory": "Historial clínico",
+    "planning": "Planificación sanitaria",
+    "planningCampaigns": "Campañas",
+    "withdrawalPeriods": "Periodos de retiro"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -67,7 +71,9 @@
     "iotDevices": "Dispositivos IoT",
     "locations": "Ubicación y cercas",
     "monitoring": "Monitoreo",
-    "alerts": "Alertas"
+    "alerts": "Alertas",
+    "clinicalHistory": "Historial clínico",
+    "healthPlanning": "Planificación sanitaria"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -905,6 +911,221 @@
     },
     "errors": {
       "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    }
+  },
+  "health": {
+    "title": "Historial clínico",
+    "lead": "Eventos de campo e intervenciones clínicas de cada animal, del más reciente al más antiguo, con sus últimos valores, alertas pendientes y periodo de retiro.",
+    "filters": "Filtros del historial clínico",
+    "chooseAnimal": "Elige un animal",
+    "allTypes": "Todos los tipos",
+    "noAnimalTitle": "Ningún animal seleccionado",
+    "noAnimal": "Elige un animal para ver su historial clínico.",
+    "fields": {
+      "animal": "Animal",
+      "period": "Periodo",
+      "type": "Tipo",
+      "kind": "Tipo de registro",
+      "day": "Día",
+      "time": "Hora",
+      "occurredAt": "Fecha y hora",
+      "product": "Producto",
+      "dose": "Dosis",
+      "observation": "Observación"
+    },
+    "periods": {
+      "90d": "Últimos 90 días",
+      "1y": "Último año",
+      "5y": "Últimos 5 años"
+    },
+    "type": {
+      "HealthEvent": "Evento de salud",
+      "Birth": "Parto",
+      "Vaccination": "Vacunación",
+      "Treatment": "Tratamiento",
+      "Insemination": "Inseminación"
+    },
+    "kind": {
+      "field": "Evento de campo",
+      "clinical": "Intervención clínica"
+    },
+    "links": {
+      "openHistory": "Historial clínico"
+    },
+    "records": {
+      "openField": "Registrar evento de salud",
+      "openClinical": "Registrar intervención clínica",
+      "fieldTitle": "Registrar evento de salud",
+      "fieldLead": "Registra un evento observado en el animal {{earTag}}, como una observación de salud o un parto.",
+      "fieldSubmit": "Guardar evento",
+      "clinicalTitle": "Registrar intervención clínica",
+      "clinicalLead": "Registra una vacunación, un tratamiento o una inseminación aplicados al animal {{earTag}}.",
+      "clinicalSubmit": "Guardar intervención",
+      "fieldSaved": "El evento de salud se registró.",
+      "clinicalSaved": "La intervención clínica se registró."
+    },
+    "validation": {
+      "future": "La fecha y la hora no pueden ser futuras."
+    },
+    "summary": {
+      "title": "Resumen de salud",
+      "stage": "Etapa productiva",
+      "pendingAlerts": "Alertas pendientes",
+      "withdrawal": "Periodo de retiro",
+      "withdrawalActive": "Vigente hasta el {{date}}",
+      "withdrawalUpcoming": "Inicia el {{date}}",
+      "noWithdrawal": "Sin periodo de retiro",
+      "daysRemaining": "Días restantes: {{count}}",
+      "incomplete": "No se pudieron cargar algunos valores. Inténtalo más tarde."
+    },
+    "timeline": {
+      "title": "Línea de tiempo",
+      "loading": "Cargando historial",
+      "empty": "No hay registros en este periodo.",
+      "noProduct": "Sin producto registrado"
+    },
+    "report": {
+      "subtitle": "Arete {{earTag}} · {{stage}} · {{from}} – {{to}}"
+    }
+  },
+  "planning": {
+    "areaNavigation": "Áreas de planificación sanitaria",
+    "tabs": {
+      "calendar": "Calendario",
+      "campaigns": "Campañas",
+      "withdrawal": "Periodos de retiro"
+    },
+    "fields": {
+      "name": "Nombre",
+      "kind": "Tipo",
+      "status": "Estado",
+      "state": "Estado",
+      "startsOn": "Inicia el",
+      "endsOn": "Termina el",
+      "startsAt": "Inicio",
+      "endsAt": "Fin",
+      "animal": "Animal",
+      "title": "Título",
+      "scheduledAt": "Programada",
+      "day": "Día",
+      "time": "Hora",
+      "appliedDay": "Fecha de aplicación",
+      "dueDay": "Vence el",
+      "linkedIntervention": "Intervención clínica vinculada"
+    },
+    "kind": {
+      "Sanitary": "Sanitaria",
+      "Reproductive": "Reproductiva"
+    },
+    "campaignStatus": {
+      "Upcoming": "Próxima",
+      "Active": "Activa",
+      "Finished": "Finalizada"
+    },
+    "withdrawalState": {
+      "Active": "Vigente",
+      "Upcoming": "Próximo",
+      "Ended": "Finalizado"
+    },
+    "state": {
+      "Done": "Aplicada",
+      "Scheduled": "Programada",
+      "Overdue": "Atrasada",
+      "overdueOne": "Atrasada por 1 día",
+      "overdueDays": "Atrasada por {{count}} días"
+    },
+    "calendar": {
+      "title": "Calendario",
+      "lead": "Trabajo sanitario y reproductivo por día, con los recordatorios de los próximos 7 días y el trabajo atrasado.",
+      "loading": "Cargando calendario",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "view": "Vista del calendario",
+      "viewGrid": "Cuadrícula mensual",
+      "viewAgenda": "Agenda",
+      "dayLabel": "{{date}}, actividades: {{count}}",
+      "pickDay": "Selecciona un día",
+      "noActivitiesOnDay": "No hay actividades este día.",
+      "noActivitiesMonth": "No hay actividades en este mes.",
+      "ranchWide": "Toda la unidad productiva",
+      "limited": "Solo se muestran las primeras {{limit}} actividades de este periodo.",
+      "agendaTitle": "Agenda"
+    },
+    "reminders": {
+      "title": "Recordatorios",
+      "upcoming": "Próximos 7 días",
+      "overdue": "Atrasadas",
+      "noUpcoming": "No hay actividades programadas para los próximos 7 días.",
+      "noOverdue": "No hay actividades atrasadas."
+    },
+    "activities": {
+      "schedule": {
+        "open": "Programar actividad",
+        "title": "Programar actividad",
+        "lead": "Programa trabajo para toda la unidad productiva o para un animal activo.",
+        "submit": "Programar"
+      },
+      "scheduled": "La actividad se programó.",
+      "open": "Abrir",
+      "loading": "Cargando actividad",
+      "applications": "Aplicaciones",
+      "noApplications": "Todavía no hay aplicaciones registradas.",
+      "recordApplication": "Registrar aplicación",
+      "linkedOn": "Vinculada a la intervención del {{date}}",
+      "linkedUnknown": "Vinculada a una intervención clínica",
+      "noIntervention": "Sin intervención vinculada",
+      "followUps": "Seguimientos",
+      "noFollowUps": "No hay seguimientos programados.",
+      "scheduleFollowUp": "Programar seguimiento"
+    },
+    "campaigns": {
+      "title": "Campañas",
+      "lead": "Campañas sanitarias y reproductivas por rango de días, con las actividades programadas en cada una.",
+      "loading": "Cargando campañas",
+      "tableLabel": "Campañas de la unidad productiva",
+      "emptyTitle": "Todavía no hay campañas",
+      "empty": "No hay campañas planificadas en esta unidad productiva.",
+      "emptyManage": "Crea una campaña sanitaria o reproductiva para agrupar sus actividades.",
+      "created": "La campaña se creó.",
+      "create": {
+        "open": "Nueva campaña",
+        "title": "Nueva campaña",
+        "lead": "Una campaña agrupa actividades en un rango de días incluido.",
+        "submit": "Crear campaña"
+      },
+      "detail": {
+        "loading": "Cargando campaña",
+        "activities": "Actividades de esta campaña",
+        "noActivities": "Todavía no hay actividades programadas en esta campaña."
+      }
+    },
+    "withdrawal": {
+      "title": "Periodos de retiro",
+      "lead": "Intervalos de retiro registrados para cada animal, con sus límites, su estado y los días restantes.",
+      "loading": "Cargando periodos de retiro",
+      "tableLabel": "Periodos de retiro de la unidad productiva",
+      "filters": "Filtros de periodos de retiro",
+      "allAnimals": "Todos los animales",
+      "remaining": "Días restantes",
+      "daysRemaining": "Faltan {{count}} días",
+      "startsDay": "Inicia el día",
+      "endsDay": "Termina el día",
+      "emptyTitle": "Todavía no hay periodos de retiro",
+      "empty": "No hay periodos de retiro registrados en esta unidad productiva.",
+      "emptyRecord": "Registra un periodo de retiro después de una intervención clínica.",
+      "recorded": "El periodo de retiro se registró.",
+      "record": {
+        "open": "Registrar periodo de retiro",
+        "title": "Registrar periodo de retiro",
+        "lead": "Ingresa el inicio y el fin del intervalo de retiro. ICHU guarda estos límites tal como los recibe y no los calcula.",
+        "submit": "Guardar periodo"
+      }
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de campaña.",
+      "rangeOrder": "El día final no puede ser anterior al día inicial.",
+      "titleRequired": "Ingresa un título.",
+      "withdrawalRangeOrder": "El fin no puede ser anterior al inicio."
     }
   }
 }

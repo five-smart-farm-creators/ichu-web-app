@@ -68,6 +68,14 @@
           <ichu-icon matListItemIcon name="alert" />
           <span matListItemTitle>{{ 'shell.alerts' | translate }}</span>
         </a>
+        <a mat-list-item routerLink="/health" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="health" />
+          <span matListItemTitle>{{ 'shell.clinicalHistory' | translate }}</span>
+        </a>
+        <a mat-list-item routerLink="/planning" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+          <ichu-icon matListItemIcon name="calendar" />
+          <span matListItemTitle>{{ 'shell.healthPlanning' | translate }}</span>
+        </a>
         <a mat-list-item routerLink="/devices" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
           <ichu-icon matListItemIcon name="radio" />
           <span matListItemTitle>{{ 'shell.iotDevices' | translate }}</span>

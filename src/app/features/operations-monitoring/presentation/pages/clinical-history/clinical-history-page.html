@@ -1,0 +1,188 @@
+<div class="monitoring-page health-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.clinicalHistory' | translate }}</span>
+      <h1>{{ 'health.title' | translate }}</h1>
+      <p class="page-lead">{{ 'health.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.timeline().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (facade.animal()) {
+          @if (canRecordField()) {
+            <button type="button" class="btn secondary" (click)="openRecord('field')">
+              <ichu-icon name="plus" />
+              <span>{{ 'health.records.openField' | translate }}</span>
+            </button>
+          }
+          @if (canRecordClinical()) {
+            <button type="button" class="btn primary" (click)="openRecord('clinical')">
+              <ichu-icon name="plus" />
+              <span>{{ 'health.records.openClinical' | translate }}</span>
+            </button>
+          }
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel filter-panel" [attr.aria-label]="'health.filters' | translate">
+      <div class="filter-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field filter-field-wide">
+          <mat-label>{{ 'health.fields.animal' | translate }}</mat-label>
+          <mat-select [value]="facade.animal()?.cattleId ?? ''" (selectionChange)="chooseAnimal($event.value)">
+            <mat-option value="">{{ 'health.chooseAnimal' | translate }}</mat-option>
+            @for (animal of facade.animals(); track animal.cattleId) {
+              <mat-option [value]="animal.cattleId">
+                {{ animal.earTag }}@if (animal.status !== 'Active') { · {{ ('cattle.status.' + animal.status) | translate }} }
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'health.fields.period' | translate }}</mat-label>
+          <mat-select [value]="facade.period()" (selectionChange)="choosePeriod($event.value)">
+            @for (period of periods; track period) {
+              <mat-option [value]="period">{{ ('health.periods.' + period) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'health.fields.type' | translate }}</mat-label>
+          <mat-select [value]="facade.typeFilter() ?? ''" (selectionChange)="chooseType($event.value)">
+            <mat-option value="">{{ 'health.allTypes' | translate }}</mat-option>
+            @for (type of types; track type) {
+              <mat-option [value]="type">{{ ('health.type.' + type) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+
+    @if (!facade.animal()) {
+      <section class="panel">
+        <div class="panel-body empty-state">
+          <h2>{{ 'health.noAnimalTitle' | translate }}</h2>
+          <p>{{ 'health.noAnimal' | translate }}</p>
+        </div>
+      </section>
+    } @else {
+      @if (facade.animal(); as animal) {
+        <div class="health-grid">
+          <section class="panel summary-panel" aria-labelledby="summary-heading" [attr.aria-busy]="facade.loading()">
+            <div class="panel-head">
+              <h2 id="summary-heading">{{ 'health.summary.title' | translate }}</h2>
+            </div>
+            <div class="panel-body">
+              <dl class="summary-list">
+                <div>
+                  <dt>{{ 'health.summary.stage' | translate }}</dt>
+                  <dd>{{ ('cattle.stage.' + animal.lifeStage) | translate }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'monitoring.metric.BodyTemperature' | translate }}</dt>
+                  <dd>
+                    @if (facade.summary()?.latest; as latest) {
+                      <ichu-indicator-value [indicator]="latest.bodyTemperature" />
+                    } @else {
+                      –
+                    }
+                  </dd>
+                </div>
+                <div>
+                  <dt>{{ 'monitoring.metric.ActivityIndex' | translate }}</dt>
+                  <dd>
+                    @if (facade.summary()?.latest; as latest) {
+                      <ichu-indicator-value [indicator]="latest.activityIndex" />
+                    } @else {
+                      –
+                    }
+                  </dd>
+                </div>
+                <div>
+                  <dt>{{ 'health.summary.pendingAlerts' | translate }}</dt>
+                  <dd>{{ facade.summary()?.pendingAlerts ?? '–' }}</dd>
+                </div>
+                <div class="span-full">
+                  <dt>{{ 'health.summary.withdrawal' | translate }}</dt>
+                  <dd>
+                    @if (facade.summary()?.withdrawal; as withdrawal) {
+                      @if (withdrawal.state === 'Active') {
+                        {{ 'health.summary.withdrawalActive' | translate: { date: (withdrawal.endsAt | localizedDate: 'mediumDate') } }}
+                        @if (withdrawal.daysRemaining !== null) {
+                          <span class="text-muted">{{ 'health.summary.daysRemaining' | translate: { count: withdrawal.daysRemaining } }}</span>
+                        }
+                      } @else {
+                        {{ 'health.summary.withdrawalUpcoming' | translate: { date: (withdrawal.startsAt | localizedDate: 'mediumDate') } }}
+                      }
+                    } @else {
+                      {{ 'health.summary.noWithdrawal' | translate }}
+                    }
+                  </dd>
+                </div>
+              </dl>
+              @if (facade.summary()?.incomplete) {
+                <p class="notice" role="note">{{ 'health.summary.incomplete' | translate }}</p>
+              }
+              <a class="btn secondary" [routerLink]="['/monitoring/cattle', animal.cattleId]">{{ 'monitoring.links.openMonitoring' | translate }}</a>
+            </div>
+          </section>
+
+          <section class="panel timeline-panel" aria-labelledby="timeline-heading" [attr.aria-busy]="facade.loading()">
+            <div class="panel-head">
+              <h2 id="timeline-heading">{{ 'health.timeline.title' | translate }}</h2>
+            </div>
+            <div class="panel-body">
+              @if (facade.loading()) {
+                <mat-progress-bar mode="indeterminate" [attr.aria-label]="'health.timeline.loading' | translate" />
+              }
+              <ol class="timeline">
+                @for (operation of facade.timeline(); track operation.operationId) {
+                  <li>
+                    <strong>{{ operation.occurredAt | localizedDate: 'short' }} · {{ ('health.type.' + operation.type) | translate }}</strong>
+                    <span>
+                      <span class="badge" [class]="'badge ' + (operation.isClinical ? 'success' : 'neutral')">
+                        {{ (operation.isClinical ? 'health.kind.clinical' : 'health.kind.field') | translate }}
+                      </span>
+                    </span>
+                    @if (operation.product || operation.dose) {
+                      <span class="text-muted">
+                        {{ operation.product ?? ('health.timeline.noProduct' | translate) }}
+                        @if (operation.dose) { · {{ operation.dose }} }
+                      </span>
+                    }
+                    @if (operation.observation) {
+                      <p class="observation">{{ operation.observation }}</p>
+                    }
+                  </li>
+                } @empty {
+                  @if (!facade.loading()) {
+                    <li class="text-muted">{{ 'health.timeline.empty' | translate }}</li>
+                  }
+                }
+              </ol>
+            </div>
+          </section>
+        </div>
+      }
+    }
+  }
+</div>
