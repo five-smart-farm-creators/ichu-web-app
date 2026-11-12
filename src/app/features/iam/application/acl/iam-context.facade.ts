@@ -12,6 +12,7 @@ export class IamContextFacade {
 
   readonly ranches = computed<readonly RanchAccess[]>(() => this.authentication.ranchAccess());
   readonly currentRole = computed(() => this.authentication.account()?.role ?? null);
+  readonly currentAccountEmail = computed(() => this.authentication.account()?.email ?? null);
   readonly currentRanchId = computed<string | null>(() => {
     const accountId = this.authentication.account()?.id;
     if (!accountId) return null;

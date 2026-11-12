@@ -2,18 +2,23 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { AuthError } from '../../domain/model/auth.model';
 import type { CompleteProfessionalProfile } from '../../domain/model/professional-profile.model';
+import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
 import { ProfessionalProfileRepository } from '../../domain/repositories/professional-profile.repository';
 import { AuthFacade } from './auth.facade';
 
-/** Saves the veterinarian's professional profile; errors and notices are codes that the page translates. */
+/** Saves the veterinarian's professional profile and changes the password; errors and notices are codes that the page translates. */
 @Injectable()
 export class AccountFacade {
   private readonly authentication = inject(AuthFacade);
+  private readonly credentials = inject(AuthenticationRepository);
   private readonly profiles = inject(ProfessionalProfileRepository);
 
   readonly busy = signal(false);
   readonly error = signal<ApiError | AuthError | null>(null);
   readonly notice = signal<'profile-saved' | null>(null);
+  readonly passwordBusy = signal(false);
+  readonly passwordError = signal<ApiError | AuthError | null>(null);
+  readonly passwordNotice = signal<'password-changed' | null>(null);
 
   /** Saves the profile and replaces the session account with the backend response. */
   async saveProfessionalProfile(profile: CompleteProfessionalProfile): Promise<boolean> {
@@ -44,6 +49,29 @@ export class AccountFacade {
       return false;
     } finally {
       this.busy.set(false);
+    }
+  }
+
+  /** The adapter verifies the current password before it changes it; the facade keeps neither password in its state. */
+  async changePassword(currentPassword: string, newPassword: string): Promise<boolean> {
+    if (this.passwordBusy()) return false;
+    if (!this.authentication.currentUser()) {
+      this.passwordError.set(new AuthError('account-unavailable'));
+      return false;
+    }
+
+    this.passwordBusy.set(true);
+    this.passwordError.set(null);
+    this.passwordNotice.set(null);
+    try {
+      await this.credentials.changePassword(currentPassword, newPassword);
+      this.passwordNotice.set('password-changed');
+      return true;
+    } catch (error) {
+      this.passwordError.set(error instanceof AuthError || error instanceof ApiError ? error : new AuthError('unknown'));
+      return false;
+    } finally {
+      this.passwordBusy.set(false);
     }
   }
 }

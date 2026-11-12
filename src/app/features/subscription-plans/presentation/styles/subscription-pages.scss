@@ -1,0 +1,202 @@
+// Layout shared by the subscription pages and dialogs, so the plan screens read like the other areas.
+.subscription-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.head-count-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.head-count-field {
+  width: min(320px, 100%);
+}
+
+.head-count-row .notice {
+  flex: 1 1 280px;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.plan-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.plan-card.is-selected {
+  border-color: var(--forest);
+  box-shadow: 0 0 0 2px rgb(51 81 62 / .18);
+}
+
+.plan-card h2 {
+  font-size: 1.05rem;
+}
+
+.plan-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.plan-badges,
+.action-row,
+.check-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-limit {
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+.plan-prices,
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin: 0;
+}
+
+.plan-prices dt,
+.fact-grid dt {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 600;
+}
+
+.plan-prices dd,
+.fact-grid dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+  font-size: .875rem;
+  font-weight: 600;
+}
+
+.price-lines {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: .875rem;
+}
+
+.price-lines li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.price-lines strong {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.price-total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin: 12px 0 0;
+  font-weight: 600;
+}
+
+.price-total strong {
+  color: var(--forest-deep);
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.feature-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: .8125rem;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-list ichu-icon {
+  color: var(--forest);
+}
+
+.fact-section {
+  margin: 18px 0 8px;
+  font-size: .95rem;
+}
+
+.span-two {
+  grid-column: 1 / -1;
+}
+
+.result-panel .page-lead {
+  margin: 8px 0 18px;
+}
+
+.dialog-lead {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: .875rem;
+}
+
+.dialog-link {
+  margin-top: 12px;
+  font-size: .8125rem;
+}
+
+.dialog-field {
+  width: 100%;
+}
+
+.check-row {
+  margin: 16px 0 4px;
+  font-size: .8125rem;
+}
+
+.check-row input {
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+  .subscription-page {
+    padding: 20px 14px;
+  }
+
+  .plan-prices,
+  .fact-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -165,5 +165,48 @@
         </div>
       </section>
     }
+
+    <section class="panel" aria-labelledby="password-heading">
+      <div class="panel-head">
+        <div>
+          <h2 id="password-heading">{{ 'iam.account.passwordTitle' | translate }}</h2>
+          <p>{{ 'iam.account.passwordLead' | translate }}</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        @if (facade.passwordNotice() === 'password-changed') {
+          <p class="notice" role="status">{{ 'iam.account.passwordChanged' | translate }}</p>
+        }
+        @if (facade.passwordError(); as error) {
+          <p class="form-error" role="alert">{{ error | errorMessage }}</p>
+        }
+        <form class="profile-form" [formGroup]="passwordForm" (ngSubmit)="changePassword()" novalidate>
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'iam.account.currentPassword' | translate }}</mat-label>
+              <input matInput type="password" formControlName="currentPassword" autocomplete="current-password" maxlength="128">
+              <mat-error>{{ 'iam.account.currentPasswordRequired' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'iam.account.newPassword' | translate }}</mat-label>
+              <input matInput type="password" formControlName="newPassword" autocomplete="new-password" maxlength="128">
+              <mat-hint>{{ 'iam.account.passwordHint' | translate }}</mat-hint>
+              <mat-error>{{ 'iam.account.passwordInvalid' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'iam.account.confirmPassword' | translate }}</mat-label>
+              <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" maxlength="128">
+              <mat-error>{{ 'iam.account.confirmPasswordRequired' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          @if (passwordForm.hasError('passwordMismatch') && passwordForm.controls.confirmPassword.touched) {
+            <p class="form-error" role="alert">{{ 'iam.account.passwordMismatch' | translate }}</p>
+          }
+          <button mat-flat-button type="submit" class="btn primary" [disabled]="facade.passwordBusy()">
+            {{ (facade.passwordBusy() ? 'iam.account.changingPassword' : 'iam.account.changePassword') | translate }}
+          </button>
+        </form>
+      </div>
+    </section>
   }
 </div>

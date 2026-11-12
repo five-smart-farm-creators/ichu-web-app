@@ -1,0 +1,156 @@
+<div class="subscription-page">
+  <header class="page-heading">
+    <div>
+      <h1>{{ 'plans.title' | translate }}</h1>
+      <p class="page-lead">{{ 'plans.lead' | translate }}</p>
+      <p class="text-muted">{{ 'plans.annualNote' | translate }}</p>
+    </div>
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'plans.noRanchTitle' | translate }}</h2>
+        <p>{{ 'plans.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="panel">
+      <div class="panel-body head-count-row">
+        <mat-form-field appearance="outline" class="head-count-field">
+          <mat-label>{{ 'plans.headCount' | translate }}</mat-label>
+          <input matInput type="number" inputmode="numeric" step="1" autocomplete="off" [formControl]="headCountControl">
+          <mat-hint>{{ 'plans.headCountHint' | translate }}</mat-hint>
+          <mat-error>{{ 'plans.headCountInvalid' | translate }}</mat-error>
+        </mat-form-field>
+        @if (!canSubscribe()) {
+          <p class="notice">{{ 'plans.readOnly' | translate }}</p>
+        }
+      </div>
+    </section>
+
+    @if (openSubscription(); as current) {
+      <p class="notice" id="existing-subscription" role="status">
+        @if (openPlan(); as plan) {
+          {{ 'plans.existing' | translate: {
+            plan: (('plans.tiers.' + plan.tier) | translate),
+            status: (('subscriptions.status.' + current.status) | translate)
+          } }}
+        } @else {
+          {{ 'plans.existingWithoutPlan' | translate: { status: (('subscriptions.status.' + current.status) | translate) } }}
+        }
+        <a routerLink="/subscriptions">{{ 'plans.existingAction' | translate }}</a>
+      </p>
+    }
+
+    @if (plans.error(); as error) {
+      <p class="form-error" role="alert">{{ error | apiErrorMessage }}</p>
+    }
+    @if (plans.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'plans.loading' | translate" />
+    }
+    @if (!plans.loading() && !plans.error() && plans.plans().length === 0) {
+      <div class="empty-state">
+        <p>{{ 'plans.empty' | translate }}</p>
+      </div>
+    }
+
+    <div class="plan-grid">
+      @for (plan of plans.plans(); track plan.id) {
+        <article class="plan-card" [class.is-selected]="isSelected(plan)" [attr.aria-labelledby]="'plan-title-' + plan.tier">
+          <div class="plan-card-head">
+            <h2 [id]="'plan-title-' + plan.tier">{{ ('plans.tiers.' + plan.tier) | translate }}</h2>
+            <div class="plan-badges">
+              @if (isRecommended(plan)) {
+                <span class="badge success">{{ 'plans.recommended' | translate }}</span>
+              }
+              @if (isSelected(plan)) {
+                <span class="badge neutral">{{ 'plans.fromWebsite' | translate }}</span>
+              }
+            </div>
+          </div>
+          <p class="plan-limit">
+            {{ (plan.deviceLimit === 1 ? 'plans.deviceLimit.one' : 'plans.deviceLimit.other') | translate: { count: plan.deviceLimit } }}
+          </p>
+          <dl class="plan-prices">
+            <div>
+              <dt>{{ 'plans.annualFee' | translate }}</dt>
+              <dd>{{ plan.annualFee | localizedMoney }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'plans.deviceUnitPrice' | translate }}</dt>
+              <dd>{{ plan.deviceUnitPrice | localizedMoney }}</dd>
+            </div>
+          </dl>
+          @if (plans.quotes().get(plan.id); as quote) {
+            <ichu-price-breakdown [priced]="quote" [planTier]="plan.tier" />
+          } @else if (plans.quoteErrors().get(plan.id); as quoteError) {
+            <p class="form-error" role="alert">{{ quoteError | apiErrorMessage }}</p>
+          } @else {
+            <p class="text-muted" role="status">
+              {{ (plans.headCount() === null ? 'plans.enterHeadCount' : 'plans.calculating') | translate }}
+            </p>
+          }
+          <ul class="feature-list">
+            @for (feature of plan.features; track feature) {
+              <li>
+                <ichu-icon name="check" />
+                <span>{{ ('plans.features.' + feature) | translate }}</span>
+              </li>
+            }
+          </ul>
+          @if (canSubscribe()) {
+            <button type="button" class="btn primary"
+              [disabled]="!plans.quotes().get(plan.id) || openSubscription() !== null"
+              [attr.aria-describedby]="openSubscription() ? 'existing-subscription' : null"
+              (click)="openSubscribe(plan.id)">
+              {{ 'plans.subscribe' | translate }}
+            </button>
+          }
+        </article>
+      }
+    </div>
+  }
+
+  @if (plans.plans().length > 0) {
+    <table class="visually-hidden">
+      <caption>{{ 'plans.compare.caption' | translate }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ 'plans.compare.item' | translate }}</th>
+          @for (plan of plans.plans(); track plan.id) {
+            <th scope="col">{{ ('plans.tiers.' + plan.tier) | translate }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{ 'plans.deviceLimitLabel' | translate }}</th>
+          @for (plan of plans.plans(); track plan.id) {
+            <td>{{ plan.deviceLimit }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">{{ 'plans.annualFee' | translate }}</th>
+          @for (plan of plans.plans(); track plan.id) {
+            <td>{{ plan.annualFee | localizedMoney }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">{{ 'plans.total' | translate }}</th>
+          @for (plan of plans.plans(); track plan.id) {
+            <td>{{ (plans.quotes().get(plan.id)?.total | localizedMoney) || ('plans.compare.noQuote' | translate) }}</td>
+          }
+        </tr>
+        @for (feature of features; track feature) {
+          <tr>
+            <th scope="row">{{ ('plans.features.' + feature) | translate }}</th>
+            @for (plan of plans.plans(); track plan.id) {
+              <td>{{ (includes(plan, feature) ? 'plans.compare.included' : 'plans.compare.notIncluded') | translate }}</td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

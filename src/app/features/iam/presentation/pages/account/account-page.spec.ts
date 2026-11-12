@@ -11,6 +11,7 @@ import { LanguageService } from '../../../../../shared/infrastructure/i18n/langu
 import { IamContextFacade } from '../../../application/acl/iam-context.facade';
 import { AuthFacade } from '../../../application/services/auth.facade';
 import type { AuthUser, IamAccount, RanchAccess } from '../../../domain/model/auth.model';
+import { AuthenticationRepository } from '../../../domain/repositories/authentication.repository';
 import { ProfessionalProfileRepository } from '../../../domain/repositories/professional-profile.repository';
 import { AccountPage } from './account-page';
 
@@ -24,6 +25,7 @@ function translations(language: string): object {
 describe('AccountPage', () => {
   let fixture: ComponentFixture<AccountPage>;
   let language: LanguageService;
+  let authentication: { changePassword: ReturnType<typeof vi.fn> };
 
   beforeAll(() => {
     registerLocaleData(localeEs419);
@@ -31,6 +33,7 @@ describe('AccountPage', () => {
 
   beforeEach(async () => {
     localStorage.clear();
+    authentication = { changePassword: vi.fn(async () => undefined) };
     const auth = {
       account: signal<IamAccount | null>({
         id: 'account-1',
@@ -64,6 +67,7 @@ describe('AccountPage', () => {
         LanguageService,
         IamContextFacade,
         { provide: AuthFacade, useValue: auth },
+        { provide: AuthenticationRepository, useValue: authentication },
         { provide: ProfessionalProfileRepository, useValue: { current: vi.fn(), complete: vi.fn() } },
       ],
     }).compileComponents();
@@ -95,5 +99,15 @@ describe('AccountPage', () => {
     expect(text()).toContain('Especialidad');
     expect(text()).not.toContain('My account');
     expect(text()).not.toContain('Expires');
+  });
+
+  it('clears the password fields as soon as the change is submitted', async () => {
+    const page = fixture.componentInstance;
+    page.passwordForm.setValue({ currentPassword: 'current-example', newPassword: 'next-example-1', confirmPassword: 'next-example-1' });
+
+    await page.changePassword();
+
+    expect(authentication.changePassword).toHaveBeenCalledWith('current-example', 'next-example-1');
+    expect(page.passwordForm.getRawValue()).toEqual({ currentPassword: '', newPassword: '', confirmPassword: '' });
   });
 });

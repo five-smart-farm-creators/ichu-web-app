@@ -41,6 +41,8 @@ export interface RegisterAccountRequest {
 export type AuthErrorCode =
   | 'configuration'
   | 'invalid-credentials'
+  | 'current-password-incorrect'
+  | 'requires-recent-login'
   | 'email-already-in-use'
   | 'weak-password'
   | 'email-not-verified'

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import type { Cell, Row } from 'write-excel-file/browser';
+import { loadPdfLibraries } from './pdf-libraries';
 
 /** A cell value; dates are written as calendar days. */
 export type ExportValue = string | number | Date | null;
@@ -37,7 +38,7 @@ export class TableExportService {
     rows: readonly RowItem[],
     subtitle = '',
   ): Promise<void> {
-    const [{ jsPDF }, { default: autoTable }] = await Promise.all([import('jspdf'), import('jspdf-autotable')]);
+    const { jsPDF, autoTable } = await loadPdfLibraries();
     const document = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
     const pageWidth = document.internal.pageSize.getWidth();
     const pageHeight = document.internal.pageSize.getHeight();

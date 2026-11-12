@@ -59,7 +59,11 @@
     "withdrawalPeriods": "Periodos de retiro",
     "dashboard": "Mi hato",
     "reports": "Reportes",
-    "portfolio": "Portafolio"
+    "portfolio": "Portafolio",
+    "plans": "Planes",
+    "mySubscription": "Mi plan",
+    "paymentSuccess": "Pago recibido",
+    "paymentCancel": "Pago cancelado"
   },
   "shell": {
     "navigation": "Navegación principal",
@@ -79,7 +83,9 @@
     "healthPlanning": "Planificación sanitaria",
     "dashboard": "Mi hato",
     "reports": "Reportes",
-    "portfolio": "Portafolio"
+    "portfolio": "Portafolio",
+    "mySubscription": "Mi plan",
+    "plans": "Planes"
   },
   "terms": {
     "back": "Volver a mi cuenta",
@@ -92,7 +98,8 @@
     "paymentsTitle": "Pagos",
     "payments": "Los pagos son procesados por Stripe. ICHU nunca almacena los datos de tarjetas.",
     "contactTitle": "Contacto",
-    "contact": "Comunícate con SmartFarm para consultas sobre estos términos o sobre tus datos."
+    "contact": "Comunícate con SmartFarm para consultas sobre estos términos o sobre tus datos.",
+    "version": "Versión {{version}}"
   },
   "notFound": {
     "body": "Revisa la dirección o vuelve a tu cuenta de ICHU.",
@@ -195,7 +202,9 @@
       "account-unavailable": "Esta cuenta de ICHU no está disponible. Inicia sesión o contacta a tu administrador.",
       "service-unavailable": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
       "network": "No se pudo conectar con el servicio. Revisa tu conexión e inténtalo de nuevo.",
-      "unknown": "No se pudo completar la autenticación. Inténtalo de nuevo."
+      "unknown": "No se pudo completar la autenticación. Inténtalo de nuevo.",
+      "current-password-incorrect": "La contraseña actual es incorrecta.",
+      "requires-recent-login": "Por tu seguridad, inicia sesión de nuevo antes de cambiar la contraseña."
     },
     "account": {
       "title": "Mi cuenta",
@@ -231,7 +240,20 @@
       "yearsOfExperience": "Años de experiencia",
       "yearsOfExperienceInvalid": "Ingresa un número entero de 0 a 70.",
       "saveProfile": "Guardar perfil",
-      "saving": "Guardando…"
+      "saving": "Guardando…",
+      "passwordTitle": "Cambiar contraseña",
+      "passwordLead": "Confirma tu contraseña actual y luego elige una nueva.",
+      "currentPassword": "Contraseña actual",
+      "currentPasswordRequired": "Ingresa tu contraseña actual.",
+      "newPassword": "Nueva contraseña",
+      "passwordHint": "Usa de 8 a 128 caracteres.",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "confirmPasswordRequired": "Repite la nueva contraseña.",
+      "passwordMismatch": "La nueva contraseña y la confirmación no coinciden.",
+      "changePassword": "Cambiar contraseña",
+      "changingPassword": "Cambiando contraseña…",
+      "passwordChanged": "Tu contraseña se cambió correctamente."
     },
     "advisories": {
       "title": "Asesorías del hato",
@@ -1184,7 +1206,7 @@
       "fromDay": "Desde el día",
       "toDay": "Hasta el día (incluido)",
       "apply": "Aplicar periodo",
-      "invalid": "Elija ambos días; el primero debe ser anterior o igual al último.",
+      "invalid": "Elige ambos días; el primero debe ser anterior o igual al último.",
       "showing": "Del {{from}} al {{to}}"
     },
     "dashboard": {
@@ -1257,7 +1279,7 @@
       "noLots": "Este hato aún no tiene lotes. Cree uno en Animales, luego en Lotes.",
       "summary": "Resumen del lote",
       "emptyTitle": "Aún no hay lecturas",
-      "empty": "Elija un lote con lecturas en el periodo.",
+      "empty": "Elige un lote con lecturas en el periodo.",
       "missingReadings": "Lecturas faltantes en el lote: {{count}}",
       "missingUnknown": "El número de lecturas faltantes no está disponible."
     },
@@ -1290,7 +1312,7 @@
       "table": "Valores diarios",
       "day": "Día",
       "emptyTitle": "No hay casos que mostrar",
-      "empty": "Elija una condición y un periodo para revisar las alertas de ese periodo."
+      "empty": "Elige una condición y un periodo para revisar las alertas de ese periodo."
     },
     "executive": {
       "title": "Reporte ejecutivo",
@@ -1348,5 +1370,144 @@
       "twoCasesRequired": "Se necesitan al menos dos casos para construir una progresión.",
       "periodShorter": "El periodo es más corto que el periodo de incubación."
     }
+  },
+  "plans": {
+    "title": "Compara los planes",
+    "lead": "Ingresa el número de collares para ver la cuota anual de cada plan.",
+    "headCount": "Número de collares",
+    "headCountHint": "Un collar inteligente por cabeza de ganado.",
+    "headCountInvalid": "Ingresa un número entero de collares de 1 a 10,000.",
+    "readOnly": "Solo el administrador ganadero puede contratar un plan. Aquí puedes comparar los planes.",
+    "noRanchTitle": "Ningún hato seleccionado",
+    "noRanch": "Elige un hato en la cabecera para ver los planes.",
+    "recommended": "Recomendado para tu hato",
+    "fromWebsite": "Seleccionado en el sitio web",
+    "deviceLimit": {
+      "one": "Hasta {{count}} collar",
+      "other": "Hasta {{count}} collares"
+    },
+    "deviceLimitLabel": "Límite de collares",
+    "annualFee": "Cuota anual",
+    "deviceUnitPrice": "Precio por collar",
+    "total": "Total",
+    "plan": "Plan",
+    "enterHeadCount": "Ingresa el número de collares para ver la cuota anual.",
+    "calculating": "Calculando el precio…",
+    "subscribe": "Contratar",
+    "existing": "Tu hato ya tiene el plan {{plan}} ({{status}}).",
+    "existingWithoutPlan": "Tu hato ya tiene un plan ({{status}}).",
+    "existingAction": "Ir a Mi plan",
+    "loading": "Cargando planes…",
+    "empty": "No hay planes publicados por ahora.",
+    "tiers": {
+      "Basic": "Básico",
+      "Standard": "Estándar",
+      "Pro": "Pro"
+    },
+    "features": {
+      "Monitoring": "Monitoreo",
+      "Alerts": "Alertas",
+      "Planning": "Planificación sanitaria",
+      "Analytics": "Analítica",
+      "ReportExport": "Exportación de reportes"
+    },
+    "compare": {
+      "caption": "Comparación de planes",
+      "item": "Concepto",
+      "included": "Incluido",
+      "notIncluded": "No incluido",
+      "noQuote": "Ingresa el número de collares"
+    },
+    "annualNote": "Cada plan es una suscripción anual que cubre un año."
+  },
+  "subscriptions": {
+    "title": "Mi plan",
+    "lead": "La suscripción de tu hato, su vigencia y los importes acordados.",
+    "loading": "Cargando tu plan…",
+    "summaryTitle": "Suscripción",
+    "cancelled": "Suscripción cancelada.",
+    "pendingNote": "Paga para activar el plan. Seguirá inactivo hasta que se confirme el pago.",
+    "managerOnly": "Solo el administrador ganadero puede pagar o cancelar esta suscripción.",
+    "noneTitle": "Aún no hay suscripción",
+    "noneBody": "Compara los planes y solicita el que se ajuste a tu hato.",
+    "noneReadOnly": "Solo el administrador ganadero puede solicitar una suscripción.",
+    "comparePlans": "Comparar planes",
+    "payNow": "Pagar ahora",
+    "downloadReceipt": "Descargar comprobante",
+    "downloadQuote": "Descargar cotización",
+    "preparingDocument": "Preparando el documento…",
+    "documentFailed": "No se pudo crear el documento. Inténtalo de nuevo.",
+    "notYet": "Todavía no",
+    "status": {
+      "Pending": "Pendiente",
+      "Active": "Activa",
+      "Cancelled": "Cancelada",
+      "Expired": "Vencida"
+    },
+    "fields": {
+      "requestedAt": "Solicitada el",
+      "activatedAt": "Activa desde",
+      "validUntil": "Vigente hasta",
+      "cancelledAt": "Cancelada el",
+      "cancellationReason": "Motivo",
+      "headCount": "Número de collares",
+      "maximumDevices": "Límite de collares",
+      "termsVersion": "Versión de los términos",
+      "features": "Funciones incluidas"
+    },
+    "cancel": {
+      "open": "Cancelar suscripción",
+      "title": "Cancelar suscripción",
+      "lead": "La suscripción se detiene de inmediato. Indica un motivo para que el equipo pueda dar seguimiento.",
+      "reason": "Motivo",
+      "reasonHint": "Hasta {{max}} caracteres.",
+      "reasonRequired": "Indica un motivo.",
+      "keep": "Mantener suscripción",
+      "submit": "Cancelar suscripción"
+    },
+    "confirm": {
+      "title": "Confirma tu suscripción",
+      "lead": "Revisa los importes de la cotización. El plan se activa cuando se confirme el pago.",
+      "acceptTerms": "Acepto los Términos del servicio (versión {{version}})",
+      "termsRequired": "Acepta los términos para continuar.",
+      "readTerms": "Lee los Términos del servicio (se abre en una pestaña nueva)",
+      "submit": "Continuar al pago",
+      "redirecting": "Abriendo la página de pago…"
+    },
+    "payment": {
+      "activating": "Activando tu plan",
+      "receivedActivating": "Pago recibido, activando tu plan…",
+      "activatingHint": "Normalmente tarda menos de un minuto. La página vuelve a comprobarlo cada pocos segundos.",
+      "activeTitle": "Tu plan está activo",
+      "activeBody": "Tu hato ya puede usar las funciones de este plan.",
+      "timedOutTitle": "La activación tarda más de lo habitual",
+      "timedOutBody": "La activación puede tardar un momento. Revisa Mi plan en unos minutos.",
+      "cancelledTitle": "Pago cancelado",
+      "cancelledBody": "Pago cancelado; no se cobró nada.",
+      "retry": "Reintentar el pago",
+      "openMyPlan": "Abrir Mi plan"
+    }
+  },
+  "pricing": {
+    "collarsLine": "Collares inteligentes — {{count}} × {{unitPrice}} (compra única)",
+    "annualFeeLine": "Plan {{plan}} — cuota anual"
+  },
+  "receipt": {
+    "brand": "ICHU · SmartFarm",
+    "title": "Comprobante de pago ICHU",
+    "quoteTitle": "Cotización",
+    "notice": "Este comprobante no es una boleta ni factura electrónica SUNAT.",
+    "ranch": "Hato",
+    "account": "Cuenta",
+    "status": "Estado",
+    "paymentDate": "Fecha de pago",
+    "validity": "Vigencia",
+    "termsVersion": "Versión de los términos",
+    "generatedOn": "Generado el",
+    "collarsItem": "Collares inteligentes (compra única)",
+    "description": "Descripción",
+    "quantity": "Cantidad",
+    "unitPrice": "Precio unitario",
+    "amount": "Importe"
   }
 }

@@ -1,0 +1,19 @@
+<div class="subscription-page">
+  <section class="panel result-panel" aria-labelledby="result-heading">
+    <div class="panel-body">
+      <h1 id="result-heading">{{ 'subscriptions.payment.cancelledTitle' | translate }}</h1>
+      <p class="page-lead">{{ 'subscriptions.payment.cancelledBody' | translate }}</p>
+      @if (facade.error(); as error) {
+        <p class="form-error" role="alert">{{ error | apiErrorMessage }}</p>
+      }
+      <div class="action-row">
+        @if (canRetry()) {
+          <button type="button" class="btn primary" [disabled]="facade.busy()" (click)="retry()">
+            {{ 'subscriptions.payment.retry' | translate }}
+          </button>
+        }
+        <a class="btn secondary" routerLink="/subscriptions">{{ 'subscriptions.payment.openMyPlan' | translate }}</a>
+      </div>
+    </div>
+  </section>
+</div>
