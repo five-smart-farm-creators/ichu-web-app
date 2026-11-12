@@ -59,7 +59,11 @@
     "withdrawalPeriods": "Withdrawal periods",
     "dashboard": "My herd",
     "reports": "Reports",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "plans": "Plans",
+    "mySubscription": "My plan",
+    "paymentSuccess": "Payment received",
+    "paymentCancel": "Payment cancelled"
   },
   "shell": {
     "navigation": "Main navigation",
@@ -79,7 +83,9 @@
     "healthPlanning": "Health planning",
     "dashboard": "My herd",
     "reports": "Reports",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "mySubscription": "My plan",
+    "plans": "Plans"
   },
   "terms": {
     "back": "Back to account",
@@ -92,7 +98,8 @@
     "paymentsTitle": "Payments",
     "payments": "Payments are processed by Stripe. ICHU never stores card data.",
     "contactTitle": "Contact",
-    "contact": "Contact SmartFarm about these terms or your data."
+    "contact": "Contact SmartFarm about these terms or your data.",
+    "version": "Version {{version}}"
   },
   "notFound": {
     "body": "Check the address or return to your ICHU account.",
@@ -195,7 +202,9 @@
       "account-unavailable": "This ICHU account is unavailable. Sign in instead, or contact your administrator.",
       "service-unavailable": "The service is temporarily unavailable. Try again later.",
       "network": "The service could not be reached. Check your connection and try again.",
-      "unknown": "Authentication could not be completed. Try again."
+      "unknown": "Authentication could not be completed. Try again.",
+      "current-password-incorrect": "The current password is incorrect.",
+      "requires-recent-login": "For your security, sign in again before changing your password."
     },
     "account": {
       "title": "My account",
@@ -231,7 +240,20 @@
       "yearsOfExperience": "Years of experience",
       "yearsOfExperienceInvalid": "Enter a whole number from 0 to 70.",
       "saveProfile": "Save profile",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "passwordTitle": "Change password",
+      "passwordLead": "Confirm your current password, then choose a new one.",
+      "currentPassword": "Current password",
+      "currentPasswordRequired": "Enter your current password.",
+      "newPassword": "New password",
+      "passwordHint": "Use 8 to 128 characters.",
+      "passwordInvalid": "Use between 8 and 128 characters.",
+      "confirmPassword": "Confirm new password",
+      "confirmPasswordRequired": "Repeat the new password.",
+      "passwordMismatch": "The new password and its confirmation do not match.",
+      "changePassword": "Change password",
+      "changingPassword": "Changing password…",
+      "passwordChanged": "Your password was changed."
     },
     "advisories": {
       "title": "Herd advisories",
@@ -1348,5 +1370,144 @@
       "twoCasesRequired": "At least two cases are needed to build a progression.",
       "periodShorter": "The period is shorter than the incubation period."
     }
+  },
+  "plans": {
+    "title": "Compare plans",
+    "lead": "Enter the number of collars to see the annual price of each plan.",
+    "headCount": "Number of collars",
+    "headCountHint": "One smart collar per head of cattle.",
+    "headCountInvalid": "Enter a whole number of collars from 1 to 10,000.",
+    "readOnly": "Only the ranch manager can subscribe to a plan. You can compare the plans here.",
+    "noRanchTitle": "No ranch selected",
+    "noRanch": "Choose a ranch in the header to see its plans.",
+    "recommended": "Recommended for your herd",
+    "fromWebsite": "Selected on the website",
+    "deviceLimit": {
+      "one": "Up to {{count}} collar",
+      "other": "Up to {{count}} collars"
+    },
+    "deviceLimitLabel": "Collar limit",
+    "annualFee": "Annual fee",
+    "deviceUnitPrice": "Price per collar",
+    "total": "Total",
+    "plan": "Plan",
+    "enterHeadCount": "Enter the number of collars to see the annual price.",
+    "calculating": "Calculating the price…",
+    "subscribe": "Subscribe",
+    "existing": "Your ranch already has the {{plan}} plan ({{status}}).",
+    "existingWithoutPlan": "Your ranch already has a plan ({{status}}).",
+    "existingAction": "Go to My plan",
+    "loading": "Loading plans…",
+    "empty": "No plans are published right now.",
+    "tiers": {
+      "Basic": "Basic",
+      "Standard": "Standard",
+      "Pro": "Pro"
+    },
+    "features": {
+      "Monitoring": "Monitoring",
+      "Alerts": "Alerts",
+      "Planning": "Health planning",
+      "Analytics": "Analytics",
+      "ReportExport": "Report export"
+    },
+    "compare": {
+      "caption": "Plan comparison",
+      "item": "Item",
+      "included": "Included",
+      "notIncluded": "Not included",
+      "noQuote": "Enter the number of collars"
+    },
+    "annualNote": "Each plan is an annual subscription that covers one year."
+  },
+  "subscriptions": {
+    "title": "My plan",
+    "lead": "The subscription of your ranch, its validity, and the amounts agreed for it.",
+    "loading": "Loading your plan…",
+    "summaryTitle": "Subscription",
+    "cancelled": "Subscription cancelled.",
+    "pendingNote": "Pay to activate the plan. It stays inactive until the payment is confirmed.",
+    "managerOnly": "Only the ranch manager can pay or cancel this subscription.",
+    "noneTitle": "No subscription yet",
+    "noneBody": "Compare the plans and request the one that fits your herd.",
+    "noneReadOnly": "Only the ranch manager can request a subscription.",
+    "comparePlans": "Compare plans",
+    "payNow": "Pay now",
+    "downloadReceipt": "Download receipt",
+    "downloadQuote": "Download quote",
+    "preparingDocument": "Preparing the document…",
+    "documentFailed": "The document could not be created. Try again.",
+    "notYet": "Not yet",
+    "status": {
+      "Pending": "Pending",
+      "Active": "Active",
+      "Cancelled": "Cancelled",
+      "Expired": "Expired"
+    },
+    "fields": {
+      "requestedAt": "Requested on",
+      "activatedAt": "Active since",
+      "validUntil": "Valid until",
+      "cancelledAt": "Cancelled on",
+      "cancellationReason": "Reason",
+      "headCount": "Number of collars",
+      "maximumDevices": "Collar limit",
+      "termsVersion": "Terms version",
+      "features": "Included features"
+    },
+    "cancel": {
+      "open": "Cancel subscription",
+      "title": "Cancel subscription",
+      "lead": "The subscription stops at once. Enter a reason so the team can follow up.",
+      "reason": "Reason",
+      "reasonHint": "Up to {{max}} characters.",
+      "reasonRequired": "Enter a reason.",
+      "keep": "Keep subscription",
+      "submit": "Cancel subscription"
+    },
+    "confirm": {
+      "title": "Confirm your subscription",
+      "lead": "Review the amounts from the quote. The plan becomes active once the payment is confirmed.",
+      "acceptTerms": "I accept the Terms of Service (version {{version}})",
+      "termsRequired": "Accept the terms to continue.",
+      "readTerms": "Read the Terms of Service (opens in a new tab)",
+      "submit": "Continue to payment",
+      "redirecting": "Opening the payment page…"
+    },
+    "payment": {
+      "activating": "Activating your plan",
+      "receivedActivating": "Payment received, activating your plan…",
+      "activatingHint": "This usually takes less than a minute. The page checks again every few seconds.",
+      "activeTitle": "Your plan is active",
+      "activeBody": "Your ranch can now use the features of this plan.",
+      "timedOutTitle": "Activation is taking longer than usual",
+      "timedOutBody": "Activation can take a moment. Check My plan again shortly.",
+      "cancelledTitle": "Payment cancelled",
+      "cancelledBody": "Payment cancelled; nothing was charged.",
+      "retry": "Retry payment",
+      "openMyPlan": "Open My plan"
+    }
+  },
+  "pricing": {
+    "collarsLine": "Smart collars — {{count}} × {{unitPrice}} (one-time purchase)",
+    "annualFeeLine": "{{plan}} plan — annual fee"
+  },
+  "receipt": {
+    "brand": "ICHU · SmartFarm",
+    "title": "ICHU payment receipt",
+    "quoteTitle": "Quote",
+    "notice": "This receipt is not a SUNAT electronic invoice.",
+    "ranch": "Ranch",
+    "account": "Account",
+    "status": "Status",
+    "paymentDate": "Payment date",
+    "validity": "Validity",
+    "termsVersion": "Terms version",
+    "generatedOn": "Generated on",
+    "collarsItem": "Smart collars (one-time purchase)",
+    "description": "Description",
+    "quantity": "Quantity",
+    "unitPrice": "Unit price",
+    "amount": "Amount"
   }
 }

@@ -52,6 +52,16 @@
           <ichu-icon matListItemIcon name="grid" />
           <span matListItemTitle>{{ 'shell.dashboard' | translate }}</span>
         </a>
+        @if (context.currentRanch() && context.currentRole() !== 'Veterinarian') {
+          <a mat-list-item routerLink="/subscriptions" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="check" />
+            <span matListItemTitle>{{ 'shell.mySubscription' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/plans" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="card" />
+            <span matListItemTitle>{{ 'shell.plans' | translate }}</span>
+          </a>
+        }
         <a mat-list-item routerLink="/account" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
           <ichu-icon matListItemIcon name="users" />
           <span matListItemTitle>{{ 'shell.myAccount' | translate }}</span>

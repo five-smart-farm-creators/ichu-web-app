@@ -50,6 +50,14 @@ export const routes: Routes = [
         path: 'devices',
         loadChildren: () => import('./features/iot-assets/iot-assets.routes').then(module => module.iotAssetsRoutes),
       },
+      {
+        path: 'plans',
+        loadChildren: () => import('./features/subscription-plans/subscription-plans.routes').then(module => module.plansRoutes),
+      },
+      {
+        path: 'subscriptions',
+        loadChildren: () => import('./features/subscription-plans/subscription-plans.routes').then(module => module.subscriptionRoutes),
+      },
     ],
   },
   {

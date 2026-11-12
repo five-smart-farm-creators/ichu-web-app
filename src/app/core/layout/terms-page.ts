@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TERMS_VERSION } from './terms';
 
 @Component({
   selector: 'ichu-terms-page', standalone: true, imports: [RouterLink, TranslatePipe],
@@ -8,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   template: `<article class="terms">
     <a class="btn secondary" routerLink="/dashboard">{{ 'terms.back' | translate }}</a>
     <h1>{{ 'pages.terms' | translate }}</h1>
+    <p>{{ 'terms.version' | translate: { version: termsVersion } }}</p>
     <section>
       <h2>{{ 'terms.authenticationTitle' | translate }}</h2>
       <p>{{ 'terms.authentication' | translate }}</p>
@@ -31,4 +33,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   </article>`,
   styles: '.terms{max-width:760px;margin:48px auto;padding:24px;display:grid;gap:24px}.terms p{color:var(--muted);line-height:1.8}',
 })
-export class TermsPage {}
+export class TermsPage {
+  readonly termsVersion = TERMS_VERSION;
+}
