@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +12,7 @@ import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-
 import { ranchPlace, roleLabelKey, scopeLabelKey, statusLabelKey } from '../../iam-labels';
 import { ErrorMessagePipe } from '../../pipes/error-message.pipe';
 
-/** Shows the verified account, its ranch access, and the veterinarian's professional profile. */
+/** Shows the verified account, its ranch access, the veterinarian's professional profile, and the password change. */
 @Component({
   selector: 'ichu-account-page',
   imports: [
@@ -54,6 +54,15 @@ export class AccountPage {
     }),
   });
 
+  readonly passwordForm = new FormGroup({
+    currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    newPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8), Validators.maxLength(128)],
+    }),
+    confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  }, { validators: passwordsMatch });
+
   constructor() {
     const profile = this.auth.account()?.profile;
     if (profile) this.profileForm.patchValue(profile);
@@ -73,8 +82,22 @@ export class AccountPage {
     });
   }
 
+  /** Clears the password fields as soon as they are read, so the passwords do not stay on the page after the submit. */
+  async changePassword(): Promise<void> {
+    this.passwordForm.markAllAsTouched();
+    if (this.passwordForm.invalid) return;
+    const { currentPassword, newPassword } = this.passwordForm.getRawValue();
+    this.passwordForm.reset();
+    await this.facade.changePassword(currentPassword, newPassword);
+  }
+
   /** Copies the access code and reports the result through the polite status line. */
   copyAccessCode(code: string): void {
     this.codeCopied.set(this.clipboard.copy(code));
   }
+}
+
+/** The confirmation must repeat the new password exactly; the error sits on the group so the confirmation field is not flagged before it is touched. */
+function passwordsMatch(group: AbstractControl): ValidationErrors | null {
+  return group.get('newPassword')?.value === group.get('confirmPassword')?.value ? null : { passwordMismatch: true };
 }

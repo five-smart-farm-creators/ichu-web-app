@@ -1,8 +1,9 @@
 import { signal, WritableSignal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ApiError } from '../../../../shared/infrastructure/http/api-error';
-import type { AuthUser, IamAccount } from '../../domain/model/auth.model';
+import { AuthError, type AuthUser, type IamAccount } from '../../domain/model/auth.model';
 import type { ProfessionalProfile } from '../../domain/model/professional-profile.model';
+import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
 import { ProfessionalProfileRepository } from '../../domain/repositories/professional-profile.repository';
 import { AccountFacade } from './account.facade';
 import { AuthFacade } from './auth.facade';
@@ -17,6 +18,7 @@ function account(role: string, professional: ProfessionalProfile | null = null):
 describe('AccountFacade', () => {
   let auth: { account: WritableSignal<IamAccount | null>; currentUser: WritableSignal<AuthUser | null> };
   let complete: ReturnType<typeof vi.fn>;
+  let credentials: { changePassword: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     TestBed.resetTestingModule();
@@ -25,10 +27,12 @@ describe('AccountFacade', () => {
       currentUser: signal<AuthUser | null>(authUser),
     };
     complete = vi.fn();
+    credentials = { changePassword: vi.fn(async () => undefined) };
     TestBed.configureTestingModule({
       providers: [
         AccountFacade,
         { provide: AuthFacade, useValue: auth },
+        { provide: AuthenticationRepository, useValue: credentials },
         { provide: ProfessionalProfileRepository, useValue: { current: vi.fn(), complete } },
       ],
     });
@@ -69,5 +73,36 @@ describe('AccountFacade', () => {
 
     expect(complete).not.toHaveBeenCalled();
     expect(facade.error()).toMatchObject({ status: 403, code: 'http-403' });
+  });
+
+  it('changes the password through the authentication port and reports the change', async () => {
+    const facade = TestBed.inject(AccountFacade);
+
+    expect(await facade.changePassword('current-example', 'next-example-1')).toBe(true);
+
+    expect(credentials.changePassword).toHaveBeenCalledWith('current-example', 'next-example-1');
+    expect(facade.passwordNotice()).toBe('password-changed');
+    expect(facade.passwordBusy()).toBe(false);
+  });
+
+  it('reports a rejected current password without a success notice', async () => {
+    credentials.changePassword.mockRejectedValue(new AuthError('current-password-incorrect'));
+    const facade = TestBed.inject(AccountFacade);
+
+    expect(await facade.changePassword('wrong-example', 'next-example-1')).toBe(false);
+
+    expect(facade.passwordError()).toMatchObject({ code: 'current-password-incorrect' });
+    expect(facade.passwordNotice()).toBeNull();
+    expect(facade.passwordBusy()).toBe(false);
+  });
+
+  it('does not reach the authentication port without a signed-in identity', async () => {
+    auth.currentUser.set(null);
+    const facade = TestBed.inject(AccountFacade);
+
+    expect(await facade.changePassword('current-example', 'next-example-1')).toBe(false);
+
+    expect(credentials.changePassword).not.toHaveBeenCalled();
+    expect(facade.passwordError()).toMatchObject({ code: 'account-unavailable' });
   });
 });

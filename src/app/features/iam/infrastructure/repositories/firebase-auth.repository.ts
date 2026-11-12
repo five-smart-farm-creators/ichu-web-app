@@ -3,13 +3,16 @@ import { getApp, getApps, initializeApp } from 'firebase/app';
 import type { FirebaseApp } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   getAuth,
   getIdToken,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile,
 } from 'firebase/auth';
 import type { Auth, User } from 'firebase/auth';
@@ -67,6 +70,25 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
     const user = this.requireCurrentUser();
     try {
       await updateProfile(user, { displayName: name });
+    } catch (error) {
+      throw this.toAuthError(error);
+    }
+  }
+
+  /** Verifies the current password first, because updatePassword alone would accept any signed-in session. */
+  override async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const user = this.requireCurrentUser();
+    if (!user.email) throw new AuthError('account-unavailable');
+    try {
+      await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
+    } catch (error) {
+      const code = firebaseErrorCode(error);
+      throw code === 'wrong-password' || code === 'invalid-credential'
+        ? new AuthError('current-password-incorrect')
+        : this.toAuthError(error);
+    }
+    try {
+      await updatePassword(user, newPassword);
     } catch (error) {
       throw this.toAuthError(error);
     }
@@ -140,8 +162,7 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
 
   private toAuthError(error: unknown): AuthError {
     if (error instanceof AuthError) return error;
-    const code = typeof error === 'object' && error !== null && 'code' in error
-      ? String(error.code).replace(/^auth\//, '') : '';
+    const code = firebaseErrorCode(error);
     if (code === 'email-already-in-use') return new AuthError('email-already-in-use');
     if (code === 'weak-password' || code === 'password-does-not-meet-requirements') return new AuthError('weak-password');
     if (code === 'invalid-credential' || code === 'user-not-found' || code === 'wrong-password' || code === 'invalid-email') {
@@ -149,6 +170,12 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
     }
     if (code === 'network-request-failed' || code === 'timeout') return new AuthError('network');
     if (code === 'too-many-requests') return new AuthError('service-unavailable');
+    if (code === 'requires-recent-login') return new AuthError('requires-recent-login');
     return new AuthError('unknown');
   }
+}
+
+/** Firebase codes arrive as `auth/<code>`; the prefix is dropped so each mapping compares plain words. */
+function firebaseErrorCode(error: unknown): string {
+  return typeof error === 'object' && error !== null && 'code' in error ? String(error.code).replace(/^auth\//, '') : '';
 }

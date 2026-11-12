@@ -12,6 +12,7 @@ export abstract class AuthenticationRepository {
   abstract signIn(email: string, password: string): Promise<AuthUser>;
   abstract createUser(email: string, password: string): Promise<AuthUser>;
   abstract updateDisplayName(name: string): Promise<void>;
+  abstract changePassword(currentPassword: string, newPassword: string): Promise<void>;
   abstract sendEmailVerification(): Promise<void>;
   abstract sendPasswordReset(email: string): Promise<void>;
   abstract signOut(): Promise<void>;
