@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import type { Cattle, CattleFilter, CattleStatus } from '../../domain/model/cattle.model';
+import type { Cattle, CattleFilter, CattleSex, CattleStatus } from '../../domain/model/cattle.model';
 import { CattleRepository } from '../../domain/repositories/cattle.repository';
 import { LotRepository } from '../../domain/repositories/lot.repository';
 import { readAllCattle } from '../services/read-all-cattle';
@@ -11,9 +11,10 @@ export interface CattleSummary {
   readonly status: CattleStatus;
 }
 
-/** Animal data monitoring needs: the summary plus the productive stage, which selects the thresholds. */
+/** Animal data monitoring needs: the summary plus the productive stage, which selects the thresholds, and the sex, which decides reproductive records. */
 export interface MonitoredCattleSummary extends CattleSummary {
   readonly lifeStage: string;
+  readonly sex: CattleSex;
 }
 
 /** The only lot data other contexts receive: identity and name, for labelling. */
@@ -77,5 +78,7 @@ export class CattleInformationContextFacade {
 }
 
 function toMonitoredSummary(animal: Cattle): MonitoredCattleSummary {
-  return { cattleId: animal.id, earTag: animal.earTag, status: animal.status, lifeStage: animal.currentStage };
+  return {
+    cattleId: animal.id, earTag: animal.earTag, status: animal.status, lifeStage: animal.currentStage, sex: animal.sex,
+  };
 }

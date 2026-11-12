@@ -1,4 +1,5 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { DashboardAnalyticsContextFacade } from '../../application/acl/dashboard-analytics-context.facade';
 import { EpidemiologicalCurveRepository } from '../../domain/repositories/epidemiological-curve.repository';
 import { ExecutiveReportRepository } from '../../domain/repositories/executive-report.repository';
 import { HerdIndicatorRepository } from '../../domain/repositories/herd-indicator.repository';
@@ -23,5 +24,6 @@ export function provideDashboardAnalytics(): EnvironmentProviders {
     { provide: ExecutiveReportRepository, useExisting: RestExecutiveReportRepository },
     RestRanchPortfolioRepository,
     { provide: RanchPortfolioRepository, useExisting: RestRanchPortfolioRepository },
+    DashboardAnalyticsContextFacade,
   ]);
 }
