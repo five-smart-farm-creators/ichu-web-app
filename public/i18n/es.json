@@ -1,6 +1,8 @@
 {
   "common": {
     "language": "Idioma",
+    "useDarkTheme": "Usar tema oscuro",
+    "useLightTheme": "Usar tema claro",
     "skipToContent": "Ir al contenido",
     "cancel": "Cancelar",
     "export": "Exportar",

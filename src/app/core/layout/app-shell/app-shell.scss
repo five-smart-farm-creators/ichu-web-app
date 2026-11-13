@@ -95,6 +95,7 @@ a.is-active {
 
 main {
   outline: none;
+  view-transition-name: ichu-page;
 }
 
 @media (max-width: 720px) {

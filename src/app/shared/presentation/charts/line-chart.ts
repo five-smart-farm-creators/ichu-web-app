@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import type { Chart, ChartDataset, Plugin } from 'chart.js';
 import { formatLocaleTag } from '../../infrastructure/i18n/language';
 import { LanguageService } from '../../infrastructure/i18n/language.service';
+import { ThemeService } from '../theme/theme.service';
 import { cssColor, loadChartJs } from './chart-loader';
 
 /** One plotted point; `y: null` is a gap for an absent or invalid reading, never a zero. */
@@ -60,6 +61,7 @@ interface SeriesSummary {
 })
 export class LineChart {
   private readonly language = inject(LanguageService);
+  private readonly theme = inject(ThemeService);
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   readonly series = input<readonly ChartSeries[]>([]);
   readonly band = input<ChartBand | null>(null);
@@ -94,6 +96,7 @@ export class LineChart {
       this.markers();
       this.yAxisLabel();
       this.language.current();
+      this.theme.current();
       untracked(() => {
         if (this.rendered) void this.draw();
       });
@@ -130,6 +133,8 @@ export class LineChart {
       datasets.push({ ...reference, label: band.maxLabel, data: [{ x: first, y: band.max }, { x: last, y: band.max }] });
     }
 
+    const muted = cssColor('--muted');
+    const grid = cssColor('--border');
     this.chart = new ChartConstructor(this.canvas().nativeElement, {
       type: 'line',
       data: { datasets },
@@ -139,12 +144,20 @@ export class LineChart {
         animation: false,
         parsing: false,
         scales: {
-          x: { type: 'linear', ticks: { maxRotation: 0, autoSkip: true, callback: value => timeFormat.format(new Date(Number(value))) } },
-          y: { title: { display: this.yAxisLabel() !== '', text: this.yAxisLabel() } },
+          x: {
+            type: 'linear',
+            grid: { color: grid },
+            ticks: { color: muted, maxRotation: 0, autoSkip: true, callback: value => timeFormat.format(new Date(Number(value))) },
+          },
+          y: {
+            grid: { color: grid },
+            ticks: { color: muted },
+            title: { display: this.yAxisLabel() !== '', text: this.yAxisLabel() },
+          },
         },
-        plugins: { legend: { position: 'bottom' } },
+        plugins: { legend: { position: 'bottom', labels: { color: muted } } },
       },
-      plugins: [markerPlugin(this.markers(), cssColor('--muted'))],
+      plugins: [markerPlugin(this.markers(), muted)],
     });
   }
 }
@@ -163,7 +176,7 @@ function markerPlugin(markers: readonly ChartMarker[], color: string): Plugin<'l
       context.fillStyle = color;
       context.lineWidth = 1.5;
       context.setLineDash([4, 4]);
-      context.font = '12px sans-serif';
+      context.font = '12px "Plus Jakarta Sans Variable", sans-serif';
       for (const marker of markers) {
         const position = scale.getPixelForValue(marker.x.getTime());
         if (position < area.left || position > area.right) continue;

@@ -12,6 +12,6 @@ import { AppFooter } from './app-footer';
   template: `<a class="skip-link" href="#main-content">{{ 'common.skipToContent' | translate }}</a>
     <main id="main-content" tabindex="-1"><router-outlet /></main>
     <ichu-app-footer [showLanguageMenu]="true" />`,
-  styles: ':host{display:flex;flex-direction:column;min-height:100svh}main{display:flex;flex:1 0 auto;flex-direction:column;outline:none}',
+  styles: ':host{display:flex;flex-direction:column;min-height:100svh}main{display:flex;flex:1 0 auto;flex-direction:column;outline:none;view-transition-name:ichu-page}',
 })
 export class PublicLayout {}

@@ -9,5 +9,5 @@ export async function loadChartJs(): Promise<typeof Chart> {
 /** Canvas drawing takes literal colors, so design tokens are read from the document when the chart is drawn. */
 export function cssColor(color: string): string {
   if (!color.startsWith('--')) return color;
-  return getComputedStyle(document.documentElement).getPropertyValue(color).trim() || '#33513e';
+  return getComputedStyle(document.documentElement).getPropertyValue(color).trim() || '#2E5B43';
 }
