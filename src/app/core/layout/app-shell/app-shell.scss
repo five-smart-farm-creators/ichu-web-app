@@ -1,8 +1,8 @@
-/* Column layout lets the sidenav container grow to the viewport without a header-height calc. */
+/* A fixed viewport height makes the sidenav content the scroll area, which keeps the sticky header in view. */
 :host {
   display: flex;
   flex-direction: column;
-  min-height: 100svh;
+  height: 100svh;
 }
 
 .shell-header {
@@ -46,7 +46,7 @@
 }
 
 .toolbar-spacer {
-  flex: 1 1 auto;
+  flex: 1;
 }
 
 .ranch-field {
@@ -58,12 +58,15 @@
   border-color: var(--accent-soft);
   background: var(--accent-soft);
   color: var(--accent-text);
+  padding: 6px 12px;
+  font-size: .75rem;
+  font-weight: 650;
   white-space: nowrap;
 }
 
 .account-trigger {
   min-height: 44px;
-  max-width: min(240px, 40vw);
+  max-width: 220px;
 }
 
 .account-content {
@@ -85,15 +88,6 @@
   font: 600 .8125rem var(--font-heading);
 }
 
-.account-name {
-  display: inline-block;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: middle;
-}
-
 .account-identity {
   display: grid;
   gap: 2px;
@@ -107,7 +101,7 @@
 }
 
 .shell-container {
-  flex: 1 0 auto;
+  flex: 1;
   --mat-sidenav-content-background-color: var(--bg);
   --mat-sidenav-content-text-color: var(--ink);
 }
@@ -243,7 +237,6 @@ main {
     width: 100%;
   }
 
-  .account-name,
   .brand strong {
     display: none;
   }

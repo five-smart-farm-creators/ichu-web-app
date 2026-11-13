@@ -1,54 +1,5 @@
 <a class="skip-link" href="#main-content">{{ 'common.skipToContent' | translate }}</a>
 
-<header class="shell-header">
-  <mat-toolbar class="shell-toolbar">
-    @if (!wide()) {
-      <button mat-icon-button type="button" class="menu-button" aria-controls="app-navigation" [attr.aria-label]="'shell.openMenu' | translate" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())">
-        <ichu-icon name="menu" />
-      </button>
-      <a class="brand" routerLink="/dashboard">
-        <img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790">
-        <strong>ICHU</strong>
-      </a>
-    }
-    <span class="toolbar-spacer"></span>
-    @if (context.ranches().length > 0) {
-      <mat-form-field class="ranch-field" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'shell.ranch' | translate }}</mat-label>
-        <mat-select [value]="context.currentRanchId()" (selectionChange)="context.selectRanch($event.value)">
-          @for (access of context.ranches(); track access.ranchId; let position = $index) {
-            <mat-option [value]="access.ranchId">{{ access.name || ('shell.ranchFallback' | translate: { position: position + 1 }) }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
-    @if (context.currentRole(); as role) {
-      <span class="badge role-chip">{{ roleLabelKey(role) | translate }}</span>
-    }
-    <ichu-language-menu />
-    <ichu-theme-toggle />
-    <button mat-button type="button" class="account-trigger" [matMenuTriggerFor]="accountMenu" [attr.aria-label]="('shell.accountMenu' | translate) + ': ' + auth.name()">
-      <span class="account-content">
-        @if (initials()) {
-          <span class="avatar" aria-hidden="true">{{ initials() }}</span>
-        }
-        <span class="account-name">{{ auth.name() }}</span>
-        <ichu-icon name="chevron" />
-      </span>
-    </button>
-    <mat-menu #accountMenu="matMenu">
-      <div class="account-identity">
-        <strong>{{ auth.name() }}</strong>
-        <span>{{ auth.account()?.email }}</span>
-      </div>
-      <button mat-menu-item type="button" (click)="signOut()">
-        <ichu-icon matMenuItemIcon name="logout" />
-        <span>{{ 'shell.signOut' | translate }}</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-</header>
-
 <mat-sidenav-container class="shell-container">
   <mat-sidenav id="app-navigation" [mode]="wide() ? 'side' : 'over'" [opened]="wide() || menuOpen()" (openedChange)="menuOpen.set($event)">
     <nav class="shell-navigation" [attr.aria-label]="'shell.navigation' | translate">
@@ -149,6 +100,54 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <header class="shell-header">
+      <mat-toolbar class="shell-toolbar">
+        @if (!wide()) {
+          <button mat-icon-button type="button" class="menu-button" aria-controls="app-navigation" [attr.aria-label]="'shell.openMenu' | translate" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())">
+            <ichu-icon name="menu" />
+          </button>
+          <a class="brand" routerLink="/dashboard">
+            <img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790">
+            <strong>ICHU</strong>
+          </a>
+        }
+        <span class="toolbar-spacer"></span>
+        @if (context.ranches().length > 0) {
+          <mat-form-field class="ranch-field" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>{{ 'shell.ranch' | translate }}</mat-label>
+            <mat-select [value]="context.currentRanchId()" (selectionChange)="context.selectRanch($event.value)">
+              @for (access of context.ranches(); track access.ranchId; let position = $index) {
+                <mat-option [value]="access.ranchId">{{ access.name || ('shell.ranchFallback' | translate: { position: position + 1 }) }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+        @if (context.currentRole(); as role) {
+          <span class="badge role-chip">{{ roleLabelKey(role) | translate }}</span>
+        }
+        <ichu-language-menu />
+        <ichu-theme-toggle />
+        <button mat-button type="button" class="account-trigger" [matMenuTriggerFor]="accountMenu" [attr.aria-label]="('shell.accountMenu' | translate) + ': ' + auth.name()">
+          <span class="account-content">
+            @if (initials()) {
+              <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+            }
+            <ichu-icon name="chevron" />
+          </span>
+        </button>
+        <mat-menu #accountMenu="matMenu">
+          <div class="account-identity">
+            <strong>{{ auth.name() }}</strong>
+            <span>{{ auth.account()?.email }}</span>
+          </div>
+          <button mat-menu-item type="button" (click)="signOut()">
+            <ichu-icon matMenuItemIcon name="logout" />
+            <span>{{ 'shell.signOut' | translate }}</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+    </header>
+
     <main id="main-content" tabindex="-1">
       <router-outlet />
     </main>
