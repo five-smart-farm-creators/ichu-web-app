@@ -31,6 +31,23 @@ export interface ChartBand {
   readonly maxLabel: string;
 }
 
+/** A filled band between `lower` and `upper`, such as a mean plus or minus one standard deviation; a null edge leaves a gap. */
+export interface ChartArea {
+  readonly label: string;
+  readonly color: string;
+  readonly lower: readonly ChartPoint[];
+  readonly upper: readonly ChartPoint[];
+}
+
+/** A dashed horizontal line at one value across the plotted range, such as an alert threshold. */
+export interface ChartLimit {
+  readonly value: number;
+  readonly label: string;
+}
+
+/** `reading` labels ticks with the day and time of a reading; `day` labels them with the day only. */
+export type ChartTimeUnit = 'reading' | 'day';
+
 /** A dashed vertical line at a moment, such as a ration change, with its label at the top. */
 export interface ChartMarker {
   readonly x: Date;
@@ -43,6 +60,10 @@ interface SeriesSummary {
   readonly maximum: string;
   readonly average: string;
 }
+
+const READING_TICK_FORMAT: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' };
+const DAY_TICK_FORMAT: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+const DAY_MILLISECONDS = 86_400_000;
 
 /** Plots series over time with Chart.js, which loads on first use; a hidden summary repeats the numbers for screen readers. */
 @Component({
@@ -65,7 +86,10 @@ export class LineChart {
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   readonly series = input<readonly ChartSeries[]>([]);
   readonly band = input<ChartBand | null>(null);
+  readonly area = input<ChartArea | null>(null);
+  readonly limit = input<ChartLimit | null>(null);
   readonly markers = input<readonly ChartMarker[]>([]);
+  readonly timeUnit = input<ChartTimeUnit>('reading');
   readonly yAxisLabel = input('');
   readonly accessibleLabel = input('');
   private chart: Chart | null = null;
@@ -93,7 +117,10 @@ export class LineChart {
     effect(() => {
       this.series();
       this.band();
+      this.area();
+      this.limit();
       this.markers();
+      this.timeUnit();
       this.yAxisLabel();
       this.language.current();
       this.theme.current();
@@ -110,11 +137,11 @@ export class LineChart {
     this.chart?.destroy();
 
     const locale = formatLocaleTag(this.language.current());
-    const timeFormat = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const timeFormat = new Intl.DateTimeFormat(locale, this.timeUnit() === 'day' ? DAY_TICK_FORMAT : READING_TICK_FORMAT);
     const series = this.series();
     const datasets: ChartDataset<'line'>[] = series.map(item => ({
       label: item.label,
-      data: item.points.map(point => ({ x: point.x.getTime(), y: point.y })),
+      data: toDataPoints(item.points),
       borderColor: cssColor(item.color),
       backgroundColor: cssColor(item.color),
       borderWidth: item.markersOnly ? 0 : 2,
@@ -123,14 +150,29 @@ export class LineChart {
       spanGaps: false,
       tension: 0.2,
     }));
-    const band = this.band();
     const times = series.flatMap(item => item.points.map(point => point.x.getTime()));
-    if (band && times.length > 0) {
+    if (times.length > 0) {
       const first = Math.min(...times);
       const last = Math.max(...times);
       const reference = { borderColor: cssColor('--danger'), borderDash: [6, 4], borderWidth: 1.5, pointRadius: 0, fill: false };
-      datasets.push({ ...reference, label: band.minLabel, data: [{ x: first, y: band.min }, { x: last, y: band.min }] });
-      datasets.push({ ...reference, label: band.maxLabel, data: [{ x: first, y: band.max }, { x: last, y: band.max }] });
+      const band = this.band();
+      if (band) {
+        datasets.push({ ...reference, label: band.minLabel, data: [{ x: first, y: band.min }, { x: last, y: band.min }] });
+        datasets.push({ ...reference, label: band.maxLabel, data: [{ x: first, y: band.max }, { x: last, y: band.max }] });
+      }
+      const limit = this.limit();
+      if (limit) {
+        datasets.push({ ...reference, label: limit.label, data: [{ x: first, y: limit.value }, { x: last, y: limit.value }] });
+      }
+    }
+
+    // Chart.js paints the highest dataset index first, so the area goes last and sits beneath the lines and the series.
+    const areaStart = datasets.length;
+    const area = this.area();
+    if (area) {
+      const edge = { label: area.label, borderWidth: 0, pointRadius: 0, spanGaps: false, tension: 0 };
+      datasets.push({ ...edge, data: toDataPoints(area.lower), fill: false });
+      datasets.push({ ...edge, data: toDataPoints(area.upper), fill: '-1', backgroundColor: cssColor(area.color) });
     }
 
     const muted = cssColor('--muted');
@@ -147,7 +189,11 @@ export class LineChart {
           x: {
             type: 'linear',
             grid: { color: grid },
-            ticks: { color: muted, maxRotation: 0, autoSkip: true, callback: value => timeFormat.format(new Date(Number(value))) },
+            // One tick per day; a linear scale would otherwise add half-day ticks that repeat each date label.
+            ticks: {
+              color: muted, maxRotation: 0, autoSkip: true, stepSize: this.timeUnit() === 'day' ? DAY_MILLISECONDS : undefined,
+              callback: value => timeFormat.format(new Date(Number(value))),
+            },
           },
           y: {
             grid: { color: grid },
@@ -155,11 +201,32 @@ export class LineChart {
             title: { display: this.yAxisLabel() !== '', text: this.yAxisLabel() },
           },
         },
-        plugins: { legend: { position: 'bottom', labels: { color: muted } } },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            // The lower edge of the area is only a boundary, so the legend names the band once.
+            labels: { color: muted, filter: item => item.datasetIndex !== areaStart },
+          },
+          tooltip: {
+            // Band edges are not readings, so the tooltip shows only the series and the reference lines.
+            filter: item => item.datasetIndex < areaStart,
+            callbacks: {
+              title: items => {
+                const raw = items[0]?.raw as { readonly x: number } | undefined;
+                return raw ? timeFormat.format(new Date(raw.x)) : '';
+              },
+            },
+          },
+        },
       },
       plugins: [markerPlugin(this.markers(), muted)],
     });
   }
+}
+
+/** Chart.js reads the time axis as timestamps, so dates are converted once here. */
+function toDataPoints(points: readonly ChartPoint[]): { x: number; y: number | null }[] {
+  return points.map(point => ({ x: point.x.getTime(), y: point.y }));
 }
 
 /** Draws each marker behind the series as a dashed line across the plot, with its label at the top. */

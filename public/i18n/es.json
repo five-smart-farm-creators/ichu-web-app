@@ -1431,13 +1431,41 @@
     },
     "dashboard": {
       "title": "Mi hato",
-      "lead": "Indicadores del hato para el periodo elegido, cada uno con su cálculo, la cobertura de sus lecturas y el trabajo que sigue.",
+      "meta": "Del {{from}} al {{to}} · {{source}}, actualizado {{updated}}",
       "kpis": "Indicadores del hato",
       "loading": "Cargando indicadores",
-      "openAlerts": "Alertas abiertas por tipo",
+      "openAlerts": "Alertas abiertas",
       "noOpenAlerts": "No hay alertas abiertas en este periodo.",
       "alertsLink": "Ver alertas",
       "locationsLink": "Ubicación y cercas",
+      "temperature": {
+        "title": "Temperatura corporal del lote",
+        "lead": "Promedio diario con banda ±1σ y umbral de alerta",
+        "series": "Promedio diario",
+        "band": "±1σ",
+        "limit": "Umbral {{value}} {{unit}}",
+        "chartLabel": "Promedio diario de la temperatura corporal del lote, con su banda ±1σ y el umbral de alerta",
+        "animalsOnLastDay": {
+          "one": "{{count}} animal con lecturas el último día",
+          "other": "{{count}} animales con lecturas el último día"
+        }
+      },
+      "alerts": {
+        "title": "Alertas recientes",
+        "viewAll": "Ver todas",
+        "empty": "No hay alertas pendientes."
+      },
+      "collars": {
+        "title": "Collares",
+        "connected": {
+          "one": "{{count}} conectado",
+          "other": "{{count}} conectados"
+        },
+        "silent": "{{count}} sin comunicación",
+        "never": "{{count}} sin reportar",
+        "lowBattery": "{{count}} con batería baja",
+        "empty": "Aún no hay collares registrados."
+      },
       "coverage": "Cobertura de lecturas",
       "excluded": "Animales sin lecturas válidas en el periodo: {{count}}",
       "missingReadings": "Lecturas faltantes: {{count}}",

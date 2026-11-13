@@ -3,10 +3,19 @@
     <div>
       <span class="eyebrow">{{ 'pages.dashboard' | translate }}</span>
       <h1>{{ 'analytics.dashboard.title' | translate }}</h1>
-      <p class="page-lead">{{ 'analytics.dashboard.lead' | translate }}</p>
+      @if (context.currentRanchId()) {
+        <p class="page-meta">
+          @if (facade.report(); as report) {
+            {{ 'analytics.dashboard.meta' | translate: { from: periodLabel().from, to: periodLabel().to, source: ('analytics.sources.' + report.source) | translate, updated: updatedText() } }}
+          } @else {
+            {{ 'analytics.period.showing' | translate: { from: periodLabel().from, to: periodLabel().to } }}
+          }
+        </p>
+      }
     </div>
     @if (context.currentRanchId()) {
       <div class="toolbar">
+        <ichu-analytics-period-picker (period)="setPeriod($event)" />
         <ichu-export-menu [disabled]="!facade.report()" [busy]="exporting()" (exportRequested)="export($event)" />
       </div>
     }
@@ -20,15 +29,6 @@
       </div>
     </section>
   } @else {
-    <section class="panel filter-panel" [attr.aria-label]="'analytics.period.label' | translate">
-      <div class="filter-body">
-        <ichu-analytics-period-picker (period)="setPeriod($event)" />
-      </div>
-    </section>
-    <p class="period-range text-muted">
-      {{ 'analytics.period.showing' | translate: { from: periodLabel().from, to: periodLabel().to } }}
-    </p>
-
     @if (facade.error(); as apiError) {
       <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
     }
@@ -40,36 +40,43 @@
     }
 
     @if (facade.report(); as report) {
-      <p class="source-note text-muted">
-        {{ 'analytics.source' | translate: { source: ('analytics.sources.' + report.source) | translate, updated: updatedText() } }}
-      </p>
-
       <section class="kpi-grid" [attr.aria-label]="'analytics.dashboard.kpis' | translate">
-        <ichu-indicator-tile [label]="'analytics.indicators.monitoredAnimals'" [indicator]="report.monitoredAnimals" [fractionDigits]="0" />
-        <article class="stat">
-          <span class="stat-label">{{ 'analytics.dashboard.openAlerts' | translate }}</span>
-          @if (report.openAlertsByType !== null) {
-            <ul class="plain-list">
-              @for (type of alertTypes(); track type) {
-                <li><span>{{ 'analytics.alertTypes.' + type | translate }}</span> <strong>{{ alertCount(type) }}</strong></li>
+        <ichu-indicator-tile [label]="'analytics.indicators.monitoredAnimals'" [indicator]="report.monitoredAnimals" [fractionDigits]="0" [tone]="'featured'" [icon]="'cattle'" />
+        <article class="stat" [attr.data-tone]="alertTone()">
+          <div class="stat-head">
+            <span class="stat-label">{{ 'analytics.dashboard.openAlerts' | translate }}</span>
+            <span class="stat-icon"><ichu-icon name="alert" /></span>
+          </div>
+          @if (openAlertTotal() !== null) {
+            <span class="stat-value">{{ openAlertTotal() }}</span>
+            <span class="stat-note">
+              @for (item of alertBreakdown(); track item.type; let last = $last) {
+                {{ 'analytics.alertTypes.' + item.type | translate }} {{ item.count }}@if (!last) { · }
               } @empty {
-                <li class="text-muted">{{ 'analytics.dashboard.noOpenAlerts' | translate }}</li>
+                {{ 'analytics.dashboard.noOpenAlerts' | translate }}
               }
-            </ul>
+            </span>
           } @else {
             <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
             <span class="stat-note">{{ reasonKey(report.alertsUnavailableReason) | translate }}</span>
           }
           <a class="card-link" routerLink="/alerts">{{ 'analytics.dashboard.alertsLink' | translate }}</a>
         </article>
-        <ichu-indicator-tile [label]="'analytics.indicators.outsideGeofenceAnimals'" [indicator]="report.outsideGeofenceAnimals" [fractionDigits]="0">
+        <ichu-indicator-tile [label]="'analytics.indicators.outsideGeofenceAnimals'" [indicator]="report.outsideGeofenceAnimals" [fractionDigits]="0" [tone]="geofenceTone()" [icon]="'pin'">
           <a class="card-link" routerLink="/locations">{{ 'analytics.dashboard.locationsLink' | translate }}</a>
         </ichu-indicator-tile>
-        <ichu-indicator-tile [label]="'analytics.indicators.mortalityRate'" [indicator]="report.mortalityRate" />
-        <ichu-indicator-tile [label]="'analytics.indicators.births'" [indicator]="report.births" [fractionDigits]="0" />
-        <ichu-indicator-tile [label]="'analytics.indicators.confirmedPregnancies'" [indicator]="report.confirmedPregnancies" [fractionDigits]="0" />
+        <ichu-indicator-tile [label]="'analytics.indicators.mortalityRate'" [indicator]="report.mortalityRate" [icon]="'health'" />
+        <ichu-indicator-tile [label]="'analytics.indicators.births'" [indicator]="report.births" [fractionDigits]="0" [tone]="'forest'" [icon]="'plus'" />
+        <ichu-indicator-tile [label]="'analytics.indicators.confirmedPregnancies'" [indicator]="report.confirmedPregnancies" [fractionDigits]="0" [tone]="'accent'" [icon]="'venus'" />
       </section>
+    }
 
+    <section class="overview-grid">
+      <ichu-herd-temperature-panel />
+      <ichu-recent-alerts-panel [loading]="alertsLoading()" />
+    </section>
+
+    @if (facade.report(); as report) {
       <section class="split-grid">
         <section class="panel" aria-labelledby="coverage-heading">
           <div class="panel-head"><h2 id="coverage-heading">{{ 'analytics.dashboard.coverage' | translate }}</h2></div>

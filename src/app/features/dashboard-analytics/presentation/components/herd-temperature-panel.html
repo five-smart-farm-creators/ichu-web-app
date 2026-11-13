@@ -1,0 +1,55 @@
+<section class="panel" aria-labelledby="temperature-heading">
+  <div class="panel-head">
+    <div>
+      <h2 id="temperature-heading">{{ 'analytics.dashboard.temperature.title' | translate }}</h2>
+      <p class="text-muted">{{ 'analytics.dashboard.temperature.lead' | translate }}</p>
+    </div>
+    @if (latest()) {
+      <div class="latest">
+        <span>{{ latestMean() }}</span>
+        <span class="latest-unit"> {{ unitLabel() }}</span>
+      </div>
+    }
+  </div>
+  <div class="panel-body">
+    @if (facade.temperatureLoading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.trends.loading' | translate" />
+    }
+    @if (facade.temperatureError(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    } @else if (facade.temperatureLots().length === 0) {
+      @if (!facade.temperatureLoading()) {
+        <p class="notice" role="note">
+          {{ 'analytics.trends.noLots' | translate }} <a routerLink="/cattle">{{ 'pages.animals' | translate }}</a>
+        </p>
+      }
+    } @else {
+      @if (facade.temperatureLots().length > 1) {
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="lot-field">
+          <mat-label>{{ 'analytics.trends.lot' | translate }}</mat-label>
+          <mat-select [value]="facade.temperatureLotId()" (selectionChange)="selectLot($event.value)">
+            @for (lot of facade.temperatureLots(); track lot.lotId) {
+              <mat-option [value]="lot.lotId">{{ lot.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      } @else if (selectedLot(); as lot) {
+        <p class="lot-name">{{ lot.name }}</p>
+      }
+      @if (facade.temperatureUnavailable(); as reason) {
+        <p class="notice" role="note">{{ reasonKey(reason) | translate }}</p>
+      } @else if (latest(); as last) {
+        <ichu-line-chart
+          [timeUnit]="'day'"
+          [series]="chartSeries()"
+          [area]="chartArea()"
+          [limit]="chartLimit()"
+          [yAxisLabel]="unitLabel()"
+          [accessibleLabel]="'analytics.dashboard.temperature.chartLabel' | translate" />
+        <p class="footnote text-muted">{{ 'analytics.dashboard.temperature.animalsOnLastDay' | plural: last.animalCount }}</p>
+      } @else {
+        <p class="text-muted">{{ 'common.chart.noData' | translate }}</p>
+      }
+    }
+  </div>
+</section>

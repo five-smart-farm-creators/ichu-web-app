@@ -2,20 +2,29 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatLocaleTag } from '../../../../shared/infrastructure/i18n/language';
 import { LanguageService } from '../../../../shared/infrastructure/i18n/language.service';
+import { Icon, type IconName } from '../../../../shared/presentation/icon';
 import { PluralPipe } from '../../../../shared/presentation/plural.pipe';
 import { type IndicatorValue, isIndicatorAvailable } from '../../domain/model/herd-indicators.model';
 import { formatAnalyticsNumber } from '../analytics-format';
 import { analyticsTextKey } from '../analytics-text';
+
+/** The emphasis of a stat tile: `featured` inverts the card, the other tones only tint its icon. */
+export type StatTone = 'featured' | 'forest' | 'danger' | 'warning' | 'accent' | 'neutral';
 
 let nextTileId = 0;
 
 /** One indicator with its unit, or "Not available" with its reason; a toggle reveals the calculation. */
 @Component({
   selector: 'ichu-indicator-tile',
-  imports: [PluralPipe, TranslatePipe],
+  imports: [Icon, PluralPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<article class="stat indicator-tile">
-      <span class="stat-label">{{ label() | translate }}</span>
+  template: `<article class="stat indicator-tile" [attr.data-tone]="tone()">
+      <div class="stat-head">
+        <span class="stat-label">{{ label() | translate }}</span>
+        @if (icon(); as name) {
+          <span class="stat-icon"><ichu-icon [name]="name" /></span>
+        }
+      </div>
       @if (available()) {
         <span class="stat-value">{{ number() }} <span class="unit">{{ 'analytics.units.' + indicator().unit | plural: (indicator().value ?? 0) }}</span></span>
       } @else {
@@ -49,6 +58,8 @@ export class IndicatorTile {
   readonly label = input.required<string>();
   readonly indicator = input.required<IndicatorValue>();
   readonly fractionDigits = input(1);
+  readonly icon = input<IconName | null>(null);
+  readonly tone = input<StatTone>('neutral');
   readonly showFormula = signal(false);
   readonly available = computed(() => isIndicatorAvailable(this.indicator()));
   readonly number = computed(() => formatAnalyticsNumber(

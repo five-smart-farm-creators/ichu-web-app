@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.alert-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.alert-copy {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+  font-size: .8125rem;
+}
+
+.alert-copy strong {
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.collars {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: .8125rem;
+}
+
+.collars h3 {
+  font-size: .9rem;
+}
+
+.collars a {
+  justify-self: start;
+  font-weight: 650;
+}
+
+.collar-bar {
+  display: flex;
+  gap: 3px;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+
+.segment {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 999px;
+}
+
+.segment[data-status=communicating] {
+  background: var(--status-connected);
+}
+
+.segment[data-status=silent] {
+  background: var(--warning);
+}
+
+.segment[data-status=never] {
+  background: var(--status-unassigned);
+}

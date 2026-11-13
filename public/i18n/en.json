@@ -1431,13 +1431,41 @@
     },
     "dashboard": {
       "title": "My herd",
-      "lead": "Herd indicators for the chosen period, each with its calculation, the coverage of its readings, and the work due next.",
+      "meta": "Showing from {{from}} to {{to}} · {{source}}, updated {{updated}}",
       "kpis": "Herd indicators",
       "loading": "Loading indicators",
-      "openAlerts": "Open alerts by type",
+      "openAlerts": "Open alerts",
       "noOpenAlerts": "No open alerts in this period.",
-      "alertsLink": "Open alerts",
+      "alertsLink": "View alerts",
       "locationsLink": "Locations and fences",
+      "temperature": {
+        "title": "Body temperature of the lot",
+        "lead": "Daily mean with a ±1σ band and the alert threshold",
+        "series": "Daily mean",
+        "band": "±1σ",
+        "limit": "Alert threshold {{value}} {{unit}}",
+        "chartLabel": "Daily mean body temperature of the lot, with its ±1σ band and the alert threshold",
+        "animalsOnLastDay": {
+          "one": "{{count}} animal with readings on the last day",
+          "other": "{{count}} animals with readings on the last day"
+        }
+      },
+      "alerts": {
+        "title": "Recent alerts",
+        "viewAll": "View all",
+        "empty": "No pending alerts."
+      },
+      "collars": {
+        "title": "Collars",
+        "connected": {
+          "one": "{{count}} connected",
+          "other": "{{count}} connected"
+        },
+        "silent": "{{count}} without communication",
+        "never": "{{count}} never reported",
+        "lowBattery": "{{count}} with low battery",
+        "empty": "No collars are registered yet."
+      },
       "coverage": "Coverage of readings",
       "excluded": "Animals without valid readings in the period: {{count}}",
       "missingReadings": "Missing readings: {{count}}",

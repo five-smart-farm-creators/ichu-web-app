@@ -42,9 +42,16 @@ h3 { font-size: 1rem; font-weight: 600; }
 p { margin: 0; }
 .page-heading { display: flex; justify-content: space-between; align-items: center; gap: 22px; margin-bottom: 26px; flex-wrap: wrap; }
 .page-lead { color: var(--muted); font-size: .875rem; margin-top: 8px; max-width: 64ch; }
+.page-meta { color: var(--muted); font-size: .8125rem; margin-top: 8px; }
 .eyebrow { display: block; font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .13em; color: var(--accent-text); margin-bottom: 9px; }
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .toolbar input, .toolbar select { width: auto; }
+// The period choice is one segmented control; the active chip carries the forest colour, and each chip is 36 px inside a 44 px group.
+.period-chips { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; max-width: 100%; min-height: 44px; padding: 4px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
+.period-chips button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-size: .8125rem; font-weight: 600; line-height: 1.2; transition: background .16s ease, color .16s ease; }
+.period-chips button:hover { color: var(--ink); }
+.period-chips button[aria-pressed=true] { background: var(--forest); color: var(--on-forest); }
+@media (max-width: 600px) { .period-chips { border-radius: 22px; } }
 .btn {
   display: inline-flex; justify-content: center; align-items: center; gap: 8px;
   min-height: 44px; padding: 0 20px; border: 1px solid var(--border-strong); border-radius: 999px;
@@ -79,11 +86,22 @@ p { margin: 0; }
 .panel-body { padding: 22px; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
 .stat { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); padding: 22px; min-width: 0; box-shadow: var(--shadow-sm); }
-.stat.featured { background: var(--forest); color: var(--on-forest); border-color: var(--forest); }
+.stat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+// The tone tints the icon of a stat tile or an alert row; the featured tile inverts the whole card instead.
+.stat-icon { display: inline-grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 12px; background: var(--surface-2); color: var(--muted); }
+[data-tone=danger] .stat-icon { background: var(--danger-soft); color: var(--danger); }
+[data-tone=warning] .stat-icon { background: var(--warning-soft); color: var(--warning); }
+[data-tone=accent] .stat-icon { background: var(--accent-soft); color: var(--accent-text); }
+[data-tone=forest] .stat-icon { background: var(--green-soft); color: var(--forest-text); }
+.stat[data-tone=featured] { background: var(--forest); color: var(--on-forest); border-color: var(--forest); }
 .stat-label { color: var(--muted); font-size: .73rem; font-weight: 600; }
 .stat-value { display: block; font-family: var(--font-heading); font-size: 2.6rem; font-weight: 500; line-height: 1.1; letter-spacing: -.04em; margin-top: 12px; font-variant-numeric: tabular-nums; }
 .stat-note { display: block; font-size: .75rem; margin-top: 8px; color: var(--muted); }
-.stat.featured .stat-label, .stat.featured .stat-note { color: var(--on-forest); opacity: .85; }
+.stat[data-tone=featured] .stat-label, .stat[data-tone=featured] .stat-note, .stat[data-tone=featured] .unit { color: var(--on-forest); opacity: .85; }
+.stat[data-tone=featured] .stat-icon { background: color-mix(in srgb, var(--on-forest) 16%, transparent); color: var(--on-forest); }
+.stat[data-tone=featured] .unavailable { color: var(--on-forest); }
+.stat[data-tone=featured] a, .stat[data-tone=featured] .formula-toggle { color: var(--on-forest); }
+.stat[data-tone=featured] .formula { background: color-mix(in srgb, var(--on-forest) 12%, transparent); color: var(--on-forest); }
 .split-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; }
 .stack { display: grid; gap: 20px; align-content: start; }
 .table-scroll { overflow-x: auto; width: 100%; }
@@ -154,12 +172,12 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-colo
 }
 
 @keyframes ichu-rise { from { opacity: 0; transform: translateY(10px); } }
-.stats-grid > *, .page-heading, .panel { animation: ichu-rise .32s var(--ease-out) both; }
-.stats-grid > :nth-child(2) { animation-delay: 40ms; }
-.stats-grid > :nth-child(3) { animation-delay: 80ms; }
-.stats-grid > :nth-child(4) { animation-delay: 120ms; }
-.stats-grid > :nth-child(5) { animation-delay: 160ms; }
-.stats-grid > :nth-child(n + 6) { animation-delay: 200ms; }
+.stats-grid > *, .kpi-grid > *, .page-heading, .panel { animation: ichu-rise .32s var(--ease-out) both; }
+.stats-grid > :nth-child(2), .kpi-grid > :nth-child(2) { animation-delay: 40ms; }
+.stats-grid > :nth-child(3), .kpi-grid > :nth-child(3) { animation-delay: 80ms; }
+.stats-grid > :nth-child(4), .kpi-grid > :nth-child(4) { animation-delay: 120ms; }
+.stats-grid > :nth-child(5), .kpi-grid > :nth-child(5) { animation-delay: 160ms; }
+.stats-grid > :nth-child(n + 6), .kpi-grid > :nth-child(n + 6) { animation-delay: 200ms; }
 
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 ::view-transition-old(ichu-page) { animation: ichu-page-out 120ms ease-in both; }
@@ -167,7 +185,7 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-colo
 @keyframes ichu-page-in { from { opacity: 0; transform: translateY(6px); } }
 @keyframes ichu-page-out { to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .stats-grid > *, .page-heading, .panel { animation: none; }
+  .stats-grid > *, .kpi-grid > *, .page-heading, .panel { animation: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
@@ -214,7 +232,7 @@ html {
   .panel, .stat { break-inside: avoid; box-shadow: none; }
   .table-scroll { overflow: visible; }
   .data-table th, .data-table td { white-space: normal; padding: 8px; }
-  .stat.featured { background: white; color: #111; }
-  .stat.featured .stat-label, .stat.featured .stat-note { color: #444; }
+  .stat[data-tone=featured] { background: white; color: #111; }
+  .stat[data-tone=featured] .stat-label, .stat[data-tone=featured] .stat-note { color: #444; }
   .btn, button { display: none !important; }
 }

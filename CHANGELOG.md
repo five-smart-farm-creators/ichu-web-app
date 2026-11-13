@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New visual design: pasture green and ichu straw palette, pill buttons, larger cards, and a dark sidebar whose links are grouped into Herd, Health, Production and Account.
 - Dialogs fade and rise in and out, pages cross-fade on navigation, and cards appear in sequence; with reduced motion the app only fades.
+- The dashboard shows a body temperature chart per lot with its ±1σ band and alert threshold, the recent alerts and the collar connectivity beside the indicators, and the period is chosen with chips.
 
 ### Added
 

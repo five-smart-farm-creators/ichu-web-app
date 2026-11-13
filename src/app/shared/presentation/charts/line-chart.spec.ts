@@ -15,6 +15,32 @@ vi.mock('chart.js/auto', () => ({
 
 const translations = JSON.parse(readFileSync(join(process.cwd(), 'public', 'i18n', 'en.json'), 'utf8')) as Record<string, unknown>;
 
+/** The parts of the Chart.js configuration these tests read, as the component builds them. */
+interface ChartConfig {
+  readonly data: { readonly datasets: readonly { readonly label: string; readonly fill?: unknown }[] };
+  readonly options: {
+    readonly scales: { readonly x: { readonly ticks: { readonly callback: (value: number) => string } } };
+    readonly plugins: {
+      readonly legend: { readonly labels: { readonly filter: (item: { readonly datasetIndex: number }) => boolean } };
+      readonly tooltip: {
+        readonly filter: (item: { readonly datasetIndex: number }) => boolean;
+        readonly callbacks: { readonly title: (items: readonly { readonly raw: unknown }[]) => string };
+      };
+    };
+  };
+}
+
+/** Renders a chart with the given inputs and returns the configuration Chart.js was constructed with. */
+async function drawChart(inputs: Record<string, unknown>): Promise<ChartConfig> {
+  const chart = (await import('chart.js/auto')).default as unknown as ReturnType<typeof vi.fn>;
+  chart.mockClear();
+  const fixture = TestBed.createComponent(LineChart);
+  for (const [name, value] of Object.entries(inputs)) fixture.componentRef.setInput(name, value);
+  fixture.detectChanges();
+  await vi.waitFor(() => expect(chart).toHaveBeenCalled());
+  return chart.mock.calls[0][1] as ChartConfig;
+}
+
 describe('LineChart', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
@@ -73,5 +99,51 @@ describe('LineChart', () => {
     await vi.waitFor(() => expect(chart).toHaveBeenCalled());
     const config = chart.mock.calls[0][1] as { plugins: { id: string }[] };
     expect(config.plugins.map(plugin => plugin.id)).toEqual(['ichuMarkers']);
+  });
+
+  it('draws the area beneath the series and keeps its edges out of the legend and the tooltip', async () => {
+    const day = new Date(2026, 10, 10, 12);
+    const config = await drawChart({
+      series: [{ label: 'Mean', color: '--forest', points: [{ x: day, y: 38.5 }] }],
+      area: { label: 'Band', color: '--green-soft', lower: [{ x: day, y: 38.2 }], upper: [{ x: day, y: 38.8 }] },
+    });
+
+    expect(config.data.datasets.map(dataset => dataset.label)).toEqual(['Mean', 'Band', 'Band']);
+    expect(config.data.datasets[2].fill).toBe('-1');
+    expect(config.options.plugins.legend.labels.filter({ datasetIndex: 1 })).toBe(false);
+    expect(config.options.plugins.legend.labels.filter({ datasetIndex: 2 })).toBe(true);
+    expect(config.options.plugins.tooltip.filter({ datasetIndex: 0 })).toBe(true);
+    expect(config.options.plugins.tooltip.filter({ datasetIndex: 1 })).toBe(false);
+    expect(config.options.plugins.tooltip.filter({ datasetIndex: 2 })).toBe(false);
+  });
+
+  it('draws the limit as a labelled dashed line across the plotted range', async () => {
+    const first = new Date(2026, 10, 10, 12);
+    const last = new Date(2026, 10, 12, 12);
+    const config = await drawChart({
+      series: [{ label: 'Mean', color: '--forest', points: [{ x: first, y: 38.5 }, { x: last, y: 38.7 }] }],
+      limit: { value: 39.5, label: 'Alert threshold 39.5 °C' },
+    });
+
+    expect(config.data.datasets.at(-1)).toMatchObject({
+      label: 'Alert threshold 39.5 °C',
+      data: [{ x: first.getTime(), y: 39.5 }, { x: last.getTime(), y: 39.5 }],
+    });
+  });
+
+  it('labels the ticks with the day and month only for day charts', async () => {
+    const config = await drawChart({
+      timeUnit: 'day',
+      series: [{ label: 'Mean', color: '--forest', points: [{ x: new Date(2026, 10, 10, 12), y: 38.5 }] }],
+    });
+
+    expect(config.options.scales.x.ticks.callback(new Date(2026, 10, 10, 12).getTime())).toBe('Nov 10');
+  });
+
+  it('titles a tooltip with the reading date instead of the raw timestamp', async () => {
+    const reading = new Date(2026, 10, 10, 12);
+    const config = await drawChart({ series: [{ label: 'Mean', color: '--forest', points: [{ x: reading, y: 38.5 }] }] });
+
+    expect(config.options.plugins.tooltip.callbacks.title([{ raw: { x: reading.getTime(), y: 38.5 } }])).toContain('Nov 10');
   });
 });
