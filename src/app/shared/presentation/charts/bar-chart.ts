@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import type { Chart, ChartConfiguration, ChartDataset } from 'chart.js';
 import { formatLocaleTag } from '../../infrastructure/i18n/language';
 import { LanguageService } from '../../infrastructure/i18n/language.service';
+import { ThemeService } from '../theme/theme.service';
 import { cssColor, loadChartJs } from './chart-loader';
 
 /** One series over the category labels; `kind` draws it as bars, or as a line over them. */
@@ -39,6 +40,7 @@ interface SeriesSummary {
 })
 export class BarChart {
   private readonly language = inject(LanguageService);
+  private readonly theme = inject(ThemeService);
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   readonly labels = input<readonly string[]>([]);
   readonly series = input<readonly BarChartSeries[]>([]);
@@ -71,6 +73,7 @@ export class BarChart {
       this.series();
       this.yAxisLabel();
       this.language.current();
+      this.theme.current();
       untracked(() => {
         if (this.rendered) void this.draw();
       });
@@ -94,6 +97,8 @@ export class BarChart {
       spanGaps: false,
       tension: 0.2,
     }));
+    const muted = cssColor('--muted');
+    const grid = cssColor('--border');
     const configuration: ChartConfiguration<'bar' | 'line'> = {
       type: 'bar',
       data: { labels: [...this.labels()], datasets },
@@ -102,9 +107,15 @@ export class BarChart {
         maintainAspectRatio: false,
         animation: false,
         scales: {
-          y: { beginAtZero: true, title: { display: this.yAxisLabel() !== '', text: this.yAxisLabel() } },
+          x: { grid: { color: grid }, ticks: { color: muted } },
+          y: {
+            beginAtZero: true,
+            grid: { color: grid },
+            ticks: { color: muted },
+            title: { display: this.yAxisLabel() !== '', text: this.yAxisLabel() },
+          },
         },
-        plugins: { legend: { position: 'bottom' } },
+        plugins: { legend: { position: 'bottom', labels: { color: muted } } },
       },
     };
     this.chart = new ChartConstructor(this.canvas().nativeElement, configuration);

@@ -58,7 +58,7 @@ type CopyState = 'gateways.register.copied' | 'gateways.register.copyFailed';
     }`,
   styles: [
     IOT_DIALOG_STYLES,
-    '.key-value{display:block;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#f6f8f3;font-family:ui-monospace,monospace;font-size:.8125rem;overflow-wrap:anywhere;user-select:all}.copy-state{margin-top:12px;font-size:.8125rem;color:var(--muted)}',
+    '.key-value{display:block;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);font-family:ui-monospace,monospace;font-size:.8125rem;overflow-wrap:anywhere;user-select:all}.copy-state{margin-top:12px;font-size:.8125rem;color:var(--muted)}',
   ],
 })
 export class RegisterEdgeGatewayDialog {

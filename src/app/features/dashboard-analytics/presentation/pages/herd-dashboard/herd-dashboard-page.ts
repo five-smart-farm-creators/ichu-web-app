@@ -10,25 +10,31 @@ import { LanguageService } from '../../../../../shared/infrastructure/i18n/langu
 import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-error-message.pipe';
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
 import { TableExportService } from '../../../../../shared/presentation/export/table-export.service';
+import { Icon } from '../../../../../shared/presentation/icon';
 import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
 import { HerdDashboardFacade } from '../../../application/services/herd-dashboard.facade';
 import { type AnalyticsPeriod, addDays } from '../../../domain/model/analytics-period';
 import { orderedAlertTypes } from '../../../domain/model/herd-indicators.model';
 import { analyticsTextKey } from '../../analytics-text';
-import { IndicatorTile } from '../../components/indicator-tile';
+import { HerdTemperaturePanel } from '../../components/herd-temperature-panel';
+import { IndicatorTile, type StatTone } from '../../components/indicator-tile';
 import { PeriodPicker } from '../../components/period-picker';
+import { RecentAlertsPanel } from '../../components/recent-alerts-panel';
 import { indicatorExportColumns, indicatorRows } from '../../indicator-export';
 
-/** The herd at a glance: the indicators of a period with how each is calculated, upcoming work, and downloads. */
+/** The herd at a glance: the indicators of a period, the temperature of a lot, recent alerts and collars, and downloads. */
 @Component({
   selector: 'ichu-herd-dashboard-page',
   imports: [
     ApiErrorMessagePipe,
     ExportMenu,
+    HerdTemperaturePanel,
+    Icon,
     IndicatorTile,
     LocalizedDatePipe,
     MatProgressBarModule,
     PeriodPicker,
+    RecentAlertsPanel,
     RouterLink,
     TranslatePipe,
   ],
@@ -43,13 +49,25 @@ export class HerdDashboardPage {
   private readonly exportService = inject(TableExportService);
   private readonly translate = inject(TranslateService);
   private readonly language = inject(LanguageService);
+  private readonly openingCount = signal(0);
   readonly exporting = signal(false);
   readonly exportFailed = signal(false);
   readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
-  readonly alertTypes = computed(() => {
+  /** The facade has no loading signal for alerts and collars, so the page reports the opens still in flight. */
+  readonly alertsLoading = computed(() => this.openingCount() > 0);
+  readonly openAlertTotal = computed<number | null>(() => {
     const counts = this.facade.report()?.openAlertsByType;
-    return counts ? orderedAlertTypes(counts) : [];
+    return counts ? Object.values(counts).reduce((total, count) => total + count, 0) : null;
   });
+  readonly alertBreakdown = computed(() => {
+    const counts = this.facade.report()?.openAlertsByType;
+    if (!counts) return [];
+    return orderedAlertTypes(counts)
+      .map(type => ({ type, count: counts[type] }))
+      .filter(item => item.count > 0);
+  });
+  readonly alertTone = computed<StatTone>(() => ((this.openAlertTotal() ?? 0) > 0 ? 'danger' : 'neutral'));
+  readonly geofenceTone = computed<StatTone>(() => ((this.facade.report()?.outsideGeofenceAnimals.value ?? 0) > 0 ? 'warning' : 'neutral'));
   readonly periodLabel = computed(() => this.periodDates(this.facade.period()));
   readonly updatedText = computed(() => {
     const updatedAt = this.facade.report()?.updatedAt;
@@ -59,16 +77,12 @@ export class HerdDashboardPage {
   constructor() {
     effect(() => {
       const ranchId = this.context.currentRanchId();
-      untracked(() => void this.facade.open(ranchId, this.facade.period()));
+      untracked(() => void this.openDashboard(ranchId));
     });
   }
 
   setPeriod(period: AnalyticsPeriod): void {
     void this.facade.setPeriod(period);
-  }
-
-  alertCount(type: string): number {
-    return this.facade.report()?.openAlertsByType?.[type] ?? 0;
   }
 
   reasonKey(reason: string | null): string {
@@ -96,6 +110,15 @@ export class HerdDashboardPage {
       this.exportFailed.set(true);
     } finally {
       this.exporting.set(false);
+    }
+  }
+
+  private async openDashboard(ranchId: string | null): Promise<void> {
+    this.openingCount.update(count => count + 1);
+    try {
+      await this.facade.open(ranchId, this.facade.period());
+    } finally {
+      this.openingCount.update(count => count - 1);
     }
   }
 

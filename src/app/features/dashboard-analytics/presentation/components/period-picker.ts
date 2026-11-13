@@ -3,7 +3,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { provideLocalizedDateAdapter } from '../../../../shared/presentation/localized-date-providers';
 import {
@@ -12,23 +11,20 @@ import {
 
 type PeriodChoice = PeriodPresetDays | 'custom';
 
-/** Chooses a period: a preset of the last days, or a custom range of whole days. Emits only valid periods. */
+/** Chooses a period: a preset of the last days as chips, or a custom range of whole days. Emits only valid periods. */
 @Component({
   selector: 'ichu-analytics-period-picker',
-  imports: [MatDatepickerModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, TranslatePipe],
+  imports: [MatDatepickerModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslatePipe],
   providers: [provideLocalizedDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<form class="period-form" [formGroup]="form" (ngSubmit)="applyCustom()">
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="period-field">
-        <mat-label>{{ 'analytics.period.label' | translate }}</mat-label>
-        <mat-select [value]="choice()" (selectionChange)="selectChoice($event.value)">
-          @for (days of presets; track days) {
-            <mat-option [value]="days">{{ ('analytics.period.presets.days' + days) | translate }}</mat-option>
-          }
-          <mat-option value="custom">{{ 'analytics.period.custom' | translate }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      @if (choice() === 'custom') {
+  template: `<div class="period-chips" role="group" [attr.aria-label]="'analytics.period.label' | translate">
+      @for (days of presets; track days) {
+        <button type="button" [attr.aria-pressed]="choice() === days" (click)="selectChoice(days)">{{ ('analytics.period.presets.days' + days) | translate }}</button>
+      }
+      <button type="button" [attr.aria-pressed]="choice() === 'custom'" (click)="selectChoice('custom')">{{ 'analytics.period.custom' | translate }}</button>
+    </div>
+    @if (choice() === 'custom') {
+      <form class="period-form" [formGroup]="form" (ngSubmit)="applyCustom()">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="period-field">
           <mat-label>{{ 'analytics.period.fromDay' | translate }}</mat-label>
           <input matInput [matDatepicker]="fromPicker" formControlName="from" autocomplete="off">
@@ -42,12 +38,13 @@ type PeriodChoice = PeriodPresetDays | 'custom';
           <mat-datepicker #toPicker />
         </mat-form-field>
         <button type="submit" class="btn primary">{{ 'analytics.period.apply' | translate }}</button>
-      }
-    </form>
+      </form>
+    }
     @if (rangeError()) {
       <p class="form-error" role="alert">{{ 'analytics.period.invalid' | translate }}</p>
     }`,
-  styles: `.period-form{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px}
+  styles: `:host{display:flex;flex-direction:column;align-items:flex-start;gap:12px;max-width:100%}
+    .period-form{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;width:100%}
     .period-field{flex:1 1 200px;min-width:0}
     .period-form .btn{min-height:44px}`,
 })
@@ -62,6 +59,8 @@ export class PeriodPicker {
   });
 
   selectChoice(choice: PeriodChoice): void {
+    // Choosing the active chip again changes nothing, so it must not reload the page.
+    if (choice === this.choice()) return;
     this.choice.set(choice);
     this.rangeError.set(false);
     if (choice === 'custom') {

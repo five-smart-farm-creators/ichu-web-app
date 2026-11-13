@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.latest {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  color: var(--forest-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.latest-unit {
+  font-family: var(--font-body);
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.lot-field {
+  display: block;
+  width: min(100%, 280px);
+  margin-bottom: 16px;
+}
+
+.lot-name {
+  margin-bottom: 12px;
+  font-weight: 650;
+}
+
+.footnote {
+  margin-top: 12px;
+  font-size: .8125rem;
+}

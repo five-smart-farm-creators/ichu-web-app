@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter, TitleStrategy, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
 import { TranslatedTitleStrategy } from './core/layout/translated-title.strategy';
 import { RUNTIME_CONFIG, RuntimeConfig } from './core/config/runtime-config';
@@ -14,7 +14,7 @@ export function createAppConfig(config: RuntimeConfig): ApplicationConfig {
     providers: [
       provideBrowserGlobalErrorListeners(),
       { provide: RUNTIME_CONFIG, useValue: config },
-      provideRouter(routes),
+      provideRouter(routes, withViewTransitions({ skipInitialTransition: true })),
       { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
       provideHttpClient(withInterceptors([acceptLanguageInterceptor, iamAuthorizationInterceptor])),
       provideI18n(),

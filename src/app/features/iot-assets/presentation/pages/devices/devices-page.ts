@@ -18,6 +18,7 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { TranslatedPaginatorIntl } from '../../../../../shared/presentation/paginator/translated-paginator-intl';
+import { relativeTime } from '../../../../../shared/presentation/relative-time';
 import { DeviceInventoryFacade } from '../../../application/services/device-inventory.facade';
 import {
   COMMUNICATION_STATUSES, type CommunicationStatus, type Device, DEVICE_STATUSES, type DeviceStatus, DEVICE_TYPES, type DeviceType,
@@ -29,7 +30,6 @@ import { IOT_DIALOG_CONFIG, type IotDialogOutcome } from '../../components/iot-d
 import { RegisterDeviceDialog } from '../../components/register-device-dialog';
 import { ReleaseDeviceDialog } from '../../components/release-device-dialog';
 import { IOT_ERROR_KEYS } from '../../iot-error-keys';
-import { relativeTime } from '../../relative-time';
 import { slicePage } from '../../slice-page';
 
 /** Lists the ranch's IoT devices with filters, paging, registration, and actions; write actions need a managing account. */

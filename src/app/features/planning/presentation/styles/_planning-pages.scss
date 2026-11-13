@@ -113,14 +113,14 @@
   padding: 8px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   text-align: left;
 }
 
 .day.outside {
-  background: #fafbf8;
-  color: #8a9486;
+  background: var(--surface-2);
+  color: var(--muted);
 }
 
 .day.today {
@@ -145,7 +145,7 @@
   padding: 1px 7px;
   border-radius: 999px;
   background: var(--forest);
-  color: #fff;
+  color: var(--on-forest);
   font-size: .7rem;
   font-weight: 700;
 }

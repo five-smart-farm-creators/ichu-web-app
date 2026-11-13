@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,7 @@ import { AuthFacade } from '../../../features/iam/application/services/auth.faca
 import { roleLabelKey } from '../../../features/iam/presentation/iam-labels';
 import { Icon } from '../../../shared/presentation/icon';
 import { LanguageMenu } from '../../../shared/presentation/language-menu';
+import { ThemeToggle } from '../../../shared/presentation/theme/theme-toggle';
 import { AppFooter } from '../app-footer';
 
 /** Frames authenticated pages with navigation, the ranch context, the language menu, and the account menu. */
@@ -36,6 +37,7 @@ import { AppFooter } from '../app-footer';
     TranslatePipe,
     Icon,
     LanguageMenu,
+    ThemeToggle,
     AppFooter,
   ],
   templateUrl: './app-shell.html',
@@ -53,6 +55,16 @@ export class AppShell {
   );
   readonly menuOpen = signal(false);
   readonly roleLabelKey = roleLabelKey;
+  /** Letters of the first two words of the account name; empty when no name is known, which hides the avatar. */
+  readonly initials = computed(() =>
+    this.auth
+      .name()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join(''),
+  );
 
   closeMenu(): void {
     this.menuOpen.set(false);

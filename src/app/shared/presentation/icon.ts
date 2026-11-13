@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-const ICONS: Record<string, string> = {
+const ICONS = {
   mail: 'M3 5h18v14H3z M3 5l9 8 9-8',
   lock: 'M7 10V7a5 5 0 0 1 10 0v3 M5 10h14v11H5z M12 14v3',
   eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',
@@ -28,7 +28,13 @@ const ICONS: Record<string, string> = {
   logout: 'M9 3H3v18h6 M9 12h13 M17 7l5 5-5 5',
   download: 'M12 3v12 M7 10l5 5 5-5 M4 21h16',
   alert: 'M12 3 2 21h20z M12 9v5 M12 17.5h.01',
-};
+  moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+  venus: 'M12 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10 M12 13v8 M8.5 17.5h7',
+  thermometer: 'M14 14.8V5a2 2 0 10-4 0v9.8a4 4 0 104 0z',
+} satisfies Record<string, string>;
+
+/** The names the Icon component draws; typing a tile's icon with it turns a misspelt name into a build error. */
+export type IconName = keyof typeof ICONS;
 
 @Component({
   selector: 'ichu-icon', standalone: true, changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,5 +43,5 @@ const ICONS: Record<string, string> = {
 })
 export class Icon {
   readonly name = input('grid');
-  readonly paths = ICONS;
+  readonly paths: Readonly<Record<string, string>> = ICONS;
 }

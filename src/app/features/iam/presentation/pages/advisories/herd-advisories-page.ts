@@ -23,6 +23,7 @@ import {
 } from '../../components/herd-advisory-decision-dialog';
 import { ranchPlace, scopeLabelKey, statusLabelKey, statusTone } from '../../iam-labels';
 import { ErrorMessagePipe } from '../../pipes/error-message.pipe';
+import { DIALOG_MOTION } from '../../../../../shared/presentation/dialog-motion';
 
 // The code alphabet omits look-alike characters (I, O, 0, 1), so most typing mistakes fail before a lookup.
 const ACCESS_CODE_PATTERN = /^[A-HJ-NP-Za-hj-np-z2-9]{8}$/;
@@ -117,7 +118,7 @@ export class HerdAdvisoriesPage {
   async review(record: HerdAdvisoryRecord): Promise<void> {
     const reference = this.dialog.open<HerdAdvisoryDecisionDialog, HerdAdvisoryDecisionData, DecideHerdAdvisory | undefined>(
       HerdAdvisoryDecisionDialog,
-      { data: { advisory: record }, width: '520px', maxWidth: 'calc(100vw - 32px)', panelClass: 'ichu-workspace-dialog' },
+      { ...DIALOG_MOTION, data: { advisory: record }, width: '520px', maxWidth: 'calc(100vw - 32px)', panelClass: 'ichu-workspace-dialog' },
     );
     const decision = await firstValueFrom(reference.afterClosed());
     if (decision) await this.facade.decide(record.id, decision);
@@ -131,6 +132,7 @@ export class HerdAdvisoriesPage {
       confirmKey: 'iam.advisories.revoke',
     };
     const reference = this.dialog.open<ConfirmDialog, ConfirmDialogData, boolean>(ConfirmDialog, {
+      ...DIALOG_MOTION,
       data,
       role: 'alertdialog',
       width: '420px',

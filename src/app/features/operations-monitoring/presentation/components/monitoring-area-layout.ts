@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'ichu-monitoring-area-layout',
   imports: [MatTabsModule, RouterLink, RouterLinkActive, RouterOutlet, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<nav mat-tab-nav-bar class="area-tabs" [tabPanel]="areaPanel" [attr.aria-label]="'monitoring.areaNavigation' | translate">
+  template: `<nav mat-tab-nav-bar class="area-tabs" mat-stretch-tabs="false" [tabPanel]="areaPanel" [attr.aria-label]="'monitoring.areaNavigation' | translate">
       <a mat-tab-link routerLink="/monitoring" routerLinkActive #overviewTab="routerLinkActive"
         [routerLinkActiveOptions]="{ exact: true }" [active]="overviewTab.isActive" ariaCurrentWhenActive="page">
         {{ 'monitoring.tabs.overview' | translate }}

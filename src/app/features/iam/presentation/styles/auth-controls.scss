@@ -1,47 +1,52 @@
-.login-mode { display: flex; align-items: center; justify-content: center; min-height: 42px; margin-bottom: 17px; padding: 3px; border: 1px solid #e9e1d0; border-radius: 24px; background: #f6f0e2; color: var(--login-action); font-size: 12px; font-weight: 650; }
+.login-mode { display: flex; align-items: center; justify-content: center; width: fit-content; max-width: 100%; min-height: 42px; margin-bottom: 17px; padding: 0 16px; border: 1px solid var(--green-soft); border-radius: 999px; background: var(--green-soft); color: var(--forest-text); font-size: 12px; font-weight: 650; }
 
 .access-form { display: grid; gap: 12px; }
 .field { display: grid; gap: 6px; min-width: 0; scroll-margin-block: 24px; }
 .field label { color: var(--login-ink); font-size: 13px; font-weight: 650; line-height: 1.5; }
 
-.field input {
+// Checkboxes and radios keep their native size; the field box would stretch them.
+.field input:not([type=checkbox]):not([type=radio]) {
   width: 100%;
-  min-height: 48px;
+  min-height: 50px;
   padding: 11px 12px;
   border: 1px solid var(--login-border);
-  border-radius: 20px;
-  background: #faf7ef;
+  border-radius: var(--radius-field);
+  background: var(--login-surface);
   color: var(--login-ink);
   font-size: 16px;
   line-height: 1.4;
   transition: box-shadow .16s, border-color .16s;
 }
-.field input::placeholder { color: #67766b; font-size: 14px; }
-.field input:focus { border-color: #4a7758; background: var(--login-surface); box-shadow: 0 0 0 3px rgb(74 119 88 / .14); outline: none; }
-.field input[aria-invalid="true"] { border-color: #ad5244; }
+.field input:not([type=checkbox]):not([type=radio])::placeholder { color: var(--login-muted); font-size: 14px; }
+.field input:not([type=checkbox]):not([type=radio]):focus {
+  border-color: var(--forest);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--forest) 18%, transparent);
+  outline: none;
+}
+.field input[aria-invalid="true"] { border-color: var(--danger); }
 
 .password-field { position: relative; }
 .password-field input { padding-right: 48px; }
-.password-toggle { position: absolute; top: 50%; right: 2px; display: grid; place-items: center; width: 44px; height: 44px; transform: translateY(-50%); padding: 0; border: 0; border-radius: 50%; background: transparent; color: #526759; }
-.password-toggle:hover, .password-toggle:focus-visible, .password-toggle[aria-pressed="true"] { background: #edf3ed; color: var(--login-action); }
+.password-toggle { position: absolute; top: 50%; right: 2px; display: grid; place-items: center; width: 44px; height: 44px; transform: translateY(-50%); padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); }
+.password-toggle:hover, .password-toggle:focus-visible, .password-toggle[aria-pressed="true"] { background: var(--green-soft); color: var(--login-action); }
 .password-toggle ichu-icon { width: 19px; height: 19px; }
 
-.form-error { color: #973f33; font-size: 12px; line-height: 1.5; }
+.form-error { color: var(--danger); font-size: 12px; line-height: 1.5; }
 .form-error:empty { display: none; }
 .login-card > .form-error { margin-top: 10px; }
 
 .login-submit {
   width: 100%;
-  min-height: 48px;
+  min-height: 52px;
   margin-top: 2px;
   border: 1px solid var(--login-action);
-  border-radius: 24px;
+  border-radius: 999px;
   background: var(--login-action);
-  color: #fff;
-  --mat-button-filled-container-height: 48px;
-  --mat-button-filled-container-shape: 24px;
+  color: var(--on-forest);
+  --mat-button-filled-container-height: 52px;
+  --mat-button-filled-container-shape: 999px;
   --mat-button-filled-container-color: var(--login-action);
-  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-label-text-color: var(--on-forest);
   --mat-button-filled-label-text-font: var(--login-body);
   --mat-button-filled-label-text-size: 14px;
 }
@@ -51,19 +56,16 @@
 .account-heading p { margin-top: 7px; color: var(--login-muted); font-size: 14px; }
 .account-step { display: block; margin-bottom: 8px; color: var(--login-action); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
-.account-note { padding: 11px 13px; border: 1px solid #e4dfcf; border-radius: 11px; background: #faf7ef; color: #4d5e52; font-size: 13px; line-height: 1.5; }
+.account-note { padding: 11px 13px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface-2); color: var(--muted); font-size: 13px; line-height: 1.5; }
 .account-note p + p { margin-top: 5px; }
-.account-back { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; margin-top: 7px; color: var(--login-action); font-size: 13px; font-weight: 700; text-decoration-color: #adc2b4; }
+.account-back { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; margin-top: 7px; color: var(--login-action); font-size: 13px; font-weight: 700; text-decoration-color: color-mix(in srgb, var(--forest) 40%, transparent); }
 .account-back:hover { text-decoration-color: currentColor; }
 .account-back ichu-icon { width: 16px; height: 16px; transform: rotate(180deg); }
 .recovery-result { margin-top: 14px; }
 
 .account-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
-.account-grid select { width: 100%; min-width: 0; min-height: 48px; padding: 10px 12px; border: 1px solid var(--login-border); border-radius: 20px; background: #faf7ef; color: var(--login-ink); font-size: 16px; }
-.account-grid select[aria-invalid="true"] { border-color: #ad5244; }
-.account-optional { padding: 0 12px; border: 1px solid #e4dfcf; border-radius: 12px; }
-.account-optional summary { padding: 10px 0; color: var(--login-action); font-size: 13px; font-weight: 700; cursor: pointer; }
-.account-optional .account-grid { padding-bottom: 12px; }
+.account-grid select { width: 100%; min-width: 0; min-height: 50px; padding: 10px 12px; border: 1px solid var(--login-border); border-radius: var(--radius-field); background: var(--login-surface); color: var(--login-ink); font-size: 16px; }
+.account-grid select[aria-invalid="true"] { border-color: var(--danger); }
 .account-consent { display: flex; align-items: flex-start; gap: 8px; color: var(--login-muted); font-size: 13px; line-height: 1.5; }
 .account-consent input { flex: 0 0 18px; margin: 2px 0 0; }
 

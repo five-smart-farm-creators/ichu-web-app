@@ -99,6 +99,14 @@ mat-form-field {
   vertical-align: top;
 }
 
+.advisory-table th {
+  background: var(--surface-2);
+}
+
+.advisory-table tbody tr:hover {
+  background: var(--surface-2);
+}
+
 .advisory-table td span {
   display: block;
   font-size: .8rem;

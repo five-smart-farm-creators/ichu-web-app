@@ -1,6 +1,7 @@
 import type { TrendPoint } from './lot-trend.model';
 import {
-  animalAverages, animalDailyMeans, dailyLotMeans, outlierThreshold, sampleStandardDeviation,
+  animalAverages, animalDailyMeans, dailyLotBands, dailyLotMeans, outlierThreshold,
+  sampleStandardDeviation,
 } from './trend-statistics';
 
 function point(cattleId: string, value: number, recordedAt: Date): TrendPoint {
@@ -60,6 +61,19 @@ describe('trend statistics', () => {
     expect(dailyLotMeans(points)).toEqual([
       { day: '2026-11-10', value: 39, animalCount: 2 },
       { day: '2026-11-11', value: 37, animalCount: 1 },
+    ]);
+  });
+
+  it('bands each day with the spread of the daily means of the animals, which needs two animals', () => {
+    const points = [
+      point('a', 38, new Date(2026, 10, 10, 8)),
+      point('b', 40, new Date(2026, 10, 10, 8)),
+      point('a', 37, new Date(2026, 10, 11, 8)),
+    ];
+
+    expect(dailyLotBands(points)).toEqual([
+      { day: '2026-11-10', mean: 39, spread: Math.SQRT2, animalCount: 2 },
+      { day: '2026-11-11', mean: 37, spread: null, animalCount: 1 },
     ]);
   });
 });

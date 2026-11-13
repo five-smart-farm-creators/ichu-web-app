@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'ichu-planning-area-layout',
   imports: [MatTabsModule, RouterLink, RouterLinkActive, RouterOutlet, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<nav mat-tab-nav-bar class="area-tabs" [tabPanel]="areaPanel" [attr.aria-label]="'planning.areaNavigation' | translate">
+  template: `<nav mat-tab-nav-bar class="area-tabs" mat-stretch-tabs="false" [tabPanel]="areaPanel" [attr.aria-label]="'planning.areaNavigation' | translate">
       <a mat-tab-link routerLink="/planning" routerLinkActive #calendarTab="routerLinkActive"
         [routerLinkActiveOptions]="{ exact: true }" [active]="calendarTab.isActive" ariaCurrentWhenActive="page">
         {{ 'planning.tabs.calendar' | translate }}

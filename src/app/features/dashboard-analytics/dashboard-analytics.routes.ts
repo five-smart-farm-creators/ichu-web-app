@@ -1,13 +1,21 @@
 import { Routes } from '@angular/router';
 import { provideCattleInformation } from '../cattle-information/infrastructure/configuration/cattle-information.providers';
+import { provideIotAssets } from '../iot-assets/infrastructure/configuration/iot-assets.providers';
+import { provideOperationsMonitoring } from '../operations-monitoring/infrastructure/configuration/operations-monitoring.providers';
 import { providePlanning } from '../planning/infrastructure/configuration/planning.providers';
 import { provideDashboardAnalytics } from './infrastructure/configuration/dashboard-analytics.providers';
 
-/** Loaded lazily under `/dashboard`; animal labels and upcoming work come through the ACL facades of their contexts. */
+/** Loaded lazily under `/dashboard`; labels, alerts, thresholds, collars and upcoming work come through the ACL facades. */
 export const dashboardRoutes: Routes = [
   {
     path: '',
-    providers: [provideCattleInformation(), providePlanning(), provideDashboardAnalytics()],
+    providers: [
+      provideCattleInformation(),
+      providePlanning(),
+      provideDashboardAnalytics(),
+      provideOperationsMonitoring(),
+      provideIotAssets(),
+    ],
     children: [
       {
         path: '',
