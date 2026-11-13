@@ -1,0 +1,15 @@
+import { inject, Provider } from '@angular/core';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
+import { formatLocaleTag } from '../infrastructure/i18n/language';
+import { LanguageService } from '../infrastructure/i18n/language.service';
+import { TranslatedDatepickerIntl } from './datepicker/translated-datepicker-intl';
+
+/** Date pickers follow the interface language; declare these on a dialog so each opening reads the current language. */
+export function provideLocalizedDateAdapter(): Provider[] {
+  return [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useFactory: () => formatLocaleTag(inject(LanguageService).current()) },
+    { provide: MatDatepickerIntl, useClass: TranslatedDatepickerIntl },
+  ];
+}

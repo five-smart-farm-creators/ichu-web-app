@@ -1,0 +1,10 @@
+@use '../../styles/analytics-pages';
+
+:host {
+  display: block;
+}
+
+.empty-cell {
+  color: var(--muted);
+  text-align: center;
+}

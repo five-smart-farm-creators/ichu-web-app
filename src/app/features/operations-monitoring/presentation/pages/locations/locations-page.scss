@@ -1,0 +1,9 @@
+@use '../../styles/monitoring-pages';
+
+:host {
+  display: block;
+}
+
+.map-panel .panel-body {
+  padding: 16px 18px;
+}

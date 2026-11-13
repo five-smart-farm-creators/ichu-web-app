@@ -2,13 +2,15 @@ import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthFacade } from '../../../application/services/auth.facade';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { AccountAccessFrame } from '../../components/account-access-frame';
+import { ErrorMessagePipe } from '../../pipes/error-message.pipe';
 
 @Component({
   selector: 'ichu-recovery-page', standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame],
+  imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame, TranslatePipe, ErrorMessagePipe],
   templateUrl: './recovery-page.html', styleUrls: ['../../styles/auth-controls.scss', '../../styles/auth-motion.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

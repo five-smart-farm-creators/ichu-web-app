@@ -75,7 +75,6 @@ describe('AuthFacade', () => {
   function makeAccountMock() {
     return {
       isConfigured: vi.fn(() => true),
-      createSession: vi.fn(async () => ({ idToken: 'session-token', tokenType: 'Bearer' })),
       registerAccount: vi.fn(async (_request: RegisterAccountRequest) => undefined),
       currentAccount: vi.fn(async () => iamAccount(authentication.currentUser()?.email ?? 'user@example.test')),
       ranchAccess: vi.fn(async (): Promise<readonly RanchAccess[]> => []),
@@ -99,6 +98,14 @@ describe('AuthFacade', () => {
 
   afterEach(() => {
     TestBed.resetTestingModule();
+  });
+
+  it('signs in through Firebase and verifies the ICHU account', async () => {
+    expect(await facade.signIn('rancher@example.test', 'correct-password')).toBe(true);
+
+    expect(authentication.signIn).toHaveBeenCalledWith('rancher@example.test', 'correct-password');
+    expect(facade.authenticated()).toBe(true);
+    expect(facade.account()?.email).toBe('rancher@example.test');
   });
 
   it('does not sign out an observer user before registration finishes provisioning and verification', async () => {
@@ -149,12 +156,12 @@ describe('AuthFacade', () => {
     const user = authUser(email, 'pending-user', false);
     const deleteIdentity = vi.fn();
     Object.assign(authentication, { deleteUser: deleteIdentity });
-    authentication.createUser.mockRejectedValue(new AuthError('email-already-in-use', 'Already registered.'));
+    authentication.createUser.mockRejectedValue(new AuthError('email-already-in-use'));
     authentication.signIn.mockImplementation(async (_email, _password) => {
       emitAuthState(user);
       return user;
     });
-    accounts.registerAccount.mockRejectedValue(new AuthError('account-unavailable', 'Account already exists.'));
+    accounts.registerAccount.mockRejectedValue(new AuthError('account-unavailable'));
     authentication.sendEmailVerification.mockImplementation(async () => {
       expect(authentication.currentUser()).toEqual(user);
     });
@@ -179,9 +186,10 @@ describe('AuthFacade', () => {
     accounts.currentAccount
       .mockImplementationOnce(() => accountA.promise)
       .mockImplementationOnce(() => accountB.promise);
+    // Ranches load only after the account, so user B asks first while user A is still waiting for its account.
     accounts.ranchAccess
-      .mockImplementationOnce(() => accessA.promise)
-      .mockImplementationOnce(() => accessB.promise);
+      .mockImplementationOnce(() => accessB.promise)
+      .mockImplementationOnce(() => accessA.promise);
 
     emitAuthState(userA);
     emitAuthState(userB);

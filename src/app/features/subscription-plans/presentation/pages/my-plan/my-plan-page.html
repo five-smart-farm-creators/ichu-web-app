@@ -1,0 +1,139 @@
+<div class="subscription-page">
+  <header class="page-heading">
+    <div>
+      <h1>{{ 'subscriptions.title' | translate }}</h1>
+      <p class="page-lead">{{ 'subscriptions.lead' | translate }}</p>
+    </div>
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'plans.noRanchTitle' | translate }}</h2>
+        <p>{{ 'plans.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'subscriptions.loading' | translate" />
+    }
+    @if (facade.notice() === 'cancelled') {
+      <p class="notice" role="status">{{ 'subscriptions.cancelled' | translate }}</p>
+    }
+    @if (facade.error(); as error) {
+      <p class="form-error" role="alert">{{ error | apiErrorMessage }}</p>
+    }
+    @if (plans.error(); as error) {
+      <p class="form-error" role="alert">{{ error | apiErrorMessage }}</p>
+    }
+
+    @if (facade.subscription(); as current) {
+      <section class="panel" aria-labelledby="subscription-heading">
+        <div class="panel-head">
+          <h2 id="subscription-heading">{{ 'subscriptions.summaryTitle' | translate }}</h2>
+          <span [class]="'badge ' + statusTone(current.status)">{{ ('subscriptions.status.' + current.status) | translate }}</span>
+        </div>
+        <div class="panel-body">
+          @if (current.status === 'Pending') {
+            <p class="notice">{{ 'subscriptions.pendingNote' | translate }}</p>
+          }
+          <dl class="fact-grid">
+            @if (plan(); as selected) {
+              <div>
+                <dt>{{ 'plans.plan' | translate }}</dt>
+                <dd>{{ ('plans.tiers.' + selected.tier) | translate }}</dd>
+              </div>
+            }
+            <div>
+              <dt>{{ 'subscriptions.fields.requestedAt' | translate }}</dt>
+              <dd>{{ current.requestedAt | localizedDate }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscriptions.fields.activatedAt' | translate }}</dt>
+              <dd>{{ (current.activatedAt | localizedDate) || ('subscriptions.notYet' | translate) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscriptions.fields.validUntil' | translate }}</dt>
+              <dd>{{ (current.validUntil | localizedDate) || ('subscriptions.notYet' | translate) }}</dd>
+            </div>
+            @if (current.cancelledAt) {
+              <div>
+                <dt>{{ 'subscriptions.fields.cancelledAt' | translate }}</dt>
+                <dd>{{ current.cancelledAt | localizedDate }}</dd>
+              </div>
+            }
+            @if (current.cancellationReason; as reason) {
+              <div class="span-two">
+                <dt>{{ 'subscriptions.fields.cancellationReason' | translate }}</dt>
+                <dd>{{ reason }}</dd>
+              </div>
+            }
+            <div>
+              <dt>{{ 'subscriptions.fields.headCount' | translate }}</dt>
+              <dd>{{ current.headCount }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscriptions.fields.maximumDevices' | translate }}</dt>
+              <dd>{{ current.maximumDevices }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscriptions.fields.termsVersion' | translate }}</dt>
+              <dd>{{ current.termsVersion }}</dd>
+            </div>
+          </dl>
+
+          <ichu-price-breakdown [priced]="current" [planTier]="plan()?.tier ?? null" />
+
+          <h3 class="fact-section">{{ 'subscriptions.fields.features' | translate }}</h3>
+          <ul class="feature-list">
+            @for (feature of current.features; track feature) {
+              <li>
+                <ichu-icon name="check" />
+                <span>{{ ('plans.features.' + feature) | translate }}</span>
+              </li>
+            }
+          </ul>
+
+          <div class="action-row">
+            @if (documentKind(); as kind) {
+              <button type="button" class="btn secondary" [disabled]="!plan() || receipt.busy()" (click)="downloadDocument()">
+                <ichu-icon name="download" />
+                {{ (receipt.busy()
+                  ? 'subscriptions.preparingDocument'
+                  : (kind === 'quote' ? 'subscriptions.downloadQuote' : 'subscriptions.downloadReceipt')) | translate }}
+              </button>
+            }
+            @if (canManage()) {
+              @if (canPayNow(current.status)) {
+                <button type="button" class="btn primary" [disabled]="facade.busy()" (click)="pay()">
+                  {{ 'subscriptions.payNow' | translate }}
+                </button>
+              }
+              @if (canCancelSubscription(current.status)) {
+                <button type="button" class="btn danger" [disabled]="facade.busy()" (click)="openCancel()">
+                  {{ 'subscriptions.cancel.open' | translate }}
+                </button>
+              }
+            }
+          </div>
+          @if (receipt.failed()) {
+            <p class="form-error" role="alert">{{ 'subscriptions.documentFailed' | translate }}</p>
+          }
+          @if (!canManage()) {
+            <p class="notice">{{ 'subscriptions.managerOnly' | translate }}</p>
+          }
+        </div>
+      </section>
+    } @else if (!facade.loading() && !facade.error()) {
+      <section class="panel">
+        <div class="panel-body empty-state">
+          <h2>{{ 'subscriptions.noneTitle' | translate }}</h2>
+          <p>{{ (canManage() ? 'subscriptions.noneBody' : 'subscriptions.noneReadOnly') | translate }}</p>
+          @if (canManage()) {
+            <a class="btn primary" routerLink="/plans">{{ 'subscriptions.comparePlans' | translate }}</a>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

@@ -1,0 +1,132 @@
+@use '../../styles/material-fields';
+
+:host {
+  display: block;
+}
+
+.workspace-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.panel {
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.request-step {
+  display: grid;
+  gap: 4px;
+}
+
+.request-step button,
+.profile-form button {
+  justify-self: start;
+  margin-top: 8px;
+}
+
+.code-input {
+  font-family: ui-monospace, Consolas, monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.found-ranch {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.found-ranch .text-muted {
+  font-size: .8rem;
+}
+
+.request-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.ranch-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ranch-item {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.ranch-item .text-muted {
+  font-size: .78rem;
+}
+
+.advisory-head {
+  align-items: flex-start;
+}
+
+.status-filter {
+  width: min(240px, 100%);
+}
+
+.advisory-table {
+  width: 100%;
+  min-width: 760px;
+}
+
+.advisory-table td,
+.advisory-table th {
+  padding: 12px;
+  vertical-align: top;
+}
+
+.advisory-table th {
+  background: var(--surface-2);
+}
+
+.advisory-table tbody tr:hover {
+  background: var(--surface-2);
+}
+
+.advisory-table td span {
+  display: block;
+  font-size: .8rem;
+}
+
+.advisory-table td .btn {
+  min-height: 36px;
+}
+
+.advisory-reason {
+  max-width: 36ch;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .workspace-page {
+    padding: 20px 14px;
+  }
+
+  .status-filter {
+    width: 100%;
+  }
+}

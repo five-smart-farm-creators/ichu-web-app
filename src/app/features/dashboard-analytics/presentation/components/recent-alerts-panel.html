@@ -1,0 +1,54 @@
+<section class="panel" aria-labelledby="recent-alerts-heading">
+  <div class="panel-head">
+    <h2 id="recent-alerts-heading">{{ 'analytics.dashboard.alerts.title' | translate }}</h2>
+    <a routerLink="/alerts">{{ 'analytics.dashboard.alerts.viewAll' | translate }}</a>
+  </div>
+  <div class="panel-body">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'monitoring.alerts.loading' | translate" />
+    }
+    @if (facade.alertsError(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+    <ul class="alert-list">
+      @for (row of rows(); track row.alertId) {
+        <li class="alert-item" [attr.data-tone]="row.tone">
+          <span class="stat-icon"><ichu-icon [name]="row.icon" /></span>
+          <div class="alert-copy">
+            <strong>{{ row.earTag ?? ('analytics.trends.unknownAnimal' | translate) }} · {{ row.typeKey | translate }}</strong>
+            <span class="text-muted">{{ row.measure }} · <time [attr.datetime]="row.raisedAt">{{ row.relative }}</time></span>
+          </div>
+          @if (row.critical) {
+            <span class="badge danger">{{ 'monitoring.severity.Critical' | translate }}</span>
+          }
+        </li>
+      } @empty {
+        @if (!loading() && !facade.alertsError()) {
+          <li class="text-muted">{{ 'analytics.dashboard.alerts.empty' | translate }}</li>
+        }
+      }
+    </ul>
+
+    <div class="collars">
+      <h3>{{ 'analytics.dashboard.collars.title' | translate }}</h3>
+      @if (facade.collarsError(); as apiError) {
+        <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+      } @else if (facade.collars(); as collars) {
+        @if (collarTotal() > 0) {
+          <div class="collar-bar" role="img" [attr.aria-label]="collarSummary()">
+            @for (segment of collarSegments(); track segment.status) {
+              <span class="segment" [attr.data-status]="segment.status" [style.flex-grow]="segment.count"></span>
+            }
+          </div>
+          <p>{{ collarSummary() }}</p>
+          @if (collars.lowBattery > 0) {
+            <p class="text-muted">{{ 'analytics.dashboard.collars.lowBattery' | translate: { count: collars.lowBattery } }}</p>
+          }
+        } @else {
+          <p class="text-muted">{{ 'analytics.dashboard.collars.empty' | translate }}</p>
+        }
+      }
+      <a routerLink="/devices">{{ 'pages.iotDevices' | translate }}</a>
+    </div>
+  </div>
+</section>

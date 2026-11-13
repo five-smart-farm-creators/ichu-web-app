@@ -1,0 +1,77 @@
+// Layout shared by the IoT asset pages, matching the animal pages so the areas read as one product.
+.iot-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.filter-panel {
+  margin-bottom: 20px;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 22px;
+}
+
+.filter-field {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 56px;
+}
+
+.table-panel {
+  margin-top: 16px;
+}
+
+.table-panel .data-table td strong {
+  font-weight: 650;
+}
+
+.meta {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: .75rem;
+}
+
+.battery-low {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  color: var(--danger);
+  font-size: .75rem;
+  font-weight: 650;
+}
+
+.battery-low ichu-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 560px) {
+  .iot-page {
+    padding: 20px 14px;
+  }
+
+  .filter-field {
+    flex: 1 1 100%;
+  }
+}

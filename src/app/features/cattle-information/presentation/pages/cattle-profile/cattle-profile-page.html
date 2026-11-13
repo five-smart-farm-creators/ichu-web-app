@@ -1,0 +1,153 @@
+<div class="profile-page">
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h1>{{ 'cattle.profile.title' | translate }}</h1>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'cattle.profile.loading' | translate" />
+    }
+
+    @if (facade.error(); as apiError) {
+      <section class="panel">
+        <div class="panel-body empty-state">
+          <h1>{{ 'cattle.profile.title' | translate }}</h1>
+          <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+          <a class="btn secondary" routerLink="/cattle">{{ 'cattle.profile.back' | translate }}</a>
+        </div>
+      </section>
+    } @else if (facade.animal(); as animal) {
+      <header class="page-heading">
+        <div>
+          <a class="back-link" routerLink="/cattle">{{ 'cattle.profile.back' | translate }}</a>
+          <span class="eyebrow">{{ 'pages.animalProfile' | translate }}</span>
+          <h1>{{ animal.earTag }}</h1>
+          <p class="status-line">
+            <span class="badge" [class.success]="animal.status === 'Active'" [class.neutral]="animal.status !== 'Active'">
+              {{ ('cattle.status.' + animal.status) | translate }}
+            </span>
+          </p>
+        </div>
+        <div class="toolbar">
+          <a class="btn secondary" [routerLink]="['/health/cattle', animal.id]">{{ 'health.links.openHistory' | translate }}</a>
+          @if (canManage() && animal.status === 'Active') {
+            <button type="button" class="btn secondary" (click)="editAnimal()">{{ 'cattle.profile.edit' | translate }}</button>
+            <button type="button" class="btn secondary" (click)="changeStage()">{{ 'cattle.profile.changeStage' | translate }}</button>
+            <button type="button" class="btn danger" (click)="recordExit()">{{ 'cattle.profile.recordExit' | translate }}</button>
+          }
+        </div>
+      </header>
+
+      @if (notice(); as key) {
+        <p class="notice" role="status">{{ key | translate }}</p>
+      }
+      @if (conflict()) {
+        <p class="form-error" role="alert">{{ 'cattle.errors.versionConflict' | translate }}</p>
+      }
+      @if (animal.status !== 'Active') {
+        <p class="notice read-only" role="note">
+          {{ 'cattle.profile.readOnly' | translate: { date: (animal.exitDate | date: 'mediumDate' : undefined : dateLocale()) } }}
+        </p>
+      }
+
+      <div class="profile-grid">
+        <section class="panel" aria-labelledby="details-heading">
+          <div class="panel-head">
+            <h2 id="details-heading">{{ 'cattle.profile.details' | translate }}</h2>
+          </div>
+          <div class="panel-body">
+            <dl class="detail-list">
+              <div>
+                <dt>{{ 'cattle.fields.earTag' | translate }}</dt>
+                <dd>{{ animal.earTag }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.breed' | translate }}</dt>
+                <dd>{{ ('cattle.breed.' + animal.breed) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.sex' | translate }}</dt>
+                <dd>{{ ('cattle.sex.' + animal.sex) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.birthDate' | translate }}</dt>
+                <dd>{{ animal.birthDate | date: 'mediumDate' : undefined : dateLocale() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.ageMonths' | translate }}</dt>
+                <dd>{{ ageMonths() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.stage' | translate }}</dt>
+                <dd>{{ ('cattle.stage.' + animal.currentStage) | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'cattle.fields.lot' | translate }}</dt>
+                <dd>{{ facade.lotNames() || ('cattle.profile.noLot' | translate) }}</dd>
+              </div>
+              @if (animal.status !== 'Active') {
+                <div>
+                  <dt>{{ 'cattle.fields.exitReason' | translate }}</dt>
+                  <dd>{{ ('cattle.exitReason.' + animal.exitReason) | translate }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'cattle.fields.exitDate' | translate }}</dt>
+                  <dd>{{ animal.exitDate | date: 'mediumDate' : undefined : dateLocale() }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="collar-heading">
+          <div class="panel-head">
+            <h2 id="collar-heading">{{ 'cattle.profile.collar' | translate }}</h2>
+          </div>
+          <div class="panel-body collar-status">
+            @if (!facade.device()?.isAvailable) {
+              <p>{{ 'cattle.profile.collarUnavailable' | translate }}</p>
+            } @else if (!facade.device()?.collarId) {
+              <p>{{ 'cattle.profile.noCollar' | translate }}</p>
+              <a class="btn secondary" routerLink="/devices">{{ 'cattle.profile.assignCollar' | translate }}</a>
+            } @else if (facade.device()?.lastReadingReceivedAt; as lastReading) {
+              <p>
+                {{ 'cattle.profile.lastReading' | translate: { date: (lastReading | date: 'medium' : undefined : dateLocale()) } }}
+              </p>
+            } @else {
+              <p>{{ 'cattle.profile.noReadings' | translate }}</p>
+            }
+            <a class="btn secondary" [routerLink]="['/monitoring/cattle', animal.id]">{{ 'monitoring.links.openMonitoring' | translate }}</a>
+          </div>
+        </section>
+
+        <section class="panel history-panel" aria-labelledby="history-heading">
+          <div class="panel-head">
+            <h2 id="history-heading">{{ 'cattle.profile.history' | translate }}</h2>
+          </div>
+          <div class="panel-body">
+            <ol class="timeline">
+              @for (period of animal.stagePeriods; track period.id) {
+                <li>
+                  <strong>{{ ('cattle.stage.' + period.lifeStage) | translate }}</strong>
+                  <span class="text-muted">
+                    {{ 'cattle.profile.fromDate' | translate: { date: (period.validFrom | date: 'mediumDate' : undefined : dateLocale()) } }}
+                    @if (period.validTo) {
+                      · {{ 'cattle.profile.untilDate' | translate: { date: (period.validTo | date: 'mediumDate' : undefined : dateLocale()) } }}
+                    } @else {
+                      · {{ 'cattle.profile.current' | translate }}
+                    }
+                  </span>
+                </li>
+              } @empty {
+                <li>{{ 'cattle.profile.noHistory' | translate }}</li>
+              }
+            </ol>
+          </div>
+        </section>
+      </div>
+    }
+  }
+</div>

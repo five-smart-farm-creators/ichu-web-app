@@ -1,0 +1,11 @@
+@use '../styles/analytics-pages';
+
+:host {
+  display: block;
+}
+
+.generated {
+  margin: 0;
+  padding-top: 14px;
+  font-size: .8125rem;
+}

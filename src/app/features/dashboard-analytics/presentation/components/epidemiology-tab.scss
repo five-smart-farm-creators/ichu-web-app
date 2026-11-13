@@ -1,0 +1,36 @@
+@use '../styles/analytics-pages';
+
+:host {
+  display: block;
+}
+
+.control {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.filter-note {
+  margin: 0;
+  padding: 0 22px 18px;
+  font-size: .8125rem;
+}
+
+.unit {
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.peak {
+  font-size: 1.5rem;
+}
+
+.restriction {
+  margin: 0;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: .875rem;
+}

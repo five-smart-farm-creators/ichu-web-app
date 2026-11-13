@@ -1,0 +1,82 @@
+<div class="planning-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'pages.planningCampaigns' | translate }}</span>
+      <h1>{{ 'planning.campaigns.title' | translate }}</h1>
+      <p class="page-lead">{{ 'planning.campaigns.lead' | translate }}</p>
+    </div>
+    @if (context.currentRanchId()) {
+      <div class="toolbar">
+        <ichu-export-menu [disabled]="facade.rows().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+        @if (canManage()) {
+          <button type="button" class="btn primary" (click)="openCreate()">
+            <ichu-icon name="plus" />
+            <span>{{ 'planning.campaigns.create.open' | translate }}</span>
+          </button>
+        }
+      </div>
+    }
+  </header>
+
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    @if (notice(); as key) {
+      <p class="notice" role="status">{{ key | translate }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+    }
+
+    <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
+      @if (facade.loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'planning.campaigns.loading' | translate" />
+      }
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="facade.rows()" [attr.aria-label]="'planning.campaigns.tableLabel' | translate">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ 'planning.fields.name' | translate }}</th>
+            <td mat-cell *matCellDef="let campaign">
+              <button type="button" class="link-button" (click)="openDetail(campaign)">{{ campaign.name }}</button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="kind">
+            <th mat-header-cell *matHeaderCellDef>{{ 'planning.fields.kind' | translate }}</th>
+            <td mat-cell *matCellDef="let campaign">{{ ('planning.kind.' + campaign.kind) | translate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{ 'planning.fields.status' | translate }}</th>
+            <td mat-cell *matCellDef="let campaign">
+              <span class="badge" [class]="'badge ' + statusTone(campaign)">{{ ('planning.campaignStatus.' + statusOf(campaign)) | translate }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="startsOn">
+            <th mat-header-cell *matHeaderCellDef>{{ 'planning.fields.startsOn' | translate }}</th>
+            <td mat-cell *matCellDef="let campaign">{{ dateOf(campaign.startsOn) | localizedDate: 'mediumDate' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="endsOn">
+            <th mat-header-cell *matHeaderCellDef>{{ 'planning.fields.endsOn' | translate }}</th>
+            <td mat-cell *matCellDef="let campaign">{{ dateOf(campaign.endsOn) | localizedDate: 'mediumDate' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let campaign; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && !facade.error() && facade.rows().length === 0) {
+        <div class="empty-state">
+          <h2>{{ 'planning.campaigns.emptyTitle' | translate }}</h2>
+          <p>{{ (canManage() ? 'planning.campaigns.emptyManage' : 'planning.campaigns.empty') | translate }}</p>
+        </div>
+      }
+    </section>
+  }
+</div>

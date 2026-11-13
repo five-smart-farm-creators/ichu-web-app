@@ -1,0 +1,255 @@
+<div class="monitoring-page">
+  @if (!context.currentRanchId()) {
+    <section class="panel">
+      <div class="panel-body empty-state">
+        <h2>{{ 'cattle.inventory.noRanchTitle' | translate }}</h2>
+        <p>{{ 'cattle.inventory.noRanch' | translate }}</p>
+      </div>
+    </section>
+  } @else {
+    <a class="back-link" routerLink="/monitoring">{{ 'monitoring.telemetry.back' | translate }}</a>
+    <header class="page-heading">
+      <div>
+        <span class="eyebrow">{{ 'pages.monitoringCattle' | translate }}</span>
+        <h1>{{ facade.animal()?.earTag ?? ('monitoring.telemetry.title' | translate) }}</h1>
+        @if (facade.animal(); as animal) {
+          <p class="page-lead">
+            <span class="badge" [class.success]="animal.status === 'Active'" [class.neutral]="animal.status !== 'Active'">
+              {{ ('cattle.status.' + animal.status) | translate }}
+            </span>
+            {{ ('cattle.stage.' + animal.lifeStage) | translate }}
+          </p>
+        }
+      </div>
+      <div class="toolbar">
+        @if (facade.animal(); as animal) {
+          <a class="btn secondary" [routerLink]="['/health/cattle', animal.cattleId]">{{ 'health.links.openHistory' | translate }}</a>
+          <a class="btn secondary" routerLink="/reports" [queryParams]="{ tab: 'trends', cattle: animal.cattleId }">{{ 'analytics.links.compareWithLot' | translate }}</a>
+        }
+        <ichu-export-menu [disabled]="facade.readings().length === 0" [busy]="exporting()" (exportRequested)="export($event)" />
+      </div>
+    </header>
+
+    @if (facade.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="'monitoring.telemetry.loading' | translate" />
+    }
+    @if (facade.error(); as apiError) {
+      <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
+    }
+    @if (exportFailed()) {
+      <p class="form-error" role="alert">{{ 'common.exportFailed' | translate }}</p>
+    }
+
+    @if (facade.latest(); as latest) {
+      <section class="stats-grid" [attr.aria-label]="'monitoring.telemetry.latest' | translate">
+        <div class="stat">
+          <span class="stat-label">{{ 'monitoring.metric.BodyTemperature' | translate }}</span>
+          <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.bodyTemperature" /></div>
+          <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.bodyTemperature.recordedAt | localizedDate: 'short') || '–' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">{{ 'monitoring.metric.ActivityIndex' | translate }}</span>
+          <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.activityIndex" /></div>
+          <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.activityIndex.recordedAt | localizedDate: 'short') || '–' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">{{ 'monitoring.metric.RuminationMinutes' | translate }}</span>
+          <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.ruminationMinutes" /></div>
+          <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.ruminationMinutes.recordedAt | localizedDate: 'short') || '–' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">{{ 'monitoring.telemetry.lastKnownPosition' | translate }}</span>
+          <div class="stat-indicator">
+            @if (lastKnownCoordinates(latest.lastKnownPosition); as coordinates) {
+              <span>{{ coordinates }}</span>
+            } @else {
+              <span class="text-muted">{{ 'monitoring.telemetry.noPosition' | translate }}</span>
+            }
+          </div>
+          <span class="stat-note">
+            {{ (latest.lastKnownPosition.recordedAt | localizedDate: 'short') || '–' }}
+            @if (latest.lastKnownPosition.isStale) {
+              <span class="badge warning">{{ 'monitoring.state.stale' | translate }}</span>
+            }
+          </span>
+        </div>
+      </section>
+    }
+
+    @if (noThresholds()) {
+      <p class="notice section-gap" role="note">
+        {{ 'monitoring.telemetry.noThresholds' | translate }}
+        <a routerLink="/monitoring/thresholds">{{ 'monitoring.tabs.thresholds' | translate }}</a>
+      </p>
+    }
+    @if (rangeError(); as key) {
+      <p class="form-error" role="alert">{{ key | translate }}</p>
+    }
+    @if (facade.truncated()) {
+      <p class="notice section-gap" role="status">
+        {{ 'monitoring.telemetry.truncated' | translate: { limit: readingLimit, total: facade.totalCount() } }}
+      </p>
+    }
+
+    <section class="panel filter-panel section-gap" [attr.aria-label]="'monitoring.telemetry.range' | translate">
+      <form class="filter-form" [formGroup]="rangeForm" (ngSubmit)="applyRange()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+          <mat-label>{{ 'monitoring.telemetry.range' | translate }}</mat-label>
+          <mat-select [value]="preset()" (selectionChange)="preset.set($event.value)">
+            @for (option of presets; track option) {
+              <mat-option [value]="option">{{ ('monitoring.telemetry.presets.' + option) | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        @if (preset() === 'custom') {
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+            <mat-label>{{ 'monitoring.telemetry.fromDay' | translate }}</mat-label>
+            <input matInput [matDatepicker]="fromPicker" formControlName="from" autocomplete="off">
+            <mat-datepicker-toggle matIconSuffix [for]="fromPicker" />
+            <mat-datepicker #fromPicker />
+          </mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+            <mat-label>{{ 'monitoring.telemetry.toDay' | translate }}</mat-label>
+            <input matInput [matDatepicker]="toPicker" formControlName="to" autocomplete="off">
+            <mat-datepicker-toggle matIconSuffix [for]="toPicker" />
+            <mat-datepicker #toPicker />
+          </mat-form-field>
+        }
+        <div class="filter-actions">
+          <button type="submit" class="btn primary" [disabled]="facade.loading()">{{ 'monitoring.telemetry.apply' | translate }}</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="chart-grid">
+      <section class="panel chart-panel" aria-labelledby="temperature-heading">
+        <div class="panel-head"><h2 id="temperature-heading">{{ 'monitoring.metric.BodyTemperature' | translate }}</h2></div>
+        <div class="panel-body">
+          <ichu-line-chart [series]="temperatureSeries()" [band]="temperatureBand()" [yAxisLabel]="'monitoring.units.celsius' | translate"
+            [accessibleLabel]="'monitoring.telemetry.temperatureChart' | translate" />
+        </div>
+      </section>
+      <section class="panel chart-panel" aria-labelledby="activity-heading">
+        <div class="panel-head"><h2 id="activity-heading">{{ 'monitoring.metric.ActivityIndex' | translate }}</h2></div>
+        <div class="panel-body">
+          <ichu-line-chart [series]="activitySeries()" [band]="activityBand()" [yAxisLabel]="'monitoring.units.index' | translate"
+            [accessibleLabel]="'monitoring.telemetry.activityChart' | translate" />
+        </div>
+      </section>
+    </div>
+
+    @let stats = facade.statistics();
+    <section class="panel section-gap" aria-labelledby="statistics-heading">
+      <div class="panel-head"><h2 id="statistics-heading">{{ 'monitoring.telemetry.statistics' | translate }}</h2></div>
+      <div class="table-scroll">
+        <table class="data-table" [attr.aria-label]="'monitoring.telemetry.statistics' | translate">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'monitoring.telemetry.metric' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.count' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.minimum' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.maximum' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.mean' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.standardDeviation' | translate }}</th>
+              <th scope="col">{{ 'monitoring.stats.outsideBand' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{ 'monitoring.metric.BodyTemperature' | translate }}</th>
+              <td>{{ stats.bodyTemperature.count }}</td>
+              <td>{{ number(stats.bodyTemperature.min) }}</td>
+              <td>{{ number(stats.bodyTemperature.max) }}</td>
+              <td>{{ number(stats.bodyTemperature.mean) }}</td>
+              <td>{{ number(stats.bodyTemperature.standardDeviation) }}</td>
+              <td>{{ pct(stats.bodyTemperature.outsideBandPercent) }}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'monitoring.metric.ActivityIndex' | translate }}</th>
+              <td>{{ stats.activityIndex.count }}</td>
+              <td>{{ number(stats.activityIndex.min) }}</td>
+              <td>{{ number(stats.activityIndex.max) }}</td>
+              <td>{{ number(stats.activityIndex.mean) }}</td>
+              <td>{{ number(stats.activityIndex.standardDeviation) }}</td>
+              <td>{{ pct(stats.activityIndex.outsideBandPercent) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel table-panel" aria-labelledby="readings-heading">
+      <div class="panel-head"><h2 id="readings-heading">{{ 'monitoring.telemetry.readings' | translate }}</h2></div>
+      <div class="table-scroll">
+        <table mat-table class="data-table" [dataSource]="pagedReadings()" [attr.aria-label]="'monitoring.telemetry.readings' | translate">
+          <ng-container matColumnDef="recordedAt">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.recordedAt' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">{{ reading.recordedAt | localizedDate: 'short' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="temperature">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.BodyTemperature' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.bodyTemperature); as value) {
+                {{ value }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.bodyTemperature.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="activity">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.ActivityIndex' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.activityIndex); as value) {
+                {{ value }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.activityIndex.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="rumination">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.RuminationMinutes' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.ruminationMinutes); as value) {
+                {{ value }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.ruminationMinutes.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="battery">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.BatteryLevel' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.batteryLevel); as value) {
+                {{ value }} %
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.batteryLevel.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.fields.position' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (readingPosition(reading.position); as coordinates) {
+                {{ coordinates }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.position.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="readingColumns"></tr>
+          <tr mat-row *matRowDef="let reading; columns: readingColumns"></tr>
+        </table>
+      </div>
+
+      @if (!facade.loading() && facade.readings().length === 0) {
+        <div class="empty-state">
+          <h2>{{ 'monitoring.telemetry.noReadingsTitle' | translate }}</h2>
+          <p>{{ 'monitoring.telemetry.noReadings' | translate }}</p>
+        </div>
+      }
+
+      <mat-paginator [length]="facade.readings().length" [pageIndex]="readingsPageIndex()" [pageSize]="readingsPageSize()"
+        [pageSizeOptions]="pageSizeOptions" (page)="onReadingsPage($event)" />
+    </section>
+  }
+</div>

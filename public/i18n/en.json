@@ -1,0 +1,1764 @@
+{
+  "common": {
+    "language": "Language",
+    "useDarkTheme": "Use dark theme",
+    "useLightTheme": "Use light theme",
+    "skipToContent": "Skip to content",
+    "cancel": "Cancel",
+    "export": "Export",
+    "exporting": "Preparing file…",
+    "exportExcel": "Download Excel",
+    "exportPdf": "Download PDF",
+    "saving": "Saving…",
+    "required": "This field is required.",
+    "invalidDate": "Enter a valid date.",
+    "paginator": {
+      "itemsPerPage": "Items per page",
+      "next": "Next page",
+      "previous": "Previous page",
+      "first": "First page",
+      "last": "Last page",
+      "range": "{{start}} – {{end}}"
+    },
+    "datepicker": {
+      "calendar": "Calendar",
+      "openCalendar": "Open calendar",
+      "closeCalendar": "Close calendar",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "previousYear": "Previous year",
+      "nextYear": "Next year",
+      "previousYears": "Previous 24 years",
+      "nextYears": "Next 24 years",
+      "chooseDate": "Choose date",
+      "chooseMonthAndYear": "Choose month and year",
+      "yearRange": "{{start}} – {{end}}",
+      "yearRangeLabel": "{{start}} to {{end}}"
+    },
+    "exportFailed": "The file could not be created. Try again.",
+    "actions": "Actions",
+    "close": "Close",
+    "save": "Save",
+    "chart": {
+      "summary": "{{label}}: minimum {{minimum}}, maximum {{maximum}}, average {{average}}",
+      "noData": "No readings in this period."
+    }
+  },
+  "meta": {
+    "description": "ICHU by SmartFarm: livestock monitoring with smart collars, herd records, and veterinary history."
+  },
+  "footer": {
+    "copyright": "© 2026 SmartFarm · ICHU",
+    "terms": "Terms and privacy"
+  },
+  "pages": {
+    "signIn": "Sign in",
+    "register": "Create account",
+    "recover": "Reset password",
+    "terms": "Terms and privacy",
+    "notFound": "Page not found",
+    "account": "Account",
+    "advisories": "Advisories",
+    "animals": "Animals",
+    "lots": "Lots",
+    "animalProfile": "Animal profile",
+    "iotDevices": "IoT devices",
+    "waterTroughs": "Water troughs",
+    "edgeGateways": "Edge gateways",
+    "monitoring": "Monitoring",
+    "monitoringCattle": "Animal monitoring",
+    "locations": "Location and fences",
+    "alerts": "Alerts",
+    "thresholds": "Thresholds",
+    "clinicalHistory": "Clinical history",
+    "planning": "Health planning",
+    "planningCampaigns": "Campaigns",
+    "withdrawalPeriods": "Withdrawal periods",
+    "dashboard": "My herd",
+    "reports": "Reports",
+    "portfolio": "Portfolio",
+    "plans": "Plans",
+    "mySubscription": "My plan",
+    "paymentSuccess": "Payment received",
+    "paymentCancel": "Payment cancelled",
+    "nutrition": "Nutrition plan",
+    "reproduction": "Reproduction"
+  },
+  "shell": {
+    "navigation": "Main navigation",
+    "openMenu": "Open navigation menu",
+    "myAccount": "My account",
+    "advisories": "Advisories",
+    "ranch": "Ranch",
+    "ranchFallback": "Ranch {{position}}",
+    "accountMenu": "Account menu",
+    "signOut": "Sign out",
+    "animals": "Animals",
+    "iotDevices": "IoT devices",
+    "locations": "Location & fences",
+    "monitoring": "Monitoring",
+    "alerts": "Alerts",
+    "clinicalHistory": "Clinical history",
+    "healthPlanning": "Health planning",
+    "dashboard": "My herd",
+    "reports": "Reports",
+    "portfolio": "Portfolio",
+    "mySubscription": "My plan",
+    "plans": "Plans",
+    "nutrition": "Nutrition",
+    "reproduction": "Reproduction",
+    "tagline": "Livestock monitoring",
+    "groups": {
+      "herd": "Herd",
+      "health": "Health",
+      "production": "Production",
+      "account": "Account"
+    }
+  },
+  "terms": {
+    "back": "Back to account",
+    "authenticationTitle": "Sign-in and accounts",
+    "authentication": "Sign-in is handled by Firebase Authentication. The ICHU API checks your account and ranch permissions before showing ranch data. Passwords are sent only to Firebase Authentication and are never stored by the application.",
+    "recordsTitle": "Ranch records",
+    "records": "ICHU stores collar telemetry and ranch records for each ranch, and shows them only to accounts with access to that ranch.",
+    "preferencesTitle": "Browser preferences",
+    "preferences": "Your selected language and ranch are stored in this browser.",
+    "paymentsTitle": "Payments",
+    "payments": "Payments are processed by Stripe. ICHU never stores card data.",
+    "contactTitle": "Contact",
+    "contact": "Contact SmartFarm about these terms or your data.",
+    "version": "Version {{version}}"
+  },
+  "notFound": {
+    "body": "Check the address or return to your ICHU account.",
+    "back": "Back to account"
+  },
+  "iam": {
+    "entry": {
+      "title": "Welcome to ICHU",
+      "status": "Opening your herd…",
+      "progress": "Opening workspace"
+    },
+    "roles": {
+      "ranchManager": "Ranch manager",
+      "veterinarian": "Veterinarian",
+      "fieldOperator": "Field operator"
+    },
+    "login": {
+      "mode": "Secure account sign-in",
+      "title": "Welcome back",
+      "lead": "Access your ICHU workspace.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "passwordInvalid": "Use 8–128 characters.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "newHere": "New to ICHU?",
+      "createAccount": "Create an account",
+      "note": "Sign-in is checked by the ICHU account service.",
+      "navigationFailed": "Your workspace could not open. Try again.",
+      "tagline": "Better care for every herd."
+    },
+    "register": {
+      "stepOne": "Step 1 of 2",
+      "stepTwo": "Step 2 of 2",
+      "title": "Create an account",
+      "lead": "Set up your ICHU account.",
+      "name": "Full name",
+      "nameInvalid": "Enter 2–80 characters without surrounding spaces.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "password": "Password",
+      "passwordInvalid": "Use 8–128 characters.",
+      "confirmPassword": "Confirm password",
+      "passwordMismatch": "Passwords do not match.",
+      "role": "Account role",
+      "ranchDetails": "Ranch details",
+      "ranchDetailsNote": "These details create your initial ranch account.",
+      "ranchName": "Ranch name",
+      "region": "Region",
+      "chooseRegion": "Choose a region",
+      "otherRegion": "Other region",
+      "district": "District",
+      "herdSize": "Estimated herd size",
+      "ranchDetailsRequired": "Complete all ranch details and enter a positive whole number for herd size.",
+      "terms": "I agree to the ICHU Terms of Use.",
+      "termsRequired": "Confirm that you agree before continuing.",
+      "review": "Review account",
+      "reviewTitle": "Review your details",
+      "reviewName": "Name",
+      "reviewEmail": "Email",
+      "reviewRole": "Role",
+      "reviewRanch": "Ranch",
+      "reviewRegion": "Region",
+      "reviewDistrict": "District",
+      "reviewHerdSize": "Estimated herd size",
+      "passwordNote": "Your password is sent to Firebase Authentication and is never included in this review.",
+      "edit": "Edit details",
+      "creating": "Creating account…",
+      "create": "Create account",
+      "retry": "Retry account setup",
+      "retryNotice": "Account setup is not complete. Retry with the same email and password to finish it.",
+      "verifyTitle": "Verify your email",
+      "verifyNotice": "Your account was created. Check your inbox for a Firebase verification email before signing in.",
+      "continueToSignIn": "Continue to sign in",
+      "backToSignIn": "Back to sign in"
+    },
+    "recovery": {
+      "title": "Reset your password",
+      "lead": "Enter the email address for your ICHU account.",
+      "email": "Email",
+      "emailInvalid": "Enter a valid email address.",
+      "note": "If an account exists for this address, Firebase will send a password-reset email.",
+      "submit": "Send reset email",
+      "submitting": "Sending…",
+      "resultTitle": "Check your email.",
+      "resultBody": "If the address belongs to an account, a password-reset link is on its way.",
+      "back": "Back to sign in"
+    },
+    "errors": {
+      "configuration": "The application is not configured. Check the runtime settings.",
+      "invalid-credentials": "The email or password is incorrect.",
+      "email-already-in-use": "An account already uses this email address.",
+      "weak-password": "Choose a stronger password and try again.",
+      "email-not-verified": "Verify your email address before signing in.",
+      "account-unavailable": "This ICHU account is unavailable. Sign in instead, or contact your administrator.",
+      "service-unavailable": "The service is temporarily unavailable. Try again later.",
+      "network": "The service could not be reached. If ICHU has not been used for a while, its server can take up to a minute to start; try again in a moment.",
+      "unknown": "Authentication could not be completed. Try again.",
+      "current-password-incorrect": "The current password is incorrect.",
+      "requires-recent-login": "For your security, sign in again before changing your password."
+    },
+    "account": {
+      "title": "My account",
+      "lead": "Your verified identity, ranch access, and professional profile.",
+      "identityTitle": "Verified account",
+      "identityLead": "Details from your ICHU account.",
+      "emailVerified": "Email verified",
+      "emailNotVerified": "Email not verified",
+      "email": "Email",
+      "accountStatus": "Account status",
+      "ranchesTitle": "My ranches",
+      "ranchesLead": "Ranches your account can open, with the access you hold in each.",
+      "noRanchesTitle": "No authorized ranches",
+      "noRanchesBody": "Your account does not have ranch access yet.",
+      "current": "Current",
+      "useRanch": "Use this ranch",
+      "expiresOn": "Expires {{date}}",
+      "noExpiry": "No expiry",
+      "accessCode": "Access code",
+      "accessCodeHint": "Share this code with your veterinarian so they can request access.",
+      "copyCode": "Copy code",
+      "codeCopied": "Code copied.",
+      "profileTitle": "Professional profile",
+      "profileLead": "Details saved for this veterinarian account.",
+      "editProfileTitle": "Edit professional profile",
+      "editProfileLead": "Changes are saved to your ICHU account.",
+      "profileRequired": "Ranch access requests need a complete professional profile. Save your details below.",
+      "profileSaved": "Professional profile saved.",
+      "specialty": "Specialty",
+      "specialtyInvalid": "Enter a specialty of up to 120 characters.",
+      "licenseNumber": "License number",
+      "licenseNumberInvalid": "Enter a license number of up to 80 characters.",
+      "yearsOfExperience": "Years of experience",
+      "yearsOfExperienceInvalid": "Enter a whole number from 0 to 70.",
+      "saveProfile": "Save profile",
+      "saving": "Saving…",
+      "passwordTitle": "Change password",
+      "passwordLead": "Confirm your current password, then choose a new one.",
+      "currentPassword": "Current password",
+      "currentPasswordRequired": "Enter your current password.",
+      "newPassword": "New password",
+      "passwordHint": "Use 8 to 128 characters.",
+      "passwordInvalid": "Use between 8 and 128 characters.",
+      "confirmPassword": "Confirm new password",
+      "confirmPasswordRequired": "Repeat the new password.",
+      "passwordMismatch": "The new password and its confirmation do not match.",
+      "changePassword": "Change password",
+      "changingPassword": "Changing password…",
+      "passwordChanged": "Your password was changed."
+    },
+    "advisories": {
+      "title": "Herd advisories",
+      "lead": "Veterinarians request access to a ranch here, and ranch managers review those requests.",
+      "requestTitle": "Request ranch access",
+      "requestLead": "Find the ranch with its access code, then explain why you need access.",
+      "profileRequired": "Complete your professional profile before requesting access.",
+      "goToAccount": "Go to my account",
+      "accessCode": "Ranch access code",
+      "accessCodeHint": "Eight characters from the ranch manager's account page.",
+      "accessCodeInvalid": "Enter the eight-character code from the ranch manager.",
+      "findRanch": "Find ranch",
+      "searching": "Searching…",
+      "noRanchMatch": "No ranch matches this code.",
+      "ranchFound": "Ranch found",
+      "unnamedRanch": "Unnamed ranch",
+      "reason": "Reason",
+      "reasonInvalid": "Explain why you need access, up to 1000 characters.",
+      "requestAccess": "Request access",
+      "sendingRequest": "Sending request…",
+      "requestSent": "Your access request was sent.",
+      "myRanchesTitle": "Ranches you can access",
+      "myRanchesLead": "Ranches where your account already has access.",
+      "noMyRanches": "You do not have ranch access yet.",
+      "requestsTitle": "Access requests",
+      "requestsLead": "Veterinarian requests for the ranch selected in the header.",
+      "status": "Status",
+      "filterAll": "All",
+      "veterinarian": "Veterinarian",
+      "requestedAt": "Requested",
+      "expiresAt": "Access until",
+      "actions": "Actions",
+      "profileUnavailable": "Professional details unavailable.",
+      "review": "Review",
+      "revoke": "Revoke access",
+      "loading": "Loading requests…",
+      "noRanchTitle": "No ranch to show",
+      "noRanchBody": "Access requests appear after your account is assigned to a ranch.",
+      "manageRequiredTitle": "Manage access is required",
+      "manageRequiredBody": "Your access to the selected ranch does not include reviewing requests.",
+      "noRequestsTitle": "No requests yet",
+      "noRequestsBody": "No veterinarian has asked for access to this ranch.",
+      "noFilteredTitle": "No requests with this status",
+      "notice": {
+        "granted": "Access granted.",
+        "rejected": "Request rejected.",
+        "revoked": "Access revoked."
+      },
+      "decision": {
+        "title": "Review access request",
+        "lead": "Choose the scope and last valid day to grant access, or reject the request.",
+        "scope": "Granted scope",
+        "expiresOn": "Last day of access",
+        "expiryInvalid": "Choose a date from tomorrow onward.",
+        "grant": "Grant access",
+        "reject": "Reject"
+      },
+      "revokeTitle": "Revoke ranch access?",
+      "revokeBody": "The veterinarian loses access to this ranch until a new request is granted."
+    },
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "granted": "Granted",
+      "rejected": "Rejected",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "scope": {
+      "read": "View records",
+      "clinicalWrite": "View and record clinical care",
+      "manage": "Manage ranch access"
+    }
+  },
+  "errors": {
+    "network": "The ICHU service could not be reached. If it has not been used for a while, its server can take up to a minute to start; try again in a moment.",
+    "configuration": "The application is not configured. Check the runtime settings.",
+    "unknown": "The request could not be completed. Try again.",
+    "http-403": "Your account does not have permission for this action.",
+    "http-404": "The requested item was not found.",
+    "http-409": "This change conflicts with existing data. Refresh and try again.",
+    "http-500": "The ICHU service is temporarily unavailable. Try again later."
+  },
+  "cattle": {
+    "areaNavigation": "Animal areas",
+    "tabs": {
+      "animals": "Animals",
+      "lots": "Lots"
+    },
+    "breed": {
+      "BrownSwiss": "Brown Swiss",
+      "Fleckvieh": "Fleckvieh",
+      "Criollo": "Criollo",
+      "Crossbred": "Crossbred"
+    },
+    "sex": {
+      "Female": "Female",
+      "Male": "Male"
+    },
+    "stage": {
+      "Calf": "Calf",
+      "Heifer": "Heifer",
+      "MilkingCow": "Milking cow",
+      "FatteningBull": "Fattening bull"
+    },
+    "status": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    },
+    "exitReason": {
+      "Death": "Death",
+      "Sale": "Sale",
+      "Theft": "Theft",
+      "Culling": "Culling"
+    },
+    "fields": {
+      "earTag": "Ear tag",
+      "breed": "Breed",
+      "sex": "Sex",
+      "birthDate": "Birth date",
+      "ageMonths": "Age (months)",
+      "stage": "Productive stage",
+      "lot": "Lot",
+      "status": "Status",
+      "exitReason": "Exit reason",
+      "exitDate": "Exit date",
+      "name": "Name",
+      "criterion": "Criterion"
+    },
+    "inventory": {
+      "title": "Animals",
+      "lead": "Find animals by ear tag, status or lot, register new animals and export the list.",
+      "register": "Register animal",
+      "filters": "Animal filters",
+      "earTagHint": "Exact ear tag",
+      "allStatuses": "All statuses",
+      "allLots": "All lots",
+      "search": "Search",
+      "clearFilters": "Clear filters",
+      "loading": "Loading animals",
+      "tableLabel": "Animals of the ranch",
+      "noLot": "No lot",
+      "noRanchTitle": "No ranch available",
+      "noRanch": "Your account has no ranch access, so no animals are shown.",
+      "emptyTitle": "No animals yet",
+      "empty": "No animals are registered in this ranch.",
+      "emptyManage": "Register the first animal to start the inventory.",
+      "noMatchTitle": "No matching animals",
+      "noMatch": "Change or clear the filters to see more animals."
+    },
+    "register": {
+      "title": "Register animal",
+      "lead": "Enter the identification and the first productive stage. The ear tag must be unique in this ranch.",
+      "submit": "Register",
+      "saved": "Animal registered."
+    },
+    "edit": {
+      "title": "Edit animal data",
+      "lead": "Changes keep the animal's stage history.",
+      "submit": "Save changes",
+      "saved": "Animal data saved."
+    },
+    "lifeStage": {
+      "title": "Change productive stage",
+      "lead": "The previous stage stays in the history and closes on the day you choose.",
+      "newStage": "New stage",
+      "validFrom": "Effective from",
+      "submit": "Change stage",
+      "saved": "Productive stage changed."
+    },
+    "exit": {
+      "title": "Record exit",
+      "warning": "Recording an exit cannot be undone. The animal stays in the records as inactive and read-only, with its history.",
+      "reason": "Exit reason",
+      "exitDate": "Exit date",
+      "submit": "Record exit",
+      "saved": "Exit recorded. The animal is now read-only."
+    },
+    "validation": {
+      "earTagRequired": "Enter an ear tag of up to 30 characters.",
+      "notInFuture": "The date cannot be in the future.",
+      "birthDateAfterStage": "The birth date cannot be after the first recorded stage.",
+      "beforeStage": "The date cannot be before the birth date or the start of the current stage.",
+      "stageUnchanged": "Choose a stage different from the current one.",
+      "lotNameRequired": "Enter a lot name of up to 80 characters."
+    },
+    "profile": {
+      "title": "Animal",
+      "back": "Back to animals",
+      "loading": "Loading animal",
+      "details": "Details",
+      "edit": "Edit data",
+      "changeStage": "Change stage",
+      "recordExit": "Record exit",
+      "readOnly": "This animal left the herd on {{date}}. Its record is kept for reference and cannot be changed.",
+      "noLot": "No lot",
+      "collar": "Smart collar",
+      "collarUnavailable": "Collar data is unavailable right now. Try again later.",
+      "noCollar": "No collar assigned",
+      "assignCollar": "Assign a collar in IoT devices",
+      "lastReading": "Last reading: {{date}}",
+      "noReadings": "No reading has arrived from this collar yet.",
+      "history": "Stage history",
+      "fromDate": "From {{date}}",
+      "untilDate": "until {{date}}",
+      "current": "current",
+      "noHistory": "No stage recorded."
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    },
+    "lots": {
+      "title": "Lots",
+      "lead": "Group animals for management. An animal can belong to several lots; removing it from a lot keeps its record.",
+      "create": "Create lot",
+      "createTitle": "Create lot",
+      "submit": "Create lot",
+      "created": "Lot created.",
+      "criterionHint": "Optional: how the group was formed.",
+      "listTitle": "Lots of the ranch",
+      "listNote": "Select a lot to see its animals.",
+      "tableLabel": "Lots of the ranch",
+      "members": "Animals",
+      "noCriterion": "No criterion",
+      "open": "Open",
+      "actions": "Actions",
+      "loading": "Loading lots",
+      "emptyTitle": "No lots yet",
+      "empty": "No lots exist in this ranch.",
+      "emptyManage": "Create a lot to group animals.",
+      "addAnimal": "Active animal",
+      "add": "Add to lot",
+      "noAssignable": "Every active animal is already in this lot.",
+      "membersTableLabel": "Animals in the lot",
+      "unknownAnimal": "Unknown animal",
+      "assignedOn": "Assigned on",
+      "remove": "Remove",
+      "noAnimals": "This lot has no animals yet."
+    },
+    "export": {
+      "failed": "The file could not be created. Try again.",
+      "limited": "The export holds the first 5000 animals of the filter."
+    }
+  },
+  "devices": {
+    "areaNavigation": "IoT device areas",
+    "tabs": {
+      "devices": "Devices",
+      "waterTroughs": "Water troughs",
+      "gateways": "Edge gateways"
+    },
+    "type": {
+      "SmartCollar": "Smart collar",
+      "WaterController": "Water controller"
+    },
+    "status": {
+      "Available": "Available",
+      "InService": "In service",
+      "Maintenance": "Maintenance"
+    },
+    "communication": {
+      "NeverReported": "Never reported",
+      "Communicating": "Communicating",
+      "NoCommunication": "No communication"
+    },
+    "targetType": {
+      "Cattle": "Animal",
+      "WaterTrough": "Water trough"
+    },
+    "fields": {
+      "serial": "Serial number",
+      "type": "Device type",
+      "status": "Status",
+      "communication": "Communication",
+      "battery": "Battery",
+      "firmware": "Firmware",
+      "assignedTo": "Assigned to",
+      "actions": "Actions",
+      "lastSeen": "Last seen",
+      "target": "Target",
+      "startedAt": "Assigned on",
+      "endedAt": "Released on",
+      "releaseReason": "Release reason"
+    },
+    "inventory": {
+      "title": "IoT devices",
+      "lead": "Register smart collars and water controllers, assign them to animals and troughs, and track battery, communication, and maintenance.",
+      "register": "Register device",
+      "filters": "Device filters",
+      "allTypes": "All types",
+      "allStatuses": "All statuses",
+      "allCommunications": "All communication states",
+      "clearFilters": "Clear filters",
+      "loading": "Loading devices",
+      "tableLabel": "IoT devices of the ranch",
+      "noRanchTitle": "No ranch available",
+      "noRanch": "Your account has no ranch access, so no devices are shown.",
+      "emptyTitle": "No devices yet",
+      "empty": "No devices are registered in this ranch.",
+      "emptyManage": "Register the first device to start the inventory.",
+      "noMatchTitle": "No matching devices",
+      "noMatch": "Change or clear the filters to see more devices."
+    },
+    "actions": {
+      "assign": "Assign",
+      "release": "Release",
+      "history": "History",
+      "maintenanceOn": "Put in maintenance",
+      "maintenanceOff": "End maintenance"
+    },
+    "battery": {
+      "percent": "{{value}}%",
+      "low": "Low battery",
+      "none": "No reading"
+    },
+    "lastSeen": "Last seen {{time}}",
+    "notAssigned": "Not assigned",
+    "unknownTarget": "Unknown",
+    "notRecorded": "Not recorded",
+    "maintenance": {
+      "on": "Device sent to maintenance.",
+      "off": "Device is available again."
+    },
+    "register": {
+      "title": "Register device",
+      "lead": "The serial number is printed on the device and must be unique on the platform.",
+      "submit": "Register device",
+      "saved": "Device registered."
+    },
+    "assign": {
+      "collarTitle": "Assign collar",
+      "controllerTitle": "Assign water controller",
+      "collarLead": "Choose an active animal that has no collar. The collar reports the animal's activity and location.",
+      "controllerLead": "Choose a water trough that has no controller. The controller reports the trough temperature.",
+      "animal": "Active animal without a collar",
+      "trough": "Water trough without a controller",
+      "noAnimals": "Every active animal already has a collar.",
+      "noTroughs": "Every water trough already has a controller.",
+      "submit": "Assign",
+      "saved": "Device assigned."
+    },
+    "release": {
+      "title": "Release device",
+      "warning": "Releasing ends the current assignment. The device keeps its history and becomes available again.",
+      "reason": "Reason for release",
+      "submit": "Release device",
+      "saved": "Device released."
+    },
+    "history": {
+      "title": "Assignment history",
+      "lead": "Every period this device served, newest first.",
+      "loading": "Loading history",
+      "empty": "This device has no assignments yet.",
+      "current": "Current",
+      "close": "Close"
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    },
+    "validation": {
+      "serialRequired": "Enter a serial number of up to 50 characters.",
+      "reasonRequired": "Enter a reason of up to 120 characters."
+    }
+  },
+  "waterTroughs": {
+    "noLot": "No lot",
+    "unknownLot": "Lot not listed",
+    "fields": {
+      "name": "Name",
+      "lot": "Lot",
+      "temperatureRange": "Temperature range",
+      "minimum": "Minimum (°C)",
+      "maximum": "Maximum (°C)"
+    },
+    "list": {
+      "title": "Water troughs",
+      "lead": "Name each drinking place and set the temperature band it will be checked against.",
+      "register": "Register water trough",
+      "loading": "Loading water troughs",
+      "tableLabel": "Water troughs of the ranch",
+      "actions": "Actions",
+      "setRange": "Set range",
+      "rangeValue": "{{minimum}} °C to {{maximum}} °C",
+      "noRange": "No range set",
+      "emptyTitle": "No water troughs yet",
+      "empty": "No water troughs are registered in this ranch.",
+      "emptyManage": "Register the first water trough to start the list."
+    },
+    "register": {
+      "title": "Register water trough",
+      "lead": "Registering a water trough does not use a collar. The lot is optional.",
+      "submit": "Register water trough",
+      "saved": "Water trough registered."
+    },
+    "range": {
+      "title": "Set temperature range",
+      "lead": "Set the band the trough will be checked against. Temperature readings are not shown in this version.",
+      "submit": "Save range",
+      "saved": "Temperature range saved."
+    },
+    "validation": {
+      "nameRequired": "Enter a name of up to 80 characters.",
+      "temperatureLimits": "Enter a temperature from -10 to 60 °C.",
+      "temperatureOrder": "The minimum must be lower than the maximum, with at most one decimal."
+    }
+  },
+  "gateways": {
+    "status": {
+      "Active": "Active",
+      "Revoked": "Revoked"
+    },
+    "fields": {
+      "name": "Name",
+      "status": "Status",
+      "registeredOn": "Registered on",
+      "revokedOn": "Revoked on"
+    },
+    "notRevoked": "Not revoked",
+    "list": {
+      "title": "Edge gateways",
+      "lead": "Edge gateways connect the field devices of a ranch to ICHU. A gateway key is shown once, when the gateway is registered.",
+      "register": "Register gateway",
+      "loading": "Loading gateways",
+      "tableLabel": "Edge gateways of the ranch",
+      "actions": "Actions",
+      "revoke": "Revoke",
+      "emptyTitle": "No edge gateways yet",
+      "empty": "No edge gateways are registered in this ranch.",
+      "emptyManage": "Register a gateway to connect a field device."
+    },
+    "register": {
+      "title": "Register gateway",
+      "lead": "Name the gateway by where it is on the ranch, such as North paddock.",
+      "submit": "Register gateway",
+      "keyTitle": "Gateway key",
+      "keyWarning": "Copy this key now. It will not be shown again.",
+      "copy": "Copy key",
+      "copied": "Key copied.",
+      "copyFailed": "The key could not be copied. Select it and copy it manually.",
+      "done": "Done",
+      "saved": "Gateway registered."
+    },
+    "revoke": {
+      "title": "Revoke gateway",
+      "warning": "The gateway key stops working right away. Revoking cannot be undone; register a new gateway to connect the device again.",
+      "submit": "Revoke gateway",
+      "saved": "Gateway revoked."
+    },
+    "validation": {
+      "nameRequired": "Enter a name of up to 80 characters."
+    }
+  },
+  "locations": {
+    "title": "Location and fences",
+    "lead": "Grazing zones on the map with the last known position of each active animal. Tables list the same data.",
+    "filters": "Location filters",
+    "draw": "Draw grazing zone",
+    "map": {
+      "label": "Map of grazing zones and last known positions",
+      "viewHelp": "Grazing zones and last known positions. A position is a past observation, not a live location.",
+      "editHelp": "Click the map to add a corner. Drag a corner to move it. Click a corner, or focus it with Tab and press Enter, to remove it, or use Undo last point."
+    },
+    "editor": {
+      "defineTitle": "New grazing zone",
+      "redefineTitle": "Redefine grazing zone",
+      "undo": "Undo last point",
+      "clear": "Clear",
+      "corners": {
+        "one": "{{count}} corner (at least {{minimum}} needed)",
+        "other": "{{count}} corners (at least {{minimum}} needed)"
+      },
+      "minimumCorners": "A grazing zone needs at least {{minimum}} corners.",
+      "saved": "The grazing zone was saved."
+    },
+    "geofences": {
+      "title": "Grazing zones",
+      "tableLabel": "Grazing zones of the ranch",
+      "emptyTitle": "No grazing zones",
+      "empty": "No grazing zones are defined for this selection.",
+      "emptyManage": "Draw a grazing zone on the map for a lot to start geofence alerts."
+    },
+    "positions": {
+      "title": "Last known positions",
+      "tableLabel": "Last known positions of active animals",
+      "position": "Position",
+      "emptyTitle": "No positions",
+      "empty": "No active animal has a known position in this selection.",
+      "known": "Known position",
+      "noPosition": "No position",
+      "failed": "Could not load",
+      "current": "Current",
+      "stale": "Older than 24 hours"
+    }
+  },
+  "monitoring": {
+    "areaNavigation": "Monitoring areas",
+    "tabs": {
+      "overview": "Overview",
+      "thresholds": "Thresholds"
+    },
+    "map": {
+      "unavailable": "The map is not available. Reload the page to try again; the tables still show the same data.",
+      "loading": "Loading the map…",
+      "geofenceTooltip": "{{name}} · tolerance {{tolerance}} m",
+      "animalTooltip": "Ear tag {{earTag}} · last known position {{time}}",
+      "staleAnimalTooltip": "Ear tag {{earTag}} · position from {{time}}, older than 24 hours",
+      "vertex": "Vertex {{number}}"
+    },
+    "metric": {
+      "BodyTemperature": "Body temperature",
+      "ActivityIndex": "Activity index",
+      "RuminationMinutes": "Rumination (minutes)",
+      "BatteryLevel": "Battery level"
+    },
+    "units": {
+      "celsius": "°C",
+      "index": "index",
+      "minutes": "min",
+      "percent": "%",
+      "meters": "m"
+    },
+    "duration": {
+      "hours": "hours",
+      "minutes": "minutes",
+      "seconds": "seconds"
+    },
+    "state": {
+      "noReading": "No reading",
+      "stale": "Stale"
+    },
+    "measurement": {
+      "Valid": "Valid",
+      "Invalid": "Invalid",
+      "Absent": "No reading"
+    },
+    "severity": {
+      "Informative": "Informative",
+      "Warning": "Warning",
+      "Critical": "Critical"
+    },
+    "alertType": {
+      "Temperature": "Body temperature",
+      "Activity": "Activity",
+      "Geofence": "Geofence"
+    },
+    "alertStatus": {
+      "Pending": "Pending",
+      "Acknowledged": "Acknowledged"
+    },
+    "fields": {
+      "lifeStage": "Productive stage",
+      "metric": "Metric",
+      "minValue": "Minimum",
+      "maxValue": "Maximum",
+      "severity": "Severity",
+      "status": "Status",
+      "type": "Type",
+      "value": "Value",
+      "raisedAt": "Raised at",
+      "recordedAt": "Recorded at",
+      "acknowledgedAt": "Attended at",
+      "lastReading": "Last reading",
+      "detectedValue": "Detected value",
+      "normalRange": "Normal range",
+      "geofence": "Geofence",
+      "unknownGeofence": "Geofence no longer listed",
+      "distanceToBoundary": "Distance to boundary",
+      "outsideFor": "Outside the zone for",
+      "finding": "Finding",
+      "action": "Action",
+      "noAction": "No action recorded",
+      "responseTime": "Response time",
+      "responseTimeSeconds": "Response time (seconds)",
+      "tolerance": "Tolerance (m)",
+      "position": "Position"
+    },
+    "links": {
+      "openMonitoring": "Open monitoring"
+    },
+    "overview": {
+      "title": "Herd monitoring",
+      "lead": "Latest body temperature, activity, rumination and position of each active animal. Stale or missing values are labelled, never shown as zero.",
+      "filters": "Herd filters",
+      "lot": "Lot",
+      "allLots": "All lots",
+      "limitHint": "Herds above {{limit}} animals show values after a lot is chosen.",
+      "tooMany": "This herd has more than {{limit}} active animals. Filter by lot to load their latest values.",
+      "loading": "Loading latest values",
+      "tableLabel": "Latest values of active animals",
+      "emptyTitle": "No active animals",
+      "empty": "Register animals and assign collars to see their values here.",
+      "status": {
+        "current": "Current",
+        "stale": "Stale values",
+        "noReading": "No reading",
+        "failed": "Could not load"
+      }
+    },
+    "telemetry": {
+      "title": "Animal monitoring",
+      "back": "Back to herd monitoring",
+      "latest": "Latest values",
+      "lastKnownPosition": "Last known position",
+      "noPosition": "No position",
+      "range": "Period",
+      "presets": {
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days",
+        "custom": "Custom"
+      },
+      "fromDay": "From day",
+      "toDay": "To day (included)",
+      "apply": "Apply period",
+      "invalidRange": "Choose both days, with the first day before the last one.",
+      "noThresholds": "No threshold is configured for this animal's stage, so its readings are not compared with a normal range.",
+      "truncated": "Only the latest {{limit}} readings of {{total}} in this period are loaded. Choose a shorter period to see earlier ones.",
+      "temperatureChart": "Body temperature readings over time, with the threshold limits",
+      "activityChart": "Activity index readings over time, with the threshold limits",
+      "statistics": "Statistics of the period",
+      "metric": "Metric",
+      "readings": "Readings of the period",
+      "loading": "Loading readings",
+      "noReadingsTitle": "No readings in this period",
+      "noReadings": "Choose a longer period or check that the collar is sending readings."
+    },
+    "stats": {
+      "count": "Valid readings",
+      "minimum": "Minimum",
+      "maximum": "Maximum",
+      "mean": "Average",
+      "standardDeviation": "Standard deviation",
+      "outsideBand": "Outside threshold"
+    },
+    "chart": {
+      "minimum": "Minimum threshold",
+      "maximum": "Maximum threshold"
+    },
+    "alerts": {
+      "title": "Alerts",
+      "lead": "Alerts raised for body temperature, activity and geofences. Attend each alert with a finding and, when relevant, the action taken.",
+      "filters": "Alert filters",
+      "allStatuses": "All statuses",
+      "animal": "Animal",
+      "allAnimals": "All animals",
+      "tableLabel": "Alerts of the ranch",
+      "loading": "Loading alerts",
+      "open": "Open",
+      "emptyTitle": "No alerts",
+      "empty": "No alerts match the filters.",
+      "acknowledged": "The alert was attended.",
+      "acknowledge": "Attend alert",
+      "detail": {
+        "title": "Alert",
+        "animal": "Animal {{earTag}}",
+        "mapLabel": "Position of the alert and its geofence"
+      }
+    },
+    "geofences": {
+      "name": "Grazing zone name",
+      "corners": "Corners",
+      "redefine": "Redefine",
+      "toleranceHint": "Largest GPS error, in meters, that a position may have and still count."
+    },
+    "thresholds": {
+      "title": "Normal ranges",
+      "lead": "Normal ranges per productive stage and metric. Readings outside a range raise threshold alerts; ICHU provides no default ranges.",
+      "add": "Add threshold",
+      "edit": "Edit",
+      "saved": "The threshold was saved.",
+      "tableLabel": "Normal ranges of the ranch",
+      "loading": "Loading thresholds",
+      "emptyTitle": "No thresholds yet",
+      "empty": "No normal ranges are configured for this ranch.",
+      "emptyManage": "Add a threshold for each stage and metric to raise threshold alerts.",
+      "dialog": {
+        "title": "Normal range",
+        "lead": "Readings below the minimum or above the maximum raise an alert with this severity.",
+        "submit": "Save range"
+      }
+    },
+    "validation": {
+      "rangeOrder": "The minimum must be below the maximum.",
+      "findingRequired": "Describe the finding before attending the alert.",
+      "tolerance": "Enter a whole number of meters from 1 to {{maximum}}."
+    },
+    "errors": {
+      "versionConflict": "This record changed in the meantime. The latest data was loaded."
+    }
+  },
+  "health": {
+    "title": "Clinical history",
+    "lead": "Field events and clinical interventions of each animal, newest first, with its latest values, pending alerts and withdrawal period.",
+    "filters": "Clinical history filters",
+    "chooseAnimal": "Choose an animal",
+    "allTypes": "All types",
+    "noAnimalTitle": "No animal selected",
+    "noAnimal": "Choose an animal to see its clinical history.",
+    "fields": {
+      "animal": "Animal",
+      "period": "Period",
+      "type": "Type",
+      "kind": "Kind",
+      "day": "Day",
+      "time": "Time",
+      "occurredAt": "Date and time",
+      "product": "Product",
+      "dose": "Dose",
+      "observation": "Observation",
+      "sireReference": "Sire",
+      "pregnancyResult": "Pregnancy result",
+      "expectedCalvingDate": "Expected calving date"
+    },
+    "periods": {
+      "90d": "Last 90 days",
+      "1y": "Last year",
+      "5y": "Last 5 years"
+    },
+    "type": {
+      "HealthEvent": "Health event",
+      "Birth": "Birth",
+      "Vaccination": "Vaccination",
+      "Treatment": "Treatment",
+      "Insemination": "Insemination",
+      "NaturalMating": "Natural mating",
+      "HeatObserved": "Heat observed",
+      "Abortion": "Abortion",
+      "PregnancyDiagnosis": "Pregnancy diagnosis"
+    },
+    "kind": {
+      "field": "Field event",
+      "clinical": "Clinical intervention"
+    },
+    "links": {
+      "openHistory": "Clinical history"
+    },
+    "records": {
+      "openField": "Record health event",
+      "openClinical": "Record clinical intervention",
+      "fieldTitle": "Record health event",
+      "fieldLead": "Record an event observed on animal {{earTag}}, such as a health observation, a birth, a heat, an abortion or a breeding service.",
+      "fieldSubmit": "Save event",
+      "clinicalTitle": "Record clinical intervention",
+      "clinicalLead": "Record a vaccination, treatment, insemination or pregnancy diagnosis applied to animal {{earTag}}.",
+      "clinicalSubmit": "Save intervention",
+      "fieldSaved": "The health event was recorded.",
+      "clinicalSaved": "The clinical intervention was recorded."
+    },
+    "validation": {
+      "future": "The date and time cannot be in the future."
+    },
+    "summary": {
+      "title": "Health summary",
+      "stage": "Productive stage",
+      "pendingAlerts": "Pending alerts",
+      "withdrawal": "Withdrawal period",
+      "withdrawalActive": "In force until {{date}}",
+      "withdrawalUpcoming": "Starts {{date}}",
+      "noWithdrawal": "No withdrawal period",
+      "daysRemaining": "Days remaining: {{count}}",
+      "incomplete": "Some values could not be loaded. Try again later."
+    },
+    "timeline": {
+      "title": "Timeline",
+      "loading": "Loading history",
+      "empty": "No records in this period.",
+      "noProduct": "No product recorded"
+    },
+    "report": {
+      "subtitle": "Ear tag {{earTag}} · {{stage}} · {{from}} – {{to}}"
+    }
+  },
+  "planning": {
+    "areaNavigation": "Health planning areas",
+    "tabs": {
+      "calendar": "Calendar",
+      "campaigns": "Campaigns",
+      "withdrawal": "Withdrawal periods"
+    },
+    "fields": {
+      "name": "Name",
+      "kind": "Kind",
+      "status": "Status",
+      "state": "State",
+      "startsOn": "Starts on",
+      "endsOn": "Ends on",
+      "startsAt": "Starts",
+      "endsAt": "Ends",
+      "animal": "Animal",
+      "title": "Title",
+      "scheduledAt": "Scheduled",
+      "day": "Day",
+      "time": "Time",
+      "appliedDay": "Applied on",
+      "dueDay": "Due on",
+      "linkedIntervention": "Linked clinical intervention"
+    },
+    "kind": {
+      "Sanitary": "Sanitary",
+      "Reproductive": "Reproductive"
+    },
+    "campaignStatus": {
+      "Upcoming": "Upcoming",
+      "Active": "Active",
+      "Finished": "Finished"
+    },
+    "withdrawalState": {
+      "Active": "In force",
+      "Upcoming": "Upcoming",
+      "Ended": "Ended"
+    },
+    "state": {
+      "Done": "Done",
+      "Scheduled": "Scheduled",
+      "Overdue": "Overdue",
+      "overdueOne": "Overdue by 1 day",
+      "overdueDays": "Overdue by {{count}} days"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "lead": "Sanitary and reproductive work by day, with the reminders for the next 7 days and the overdue work.",
+      "loading": "Loading calendar",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "view": "Calendar view",
+      "viewGrid": "Month grid",
+      "viewAgenda": "Agenda",
+      "dayLabel": "{{date}}, activities: {{count}}",
+      "pickDay": "Select a day",
+      "noActivitiesOnDay": "No activities on this day.",
+      "noActivitiesMonth": "No activities in this month.",
+      "ranchWide": "Whole ranch",
+      "limited": "Only the first {{limit}} activities of this period are shown.",
+      "agendaTitle": "Agenda"
+    },
+    "reminders": {
+      "title": "Reminders",
+      "upcoming": "Upcoming 7 days",
+      "overdue": "Overdue",
+      "noUpcoming": "No activities due in the next 7 days.",
+      "noOverdue": "No overdue activities."
+    },
+    "activities": {
+      "schedule": {
+        "open": "Schedule activity",
+        "title": "Schedule activity",
+        "lead": "Schedule work for the whole ranch or for one active animal.",
+        "submit": "Schedule"
+      },
+      "scheduled": "The activity was scheduled.",
+      "open": "Open",
+      "loading": "Loading activity",
+      "applications": "Applications",
+      "noApplications": "No applications recorded yet.",
+      "recordApplication": "Record application",
+      "linkedOn": "Linked to intervention on {{date}}",
+      "linkedUnknown": "Linked to a clinical intervention",
+      "noIntervention": "No linked intervention",
+      "followUps": "Follow-ups",
+      "noFollowUps": "No follow-ups scheduled.",
+      "scheduleFollowUp": "Schedule follow-up"
+    },
+    "campaigns": {
+      "title": "Campaigns",
+      "lead": "Sanitary and reproductive campaigns over a range of days, with the activities scheduled inside each one.",
+      "loading": "Loading campaigns",
+      "tableLabel": "Campaigns of the ranch",
+      "emptyTitle": "No campaigns yet",
+      "empty": "No campaigns are planned for this ranch.",
+      "emptyManage": "Create a sanitary or reproductive campaign to group its activities.",
+      "created": "The campaign was created.",
+      "create": {
+        "open": "New campaign",
+        "title": "New campaign",
+        "lead": "A campaign groups activities over an inclusive range of days.",
+        "submit": "Create campaign"
+      },
+      "detail": {
+        "loading": "Loading campaign",
+        "activities": "Activities in this campaign",
+        "noActivities": "No activities are scheduled in this campaign yet."
+      }
+    },
+    "withdrawal": {
+      "title": "Withdrawal periods",
+      "lead": "Withdrawal intervals recorded for each animal, with their bounds, state and days left.",
+      "loading": "Loading withdrawal periods",
+      "tableLabel": "Withdrawal periods of the ranch",
+      "filters": "Withdrawal filters",
+      "allAnimals": "All animals",
+      "remaining": "Remaining",
+      "daysRemaining": {
+        "one": "Day left: {{count}}",
+        "other": "Days left: {{count}}"
+      },
+      "startsDay": "Starts on",
+      "endsDay": "Ends on",
+      "emptyTitle": "No withdrawal periods yet",
+      "empty": "No withdrawal periods are recorded for this ranch.",
+      "emptyRecord": "Record a withdrawal period after a clinical intervention to start one.",
+      "recorded": "The withdrawal period was recorded.",
+      "record": {
+        "open": "Record withdrawal period",
+        "title": "Record withdrawal period",
+        "lead": "Enter the start and end of the withdrawal interval. ICHU stores these bounds as given and does not calculate them.",
+        "submit": "Save period"
+      }
+    },
+    "validation": {
+      "nameRequired": "Enter a campaign name.",
+      "rangeOrder": "The end day cannot be before the start day.",
+      "titleRequired": "Enter a title.",
+      "withdrawalRangeOrder": "The end cannot be before the start."
+    }
+  },
+  "reproduction": {
+    "title": "Reproduction",
+    "lead": "Breeding services, pregnancy diagnoses, calvings and heats of each female, with the days open after each calving.",
+    "filters": "Reproduction filters",
+    "loading": "Loading the reproductive history.",
+    "fields": {
+      "female": "Female"
+    },
+    "chooseFemale": "Choose a female",
+    "noAnimalTitle": "No female selected",
+    "noAnimal": "Choose a female to see her reproductive history.",
+    "actions": {
+      "service": "Record service",
+      "diagnosis": "Record pregnancy diagnosis",
+      "event": "Record calving, abortion or heat"
+    },
+    "summary": {
+      "title": "Figures"
+    },
+    "kpi": {
+      "pregnancies": "Confirmed pregnancies",
+      "services": "Breeding services",
+      "servicesPerPregnancy": "Services per pregnancy",
+      "lastCalving": "Last calving",
+      "daysOpen": "Current days open",
+      "expectedCalving": "Expected calving",
+      "notPregnant": "Not pregnant",
+      "note": "Current days open count from the last calving while no pregnancy is in progress. Services per pregnancy divides the services by the confirmed pregnancies."
+    },
+    "intervals": {
+      "title": "Calving intervals",
+      "tableLabel": "Calving intervals of the animal",
+      "calving": "Calving",
+      "conception": "Conception service",
+      "daysOpen": "Days open",
+      "notYet": "Not yet",
+      "empty": "No calvings are recorded yet."
+    },
+    "timeline": {
+      "title": "Events",
+      "empty": "No events are recorded."
+    },
+    "noHistoryTitle": "No reproductive history",
+    "noHistory": {
+      "one": "This animal has no breeding services or calvings yet. It is {{count}} month old and is in the {{stage}} stage.",
+      "other": "This animal has no breeding services or calvings yet. It is {{count}} months old and is in the {{stage}} stage."
+    },
+    "event": {
+      "service": "Breeding service",
+      "diagnosis": "Pregnancy diagnosis",
+      "calving": "Calving",
+      "abortion": "Abortion",
+      "heat": "Heat observed"
+    },
+    "pregnancyResult": {
+      "Pregnant": "Pregnant",
+      "Open": "Open"
+    },
+    "columns": {
+      "event": "Event",
+      "detail": "Method or result"
+    },
+    "export": {
+      "subtitle": {
+        "one": "{{earTag}} · {{stage}} · {{count}} month old · {{date}}",
+        "other": "{{earTag}} · {{stage}} · {{count}} months old · {{date}}"
+      }
+    },
+    "records": {
+      "serviceTitle": "Record breeding service",
+      "serviceLead": "Record a natural mating or an insemination of animal {{earTag}}, and the sire when you know it.",
+      "serviceSubmit": "Save service",
+      "diagnosisTitle": "Record pregnancy diagnosis",
+      "diagnosisLead": "Record the result of the pregnancy check of animal {{earTag}}.",
+      "diagnosisSubmit": "Save diagnosis",
+      "eventTitle": "Record calving, abortion or heat",
+      "eventLead": "Record a calving, an abortion or an observed heat of animal {{earTag}}.",
+      "eventSubmit": "Save record",
+      "saved": "The reproductive record was saved."
+    },
+    "validation": {
+      "calvingNotAfterDiagnosis": "The expected calving date must fall after the diagnosis day.",
+      "calvingTooFar": "The expected calving date must fall within 300 days after the diagnosis day."
+    }
+  },
+  "nutrition": {
+    "title": "Nutrition plan",
+    "lead": "The ration of each lot, its feed per head and the estimated feed of the lot, with the rumination of the lot around its ration changes.",
+    "filters": "Nutrition filters",
+    "loading": "Loading the nutrition plan.",
+    "chooseLot": "Choose a lot",
+    "noLotTitle": "No lot selected",
+    "noLot": "Choose a lot to see its nutrition plan.",
+    "fields": {
+      "lot": "Lot",
+      "feed": "Feed",
+      "kind": "Kind",
+      "kilogramsPerHead": "kg per head per day",
+      "kilogramsForLot": "kg per day for the lot (estimate)"
+    },
+    "kind": {
+      "Forage": "Forage",
+      "Concentrate": "Concentrate",
+      "Supplement": "Supplement",
+      "Mineral": "Mineral"
+    },
+    "units": {
+      "kilogramsPerDay": "kg per day"
+    },
+    "current": {
+      "title": "Current plan",
+      "validity": "From {{from}} until {{to}}",
+      "openEnded": "From {{from}}, open-ended",
+      "target": "Target daily gain",
+      "noTarget": "Not set",
+      "total": "Estimated feed for the lot",
+      "utcNote": "The plan in force is taken for today's UTC date, because ranches have no time zone yet.",
+      "noneTitle": "No current plan",
+      "none": "No nutrition plan covers today for this lot."
+    },
+    "estimate": {
+      "heads": {
+        "one": "Estimate for {{count}} active animal in the lot.",
+        "other": "Estimate for {{count}} active animals in the lot."
+      },
+      "unknown": "The number of active animals could not be read, so the estimate is not shown."
+    },
+    "items": {
+      "tableLabel": "Ration items of the current plan"
+    },
+    "rumination": {
+      "title": "Rumination evolution",
+      "lead": "The daily mean rumination of the lot in minutes, around its ration changes.",
+      "series": "Lot daily mean",
+      "changeMarker": "Ration change",
+      "axis": "Minutes",
+      "chartLabel": "Daily mean rumination of the lot, with its ration changes marked",
+      "before": "Mean before the change",
+      "after": "Mean from the change",
+      "noChange": "No ration change falls inside this period.",
+      "since": "The period starts on {{date}}.",
+      "unavailable": "The API has no rumination readings for this lot in this period."
+    },
+    "history": {
+      "title": "Plan history",
+      "change": "Ration change on {{date}}",
+      "empty": "No plans are registered for this lot."
+    },
+    "record": {
+      "open": "Register nutrition plan",
+      "title": "Register nutrition plan",
+      "lead": "Register the ration of lot {{lot}}. A new plan ends an open-ended plan the day before it starts.",
+      "name": "Plan name",
+      "validFrom": "Valid from",
+      "validTo": "Valid to (optional)",
+      "targetGain": "Target daily gain in kg (optional)",
+      "itemsTitle": "Ration items",
+      "addItem": "Add feed",
+      "removeItem": "Remove feed",
+      "notes": "Notes (optional)",
+      "submit": "Save plan",
+      "saved": "The nutrition plan was registered."
+    },
+    "validation": {
+      "gain": "Enter more than 0 and at most 3 kg per day.",
+      "quantity": "Enter more than 0 and at most 100 kg per head per day.",
+      "validityOrder": "The end date cannot be before the start date.",
+      "itemsRequired": "Add at least one feed."
+    }
+  },
+  "analytics": {
+    "notAvailable": "Not available",
+    "source": "Data from {{source}}, updated {{updated}}",
+    "sources": {
+      "ichu-platform": "ICHU platform"
+    },
+    "showFormula": "How is this calculated?",
+    "hideFormula": "Hide the calculation",
+    "denominator": "Base of the calculation: {{count}}",
+    "units": {
+      "animals": {
+        "one": "animal",
+        "other": "animals"
+      },
+      "percent": {
+        "one": "%",
+        "other": "%"
+      },
+      "events": {
+        "one": "event",
+        "other": "events"
+      },
+      "celsius": "°C",
+      "index": "index",
+      "minutes": "min",
+      "cases": "cases"
+    },
+    "indicators": {
+      "monitoredAnimals": "Monitored animals",
+      "outsideGeofenceAnimals": "Outside the grazing zone",
+      "mortalityRate": "Mortality rate",
+      "births": "Births",
+      "confirmedPregnancies": "Confirmed pregnancies"
+    },
+    "alertTypes": {
+      "temperature": "Temperature",
+      "activity": "Activity",
+      "geofence": "Geofence"
+    },
+    "export": {
+      "indicator": "Indicator",
+      "value": "Value",
+      "unit": "Unit",
+      "formula": "How it is calculated",
+      "denominator": "Base",
+      "note": "Note"
+    },
+    "period": {
+      "label": "Period",
+      "presets": {
+        "days7": "Last 7 days",
+        "days30": "Last 30 days",
+        "days90": "Last 90 days",
+        "days365": "Last 365 days"
+      },
+      "custom": "Custom range",
+      "fromDay": "From day",
+      "toDay": "To day (included)",
+      "apply": "Apply period",
+      "invalid": "Choose both days, with the first day on or before the last one.",
+      "showing": "Showing from {{from}} to {{to}}"
+    },
+    "dashboard": {
+      "title": "My herd",
+      "meta": "Showing from {{from}} to {{to}} · {{source}}, updated {{updated}}",
+      "kpis": "Herd indicators",
+      "loading": "Loading indicators",
+      "openAlerts": "Open alerts",
+      "noOpenAlerts": "No open alerts in this period.",
+      "alertsLink": "View alerts",
+      "locationsLink": "Locations and fences",
+      "temperature": {
+        "title": "Body temperature of the lot",
+        "lead": "Daily mean with a ±1σ band and the alert threshold",
+        "series": "Daily mean",
+        "band": "±1σ",
+        "limit": "Alert threshold {{value}} {{unit}}",
+        "chartLabel": "Daily mean body temperature of the lot, with its ±1σ band and the alert threshold",
+        "animalsOnLastDay": {
+          "one": "{{count}} animal with readings on the last day",
+          "other": "{{count}} animals with readings on the last day"
+        }
+      },
+      "alerts": {
+        "title": "Recent alerts",
+        "viewAll": "View all",
+        "empty": "No pending alerts."
+      },
+      "collars": {
+        "title": "Collars",
+        "connected": {
+          "one": "{{count}} connected",
+          "other": "{{count}} connected"
+        },
+        "silent": "{{count}} without communication",
+        "never": "{{count}} never reported",
+        "lowBattery": "{{count}} with low battery",
+        "empty": "No collars are registered yet."
+      },
+      "coverage": "Coverage of readings",
+      "excluded": "Animals without valid readings in the period: {{count}}",
+      "missingReadings": "Missing readings: {{count}}",
+      "missingUnknown": "The number of missing readings is not available.",
+      "upcoming": "Next 7 days",
+      "planningLink": "Health planning",
+      "noUpcoming": "No work is scheduled in the next 7 days.",
+      "wholeHerd": "Whole herd"
+    },
+    "reports": {
+      "title": "Reports",
+      "lead": "Lot trends, the epidemiological curve and the executive report for the chosen period.",
+      "tabsLabel": "Report sections",
+      "tabs": {
+        "trends": "Lot trends",
+        "epidemiology": "Epidemiological curve",
+        "executive": "Executive report"
+      }
+    },
+    "trends": {
+      "controls": "Trend controls",
+      "lot": "Lot",
+      "metric": "Metric",
+      "metrics": {
+        "body-temperature": "Body temperature",
+        "activity-index": "Activity index",
+        "rumination-minutes": "Rumination"
+      },
+      "multiplier": "Outlier threshold (standard deviations)",
+      "multiplierValue": "{{value}} standard deviations",
+      "multiplierHelp": "An animal is flagged when its average differs from the lot average by more than this number of standard deviations of the animals' averages.",
+      "threshold": "Threshold at {{value}} standard deviations",
+      "lotAverage": "Lot average",
+      "spread": "Standard deviation of the animals",
+      "needTwoAnimals": "At least two animals with valid readings are needed to measure the spread.",
+      "noSpread": "All animals with readings have the same average, so none stands apart from the lot.",
+      "flagged": "Flagged animals",
+      "flaggedNote": "Averages beyond the threshold",
+      "chart": "Daily lot mean with the threshold band",
+      "chartLabel": "Lot daily mean",
+      "averageLine": "Lot average",
+      "outlierSeries": "Flagged animals",
+      "lowerLimit": "Lower limit",
+      "upperLimit": "Upper limit",
+      "dailyTable": "Daily lot means",
+      "day": "Day",
+      "lotDailyMean": "Lot daily mean",
+      "animalsCounted": "Animals counted",
+      "outliers": "Flagged animals",
+      "earTag": "Ear tag",
+      "animalAverage": "Animal average",
+      "difference": "Difference from the lot average",
+      "noOutliers": "No animal is beyond the threshold in this period.",
+      "unknownAnimal": "Unknown animal",
+      "comparison": "Compare an animal with its lot",
+      "animal": "Animal",
+      "noAnimal": "No animal selected",
+      "loading": "Loading lot readings",
+      "noLots": "This ranch has no lots yet. Create one under Animals, then Lots.",
+      "summary": "Lot summary",
+      "emptyTitle": "No readings yet",
+      "empty": "Choose a lot with readings in the period.",
+      "missingReadings": "Missing readings in the lot: {{count}}",
+      "missingUnknown": "The number of missing readings is not available."
+    },
+    "epidemiology": {
+      "condition": "Condition",
+      "conditions": {
+        "temperature": "Temperature alerts",
+        "activity": "Activity alerts"
+      },
+      "caseNote": "Each case is an alert of the condition, so an animal with several alerts counts more than once.",
+      "loading": "Loading the curve",
+      "summary": "Curve summary",
+      "total": "Cases in the period",
+      "peak": "Peak day",
+      "peakCases": {
+        "one": "{{count}} case",
+        "other": "{{count}} cases"
+      },
+      "noPeak": "No cases",
+      "daysWithoutCases": "Days without new cases",
+      "attackRate": "Attack rate",
+      "attackRateFormula": "New cases among the animals in the herd, per 100",
+      "herdSizeUnavailable": "The herd size for this period is not available.",
+      "restriction": "Restriction lifting",
+      "restrictionYes": "The days without new cases cover the incubation period, so the restriction can be reviewed.",
+      "restrictionNo": "The days without new cases do not yet cover the incubation period.",
+      "newCases": "New cases",
+      "cumulative": "Cumulative cases",
+      "rollingAverage": "{{days}}-day moving average",
+      "rollingLabelShort": "{{days}}-day average",
+      "dailyChart": "New cases per day with the moving average",
+      "cumulativeChart": "Cumulative cases",
+      "table": "Daily values",
+      "day": "Day",
+      "emptyTitle": "No cases to show",
+      "empty": "Choose a condition and a period to review the alerts of that period."
+    },
+    "executive": {
+      "title": "Executive report",
+      "preview": "Report indicators",
+      "previewNote": "The same values as the CSV, Excel and PDF downloads.",
+      "csv": "Download CSV",
+      "loading": "Loading the report",
+      "empty": "The report is not available for this period.",
+      "generated": "Generated {{date}}"
+    },
+    "portfolio": {
+      "title": "Portfolio of advised ranches",
+      "lead": "The ranches you advise, with the ones that need attention first.",
+      "loading": "Loading ranches",
+      "tableLabel": "Ranches you advise",
+      "ranch": "Ranch",
+      "critical": "Critical alerts",
+      "warning": "Warning alerts",
+      "informative": "Informative alerts",
+      "unresponsive": "Unresponsive treatments",
+      "overdue": "Overdue campaigns",
+      "updated": "Updated",
+      "actions": "Actions",
+      "open": "Open",
+      "openNamed": "Open {{ranch}}",
+      "unnamedRanch": "Unnamed ranch",
+      "empty": "No advised ranches yet."
+    },
+    "links": {
+      "compareWithLot": "Compare with lot"
+    },
+    "chart": {
+      "showTable": "Show data as a table",
+      "hideTable": "Hide the table"
+    },
+    "texts": {
+      "populationIncomplete": "The population data is incomplete.",
+      "alertsIncomplete": "The alert data is incomplete.",
+      "geofenceIncomplete": "The grazing zone data is incomplete.",
+      "noAnimalsAtRisk": "There are no animals at risk in this period.",
+      "birthsUnavailable": "Birth records are not available.",
+      "pregnanciesUnavailable": "Confirmed pregnancies are not recorded yet.",
+      "expectedReadingsUnavailable": "The expected number of readings is not available.",
+      "formulaMonitored": "Animals with at least one valid reading in the period",
+      "formulaGeofence": "Animals outside their assigned grazing zone at the end of the period",
+      "formulaMortality": "100 × deaths in the period ÷ animals at risk in the period",
+      "formulaBirths": "Births recorded in the period",
+      "formulaPregnancies": "Confirmed pregnancies in the period",
+      "noLotReadings": "There are no valid readings for this lot and metric in the period.",
+      "lotExpectedUnavailable": "Expected readings are not available for part of the lot.",
+      "fiveAnimalsRequired": "At least five animals with valid readings are needed to compare an animal with its lot.",
+      "animalNoReadings": "This animal has no valid readings in this lot.",
+      "casesIncomplete": "The case data is incomplete.",
+      "noIncubationPeriod": "This condition has no configured incubation period.",
+      "twoCasesRequired": "At least two cases are needed to build a progression.",
+      "periodShorter": "The period is shorter than the incubation period."
+    }
+  },
+  "plans": {
+    "title": "Compare plans",
+    "lead": "Enter the number of collars to see the annual price of each plan.",
+    "headCount": "Number of collars",
+    "headCountHint": "One smart collar per head of cattle.",
+    "headCountInvalid": "Enter a whole number of collars from 1 to 10,000.",
+    "readOnly": "Only the ranch manager can subscribe to a plan. You can compare the plans here.",
+    "noRanchTitle": "No ranch selected",
+    "noRanch": "Choose a ranch in the header to see its plans.",
+    "recommended": "Recommended for your herd",
+    "fromWebsite": "Selected on the website",
+    "deviceLimit": {
+      "one": "Up to {{count}} collar",
+      "other": "Up to {{count}} collars"
+    },
+    "deviceLimitLabel": "Collar limit",
+    "annualFee": "Annual fee",
+    "deviceUnitPrice": "Price per collar",
+    "total": "Total",
+    "plan": "Plan",
+    "enterHeadCount": "Enter the number of collars to see the annual price.",
+    "calculating": "Calculating the price…",
+    "subscribe": "Subscribe",
+    "existing": "Your ranch already has the {{plan}} plan ({{status}}).",
+    "existingWithoutPlan": "Your ranch already has a plan ({{status}}).",
+    "existingAction": "Go to My plan",
+    "loading": "Loading plans…",
+    "empty": "No plans are published right now.",
+    "tiers": {
+      "Basic": "Basic",
+      "Standard": "Standard",
+      "Pro": "Pro"
+    },
+    "features": {
+      "Monitoring": "Monitoring",
+      "Alerts": "Alerts",
+      "Planning": "Health planning",
+      "Analytics": "Analytics",
+      "ReportExport": "Report export"
+    },
+    "compare": {
+      "caption": "Plan comparison",
+      "item": "Item",
+      "included": "Included",
+      "notIncluded": "Not included",
+      "noQuote": "Enter the number of collars"
+    },
+    "annualNote": "Each plan is an annual subscription that covers one year."
+  },
+  "subscriptions": {
+    "title": "My plan",
+    "lead": "The subscription of your ranch, its validity, and the amounts agreed for it.",
+    "loading": "Loading your plan…",
+    "summaryTitle": "Subscription",
+    "cancelled": "Subscription cancelled.",
+    "pendingNote": "Pay to activate the plan. It stays inactive until the payment is confirmed.",
+    "managerOnly": "Only the ranch manager can pay or cancel this subscription.",
+    "noneTitle": "No subscription yet",
+    "noneBody": "Compare the plans and request the one that fits your herd.",
+    "noneReadOnly": "Only the ranch manager can request a subscription.",
+    "comparePlans": "Compare plans",
+    "payNow": "Pay now",
+    "downloadReceipt": "Download receipt",
+    "downloadQuote": "Download quote",
+    "preparingDocument": "Preparing the document…",
+    "documentFailed": "The document could not be created. Try again.",
+    "notYet": "Not yet",
+    "status": {
+      "Pending": "Pending",
+      "Active": "Active",
+      "Cancelled": "Cancelled",
+      "Expired": "Expired"
+    },
+    "fields": {
+      "requestedAt": "Requested on",
+      "activatedAt": "Active since",
+      "validUntil": "Valid until",
+      "cancelledAt": "Cancelled on",
+      "cancellationReason": "Reason",
+      "headCount": "Number of collars",
+      "maximumDevices": "Collar limit",
+      "termsVersion": "Terms version",
+      "features": "Included features"
+    },
+    "cancel": {
+      "open": "Cancel subscription",
+      "title": "Cancel subscription",
+      "lead": "The subscription stops at once. Enter a reason so the team can follow up.",
+      "reason": "Reason",
+      "reasonHint": "Up to {{max}} characters.",
+      "reasonRequired": "Enter a reason.",
+      "keep": "Keep subscription",
+      "submit": "Cancel subscription"
+    },
+    "confirm": {
+      "title": "Confirm your subscription",
+      "lead": "Review the amounts from the quote. The plan becomes active once the payment is confirmed.",
+      "acceptTerms": "I accept the Terms of Service (version {{version}})",
+      "termsRequired": "Accept the terms to continue.",
+      "readTerms": "Read the Terms of Service (opens in a new tab)",
+      "submit": "Continue to payment",
+      "redirecting": "Opening the payment page…"
+    },
+    "payment": {
+      "activating": "Activating your plan",
+      "receivedActivating": "Payment received, activating your plan…",
+      "activatingHint": "This usually takes less than a minute. The page checks again every few seconds.",
+      "activeTitle": "Your plan is active",
+      "activeBody": "Your ranch can now use the features of this plan.",
+      "timedOutTitle": "Activation is taking longer than usual",
+      "timedOutBody": "Activation can take a moment. Check My plan again shortly.",
+      "cancelledTitle": "Payment cancelled",
+      "cancelledBody": "Payment cancelled; nothing was charged.",
+      "retry": "Retry payment",
+      "openMyPlan": "Open My plan"
+    }
+  },
+  "pricing": {
+    "collarsLine": "Smart collars — {{count}} × {{unitPrice}} (one-time purchase)",
+    "annualFeeLine": "{{plan}} plan — annual fee"
+  },
+  "receipt": {
+    "brand": "ICHU · SmartFarm",
+    "title": "ICHU payment receipt",
+    "quoteTitle": "Quote",
+    "notice": "This receipt is not a SUNAT electronic invoice.",
+    "ranch": "Ranch",
+    "account": "Account",
+    "status": "Status",
+    "paymentDate": "Payment date",
+    "validity": "Validity",
+    "termsVersion": "Terms version",
+    "generatedOn": "Generated on",
+    "collarsItem": "Smart collars (one-time purchase)",
+    "description": "Description",
+    "quantity": "Quantity",
+    "unitPrice": "Unit price",
+    "amount": "Amount"
+  }
+}

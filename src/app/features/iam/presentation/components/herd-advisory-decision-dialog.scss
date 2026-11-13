@@ -1,0 +1,34 @@
+@use '../styles/material-fields';
+
+mat-form-field {
+  width: 100%;
+}
+
+.dialog-lead {
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+.request-summary {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.request-summary dt {
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 650;
+}
+
+.request-summary dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+  font-size: .84rem;
+  font-weight: 600;
+}

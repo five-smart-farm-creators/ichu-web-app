@@ -1,0 +1,85 @@
+@use '../../styles/monitoring-pages';
+
+:host {
+  display: block;
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.summary-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin: 0 0 16px;
+}
+
+.summary-list dt {
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 650;
+}
+
+.summary-list dd {
+  margin: 4px 0 0;
+  font-size: .875rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.span-full {
+  grid-column: 1 / -1;
+}
+
+.timeline {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--border);
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  font-size: .8125rem;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -28px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--forest);
+}
+
+.observation {
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.filter-field-wide {
+  flex: 2 1 240px;
+}
+
+@media (max-width: 960px) {
+  .health-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .summary-list {
+    grid-template-columns: 1fr;
+  }
+}

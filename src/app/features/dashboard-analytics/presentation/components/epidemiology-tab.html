@@ -1,0 +1,122 @@
+<section class="panel filter-panel">
+  <div class="filter-body">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="control">
+      <mat-label>{{ 'analytics.epidemiology.condition' | translate }}</mat-label>
+      <mat-select [value]="facade.condition()" (selectionChange)="selectCondition($event.value)">
+        @for (condition of conditions; track condition) {
+          <mat-option [value]="condition">{{ ('analytics.epidemiology.conditions.' + condition) | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <p class="filter-note text-muted">{{ 'analytics.epidemiology.caseNote' | translate }}</p>
+</section>
+
+@if (facade.error(); as apiError) {
+  <p class="form-error" role="alert">{{ apiError | apiErrorMessage }}</p>
+}
+@if (facade.loading()) {
+  <mat-progress-bar mode="indeterminate" [attr.aria-label]="'analytics.epidemiology.loading' | translate" />
+}
+
+@if (facade.curve(); as curve) {
+  <p class="source-note text-muted">
+    {{ 'analytics.source' | translate: { source: ('analytics.sources.' + curve.source) | translate, updated: (curve.updatedAt | localizedDate: 'short') } }}
+  </p>
+  @if (curve.unavailableReason) {
+    <p class="notice section-gap" role="note">{{ reasonKey(curve.unavailableReason) | translate }}</p>
+  }
+
+  <section class="stats-grid" [attr.aria-label]="'analytics.epidemiology.summary' | translate">
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.epidemiology.total' | translate }}</span>
+      <span class="stat-value">{{ facade.total() }}</span>
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.epidemiology.peak' | translate }}</span>
+      @if (facade.peak(); as peak) {
+        <span class="stat-value peak">{{ peakLabel() }}</span>
+        <span class="stat-note">{{ 'analytics.epidemiology.peakCases' | plural: peak.cases }}</span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.epidemiology.noPeak' | translate }}</span>
+      }
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.epidemiology.daysWithoutCases' | translate }}</span>
+      @if (curve.daysWithoutNewCases !== null) {
+        <span class="stat-value">{{ curve.daysWithoutNewCases }}</span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+      }
+    </article>
+    <article class="stat">
+      <span class="stat-label">{{ 'analytics.epidemiology.attackRate' | translate }}</span>
+      @if (facade.attackRate() !== null) {
+        <span class="stat-value">{{ number(facade.attackRate()) }} <span class="unit">%</span></span>
+        <span class="stat-note">{{ 'analytics.epidemiology.attackRateFormula' | translate }}</span>
+      } @else {
+        <span class="stat-value unavailable">{{ 'analytics.notAvailable' | translate }}</span>
+        <span class="stat-note">{{ 'analytics.epidemiology.herdSizeUnavailable' | translate }}</span>
+      }
+    </article>
+  </section>
+
+  <p class="restriction" role="note"><strong>{{ 'analytics.epidemiology.restriction' | translate }}:</strong> {{ restrictionKey() | translate }}</p>
+
+  <section class="chart-grid section-gap">
+    <section class="panel chart-panel" aria-labelledby="daily-cases-heading">
+      <div class="panel-head"><h2 id="daily-cases-heading">{{ 'analytics.epidemiology.dailyChart' | translate }}</h2></div>
+      <div class="panel-body">
+        <ichu-bar-chart [labels]="dayLabels()" [series]="barSeries()" [yAxisLabel]="'analytics.units.cases' | translate"
+          [accessibleLabel]="'analytics.epidemiology.dailyChart' | translate" />
+      </div>
+    </section>
+    <section class="panel chart-panel" aria-labelledby="cumulative-heading">
+      <div class="panel-head"><h2 id="cumulative-heading">{{ 'analytics.epidemiology.cumulativeChart' | translate }}</h2></div>
+      <div class="panel-body">
+        <ichu-line-chart [series]="cumulativeSeries()" [yAxisLabel]="'analytics.units.cases' | translate"
+          [accessibleLabel]="'analytics.epidemiology.cumulativeChart' | translate" />
+      </div>
+    </section>
+  </section>
+
+  <section class="panel section-gap">
+    <div class="panel-head">
+      <h2>{{ 'analytics.epidemiology.table' | translate }}</h2>
+      <button type="button" class="btn secondary" [attr.aria-expanded]="showTable()" (click)="showTable.set(!showTable())">
+        {{ (showTable() ? 'analytics.chart.hideTable' : 'analytics.chart.showTable') | translate }}
+      </button>
+    </div>
+    @if (showTable()) {
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'analytics.epidemiology.day' | translate }}</th>
+              <th scope="col">{{ 'analytics.epidemiology.newCases' | translate }}</th>
+              <th scope="col">{{ 'analytics.epidemiology.cumulative' | translate }}</th>
+              <th scope="col">{{ 'analytics.epidemiology.rollingLabelShort' | translate: { days: 7 } }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (day of facade.days(); track day.day; let index = $index) {
+              <tr>
+                <td>{{ dayLabels()[index] }}</td>
+                <td>{{ day.cases }}</td>
+                <td>{{ facade.cumulative()[index] }}</td>
+                <td>{{ number(facade.rollingAverage()[index]) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+} @else if (!facade.loading() && !facade.error()) {
+  <section class="panel section-gap">
+    <div class="panel-body empty-state">
+      <h2>{{ 'analytics.epidemiology.emptyTitle' | translate }}</h2>
+      <p>{{ 'analytics.epidemiology.empty' | translate }}</p>
+    </div>
+  </section>
+}

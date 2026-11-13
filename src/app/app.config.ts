@@ -1,10 +1,24 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideRouter, TitleStrategy, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
+import { TranslatedTitleStrategy } from './core/layout/translated-title.strategy';
+import { RUNTIME_CONFIG, RuntimeConfig } from './core/config/runtime-config';
 import { provideIam } from './features/iam/infrastructure/configuration/iam.providers';
-import { RuntimeConfig } from './core/config/runtime-config';
+import { iamAuthorizationInterceptor } from './features/iam/infrastructure/http/iam-authorization.interceptor';
+import { provideI18n } from './shared/infrastructure/i18n/i18n.providers';
+import { acceptLanguageInterceptor } from './shared/infrastructure/http/accept-language.interceptor';
 
 export function createAppConfig(config: RuntimeConfig): ApplicationConfig {
-  return { providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes), provideHttpClient(), provideIam(config)] };
+  return {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      { provide: RUNTIME_CONFIG, useValue: config },
+      provideRouter(routes, withViewTransitions({ skipInitialTransition: true })),
+      { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
+      provideHttpClient(withInterceptors([acceptLanguageInterceptor, iamAuthorizationInterceptor])),
+      provideI18n(),
+      provideIam(),
+    ],
+  };
 }

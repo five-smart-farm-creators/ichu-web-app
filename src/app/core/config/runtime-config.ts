@@ -1,3 +1,4 @@
+import { InjectionToken } from '@angular/core';
 import type { FirebaseOptions } from 'firebase/app';
 
 /** Public browser configuration. Server credentials must never be included. */
@@ -6,7 +7,16 @@ export interface RuntimeConfig {
   readonly firebase: FirebaseOptions | null;
 }
 
+/** Lets adapters read deployment settings without knowing how they were loaded. */
+export const RUNTIME_CONFIG = new InjectionToken<RuntimeConfig>('RUNTIME_CONFIG');
+
 const defaultConfig: RuntimeConfig = { apiBaseUrl: '/api/v1', firebase: null };
+
+/** Wakes a sleeping API while the visitor is still reading the page; any failure is ignored. */
+export function warmUpApi(config: RuntimeConfig): void {
+  const healthUrl = new URL('/health', config.apiBaseUrl);
+  fetch(healthUrl, { mode: 'no-cors', cache: 'no-store' }).catch(() => undefined);
+}
 
 /** Loads deployment configuration without preventing the sign-in page from rendering. */
 export async function loadRuntimeConfig(): Promise<RuntimeConfig> {

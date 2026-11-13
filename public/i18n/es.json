@@ -1,0 +1,1764 @@
+{
+  "common": {
+    "language": "Idioma",
+    "useDarkTheme": "Usar tema oscuro",
+    "useLightTheme": "Usar tema claro",
+    "skipToContent": "Ir al contenido",
+    "cancel": "Cancelar",
+    "export": "Exportar",
+    "exporting": "Preparando archivo…",
+    "exportExcel": "Descargar Excel",
+    "exportPdf": "Descargar PDF",
+    "saving": "Guardando…",
+    "required": "Este campo es obligatorio.",
+    "invalidDate": "Ingresa una fecha válida.",
+    "paginator": {
+      "itemsPerPage": "Elementos por página",
+      "next": "Página siguiente",
+      "previous": "Página anterior",
+      "first": "Primera página",
+      "last": "Última página",
+      "range": "{{start}} – {{end}}"
+    },
+    "datepicker": {
+      "calendar": "Calendario",
+      "openCalendar": "Abrir calendario",
+      "closeCalendar": "Cerrar calendario",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "previousYear": "Año anterior",
+      "nextYear": "Año siguiente",
+      "previousYears": "24 años anteriores",
+      "nextYears": "24 años siguientes",
+      "chooseDate": "Elegir fecha",
+      "chooseMonthAndYear": "Elegir mes y año",
+      "yearRange": "{{start}} – {{end}}",
+      "yearRangeLabel": "{{start}} a {{end}}"
+    },
+    "exportFailed": "No se pudo crear el archivo. Inténtalo de nuevo.",
+    "actions": "Acciones",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "chart": {
+      "summary": "{{label}}: mínimo {{minimum}}, máximo {{maximum}}, promedio {{average}}",
+      "noData": "No hay lecturas en este periodo."
+    }
+  },
+  "meta": {
+    "description": "ICHU de SmartFarm: monitoreo de ganado con collares inteligentes, registros del hato e historial veterinario."
+  },
+  "footer": {
+    "copyright": "© 2026 SmartFarm · ICHU",
+    "terms": "Términos y privacidad"
+  },
+  "pages": {
+    "signIn": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "recover": "Restablecer contraseña",
+    "terms": "Términos y privacidad",
+    "notFound": "Página no encontrada",
+    "account": "Cuenta",
+    "advisories": "Asesorías",
+    "animals": "Animales",
+    "lots": "Lotes",
+    "animalProfile": "Perfil del animal",
+    "iotDevices": "Dispositivos IoT",
+    "waterTroughs": "Abrevaderos",
+    "edgeGateways": "Nodos de borde",
+    "monitoring": "Monitoreo",
+    "monitoringCattle": "Monitoreo del animal",
+    "locations": "Ubicación y cercas",
+    "alerts": "Alertas",
+    "thresholds": "Umbrales",
+    "clinicalHistory": "Historial clínico",
+    "planning": "Planificación sanitaria",
+    "planningCampaigns": "Campañas",
+    "withdrawalPeriods": "Periodos de retiro",
+    "dashboard": "Mi hato",
+    "reports": "Reportes",
+    "portfolio": "Portafolio",
+    "plans": "Planes",
+    "mySubscription": "Mi plan",
+    "paymentSuccess": "Pago recibido",
+    "paymentCancel": "Pago cancelado",
+    "nutrition": "Plan nutricional",
+    "reproduction": "Reproducción"
+  },
+  "shell": {
+    "navigation": "Navegación principal",
+    "openMenu": "Abrir menú de navegación",
+    "myAccount": "Mi cuenta",
+    "advisories": "Asesorías",
+    "ranch": "Unidad productiva",
+    "ranchFallback": "Unidad productiva {{position}}",
+    "accountMenu": "Menú de la cuenta",
+    "signOut": "Cerrar sesión",
+    "animals": "Animales",
+    "iotDevices": "Dispositivos IoT",
+    "locations": "Ubicación y cercas",
+    "monitoring": "Monitoreo",
+    "alerts": "Alertas",
+    "clinicalHistory": "Historial clínico",
+    "healthPlanning": "Planificación sanitaria",
+    "dashboard": "Mi hato",
+    "reports": "Reportes",
+    "portfolio": "Portafolio",
+    "mySubscription": "Mi plan",
+    "plans": "Planes",
+    "nutrition": "Nutrición",
+    "reproduction": "Reproducción",
+    "tagline": "Monitoreo de ganado",
+    "groups": {
+      "herd": "Hato",
+      "health": "Salud",
+      "production": "Producción",
+      "account": "Cuenta"
+    }
+  },
+  "terms": {
+    "back": "Volver a mi cuenta",
+    "authenticationTitle": "Inicio de sesión y cuentas",
+    "authentication": "El inicio de sesión lo gestiona Firebase Authentication. La API de ICHU verifica tu cuenta y tus permisos sobre cada unidad productiva antes de mostrar sus datos. Las contraseñas solo se envían a Firebase Authentication y la aplicación nunca las almacena.",
+    "recordsTitle": "Registros de la unidad productiva",
+    "records": "ICHU almacena los datos de los collares y los registros de cada unidad productiva, y solo los muestra a las cuentas con acceso a esa unidad productiva.",
+    "preferencesTitle": "Preferencias del navegador",
+    "preferences": "El idioma y la unidad productiva seleccionados se guardan en este navegador.",
+    "paymentsTitle": "Pagos",
+    "payments": "Los pagos son procesados por Stripe. ICHU nunca almacena los datos de tarjetas.",
+    "contactTitle": "Contacto",
+    "contact": "Comunícate con SmartFarm para consultas sobre estos términos o sobre tus datos.",
+    "version": "Versión {{version}}"
+  },
+  "notFound": {
+    "body": "Revisa la dirección o vuelve a tu cuenta de ICHU.",
+    "back": "Volver a mi cuenta"
+  },
+  "iam": {
+    "entry": {
+      "title": "Te damos la bienvenida a ICHU",
+      "status": "Abriendo tu hato…",
+      "progress": "Abriendo el espacio de trabajo"
+    },
+    "roles": {
+      "ranchManager": "Administrador ganadero",
+      "veterinarian": "Médico veterinario",
+      "fieldOperator": "Operario de campo"
+    },
+    "login": {
+      "mode": "Inicio de sesión seguro",
+      "title": "Hola de nuevo",
+      "lead": "Accede a tu espacio de trabajo de ICHU.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "newHere": "¿Eres nuevo en ICHU?",
+      "createAccount": "Crear una cuenta",
+      "note": "El servicio de cuentas de ICHU verifica el inicio de sesión.",
+      "navigationFailed": "No se pudo abrir tu espacio de trabajo. Inténtalo de nuevo.",
+      "tagline": "Mejor cuidado para cada hato."
+    },
+    "register": {
+      "stepOne": "Paso 1 de 2",
+      "stepTwo": "Paso 2 de 2",
+      "title": "Crear una cuenta",
+      "lead": "Configura tu cuenta de ICHU.",
+      "name": "Nombre completo",
+      "nameInvalid": "Ingresa entre 2 y 80 caracteres, sin espacios al inicio ni al final.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "password": "Contraseña",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "confirmPassword": "Confirmar contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "role": "Rol de la cuenta",
+      "ranchDetails": "Datos de la unidad productiva",
+      "ranchDetailsNote": "Estos datos crean tu cuenta inicial de unidad productiva.",
+      "ranchName": "Nombre de la unidad productiva",
+      "region": "Región",
+      "chooseRegion": "Elige una región",
+      "otherRegion": "Otra región",
+      "district": "Distrito",
+      "herdSize": "Tamaño estimado del hato",
+      "ranchDetailsRequired": "Completa todos los datos de la unidad productiva e ingresa un número entero positivo para el tamaño del hato.",
+      "terms": "Acepto los Términos de uso de ICHU.",
+      "termsRequired": "Confirma que aceptas para continuar.",
+      "review": "Revisar cuenta",
+      "reviewTitle": "Revisa tus datos",
+      "reviewName": "Nombre",
+      "reviewEmail": "Correo electrónico",
+      "reviewRole": "Rol",
+      "reviewRanch": "Unidad productiva",
+      "reviewRegion": "Región",
+      "reviewDistrict": "Distrito",
+      "reviewHerdSize": "Tamaño estimado del hato",
+      "passwordNote": "Tu contraseña se envía a Firebase Authentication y no se incluye en esta revisión.",
+      "edit": "Editar datos",
+      "creating": "Creando cuenta…",
+      "create": "Crear cuenta",
+      "retry": "Reintentar la configuración de la cuenta",
+      "retryNotice": "La configuración de la cuenta no está completa. Reintenta con el mismo correo electrónico y contraseña para terminarla.",
+      "verifyTitle": "Verifica tu correo electrónico",
+      "verifyNotice": "Tu cuenta fue creada. Revisa tu bandeja de entrada para encontrar el correo de verificación de Firebase antes de iniciar sesión.",
+      "continueToSignIn": "Continuar al inicio de sesión",
+      "backToSignIn": "Volver al inicio de sesión"
+    },
+    "recovery": {
+      "title": "Restablece tu contraseña",
+      "lead": "Ingresa el correo electrónico de tu cuenta de ICHU.",
+      "email": "Correo electrónico",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "note": "Si existe una cuenta con esta dirección, Firebase enviará un correo para restablecer la contraseña.",
+      "submit": "Enviar correo de restablecimiento",
+      "submitting": "Enviando…",
+      "resultTitle": "Revisa tu correo electrónico.",
+      "resultBody": "Si la dirección pertenece a una cuenta, en breve recibirás un enlace para restablecer la contraseña.",
+      "back": "Volver al inicio de sesión"
+    },
+    "errors": {
+      "configuration": "La aplicación no está configurada. Revisa la configuración de ejecución.",
+      "invalid-credentials": "El correo electrónico o la contraseña son incorrectos.",
+      "email-already-in-use": "Ya existe una cuenta con este correo electrónico.",
+      "weak-password": "Elige una contraseña más segura e inténtalo de nuevo.",
+      "email-not-verified": "Verifica tu correo electrónico antes de iniciar sesión.",
+      "account-unavailable": "Esta cuenta de ICHU no está disponible. Inicia sesión o contacta a tu administrador.",
+      "service-unavailable": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
+      "network": "No se pudo conectar con el servicio. Si ICHU no se usó por un rato, su servidor puede tardar hasta un minuto en iniciar; inténtalo de nuevo en un momento.",
+      "unknown": "No se pudo completar la autenticación. Inténtalo de nuevo.",
+      "current-password-incorrect": "La contraseña actual es incorrecta.",
+      "requires-recent-login": "Por tu seguridad, inicia sesión de nuevo antes de cambiar la contraseña."
+    },
+    "account": {
+      "title": "Mi cuenta",
+      "lead": "Tu identidad verificada, tu acceso a unidades productivas y tu perfil profesional.",
+      "identityTitle": "Cuenta verificada",
+      "identityLead": "Datos de tu cuenta de ICHU.",
+      "emailVerified": "Correo verificado",
+      "emailNotVerified": "Correo no verificado",
+      "email": "Correo electrónico",
+      "accountStatus": "Estado de la cuenta",
+      "ranchesTitle": "Mis unidades productivas",
+      "ranchesLead": "Unidades productivas a las que puede acceder tu cuenta, con el acceso que tienes en cada una.",
+      "noRanchesTitle": "No hay unidades productivas autorizadas",
+      "noRanchesBody": "Tu cuenta todavía no tiene acceso a unidades productivas.",
+      "current": "Actual",
+      "useRanch": "Usar esta unidad productiva",
+      "expiresOn": "Vence el {{date}}",
+      "noExpiry": "Sin vencimiento",
+      "accessCode": "Código de acceso",
+      "accessCodeHint": "Comparte este código con tu médico veterinario para que pueda solicitar acceso.",
+      "copyCode": "Copiar código",
+      "codeCopied": "Código copiado.",
+      "profileTitle": "Perfil profesional",
+      "profileLead": "Datos guardados para esta cuenta de médico veterinario.",
+      "editProfileTitle": "Editar perfil profesional",
+      "editProfileLead": "Los cambios se guardan en tu cuenta de ICHU.",
+      "profileRequired": "Las solicitudes de acceso a unidades productivas requieren un perfil profesional completo. Guarda tus datos a continuación.",
+      "profileSaved": "Perfil profesional guardado.",
+      "specialty": "Especialidad",
+      "specialtyInvalid": "Ingresa una especialidad de hasta 120 caracteres.",
+      "licenseNumber": "Número de colegiatura",
+      "licenseNumberInvalid": "Ingresa un número de colegiatura de hasta 80 caracteres.",
+      "yearsOfExperience": "Años de experiencia",
+      "yearsOfExperienceInvalid": "Ingresa un número entero de 0 a 70.",
+      "saveProfile": "Guardar perfil",
+      "saving": "Guardando…",
+      "passwordTitle": "Cambiar contraseña",
+      "passwordLead": "Confirma tu contraseña actual y luego elige una nueva.",
+      "currentPassword": "Contraseña actual",
+      "currentPasswordRequired": "Ingresa tu contraseña actual.",
+      "newPassword": "Nueva contraseña",
+      "passwordHint": "Usa de 8 a 128 caracteres.",
+      "passwordInvalid": "Usa entre 8 y 128 caracteres.",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "confirmPasswordRequired": "Repite la nueva contraseña.",
+      "passwordMismatch": "La nueva contraseña y la confirmación no coinciden.",
+      "changePassword": "Cambiar contraseña",
+      "changingPassword": "Cambiando contraseña…",
+      "passwordChanged": "Tu contraseña se cambió correctamente."
+    },
+    "advisories": {
+      "title": "Asesorías del hato",
+      "lead": "Aquí los médicos veterinarios solicitan acceso a una unidad productiva, y los administradores ganaderos revisan esas solicitudes.",
+      "requestTitle": "Solicitar acceso a una unidad productiva",
+      "requestLead": "Busca la unidad productiva con su código de acceso y explica por qué necesitas acceso.",
+      "profileRequired": "Completa tu perfil profesional antes de solicitar acceso.",
+      "goToAccount": "Ir a mi cuenta",
+      "accessCode": "Código de acceso de la unidad productiva",
+      "accessCodeHint": "Ocho caracteres de la página de cuenta del administrador ganadero.",
+      "accessCodeInvalid": "Ingresa el código de ocho caracteres del administrador ganadero.",
+      "findRanch": "Buscar unidad productiva",
+      "searching": "Buscando…",
+      "noRanchMatch": "Ninguna unidad productiva coincide con este código.",
+      "ranchFound": "Unidad productiva encontrada",
+      "unnamedRanch": "Unidad productiva sin nombre",
+      "reason": "Motivo",
+      "reasonInvalid": "Explica por qué necesitas acceso, con hasta 1000 caracteres.",
+      "requestAccess": "Solicitar acceso",
+      "sendingRequest": "Enviando solicitud…",
+      "requestSent": "Tu solicitud de acceso fue enviada.",
+      "myRanchesTitle": "Unidades productivas a las que tienes acceso",
+      "myRanchesLead": "Unidades productivas donde tu cuenta ya tiene acceso.",
+      "noMyRanches": "Todavía no tienes acceso a unidades productivas.",
+      "requestsTitle": "Solicitudes de acceso",
+      "requestsLead": "Solicitudes de médicos veterinarios para la unidad productiva seleccionada en el encabezado.",
+      "status": "Estado",
+      "filterAll": "Todas",
+      "veterinarian": "Médico veterinario",
+      "requestedAt": "Solicitada",
+      "expiresAt": "Acceso hasta",
+      "actions": "Acciones",
+      "profileUnavailable": "Datos profesionales no disponibles.",
+      "review": "Revisar",
+      "revoke": "Revocar acceso",
+      "loading": "Cargando solicitudes…",
+      "noRanchTitle": "No hay unidad productiva para mostrar",
+      "noRanchBody": "Las solicitudes aparecen cuando tu cuenta está asignada a una unidad productiva.",
+      "manageRequiredTitle": "Se requiere acceso de administración",
+      "manageRequiredBody": "Tu acceso a la unidad productiva seleccionada no incluye revisar solicitudes.",
+      "noRequestsTitle": "Aún no hay solicitudes",
+      "noRequestsBody": "Ningún médico veterinario ha solicitado acceso a esta unidad productiva.",
+      "noFilteredTitle": "No hay solicitudes con este estado",
+      "notice": {
+        "granted": "Acceso concedido.",
+        "rejected": "Solicitud rechazada.",
+        "revoked": "Acceso revocado."
+      },
+      "decision": {
+        "title": "Revisar solicitud de acceso",
+        "lead": "Elige el alcance y el último día válido para conceder acceso, o rechaza la solicitud.",
+        "scope": "Alcance otorgado",
+        "expiresOn": "Último día de acceso",
+        "expiryInvalid": "Elige una fecha a partir de mañana.",
+        "grant": "Conceder acceso",
+        "reject": "Rechazar"
+      },
+      "revokeTitle": "¿Revocar el acceso a la unidad productiva?",
+      "revokeBody": "El médico veterinario pierde el acceso a esta unidad productiva hasta que se conceda una nueva solicitud."
+    },
+    "status": {
+      "active": "Activa",
+      "pending": "Pendiente",
+      "granted": "Concedido",
+      "rejected": "Rechazado",
+      "revoked": "Revocado",
+      "expired": "Vencido"
+    },
+    "scope": {
+      "read": "Ver registros",
+      "clinicalWrite": "Ver y registrar atención clínica",
+      "manage": "Administrar acceso a la unidad productiva"
+    }
+  },
+  "errors": {
+    "network": "No se pudo conectar con el servicio de ICHU. Si no se usó por un rato, su servidor puede tardar hasta un minuto en iniciar; inténtalo de nuevo en un momento.",
+    "configuration": "La aplicación no está configurada. Revisa la configuración de ejecución.",
+    "unknown": "No se pudo completar la solicitud. Inténtalo de nuevo.",
+    "http-403": "Tu cuenta no tiene permiso para esta acción.",
+    "http-404": "No se encontró el elemento solicitado.",
+    "http-409": "Este cambio entra en conflicto con datos existentes. Actualiza la página e inténtalo de nuevo.",
+    "http-500": "El servicio de ICHU no está disponible temporalmente. Inténtalo más tarde."
+  },
+  "cattle": {
+    "areaNavigation": "Áreas de animales",
+    "tabs": {
+      "animals": "Animales",
+      "lots": "Lotes"
+    },
+    "breed": {
+      "BrownSwiss": "Brown Swiss",
+      "Fleckvieh": "Fleckvieh",
+      "Criollo": "Criollo",
+      "Crossbred": "Cruzado"
+    },
+    "sex": {
+      "Female": "Hembra",
+      "Male": "Macho"
+    },
+    "stage": {
+      "Calf": "Ternero",
+      "Heifer": "Vaquilla",
+      "MilkingCow": "Vaca en ordeño",
+      "FatteningBull": "Toro de engorde"
+    },
+    "status": {
+      "Active": "Activo",
+      "Inactive": "Inactivo"
+    },
+    "exitReason": {
+      "Death": "Muerte",
+      "Sale": "Venta",
+      "Theft": "Robo",
+      "Culling": "Descarte"
+    },
+    "fields": {
+      "earTag": "Arete",
+      "breed": "Raza",
+      "sex": "Sexo",
+      "birthDate": "Fecha de nacimiento",
+      "ageMonths": "Edad (meses)",
+      "stage": "Etapa productiva",
+      "lot": "Lote",
+      "status": "Estado",
+      "exitReason": "Motivo de baja",
+      "exitDate": "Fecha de baja",
+      "name": "Nombre",
+      "criterion": "Criterio"
+    },
+    "inventory": {
+      "title": "Animales",
+      "lead": "Busca animales por arete, estado o lote, registra nuevos animales y exporta la lista.",
+      "register": "Registrar animal",
+      "filters": "Filtros de animales",
+      "earTagHint": "Arete exacto",
+      "allStatuses": "Todos los estados",
+      "allLots": "Todos los lotes",
+      "search": "Buscar",
+      "clearFilters": "Limpiar filtros",
+      "loading": "Cargando animales",
+      "tableLabel": "Animales de la unidad productiva",
+      "noLot": "Sin lote",
+      "noRanchTitle": "No hay unidad productiva disponible",
+      "noRanch": "Tu cuenta no tiene acceso a ninguna unidad productiva, por eso no se muestran animales.",
+      "emptyTitle": "Aún no hay animales",
+      "empty": "No hay animales registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer animal para iniciar el inventario.",
+      "noMatchTitle": "No hay animales que coincidan",
+      "noMatch": "Cambia o limpia los filtros para ver más animales."
+    },
+    "register": {
+      "title": "Registrar animal",
+      "lead": "Ingresa la identificación y la primera etapa productiva. El arete debe ser único en esta unidad productiva.",
+      "submit": "Registrar",
+      "saved": "Animal registrado."
+    },
+    "edit": {
+      "title": "Editar datos del animal",
+      "lead": "Los cambios conservan el historial de etapas del animal.",
+      "submit": "Guardar cambios",
+      "saved": "Datos del animal guardados."
+    },
+    "lifeStage": {
+      "title": "Cambiar etapa productiva",
+      "lead": "La etapa anterior queda en el historial y se cierra el día que elijas.",
+      "newStage": "Nueva etapa",
+      "validFrom": "Vigente desde",
+      "submit": "Cambiar etapa",
+      "saved": "Etapa productiva cambiada."
+    },
+    "exit": {
+      "title": "Registrar baja",
+      "warning": "Registrar una baja no se puede deshacer. El animal permanece en los registros como inactivo y de solo lectura, con su historial.",
+      "reason": "Motivo de baja",
+      "exitDate": "Fecha de baja",
+      "submit": "Registrar baja",
+      "saved": "Baja registrada. El animal ahora es de solo lectura."
+    },
+    "validation": {
+      "earTagRequired": "Ingresa un arete de hasta 30 caracteres.",
+      "notInFuture": "La fecha no puede ser futura.",
+      "birthDateAfterStage": "La fecha de nacimiento no puede ser posterior a la primera etapa registrada.",
+      "beforeStage": "La fecha no puede ser anterior al nacimiento ni al inicio de la etapa actual.",
+      "stageUnchanged": "Elige una etapa distinta a la actual.",
+      "lotNameRequired": "Ingresa un nombre de lote de hasta 80 caracteres."
+    },
+    "profile": {
+      "title": "Animal",
+      "back": "Volver a animales",
+      "loading": "Cargando animal",
+      "details": "Datos generales",
+      "edit": "Editar datos",
+      "changeStage": "Cambiar etapa",
+      "recordExit": "Registrar baja",
+      "readOnly": "Este animal salió del hato el {{date}}. Su registro se conserva como referencia y no puede modificarse.",
+      "noLot": "Sin lote",
+      "collar": "Collar inteligente",
+      "collarUnavailable": "Los datos del collar no están disponibles en este momento. Inténtalo más tarde.",
+      "noCollar": "Sin collar asignado",
+      "assignCollar": "Asignar collar en dispositivos IoT",
+      "lastReading": "Última lectura: {{date}}",
+      "noReadings": "Todavía no llega ninguna lectura de este collar.",
+      "history": "Historial de etapas",
+      "fromDate": "Desde {{date}}",
+      "untilDate": "hasta {{date}}",
+      "current": "actual",
+      "noHistory": "No hay etapas registradas."
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    },
+    "lots": {
+      "title": "Lotes",
+      "lead": "Agrupa animales para su manejo. Un animal puede estar en varios lotes; quitarlo de un lote conserva su registro.",
+      "create": "Crear lote",
+      "createTitle": "Crear lote",
+      "submit": "Crear lote",
+      "created": "Lote creado.",
+      "criterionHint": "Opcional: cómo se formó el grupo.",
+      "listTitle": "Lotes de la unidad productiva",
+      "listNote": "Selecciona un lote para ver sus animales.",
+      "tableLabel": "Lotes de la unidad productiva",
+      "members": "Animales",
+      "noCriterion": "Sin criterio",
+      "open": "Abrir",
+      "actions": "Acciones",
+      "loading": "Cargando lotes",
+      "emptyTitle": "Aún no hay lotes",
+      "empty": "No hay lotes en esta unidad productiva.",
+      "emptyManage": "Crea un lote para agrupar animales.",
+      "addAnimal": "Animal activo",
+      "add": "Agregar al lote",
+      "noAssignable": "Todos los animales activos ya están en este lote.",
+      "membersTableLabel": "Animales del lote",
+      "unknownAnimal": "Animal desconocido",
+      "assignedOn": "Asignado el",
+      "remove": "Quitar",
+      "noAnimals": "Este lote aún no tiene animales."
+    },
+    "export": {
+      "failed": "No se pudo crear el archivo. Inténtalo de nuevo.",
+      "limited": "El archivo incluye solo los primeros 5000 animales del filtro."
+    }
+  },
+  "devices": {
+    "areaNavigation": "Áreas de dispositivos IoT",
+    "tabs": {
+      "devices": "Dispositivos",
+      "waterTroughs": "Abrevaderos",
+      "gateways": "Nodos de borde"
+    },
+    "type": {
+      "SmartCollar": "Collar inteligente",
+      "WaterController": "Controlador de agua"
+    },
+    "status": {
+      "Available": "Disponible",
+      "InService": "En servicio",
+      "Maintenance": "Mantenimiento"
+    },
+    "communication": {
+      "NeverReported": "Sin reportes",
+      "Communicating": "Comunicando",
+      "NoCommunication": "Sin comunicación"
+    },
+    "targetType": {
+      "Cattle": "Animal",
+      "WaterTrough": "Abrevadero"
+    },
+    "fields": {
+      "serial": "Número de serie",
+      "type": "Tipo de dispositivo",
+      "status": "Estado",
+      "communication": "Comunicación",
+      "battery": "Batería",
+      "firmware": "Firmware",
+      "assignedTo": "Asignado a",
+      "actions": "Acciones",
+      "lastSeen": "Último reporte",
+      "target": "Destino",
+      "startedAt": "Asignado el",
+      "endedAt": "Liberado el",
+      "releaseReason": "Motivo de liberación"
+    },
+    "inventory": {
+      "title": "Dispositivos IoT",
+      "lead": "Registra collares inteligentes y controladores de agua, asígnalos a animales y abrevaderos, y revisa la batería, la comunicación y el mantenimiento.",
+      "register": "Registrar dispositivo",
+      "filters": "Filtros de dispositivos",
+      "allTypes": "Todos los tipos",
+      "allStatuses": "Todos los estados",
+      "allCommunications": "Todas las comunicaciones",
+      "clearFilters": "Limpiar filtros",
+      "loading": "Cargando dispositivos",
+      "tableLabel": "Dispositivos IoT de la unidad productiva",
+      "noRanchTitle": "No hay unidad productiva disponible",
+      "noRanch": "Tu cuenta no tiene acceso a ninguna unidad productiva, por eso no se muestran dispositivos.",
+      "emptyTitle": "Aún no hay dispositivos",
+      "empty": "No hay dispositivos registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer dispositivo para iniciar el inventario.",
+      "noMatchTitle": "No hay dispositivos que coincidan",
+      "noMatch": "Cambia o limpia los filtros para ver más dispositivos."
+    },
+    "actions": {
+      "assign": "Asignar",
+      "release": "Liberar",
+      "history": "Historial",
+      "maintenanceOn": "Enviar a mantenimiento",
+      "maintenanceOff": "Terminar mantenimiento"
+    },
+    "battery": {
+      "percent": "{{value}} %",
+      "low": "Batería baja",
+      "none": "Sin lectura"
+    },
+    "lastSeen": "Último reporte {{time}}",
+    "notAssigned": "Sin asignar",
+    "unknownTarget": "Desconocido",
+    "notRecorded": "Sin registrar",
+    "maintenance": {
+      "on": "Dispositivo enviado a mantenimiento.",
+      "off": "El dispositivo volvió a estar disponible."
+    },
+    "register": {
+      "title": "Registrar dispositivo",
+      "lead": "El número de serie viene impreso en el dispositivo y debe ser único en la plataforma.",
+      "submit": "Registrar dispositivo",
+      "saved": "Dispositivo registrado."
+    },
+    "assign": {
+      "collarTitle": "Asignar collar",
+      "controllerTitle": "Asignar controlador de agua",
+      "collarLead": "Elige un animal activo que no tenga collar. El collar reporta la actividad y la ubicación del animal.",
+      "controllerLead": "Elige un abrevadero que no tenga controlador. El controlador reporta la temperatura del abrevadero.",
+      "animal": "Animal activo sin collar",
+      "trough": "Abrevadero sin controlador",
+      "noAnimals": "Todos los animales activos ya tienen collar.",
+      "noTroughs": "Todos los abrevaderos ya tienen controlador.",
+      "submit": "Asignar",
+      "saved": "Dispositivo asignado."
+    },
+    "release": {
+      "title": "Liberar dispositivo",
+      "warning": "Liberar termina la asignación actual. El dispositivo conserva su historial y vuelve a estar disponible.",
+      "reason": "Motivo de la liberación",
+      "submit": "Liberar dispositivo",
+      "saved": "Dispositivo liberado."
+    },
+    "history": {
+      "title": "Historial de asignaciones",
+      "lead": "Cada periodo en que este dispositivo prestó servicio, del más reciente al más antiguo.",
+      "loading": "Cargando historial",
+      "empty": "Este dispositivo todavía no tiene asignaciones.",
+      "current": "Vigente",
+      "close": "Cerrar"
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    },
+    "validation": {
+      "serialRequired": "Ingresa un número de serie de hasta 50 caracteres.",
+      "reasonRequired": "Ingresa un motivo de hasta 120 caracteres."
+    }
+  },
+  "waterTroughs": {
+    "noLot": "Sin lote",
+    "unknownLot": "Lote no listado",
+    "fields": {
+      "name": "Nombre",
+      "lot": "Lote",
+      "temperatureRange": "Rango de temperatura",
+      "minimum": "Mínimo (°C)",
+      "maximum": "Máximo (°C)"
+    },
+    "list": {
+      "title": "Abrevaderos",
+      "lead": "Nombra cada abrevadero y define el rango de temperatura con el que se revisará.",
+      "register": "Registrar abrevadero",
+      "loading": "Cargando abrevaderos",
+      "tableLabel": "Abrevaderos de la unidad productiva",
+      "actions": "Acciones",
+      "setRange": "Definir rango",
+      "rangeValue": "{{minimum}} °C a {{maximum}} °C",
+      "noRange": "Sin rango definido",
+      "emptyTitle": "Aún no hay abrevaderos",
+      "empty": "No hay abrevaderos registrados en esta unidad productiva.",
+      "emptyManage": "Registra el primer abrevadero para iniciar la lista."
+    },
+    "register": {
+      "title": "Registrar abrevadero",
+      "lead": "Registrar un abrevadero no usa un collar. El lote es opcional.",
+      "submit": "Registrar abrevadero",
+      "saved": "Abrevadero registrado."
+    },
+    "range": {
+      "title": "Definir rango de temperatura",
+      "lead": "Define el rango con el que se revisará el abrevadero. Esta versión todavía no muestra lecturas de temperatura.",
+      "submit": "Guardar rango",
+      "saved": "Rango de temperatura guardado."
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de hasta 80 caracteres.",
+      "temperatureLimits": "Ingresa una temperatura entre -10 y 60 °C.",
+      "temperatureOrder": "El mínimo debe ser menor que el máximo, con como máximo un decimal."
+    }
+  },
+  "gateways": {
+    "status": {
+      "Active": "Activo",
+      "Revoked": "Revocado"
+    },
+    "fields": {
+      "name": "Nombre",
+      "status": "Estado",
+      "registeredOn": "Registrado el",
+      "revokedOn": "Revocado el"
+    },
+    "notRevoked": "Sin revocar",
+    "list": {
+      "title": "Nodos de borde",
+      "lead": "Los nodos de borde conectan los dispositivos de campo de una unidad productiva con ICHU. La clave de cada nodo se muestra una sola vez, al registrarlo.",
+      "register": "Registrar nodo",
+      "loading": "Cargando nodos",
+      "tableLabel": "Nodos de borde de la unidad productiva",
+      "actions": "Acciones",
+      "revoke": "Revocar",
+      "emptyTitle": "Aún no hay nodos de borde",
+      "empty": "No hay nodos de borde registrados en esta unidad productiva.",
+      "emptyManage": "Registra un nodo para conectar un dispositivo de campo."
+    },
+    "register": {
+      "title": "Registrar nodo de borde",
+      "lead": "Nombra el nodo según su ubicación en la unidad productiva, por ejemplo Potrero norte.",
+      "submit": "Registrar nodo",
+      "keyTitle": "Clave del nodo",
+      "keyWarning": "Copia esta clave ahora. No volverá a mostrarse.",
+      "copy": "Copiar clave",
+      "copied": "Clave copiada.",
+      "copyFailed": "No se pudo copiar la clave. Selecciónala y cópiala manualmente.",
+      "done": "Listo",
+      "saved": "Nodo de borde registrado."
+    },
+    "revoke": {
+      "title": "Revocar nodo de borde",
+      "warning": "La clave del nodo deja de funcionar de inmediato. Revocar no se puede deshacer; para volver a conectar el dispositivo, registra un nodo nuevo.",
+      "submit": "Revocar nodo",
+      "saved": "Nodo de borde revocado."
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de hasta 80 caracteres."
+    }
+  },
+  "locations": {
+    "title": "Ubicación y cercas",
+    "lead": "Zonas de pastoreo en el mapa con la última posición conocida de cada animal activo. Las tablas muestran los mismos datos.",
+    "filters": "Filtros de ubicación",
+    "draw": "Dibujar zona de pastoreo",
+    "map": {
+      "label": "Mapa de zonas de pastoreo y últimas posiciones conocidas",
+      "viewHelp": "Zonas de pastoreo y últimas posiciones conocidas. Una posición es una observación pasada, no una ubicación en vivo.",
+      "editHelp": "Haz clic en el mapa para agregar un vértice. Arrastra un vértice para moverlo. Haz clic en un vértice, o selecciónalo con Tab y presiona Enter, para quitarlo, o usa Deshacer último punto."
+    },
+    "editor": {
+      "defineTitle": "Nueva zona de pastoreo",
+      "redefineTitle": "Redefinir zona de pastoreo",
+      "undo": "Deshacer último punto",
+      "clear": "Limpiar",
+      "corners": {
+        "one": "{{count}} vértice (se necesitan al menos {{minimum}})",
+        "other": "{{count}} vértices (se necesitan al menos {{minimum}})"
+      },
+      "minimumCorners": "Una zona de pastoreo necesita al menos {{minimum}} vértices.",
+      "saved": "La zona de pastoreo se guardó."
+    },
+    "geofences": {
+      "title": "Zonas de pastoreo",
+      "tableLabel": "Zonas de pastoreo de la unidad productiva",
+      "emptyTitle": "No hay zonas de pastoreo",
+      "empty": "No hay zonas de pastoreo definidas para esta selección.",
+      "emptyManage": "Dibuja una zona de pastoreo en el mapa para un lote y empieza a recibir alertas de geocerca."
+    },
+    "positions": {
+      "title": "Últimas posiciones conocidas",
+      "tableLabel": "Últimas posiciones conocidas de los animales activos",
+      "position": "Posición",
+      "emptyTitle": "No hay posiciones",
+      "empty": "Ningún animal activo tiene una posición conocida en esta selección.",
+      "known": "Posición conocida",
+      "noPosition": "Sin posición",
+      "failed": "No se pudo cargar",
+      "current": "Vigente",
+      "stale": "Con más de 24 horas"
+    }
+  },
+  "monitoring": {
+    "areaNavigation": "Áreas de monitoreo",
+    "tabs": {
+      "overview": "Resumen",
+      "thresholds": "Umbrales"
+    },
+    "map": {
+      "unavailable": "El mapa no está disponible. Recarga la página para intentarlo de nuevo; las tablas siguen mostrando los mismos datos.",
+      "loading": "Cargando el mapa…",
+      "geofenceTooltip": "{{name}} · tolerancia {{tolerance}} m",
+      "animalTooltip": "Arete {{earTag}} · última posición conocida {{time}}",
+      "staleAnimalTooltip": "Arete {{earTag}} · posición del {{time}}, con más de 24 horas",
+      "vertex": "Vértice {{number}}"
+    },
+    "metric": {
+      "BodyTemperature": "Temperatura corporal",
+      "ActivityIndex": "Índice de actividad",
+      "RuminationMinutes": "Rumia (minutos)",
+      "BatteryLevel": "Nivel de batería"
+    },
+    "units": {
+      "celsius": "°C",
+      "index": "índice",
+      "minutes": "min",
+      "percent": "%",
+      "meters": "m"
+    },
+    "duration": {
+      "hours": "horas",
+      "minutes": "minutos",
+      "seconds": "segundos"
+    },
+    "state": {
+      "noReading": "Sin lectura",
+      "stale": "Desactualizado"
+    },
+    "measurement": {
+      "Valid": "Válida",
+      "Invalid": "No válida",
+      "Absent": "Sin lectura"
+    },
+    "severity": {
+      "Informative": "Informativa",
+      "Warning": "Advertencia",
+      "Critical": "Crítica"
+    },
+    "alertType": {
+      "Temperature": "Temperatura corporal",
+      "Activity": "Actividad",
+      "Geofence": "Geocerca"
+    },
+    "alertStatus": {
+      "Pending": "Pendiente",
+      "Acknowledged": "Atendida"
+    },
+    "fields": {
+      "lifeStage": "Etapa productiva",
+      "metric": "Métrica",
+      "minValue": "Mínimo",
+      "maxValue": "Máximo",
+      "severity": "Severidad",
+      "status": "Estado",
+      "type": "Tipo",
+      "value": "Valor",
+      "raisedAt": "Generada",
+      "recordedAt": "Registrada",
+      "acknowledgedAt": "Atendida",
+      "lastReading": "Última lectura",
+      "detectedValue": "Valor detectado",
+      "normalRange": "Rango normal",
+      "geofence": "Geocerca",
+      "unknownGeofence": "Geocerca ya no listada",
+      "distanceToBoundary": "Distancia al límite",
+      "outsideFor": "Fuera de la zona por",
+      "finding": "Hallazgo",
+      "action": "Acción",
+      "noAction": "Sin acción registrada",
+      "responseTime": "Tiempo de respuesta",
+      "responseTimeSeconds": "Tiempo de respuesta (segundos)",
+      "tolerance": "Tolerancia (m)",
+      "position": "Posición"
+    },
+    "links": {
+      "openMonitoring": "Abrir monitoreo"
+    },
+    "overview": {
+      "title": "Monitoreo del hato",
+      "lead": "Última temperatura corporal, actividad, rumia y posición de cada animal activo. Los valores desactualizados o ausentes se indican, nunca como cero.",
+      "filters": "Filtros del hato",
+      "lot": "Lote",
+      "allLots": "Todos los lotes",
+      "limitHint": "Los hatos de más de {{limit}} animales muestran valores al elegir un lote.",
+      "tooMany": "Este hato tiene más de {{limit}} animales activos. Filtra por lote para cargar sus últimos valores.",
+      "loading": "Cargando los últimos valores",
+      "tableLabel": "Últimos valores de los animales activos",
+      "emptyTitle": "No hay animales activos",
+      "empty": "Registra animales y asigna collares para ver sus valores aquí.",
+      "status": {
+        "current": "Vigente",
+        "stale": "Valores desactualizados",
+        "noReading": "Sin lectura",
+        "failed": "No se pudo cargar"
+      }
+    },
+    "telemetry": {
+      "title": "Monitoreo del animal",
+      "back": "Volver al monitoreo del hato",
+      "latest": "Últimos valores",
+      "lastKnownPosition": "Última posición conocida",
+      "noPosition": "Sin posición",
+      "range": "Periodo",
+      "presets": {
+        "24h": "Últimas 24 horas",
+        "7d": "Últimos 7 días",
+        "30d": "Últimos 30 días",
+        "custom": "Personalizado"
+      },
+      "fromDay": "Desde el día",
+      "toDay": "Hasta el día (incluido)",
+      "apply": "Aplicar periodo",
+      "invalidRange": "Elige ambos días, con el primero antes del último.",
+      "noThresholds": "No hay umbral configurado para la etapa de este animal, así que sus lecturas no se comparan con un rango normal.",
+      "truncated": "Solo se cargan las {{limit}} lecturas más recientes de {{total}} de este periodo. Elige un periodo más corto para ver las anteriores.",
+      "temperatureChart": "Lecturas de temperatura corporal en el tiempo, con los límites del umbral",
+      "activityChart": "Lecturas del índice de actividad en el tiempo, con los límites del umbral",
+      "statistics": "Estadísticas del periodo",
+      "metric": "Métrica",
+      "readings": "Lecturas del periodo",
+      "loading": "Cargando lecturas",
+      "noReadingsTitle": "No hay lecturas en este periodo",
+      "noReadings": "Elige un periodo más largo o revisa que el collar esté enviando lecturas."
+    },
+    "stats": {
+      "count": "Lecturas válidas",
+      "minimum": "Mínimo",
+      "maximum": "Máximo",
+      "mean": "Promedio",
+      "standardDeviation": "Desviación estándar",
+      "outsideBand": "Fuera del umbral"
+    },
+    "chart": {
+      "minimum": "Umbral mínimo",
+      "maximum": "Umbral máximo"
+    },
+    "alerts": {
+      "title": "Alertas",
+      "lead": "Alertas generadas por temperatura corporal, actividad y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
+      "filters": "Filtros de alertas",
+      "allStatuses": "Todos los estados",
+      "animal": "Animal",
+      "allAnimals": "Todos los animales",
+      "tableLabel": "Alertas de la unidad productiva",
+      "loading": "Cargando alertas",
+      "open": "Abrir",
+      "emptyTitle": "No hay alertas",
+      "empty": "No hay alertas que coincidan con los filtros.",
+      "acknowledged": "La alerta fue atendida.",
+      "acknowledge": "Atender alerta",
+      "detail": {
+        "title": "Alerta",
+        "animal": "Animal {{earTag}}",
+        "mapLabel": "Posición de la alerta y su geocerca"
+      }
+    },
+    "geofences": {
+      "name": "Nombre de la zona de pastoreo",
+      "corners": "Vértices",
+      "redefine": "Redefinir",
+      "toleranceHint": "Mayor error de GPS, en metros, que puede tener una posición para contar."
+    },
+    "thresholds": {
+      "title": "Rangos normales",
+      "lead": "Rangos normales por etapa productiva y métrica. Las lecturas fuera de un rango generan alertas de umbral; ICHU no trae rangos predeterminados.",
+      "add": "Agregar umbral",
+      "edit": "Editar",
+      "saved": "El umbral se guardó.",
+      "tableLabel": "Rangos normales de la unidad productiva",
+      "loading": "Cargando umbrales",
+      "emptyTitle": "Aún no hay umbrales",
+      "empty": "No hay rangos normales configurados en esta unidad productiva.",
+      "emptyManage": "Agrega un umbral por etapa y métrica para generar alertas de umbral.",
+      "dialog": {
+        "title": "Rango normal",
+        "lead": "Las lecturas por debajo del mínimo o por encima del máximo generan una alerta con esta severidad.",
+        "submit": "Guardar rango"
+      }
+    },
+    "validation": {
+      "rangeOrder": "El mínimo debe ser menor que el máximo.",
+      "findingRequired": "Describe el hallazgo antes de atender la alerta.",
+      "tolerance": "Ingresa un número entero de metros de 1 a {{maximum}}."
+    },
+    "errors": {
+      "versionConflict": "Este registro cambió mientras tanto. Se cargaron los datos más recientes."
+    }
+  },
+  "health": {
+    "title": "Historial clínico",
+    "lead": "Eventos de campo e intervenciones clínicas de cada animal, del más reciente al más antiguo, con sus últimos valores, alertas pendientes y periodo de retiro.",
+    "filters": "Filtros del historial clínico",
+    "chooseAnimal": "Elige un animal",
+    "allTypes": "Todos los tipos",
+    "noAnimalTitle": "Ningún animal seleccionado",
+    "noAnimal": "Elige un animal para ver su historial clínico.",
+    "fields": {
+      "animal": "Animal",
+      "period": "Periodo",
+      "type": "Tipo",
+      "kind": "Tipo de registro",
+      "day": "Día",
+      "time": "Hora",
+      "occurredAt": "Fecha y hora",
+      "product": "Producto",
+      "dose": "Dosis",
+      "observation": "Observación",
+      "sireReference": "Semental",
+      "pregnancyResult": "Resultado de preñez",
+      "expectedCalvingDate": "Fecha probable de parto"
+    },
+    "periods": {
+      "90d": "Últimos 90 días",
+      "1y": "Último año",
+      "5y": "Últimos 5 años"
+    },
+    "type": {
+      "HealthEvent": "Evento de salud",
+      "Birth": "Parto",
+      "Vaccination": "Vacunación",
+      "Treatment": "Tratamiento",
+      "Insemination": "Inseminación",
+      "NaturalMating": "Monta natural",
+      "HeatObserved": "Celo observado",
+      "Abortion": "Aborto",
+      "PregnancyDiagnosis": "Diagnóstico de preñez"
+    },
+    "kind": {
+      "field": "Evento de campo",
+      "clinical": "Intervención clínica"
+    },
+    "links": {
+      "openHistory": "Historial clínico"
+    },
+    "records": {
+      "openField": "Registrar evento de salud",
+      "openClinical": "Registrar intervención clínica",
+      "fieldTitle": "Registrar evento de salud",
+      "fieldLead": "Registra un evento observado en el animal {{earTag}}, como una observación de salud, un parto, un celo, un aborto o un servicio reproductivo.",
+      "fieldSubmit": "Guardar evento",
+      "clinicalTitle": "Registrar intervención clínica",
+      "clinicalLead": "Registra una vacunación, un tratamiento, una inseminación o un diagnóstico de preñez aplicado al animal {{earTag}}.",
+      "clinicalSubmit": "Guardar intervención",
+      "fieldSaved": "El evento de salud se registró.",
+      "clinicalSaved": "La intervención clínica se registró."
+    },
+    "validation": {
+      "future": "La fecha y la hora no pueden ser futuras."
+    },
+    "summary": {
+      "title": "Resumen de salud",
+      "stage": "Etapa productiva",
+      "pendingAlerts": "Alertas pendientes",
+      "withdrawal": "Periodo de retiro",
+      "withdrawalActive": "Vigente hasta el {{date}}",
+      "withdrawalUpcoming": "Inicia el {{date}}",
+      "noWithdrawal": "Sin periodo de retiro",
+      "daysRemaining": "Días restantes: {{count}}",
+      "incomplete": "No se pudieron cargar algunos valores. Inténtalo más tarde."
+    },
+    "timeline": {
+      "title": "Línea de tiempo",
+      "loading": "Cargando historial",
+      "empty": "No hay registros en este periodo.",
+      "noProduct": "Sin producto registrado"
+    },
+    "report": {
+      "subtitle": "Arete {{earTag}} · {{stage}} · {{from}} – {{to}}"
+    }
+  },
+  "planning": {
+    "areaNavigation": "Áreas de planificación sanitaria",
+    "tabs": {
+      "calendar": "Calendario",
+      "campaigns": "Campañas",
+      "withdrawal": "Periodos de retiro"
+    },
+    "fields": {
+      "name": "Nombre",
+      "kind": "Tipo",
+      "status": "Estado",
+      "state": "Estado",
+      "startsOn": "Inicia el",
+      "endsOn": "Termina el",
+      "startsAt": "Inicio",
+      "endsAt": "Fin",
+      "animal": "Animal",
+      "title": "Título",
+      "scheduledAt": "Programada",
+      "day": "Día",
+      "time": "Hora",
+      "appliedDay": "Fecha de aplicación",
+      "dueDay": "Vence el",
+      "linkedIntervention": "Intervención clínica vinculada"
+    },
+    "kind": {
+      "Sanitary": "Sanitaria",
+      "Reproductive": "Reproductiva"
+    },
+    "campaignStatus": {
+      "Upcoming": "Próxima",
+      "Active": "Activa",
+      "Finished": "Finalizada"
+    },
+    "withdrawalState": {
+      "Active": "Vigente",
+      "Upcoming": "Próximo",
+      "Ended": "Finalizado"
+    },
+    "state": {
+      "Done": "Aplicada",
+      "Scheduled": "Programada",
+      "Overdue": "Atrasada",
+      "overdueOne": "Atrasada por 1 día",
+      "overdueDays": "Atrasada por {{count}} días"
+    },
+    "calendar": {
+      "title": "Calendario",
+      "lead": "Trabajo sanitario y reproductivo por día, con los recordatorios de los próximos 7 días y el trabajo atrasado.",
+      "loading": "Cargando calendario",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "view": "Vista del calendario",
+      "viewGrid": "Cuadrícula mensual",
+      "viewAgenda": "Agenda",
+      "dayLabel": "{{date}}, actividades: {{count}}",
+      "pickDay": "Selecciona un día",
+      "noActivitiesOnDay": "No hay actividades este día.",
+      "noActivitiesMonth": "No hay actividades en este mes.",
+      "ranchWide": "Toda la unidad productiva",
+      "limited": "Solo se muestran las primeras {{limit}} actividades de este periodo.",
+      "agendaTitle": "Agenda"
+    },
+    "reminders": {
+      "title": "Recordatorios",
+      "upcoming": "Próximos 7 días",
+      "overdue": "Atrasadas",
+      "noUpcoming": "No hay actividades programadas para los próximos 7 días.",
+      "noOverdue": "No hay actividades atrasadas."
+    },
+    "activities": {
+      "schedule": {
+        "open": "Programar actividad",
+        "title": "Programar actividad",
+        "lead": "Programa trabajo para toda la unidad productiva o para un animal activo.",
+        "submit": "Programar"
+      },
+      "scheduled": "La actividad se programó.",
+      "open": "Abrir",
+      "loading": "Cargando actividad",
+      "applications": "Aplicaciones",
+      "noApplications": "Todavía no hay aplicaciones registradas.",
+      "recordApplication": "Registrar aplicación",
+      "linkedOn": "Vinculada a la intervención del {{date}}",
+      "linkedUnknown": "Vinculada a una intervención clínica",
+      "noIntervention": "Sin intervención vinculada",
+      "followUps": "Seguimientos",
+      "noFollowUps": "No hay seguimientos programados.",
+      "scheduleFollowUp": "Programar seguimiento"
+    },
+    "campaigns": {
+      "title": "Campañas",
+      "lead": "Campañas sanitarias y reproductivas por rango de días, con las actividades programadas en cada una.",
+      "loading": "Cargando campañas",
+      "tableLabel": "Campañas de la unidad productiva",
+      "emptyTitle": "Todavía no hay campañas",
+      "empty": "No hay campañas planificadas en esta unidad productiva.",
+      "emptyManage": "Crea una campaña sanitaria o reproductiva para agrupar sus actividades.",
+      "created": "La campaña se creó.",
+      "create": {
+        "open": "Nueva campaña",
+        "title": "Nueva campaña",
+        "lead": "Una campaña agrupa actividades en un rango de días incluido.",
+        "submit": "Crear campaña"
+      },
+      "detail": {
+        "loading": "Cargando campaña",
+        "activities": "Actividades de esta campaña",
+        "noActivities": "Todavía no hay actividades programadas en esta campaña."
+      }
+    },
+    "withdrawal": {
+      "title": "Periodos de retiro",
+      "lead": "Intervalos de retiro registrados para cada animal, con sus límites, su estado y los días restantes.",
+      "loading": "Cargando periodos de retiro",
+      "tableLabel": "Periodos de retiro de la unidad productiva",
+      "filters": "Filtros de periodos de retiro",
+      "allAnimals": "Todos los animales",
+      "remaining": "Días restantes",
+      "daysRemaining": {
+        "one": "Falta {{count}} día",
+        "other": "Faltan {{count}} días"
+      },
+      "startsDay": "Inicia el día",
+      "endsDay": "Termina el día",
+      "emptyTitle": "Todavía no hay periodos de retiro",
+      "empty": "No hay periodos de retiro registrados en esta unidad productiva.",
+      "emptyRecord": "Registra un periodo de retiro después de una intervención clínica.",
+      "recorded": "El periodo de retiro se registró.",
+      "record": {
+        "open": "Registrar periodo de retiro",
+        "title": "Registrar periodo de retiro",
+        "lead": "Ingresa el inicio y el fin del intervalo de retiro. ICHU guarda estos límites tal como los recibe y no los calcula.",
+        "submit": "Guardar periodo"
+      }
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de campaña.",
+      "rangeOrder": "El día final no puede ser anterior al día inicial.",
+      "titleRequired": "Ingresa un título.",
+      "withdrawalRangeOrder": "El fin no puede ser anterior al inicio."
+    }
+  },
+  "reproduction": {
+    "title": "Reproducción",
+    "lead": "Servicios reproductivos, diagnósticos de preñez, partos y celos de cada hembra, con los días abiertos después de cada parto.",
+    "filters": "Filtros de reproducción",
+    "loading": "Cargando el historial reproductivo.",
+    "fields": {
+      "female": "Hembra"
+    },
+    "chooseFemale": "Elige una hembra",
+    "noAnimalTitle": "Ninguna hembra seleccionada",
+    "noAnimal": "Elige una hembra para ver su historial reproductivo.",
+    "actions": {
+      "service": "Registrar servicio",
+      "diagnosis": "Registrar diagnóstico de preñez",
+      "event": "Registrar parto, aborto o celo"
+    },
+    "summary": {
+      "title": "Indicadores"
+    },
+    "kpi": {
+      "pregnancies": "Preñeces confirmadas",
+      "services": "Servicios reproductivos",
+      "servicesPerPregnancy": "Servicios por preñez",
+      "lastCalving": "Último parto",
+      "daysOpen": "Días abiertos actuales",
+      "expectedCalving": "Fecha probable de parto",
+      "notPregnant": "No preñada",
+      "note": "Los días abiertos actuales se cuentan desde el último parto mientras no haya una preñez en curso. Los servicios por preñez dividen los servicios entre las preñeces confirmadas."
+    },
+    "intervals": {
+      "title": "Intervalos entre partos",
+      "tableLabel": "Intervalos entre partos del animal",
+      "calving": "Parto",
+      "conception": "Servicio de concepción",
+      "daysOpen": "Días abiertos",
+      "notYet": "Todavía no",
+      "empty": "Aún no hay partos registrados."
+    },
+    "timeline": {
+      "title": "Eventos",
+      "empty": "No hay eventos registrados."
+    },
+    "noHistoryTitle": "Sin historial reproductivo",
+    "noHistory": {
+      "one": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{count}} mes y está en la etapa {{stage}}.",
+      "other": "Este animal todavía no tiene servicios reproductivos ni partos. Tiene {{count}} meses y está en la etapa {{stage}}."
+    },
+    "event": {
+      "service": "Servicio reproductivo",
+      "diagnosis": "Diagnóstico de preñez",
+      "calving": "Parto",
+      "abortion": "Aborto",
+      "heat": "Celo observado"
+    },
+    "pregnancyResult": {
+      "Pregnant": "Preñada",
+      "Open": "Vacía"
+    },
+    "columns": {
+      "event": "Evento",
+      "detail": "Monta o resultado"
+    },
+    "export": {
+      "subtitle": {
+        "one": "{{earTag}} · {{stage}} · {{count}} mes · {{date}}",
+        "other": "{{earTag}} · {{stage}} · {{count}} meses · {{date}}"
+      }
+    },
+    "records": {
+      "serviceTitle": "Registrar servicio reproductivo",
+      "serviceLead": "Registra una monta natural o una inseminación del animal {{earTag}}, y el semental si lo conoces.",
+      "serviceSubmit": "Guardar servicio",
+      "diagnosisTitle": "Registrar diagnóstico de preñez",
+      "diagnosisLead": "Registra el resultado de la revisión de preñez del animal {{earTag}}.",
+      "diagnosisSubmit": "Guardar diagnóstico",
+      "eventTitle": "Registrar parto, aborto o celo",
+      "eventLead": "Registra un parto, un aborto o un celo observado del animal {{earTag}}.",
+      "eventSubmit": "Guardar registro",
+      "saved": "El registro reproductivo se guardó."
+    },
+    "validation": {
+      "calvingNotAfterDiagnosis": "La fecha probable de parto debe caer después del día del diagnóstico.",
+      "calvingTooFar": "La fecha probable de parto debe caer dentro de los 300 días posteriores al día del diagnóstico."
+    }
+  },
+  "nutrition": {
+    "title": "Plan nutricional",
+    "lead": "La ración de cada lote, su alimento por cabeza y el alimento estimado del lote, con la rumia del lote alrededor de sus cambios de ración.",
+    "filters": "Filtros nutricionales",
+    "loading": "Cargando el plan nutricional.",
+    "chooseLot": "Elige un lote",
+    "noLotTitle": "Ningún lote seleccionado",
+    "noLot": "Elige un lote para ver su plan nutricional.",
+    "fields": {
+      "lot": "Lote",
+      "feed": "Alimento",
+      "kind": "Tipo",
+      "kilogramsPerHead": "kg por cabeza al día",
+      "kilogramsForLot": "kg al día para el lote (estimado)"
+    },
+    "kind": {
+      "Forage": "Forraje",
+      "Concentrate": "Concentrado",
+      "Supplement": "Suplemento",
+      "Mineral": "Mineral"
+    },
+    "units": {
+      "kilogramsPerDay": "kg al día"
+    },
+    "current": {
+      "title": "Plan vigente",
+      "validity": "Del {{from}} al {{to}}",
+      "openEnded": "Desde el {{from}}, sin fecha de fin",
+      "target": "Ganancia diaria objetivo",
+      "noTarget": "Sin definir",
+      "total": "Alimento estimado para el lote",
+      "utcNote": "El plan vigente se toma con la fecha UTC de hoy, porque las unidades productivas todavía no tienen zona horaria.",
+      "noneTitle": "Sin plan vigente",
+      "none": "Ningún plan nutricional cubre hoy a este lote."
+    },
+    "estimate": {
+      "heads": {
+        "one": "Estimación para {{count}} animal activo del lote.",
+        "other": "Estimación para {{count}} animales activos del lote."
+      },
+      "unknown": "No se pudo leer el número de animales activos, así que no se muestra la estimación."
+    },
+    "items": {
+      "tableLabel": "Alimentos de la ración vigente"
+    },
+    "rumination": {
+      "title": "Evolución de la rumia",
+      "lead": "La media diaria de rumia del lote en minutos, alrededor de sus cambios de ración.",
+      "series": "Media diaria del lote",
+      "changeMarker": "Cambio de ración",
+      "axis": "Minutos",
+      "chartLabel": "Media diaria de rumia del lote, con sus cambios de ración marcados",
+      "before": "Media antes del cambio",
+      "after": "Media desde el cambio",
+      "noChange": "Ningún cambio de ración cae dentro de este periodo.",
+      "since": "El periodo empieza el {{date}}.",
+      "unavailable": "La API no tiene lecturas de rumia para este lote en este periodo."
+    },
+    "history": {
+      "title": "Historial de planes",
+      "change": "Cambio de ración el {{date}}",
+      "empty": "No hay planes registrados para este lote."
+    },
+    "record": {
+      "open": "Registrar plan nutricional",
+      "title": "Registrar plan nutricional",
+      "lead": "Registra la ración del lote {{lot}}. Un plan nuevo cierra el plan sin fecha de fin el día anterior a su inicio.",
+      "name": "Nombre del plan",
+      "validFrom": "Válido desde",
+      "validTo": "Válido hasta (opcional)",
+      "targetGain": "Ganancia diaria objetivo en kg (opcional)",
+      "itemsTitle": "Alimentos de la ración",
+      "addItem": "Agregar alimento",
+      "removeItem": "Quitar alimento",
+      "notes": "Notas (opcional)",
+      "submit": "Guardar plan",
+      "saved": "El plan nutricional se registró."
+    },
+    "validation": {
+      "gain": "Escribe un valor mayor que 0 y como máximo 3 kg al día.",
+      "quantity": "Escribe un valor mayor que 0 y como máximo 100 kg por cabeza al día.",
+      "validityOrder": "La fecha de fin no puede ser anterior a la de inicio.",
+      "itemsRequired": "Agrega al menos un alimento."
+    }
+  },
+  "analytics": {
+    "notAvailable": "No disponible",
+    "source": "Datos de {{source}}, actualizados {{updated}}",
+    "sources": {
+      "ichu-platform": "Plataforma ICHU"
+    },
+    "showFormula": "¿Cómo se calcula?",
+    "hideFormula": "Ocultar el cálculo",
+    "denominator": "Base del cálculo: {{count}}",
+    "units": {
+      "animals": {
+        "one": "animal",
+        "other": "animales"
+      },
+      "percent": {
+        "one": "%",
+        "other": "%"
+      },
+      "events": {
+        "one": "evento",
+        "other": "eventos"
+      },
+      "celsius": "°C",
+      "index": "índice",
+      "minutes": "min",
+      "cases": "casos"
+    },
+    "indicators": {
+      "monitoredAnimals": "Animales monitoreados",
+      "outsideGeofenceAnimals": "Fuera de la geocerca",
+      "mortalityRate": "Tasa de mortalidad",
+      "births": "Nacimientos",
+      "confirmedPregnancies": "Preñeces confirmadas"
+    },
+    "alertTypes": {
+      "temperature": "Temperatura",
+      "activity": "Actividad",
+      "geofence": "Geocerca"
+    },
+    "export": {
+      "indicator": "Indicador",
+      "value": "Valor",
+      "unit": "Unidad",
+      "formula": "Cálculo",
+      "denominator": "Base",
+      "note": "Nota"
+    },
+    "period": {
+      "label": "Periodo",
+      "presets": {
+        "days7": "Últimos 7 días",
+        "days30": "Últimos 30 días",
+        "days90": "Últimos 90 días",
+        "days365": "Últimos 365 días"
+      },
+      "custom": "Rango personalizado",
+      "fromDay": "Desde el día",
+      "toDay": "Hasta el día (incluido)",
+      "apply": "Aplicar periodo",
+      "invalid": "Elige ambos días; el primero debe ser anterior o igual al último.",
+      "showing": "Del {{from}} al {{to}}"
+    },
+    "dashboard": {
+      "title": "Mi hato",
+      "meta": "Del {{from}} al {{to}} · {{source}}, actualizado {{updated}}",
+      "kpis": "Indicadores del hato",
+      "loading": "Cargando indicadores",
+      "openAlerts": "Alertas abiertas",
+      "noOpenAlerts": "No hay alertas abiertas en este periodo.",
+      "alertsLink": "Ver alertas",
+      "locationsLink": "Ubicación y cercas",
+      "temperature": {
+        "title": "Temperatura corporal del lote",
+        "lead": "Promedio diario con banda ±1σ y umbral de alerta",
+        "series": "Promedio diario",
+        "band": "±1σ",
+        "limit": "Umbral {{value}} {{unit}}",
+        "chartLabel": "Promedio diario de la temperatura corporal del lote, con su banda ±1σ y el umbral de alerta",
+        "animalsOnLastDay": {
+          "one": "{{count}} animal con lecturas el último día",
+          "other": "{{count}} animales con lecturas el último día"
+        }
+      },
+      "alerts": {
+        "title": "Alertas recientes",
+        "viewAll": "Ver todas",
+        "empty": "No hay alertas pendientes."
+      },
+      "collars": {
+        "title": "Collares",
+        "connected": {
+          "one": "{{count}} conectado",
+          "other": "{{count}} conectados"
+        },
+        "silent": "{{count}} sin comunicación",
+        "never": "{{count}} sin reportar",
+        "lowBattery": "{{count}} con batería baja",
+        "empty": "Aún no hay collares registrados."
+      },
+      "coverage": "Cobertura de lecturas",
+      "excluded": "Animales sin lecturas válidas en el periodo: {{count}}",
+      "missingReadings": "Lecturas faltantes: {{count}}",
+      "missingUnknown": "El número de lecturas faltantes no está disponible.",
+      "upcoming": "Próximos 7 días",
+      "planningLink": "Planificación sanitaria",
+      "noUpcoming": "No hay trabajo programado en los próximos 7 días.",
+      "wholeHerd": "Todo el hato"
+    },
+    "reports": {
+      "title": "Reportes",
+      "lead": "Tendencias del lote, curva epidemiológica y reporte ejecutivo del periodo elegido.",
+      "tabsLabel": "Secciones del reporte",
+      "tabs": {
+        "trends": "Tendencias del lote",
+        "epidemiology": "Curva epidemiológica",
+        "executive": "Reporte ejecutivo"
+      }
+    },
+    "trends": {
+      "controls": "Controles de tendencia",
+      "lot": "Lote",
+      "metric": "Métrica",
+      "metrics": {
+        "body-temperature": "Temperatura corporal",
+        "activity-index": "Índice de actividad",
+        "rumination-minutes": "Rumia"
+      },
+      "multiplier": "Umbral de valor atípico (desviaciones estándar)",
+      "multiplierValue": "{{value}} desviaciones estándar",
+      "multiplierHelp": "Un animal se marca cuando su promedio se aleja del promedio del lote por más de este número de desviaciones estándar de los promedios de los animales.",
+      "threshold": "Umbral a {{value}} desviaciones estándar",
+      "lotAverage": "Promedio del lote",
+      "spread": "Desviación estándar de los animales",
+      "needTwoAnimals": "Se necesitan al menos dos animales con lecturas válidas para medir la dispersión.",
+      "noSpread": "Todos los animales con lecturas tienen el mismo promedio, así que ninguno se separa del lote.",
+      "flagged": "Animales marcados",
+      "flaggedNote": "Promedios más allá del umbral",
+      "chart": "Media diaria del lote con la banda del umbral",
+      "chartLabel": "Media diaria del lote",
+      "averageLine": "Promedio del lote",
+      "outlierSeries": "Animales marcados",
+      "lowerLimit": "Límite inferior",
+      "upperLimit": "Límite superior",
+      "dailyTable": "Medias diarias del lote",
+      "day": "Día",
+      "lotDailyMean": "Media diaria del lote",
+      "animalsCounted": "Animales contados",
+      "outliers": "Valores atípicos",
+      "earTag": "Arete",
+      "animalAverage": "Promedio del animal",
+      "difference": "Diferencia con el promedio del lote",
+      "noOutliers": "Ningún animal supera el umbral en este periodo.",
+      "unknownAnimal": "Animal sin arete",
+      "comparison": "Comparar un animal con su lote",
+      "animal": "Animal",
+      "noAnimal": "Ningún animal seleccionado",
+      "loading": "Cargando lecturas del lote",
+      "noLots": "Este hato aún no tiene lotes. Crea uno en Animales, luego en Lotes.",
+      "summary": "Resumen del lote",
+      "emptyTitle": "Aún no hay lecturas",
+      "empty": "Elige un lote con lecturas en el periodo.",
+      "missingReadings": "Lecturas faltantes en el lote: {{count}}",
+      "missingUnknown": "El número de lecturas faltantes no está disponible."
+    },
+    "epidemiology": {
+      "condition": "Condición",
+      "conditions": {
+        "temperature": "Alertas de temperatura",
+        "activity": "Alertas de actividad"
+      },
+      "caseNote": "Cada caso es una alerta de la condición; un animal con varias alertas cuenta más de una vez.",
+      "loading": "Cargando la curva",
+      "summary": "Resumen de la curva",
+      "total": "Casos en el periodo",
+      "peak": "Día pico",
+      "peakCases": {
+        "one": "{{count}} caso",
+        "other": "{{count}} casos"
+      },
+      "noPeak": "Sin casos",
+      "daysWithoutCases": "Días sin casos nuevos",
+      "attackRate": "Tasa de ataque",
+      "attackRateFormula": "Casos nuevos entre los animales del hato, por 100",
+      "herdSizeUnavailable": "El tamaño del hato en este periodo no está disponible.",
+      "restriction": "Levantamiento de restricción",
+      "restrictionYes": "Los días sin casos nuevos cubren el periodo de incubación, por lo que la restricción puede revisarse.",
+      "restrictionNo": "Los días sin casos nuevos todavía no cubren el periodo de incubación.",
+      "newCases": "Casos nuevos",
+      "cumulative": "Casos acumulados",
+      "rollingAverage": "Media móvil de {{days}} días",
+      "rollingLabelShort": "Media de {{days}} días",
+      "dailyChart": "Casos nuevos por día con su media móvil",
+      "cumulativeChart": "Casos acumulados",
+      "table": "Valores diarios",
+      "day": "Día",
+      "emptyTitle": "No hay casos que mostrar",
+      "empty": "Elige una condición y un periodo para revisar las alertas de ese periodo."
+    },
+    "executive": {
+      "title": "Reporte ejecutivo",
+      "preview": "Indicadores del reporte",
+      "previewNote": "Los mismos valores que las descargas en CSV, Excel y PDF.",
+      "csv": "Descargar CSV",
+      "loading": "Cargando el reporte",
+      "empty": "El reporte no está disponible para este periodo.",
+      "generated": "Generado {{date}}"
+    },
+    "portfolio": {
+      "title": "Portafolio de hatos asesorados",
+      "lead": "Los hatos que asesora, con los que necesitan atención primero.",
+      "loading": "Cargando hatos",
+      "tableLabel": "Hatos que asesora",
+      "ranch": "Hato",
+      "critical": "Alertas críticas",
+      "warning": "Alertas de advertencia",
+      "informative": "Alertas informativas",
+      "unresponsive": "Tratamientos sin respuesta",
+      "overdue": "Campañas atrasadas",
+      "updated": "Actualizado",
+      "actions": "Acciones",
+      "open": "Abrir",
+      "openNamed": "Abrir {{ranch}}",
+      "unnamedRanch": "Hato sin nombre",
+      "empty": "Aún no hay hatos asesorados."
+    },
+    "links": {
+      "compareWithLot": "Comparar con el lote"
+    },
+    "chart": {
+      "showTable": "Mostrar datos en tabla",
+      "hideTable": "Ocultar la tabla"
+    },
+    "texts": {
+      "populationIncomplete": "Los datos de la población están incompletos.",
+      "alertsIncomplete": "Los datos de alertas están incompletos.",
+      "geofenceIncomplete": "Los datos de la zona de pastoreo están incompletos.",
+      "noAnimalsAtRisk": "No hay animales en riesgo en este periodo.",
+      "birthsUnavailable": "Los registros de nacimientos no están disponibles.",
+      "pregnanciesUnavailable": "Las preñeces confirmadas todavía no se registran.",
+      "expectedReadingsUnavailable": "El número esperado de lecturas no está disponible.",
+      "formulaMonitored": "Animales con al menos una lectura válida en el periodo",
+      "formulaGeofence": "Animales fuera de su zona de pastoreo asignada al final del periodo",
+      "formulaMortality": "100 × muertes en el periodo ÷ animales en riesgo en el periodo",
+      "formulaBirths": "Nacimientos registrados en el periodo",
+      "formulaPregnancies": "Preñeces confirmadas en el periodo",
+      "noLotReadings": "No hay lecturas válidas para este lote y esta métrica en el periodo.",
+      "lotExpectedUnavailable": "Las lecturas esperadas no están disponibles para parte del lote.",
+      "fiveAnimalsRequired": "Se necesitan al menos cinco animales con lecturas válidas para comparar un animal con su lote.",
+      "animalNoReadings": "Este animal no tiene lecturas válidas en este lote.",
+      "casesIncomplete": "Los datos de casos están incompletos.",
+      "noIncubationPeriod": "Esta condición no tiene un periodo de incubación configurado.",
+      "twoCasesRequired": "Se necesitan al menos dos casos para construir una progresión.",
+      "periodShorter": "El periodo es más corto que el periodo de incubación."
+    }
+  },
+  "plans": {
+    "title": "Compara los planes",
+    "lead": "Ingresa el número de collares para ver la cuota anual de cada plan.",
+    "headCount": "Número de collares",
+    "headCountHint": "Un collar inteligente por cabeza de ganado.",
+    "headCountInvalid": "Ingresa un número entero de collares de 1 a 10,000.",
+    "readOnly": "Solo el administrador ganadero puede contratar un plan. Aquí puedes comparar los planes.",
+    "noRanchTitle": "Ningún hato seleccionado",
+    "noRanch": "Elige un hato en la cabecera para ver los planes.",
+    "recommended": "Recomendado para tu hato",
+    "fromWebsite": "Seleccionado en el sitio web",
+    "deviceLimit": {
+      "one": "Hasta {{count}} collar",
+      "other": "Hasta {{count}} collares"
+    },
+    "deviceLimitLabel": "Límite de collares",
+    "annualFee": "Cuota anual",
+    "deviceUnitPrice": "Precio por collar",
+    "total": "Total",
+    "plan": "Plan",
+    "enterHeadCount": "Ingresa el número de collares para ver la cuota anual.",
+    "calculating": "Calculando el precio…",
+    "subscribe": "Contratar",
+    "existing": "Tu hato ya tiene el plan {{plan}} ({{status}}).",
+    "existingWithoutPlan": "Tu hato ya tiene un plan ({{status}}).",
+    "existingAction": "Ir a Mi plan",
+    "loading": "Cargando planes…",
+    "empty": "No hay planes publicados por ahora.",
+    "tiers": {
+      "Basic": "Básico",
+      "Standard": "Estándar",
+      "Pro": "Pro"
+    },
+    "features": {
+      "Monitoring": "Monitoreo",
+      "Alerts": "Alertas",
+      "Planning": "Planificación sanitaria",
+      "Analytics": "Analítica",
+      "ReportExport": "Exportación de reportes"
+    },
+    "compare": {
+      "caption": "Comparación de planes",
+      "item": "Concepto",
+      "included": "Incluido",
+      "notIncluded": "No incluido",
+      "noQuote": "Ingresa el número de collares"
+    },
+    "annualNote": "Cada plan es una suscripción anual que cubre un año."
+  },
+  "subscriptions": {
+    "title": "Mi plan",
+    "lead": "La suscripción de tu hato, su vigencia y los importes acordados.",
+    "loading": "Cargando tu plan…",
+    "summaryTitle": "Suscripción",
+    "cancelled": "Suscripción cancelada.",
+    "pendingNote": "Paga para activar el plan. Seguirá inactivo hasta que se confirme el pago.",
+    "managerOnly": "Solo el administrador ganadero puede pagar o cancelar esta suscripción.",
+    "noneTitle": "Aún no hay suscripción",
+    "noneBody": "Compara los planes y solicita el que se ajuste a tu hato.",
+    "noneReadOnly": "Solo el administrador ganadero puede solicitar una suscripción.",
+    "comparePlans": "Comparar planes",
+    "payNow": "Pagar ahora",
+    "downloadReceipt": "Descargar comprobante",
+    "downloadQuote": "Descargar cotización",
+    "preparingDocument": "Preparando el documento…",
+    "documentFailed": "No se pudo crear el documento. Inténtalo de nuevo.",
+    "notYet": "Todavía no",
+    "status": {
+      "Pending": "Pendiente",
+      "Active": "Activa",
+      "Cancelled": "Cancelada",
+      "Expired": "Vencida"
+    },
+    "fields": {
+      "requestedAt": "Solicitada el",
+      "activatedAt": "Activa desde",
+      "validUntil": "Vigente hasta",
+      "cancelledAt": "Cancelada el",
+      "cancellationReason": "Motivo",
+      "headCount": "Número de collares",
+      "maximumDevices": "Límite de collares",
+      "termsVersion": "Versión de los términos",
+      "features": "Funciones incluidas"
+    },
+    "cancel": {
+      "open": "Cancelar suscripción",
+      "title": "Cancelar suscripción",
+      "lead": "La suscripción se detiene de inmediato. Indica un motivo para que el equipo pueda dar seguimiento.",
+      "reason": "Motivo",
+      "reasonHint": "Hasta {{max}} caracteres.",
+      "reasonRequired": "Indica un motivo.",
+      "keep": "Mantener suscripción",
+      "submit": "Cancelar suscripción"
+    },
+    "confirm": {
+      "title": "Confirma tu suscripción",
+      "lead": "Revisa los importes de la cotización. El plan se activa cuando se confirme el pago.",
+      "acceptTerms": "Acepto los Términos del servicio (versión {{version}})",
+      "termsRequired": "Acepta los términos para continuar.",
+      "readTerms": "Lee los Términos del servicio (se abre en una pestaña nueva)",
+      "submit": "Continuar al pago",
+      "redirecting": "Abriendo la página de pago…"
+    },
+    "payment": {
+      "activating": "Activando tu plan",
+      "receivedActivating": "Pago recibido, activando tu plan…",
+      "activatingHint": "Normalmente tarda menos de un minuto. La página vuelve a comprobarlo cada pocos segundos.",
+      "activeTitle": "Tu plan está activo",
+      "activeBody": "Tu hato ya puede usar las funciones de este plan.",
+      "timedOutTitle": "La activación tarda más de lo habitual",
+      "timedOutBody": "La activación puede tardar un momento. Revisa Mi plan en unos minutos.",
+      "cancelledTitle": "Pago cancelado",
+      "cancelledBody": "Pago cancelado; no se cobró nada.",
+      "retry": "Reintentar el pago",
+      "openMyPlan": "Abrir Mi plan"
+    }
+  },
+  "pricing": {
+    "collarsLine": "Collares inteligentes — {{count}} × {{unitPrice}} (compra única)",
+    "annualFeeLine": "Plan {{plan}} — cuota anual"
+  },
+  "receipt": {
+    "brand": "ICHU · SmartFarm",
+    "title": "Comprobante de pago ICHU",
+    "quoteTitle": "Cotización",
+    "notice": "Este comprobante no es una boleta ni factura electrónica SUNAT.",
+    "ranch": "Hato",
+    "account": "Cuenta",
+    "status": "Estado",
+    "paymentDate": "Fecha de pago",
+    "validity": "Vigencia",
+    "termsVersion": "Versión de los términos",
+    "generatedOn": "Generado el",
+    "collarsItem": "Collares inteligentes (compra única)",
+    "description": "Descripción",
+    "quantity": "Cantidad",
+    "unitPrice": "Precio unitario",
+    "amount": "Importe"
+  }
+}

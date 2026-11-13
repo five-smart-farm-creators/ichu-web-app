@@ -2,9 +2,9 @@
   --login-ink: var(--ink);
   --login-muted: var(--muted);
   --login-action: var(--forest);
-  --login-action-hover: var(--forest-deep);
+  --login-action-hover: color-mix(in srgb, var(--forest) 85%, var(--ink));
   --login-surface: var(--surface);
-  --login-border: var(--border);
+  --login-border: var(--border-strong);
   --login-body: var(--font-body);
   --login-width: 1060px;
   display: block;
@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100svh;
+  flex: 1 0 auto;
   padding: 24px 20px 8px;
   background: var(--bg);
 }
@@ -29,26 +29,23 @@
   grid-template-areas: 'form photo';
   grid-template-columns: minmax(318px, 38fr) minmax(0, 62fr);
   padding: 10px;
-  border: 1px solid #e9e3d4;
-  border-radius: 22px;
-  background: var(--login-surface);
-  box-shadow: 0 16px 45px rgb(59 49 29 / .13), 0 2px 6px rgb(59 49 29 / .06);
+  background: var(--bg);
 }
 
-.login-card { grid-area: form; align-self: center; min-width: 0; padding: 26px clamp(20px, 3.1vw, 36px) 22px; }
+.login-card { grid-area: form; align-self: center; min-width: 0; padding: 26px clamp(20px, 3.1vw, 36px) 22px; background: var(--bg); }
 .login-card-header { margin-bottom: 18px; }
 
 .login-brand { display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 9px; margin: 0 auto 18px; color: var(--login-ink); text-decoration: none; }
-.login-brand-mark { position: relative; flex: 0 0 28px; width: 28px; height: 49px; overflow: hidden; }
+.login-brand-mark { position: relative; flex: 0 0 28px; width: 28px; height: 49px; overflow: hidden; border-radius: 8px; background: var(--logo-tile); }
 .login-brand-mark img { position: absolute; top: -3.95px; left: -14.69px; width: 50.45px; height: 58.65px; max-width: none; }
 .login-brand-name { display: flex; align-items: center; gap: 7px; }
 .login-brand-name strong { font-size: 21px; line-height: 1; }
-.login-brand-name span { padding-left: 7px; border-left: 1px solid #deded4; color: var(--login-muted); font-size: 13px; }
+.login-brand-name span { padding-left: 7px; border-left: 1px solid var(--border); color: var(--login-muted); font-size: 13px; }
 
 h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--font-heading); letter-spacing: -.035em; }
 .login-lead { margin-top: 6px; color: var(--login-muted); font-size: 14px; }
 
-.account-link { display: inline-flex; align-items: center; color: var(--login-action); font-size: 13px; font-weight: 700; text-decoration: underline; text-decoration-color: #adc2b4; }
+.account-link { display: inline-flex; align-items: center; color: var(--login-action); font-size: 13px; font-weight: 700; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--forest) 40%, transparent); }
 .account-link:hover { text-decoration-color: currentColor; }
 .recover-link { justify-self: end; min-height: 32px; }
 .login-register { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0 7px; margin-top: 4px; color: var(--login-muted); font-size: 13px; }
@@ -56,9 +53,7 @@ h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--fo
 
 .login-note { margin-top: 6px; color: var(--login-muted); font-size: 12px; line-height: 1.5; }
 
-.login-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; max-width: var(--login-width); margin-top: 6px; padding: 0 4px; color: var(--login-muted); font-size: 12px; }
-.login-footer a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
-.login-footer a:hover { text-decoration: underline; }
+// The gradient and caption keep literal colors: they sit on a photo that is identical in both themes.
 .login-photo {
   grid-area: photo;
   position: relative;
@@ -67,23 +62,22 @@ h1 { color: var(--login-ink); font: 600 clamp(1.625rem, 3vw, 2rem)/1.12 var(--fo
   min-height: 505px;
   overflow: hidden;
   isolation: isolate;
-  border-radius: 15px;
-  background: #294e39;
+  border-radius: 28px;
+  background: var(--nav-bg);
 }
 .login-photo img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 58%; }
 .login-photo::after { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, #173f2e 0%, rgb(23 63 46 / .88) 12%, rgb(23 63 46 / .33) 33%, transparent 59%); }
 .login-photo-caption { padding: clamp(20px, 3.8vw, 42px); color: #fffdf4; }
-.login-photo-caption p { max-width: 19ch; font-size: clamp(1.65rem, 3.4vw, 2.65rem); line-height: 1.06; letter-spacing: -.045em; }
+.login-photo-caption p { max-width: 19ch; font: 600 clamp(1.65rem, 3.4vw, 2.65rem)/1.06 var(--font-heading); letter-spacing: -.045em; }
 .login-photo-caption span { display: block; margin-top: 12px; color: #e3eadb; font-size: 12px; font-weight: 650; }
 @media (max-width: 680px) {
   .login-scene { padding: 16px 12px 6px; }
-  .login-layout { grid-template-areas: 'photo' 'form'; grid-template-columns: minmax(0, 1fr); max-width: 440px; padding: 8px; border-radius: 18px; }
-  .login-photo { min-height: clamp(118px, 38vw, 170px); border-radius: 11px; }
+  .login-layout { grid-template-areas: 'photo' 'form'; grid-template-columns: minmax(0, 1fr); max-width: 440px; padding: 8px; }
+  .login-photo { min-height: clamp(118px, 38vw, 170px); }
   .login-photo img { object-position: 53% 70%; }
   .login-photo-caption { padding: 12px 14px; }
   .login-photo-caption p { max-width: none; font-size: 17px; letter-spacing: -.02em; }
   .login-photo-caption span { display: none; }
   .login-card { padding: 18px 16px 14px; }
   .login-card-header { margin-bottom: 18px; }
-  .login-footer { max-width: 440px; }
 }

@@ -1,4 +1,5 @@
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { ApiError } from '../../../../shared/infrastructure/http/api-error';
 import { AuthError, type AuthUser, type IamAccount, type RanchAccess, type RegisterAccountRequest } from '../../domain/model/auth.model';
 import { AccountRepository } from '../../domain/repositories/account.repository';
 import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
@@ -25,17 +26,16 @@ export class AuthFacade {
   readonly loading = signal(true);
   readonly readyState = signal(false);
   readonly busy = signal(false);
-  readonly error = signal<AuthError | null>(null);
+  readonly error = signal<AuthError | ApiError | null>(null);
+  /** True when an identity exists but its ICHU setup is unfinished, so the same credentials can finish it. */
+  readonly registrationRetryable = signal(false);
   readonly displayName = computed(() => this.currentUser()?.displayName?.trim() || null);
   readonly name = computed(() => this.displayName() || this.currentUser()?.email || '');
 
   constructor() {
     this.initialState = new Promise(resolve => { this.resolveInitialState = resolve; });
     if (!this.authentication.isConfigured()) {
-      this.error.set(new AuthError(
-        'configuration',
-        'Firebase Authentication is not configured. Add Firebase runtime settings to enable sign-in.',
-      ));
+      this.error.set(new AuthError('configuration'));
       this.finishInitialState();
       return;
     }
@@ -46,7 +46,7 @@ export class AuthFacade {
       );
       this.destroyRef.onDestroy(() => this.stopObserving?.());
     } catch (error) {
-      this.handleAuthError(this.asAuthError(error));
+      this.handleAuthError(error instanceof AuthError ? error : new AuthError('unknown'));
     }
   }
 
@@ -55,7 +55,7 @@ export class AuthFacade {
     return this.initialState;
   }
 
-  /** Authenticates through the backend lockout check before opening the Firebase SDK session. */
+  /** Signs in with Firebase, then opens the app only if the matching ICHU account is usable. */
   async signIn(email: string, password: string): Promise<boolean> {
     if (this.busy()) return false;
     this.busy.set(true);
@@ -65,21 +65,17 @@ export class AuthFacade {
     let signedInUser: AuthUser | null = null;
     try {
       this.requireRuntimeConfiguration();
-      const session = await this.accounts.createSession(email.trim(), password);
-      if (!session.idToken.trim() || session.tokenType.toLowerCase() !== 'bearer') {
-        throw new AuthError('service-unavailable', 'The account service returned an invalid sign-in response.');
-      }
       this.suppressedUid = null;
       signedInUser = await this.authentication.signIn(email.trim(), password);
       await this.verifyApplicationAccount(signedInUser);
       return this.authenticated();
     } catch (error) {
-      const authError = this.asAuthError(error);
+      const userError = this.asUserError(error);
       if (signedInUser && this.authentication.currentUser()?.uid === signedInUser.uid) {
         await this.authentication.signOut().catch(() => undefined);
         this.clearAuthenticatedState();
       }
-      this.error.set(authError);
+      this.error.set(userError);
       return false;
     } finally {
       this.busy.set(false);
@@ -96,6 +92,7 @@ export class AuthFacade {
     if (this.busy()) return false;
     this.busy.set(true);
     this.error.set(null);
+    this.registrationRetryable.set(false);
     this.registrationInProgress = true;
     this.stateGeneration++;
     this.clearAuthenticatedState();
@@ -127,10 +124,8 @@ export class AuthFacade {
       try {
         await this.authentication.sendEmailVerification();
       } catch {
-        throw new AuthError(
-          'service-unavailable',
-          'The account was created, but verification email delivery failed. Retry account setup with the same credentials to resend it.',
-        );
+        this.registrationRetryable.set(true);
+        throw new AuthError('service-unavailable');
       }
       await this.authentication.signOut();
       this.clearAuthenticatedState();
@@ -143,13 +138,9 @@ export class AuthFacade {
       }
       if (openedIdentitySession && provisioningStarted && !accountProvisioned
         && !(error instanceof AuthError && error.code === 'account-unavailable')) {
-        this.error.set(new AuthError(
-          'service-unavailable',
-          'Account setup did not finish. Your Firebase identity was kept; retry with the same email and password.',
-        ));
-      } else {
-        this.error.set(this.asAuthError(error));
+        this.registrationRetryable.set(true);
       }
+      this.error.set(this.asUserError(error));
       return false;
     } finally {
       this.registrationInProgress = false;
@@ -168,7 +159,7 @@ export class AuthFacade {
       await this.authentication.sendPasswordReset(email.trim());
       return true;
     } catch (error) {
-      this.error.set(this.asAuthError(error));
+      this.error.set(this.asUserError(error));
       return false;
     } finally {
       this.busy.set(false);
@@ -187,7 +178,7 @@ export class AuthFacade {
         await this.authentication.signOut();
       }
     } catch (error) {
-      this.error.set(this.asAuthError(error));
+      this.error.set(this.asUserError(error));
     } finally {
       this.clearAuthenticatedState();
       this.busy.set(false);
@@ -216,7 +207,7 @@ export class AuthFacade {
     } catch (error) {
       if (generation !== this.stateGeneration) return;
       if (this.authentication.currentUser()?.uid === user.uid) {
-        this.error.set(this.asAuthError(error));
+        this.error.set(this.asUserError(error));
         await this.authentication.signOut().catch(() => undefined);
       }
       if (generation === this.stateGeneration) this.clearAuthenticatedState();
@@ -241,22 +232,21 @@ export class AuthFacade {
   private async loadApplicationAccount(user: AuthUser): Promise<void> {
     const generation = this.stateGeneration;
     if (!user.emailVerified) {
-      throw new AuthError('email-not-verified', 'Verify your email address before signing in.');
+      throw new AuthError('email-not-verified');
     }
     if (this.authentication.currentUser()?.uid !== user.uid) {
-      throw new AuthError('account-unavailable', 'The Firebase identity changed before account verification completed.');
+      throw new AuthError('account-unavailable');
     }
-    const [account, ranchAccess] = await Promise.all([
-      this.accounts.currentAccount(),
-      this.accounts.ranchAccess(),
-    ]);
+    // The first request activates a pending account, so a parallel call would conflict with that update (409).
+    const account = await this.accounts.currentAccount();
+    const ranchAccess = await this.accounts.ranchAccess();
     if (generation !== this.stateGeneration || this.registrationInProgress || user.uid === this.suppressedUid
       || this.authentication.currentUser()?.uid !== user.uid
       || account.email.trim().toLowerCase() !== user.email.trim().toLowerCase()) {
-      throw new AuthError('account-unavailable', 'The application account does not match this Firebase identity.');
+      throw new AuthError('account-unavailable');
     }
     if (account.status.trim().toLowerCase() !== 'active') {
-      throw new AuthError('account-unavailable', 'This ICHU account is not active. Contact your administrator.');
+      throw new AuthError('account-unavailable');
     }
     this.currentUser.set(user);
     this.account.set(account);
@@ -272,22 +262,15 @@ export class AuthFacade {
   }
 
   private requireRuntimeConfiguration(): void {
-    if (!this.authentication.isConfigured()) throw this.configurationError();
-    if (!this.accounts.isConfigured()) {
-      throw new AuthError('configuration', 'The IAM API base URL is not configured. Add it to runtime settings.');
-    }
+    if (!this.authentication.isConfigured() || !this.accounts.isConfigured()) throw this.configurationError();
   }
 
   private configurationError(): AuthError {
-    return new AuthError(
-      'configuration',
-      'Firebase Authentication is not configured. Add Firebase runtime settings to enable sign-in.',
-    );
+    return new AuthError('configuration');
   }
 
-  private asAuthError(error: unknown): AuthError {
-    if (error instanceof AuthError) return error;
-    return new AuthError('unknown', 'Authentication could not be completed. Try again.');
+  private asUserError(error: unknown): AuthError | ApiError {
+    return error instanceof AuthError || error instanceof ApiError ? error : new AuthError('unknown');
   }
 
   private clearAuthenticatedState(): void {
@@ -296,7 +279,6 @@ export class AuthFacade {
     this.account.set(null);
     this.ranchAccess.set([]);
   }
-
 
   private finishInitialState(): void {
     this.loading.set(false);

@@ -1,0 +1,156 @@
+<a class="skip-link" href="#main-content">{{ 'common.skipToContent' | translate }}</a>
+
+<mat-sidenav-container class="shell-container">
+  <mat-sidenav id="app-navigation" [mode]="wide() ? 'side' : 'over'" [opened]="wide() || menuOpen()" (openedChange)="menuOpen.set($event)">
+    <nav class="shell-navigation" [attr.aria-label]="'shell.navigation' | translate">
+      <a class="sidebar-brand" routerLink="/dashboard" (click)="closeMenu()">
+        <span class="sidebar-logo">
+          <img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790">
+        </span>
+        <span class="sidebar-title">
+          <strong>ICHU</strong>
+          <span>{{ 'shell.tagline' | translate }}</span>
+        </span>
+      </a>
+      <mat-nav-list>
+        <div class="nav-group" role="group" aria-labelledby="nav-group-herd">
+          <span class="nav-group-label" id="nav-group-herd">{{ 'shell.groups.herd' | translate }}</span>
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="grid" />
+            <span matListItemTitle>{{ 'shell.dashboard' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/cattle" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="cattle" />
+            <span matListItemTitle>{{ 'shell.animals' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/locations" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="pin" />
+            <span matListItemTitle>{{ 'shell.locations' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/devices" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="radio" />
+            <span matListItemTitle>{{ 'shell.iotDevices' | translate }}</span>
+          </a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-group-health">
+          <span class="nav-group-label" id="nav-group-health">{{ 'shell.groups.health' | translate }}</span>
+          <a mat-list-item routerLink="/monitoring" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="pulse" />
+            <span matListItemTitle>{{ 'shell.monitoring' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/alerts" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="alert" />
+            <span matListItemTitle>{{ 'shell.alerts' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/health" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="health" />
+            <span matListItemTitle>{{ 'shell.clinicalHistory' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/planning" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="calendar" />
+            <span matListItemTitle>{{ 'shell.healthPlanning' | translate }}</span>
+          </a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-group-production">
+          <span class="nav-group-label" id="nav-group-production">{{ 'shell.groups.production' | translate }}</span>
+          <a mat-list-item routerLink="/reproduction" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="venus" />
+            <span matListItemTitle>{{ 'shell.reproduction' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/nutrition" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="leaf" />
+            <span matListItemTitle>{{ 'shell.nutrition' | translate }}</span>
+          </a>
+          @if (context.currentRanch()) {
+            <a mat-list-item routerLink="/reports" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+              <ichu-icon matListItemIcon name="chart" />
+              <span matListItemTitle>{{ 'shell.reports' | translate }}</span>
+            </a>
+          }
+          @if (context.currentRole() === 'Veterinarian') {
+            <a mat-list-item routerLink="/portfolio" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+              <ichu-icon matListItemIcon name="users" />
+              <span matListItemTitle>{{ 'shell.portfolio' | translate }}</span>
+            </a>
+          }
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-group-account">
+          <span class="nav-group-label" id="nav-group-account">{{ 'shell.groups.account' | translate }}</span>
+          @if (context.currentRanch() && context.currentRole() !== 'Veterinarian') {
+            <a mat-list-item routerLink="/subscriptions" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+              <ichu-icon matListItemIcon name="check" />
+              <span matListItemTitle>{{ 'shell.mySubscription' | translate }}</span>
+            </a>
+            <a mat-list-item routerLink="/plans" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+              <ichu-icon matListItemIcon name="card" />
+              <span matListItemTitle>{{ 'shell.plans' | translate }}</span>
+            </a>
+          }
+          <a mat-list-item routerLink="/advisories" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="bell" />
+            <span matListItemTitle>{{ 'shell.advisories' | translate }}</span>
+          </a>
+          <a mat-list-item routerLink="/account" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            <ichu-icon matListItemIcon name="users" />
+            <span matListItemTitle>{{ 'shell.myAccount' | translate }}</span>
+          </a>
+        </div>
+      </mat-nav-list>
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <header class="shell-header">
+      <mat-toolbar class="shell-toolbar">
+        @if (!wide()) {
+          <button mat-icon-button type="button" class="menu-button" aria-controls="app-navigation" [attr.aria-label]="'shell.openMenu' | translate" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())">
+            <ichu-icon name="menu" />
+          </button>
+          <a class="brand" routerLink="/dashboard">
+            <img src="/assets/images/ichu-logo.png" alt="" width="2400" height="2790">
+            <strong>ICHU</strong>
+          </a>
+        }
+        <span class="toolbar-spacer"></span>
+        @if (context.ranches().length > 0) {
+          <mat-form-field class="ranch-field" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>{{ 'shell.ranch' | translate }}</mat-label>
+            <mat-select [value]="context.currentRanchId()" (selectionChange)="context.selectRanch($event.value)">
+              @for (access of context.ranches(); track access.ranchId; let position = $index) {
+                <mat-option [value]="access.ranchId">{{ access.name || ('shell.ranchFallback' | translate: { position: position + 1 }) }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+        @if (context.currentRole(); as role) {
+          <span class="badge role-chip">{{ roleLabelKey(role) | translate }}</span>
+        }
+        <ichu-language-menu />
+        <ichu-theme-toggle />
+        <button mat-button type="button" class="account-trigger" [matMenuTriggerFor]="accountMenu" [attr.aria-label]="('shell.accountMenu' | translate) + ': ' + auth.name()">
+          <span class="account-content">
+            @if (initials()) {
+              <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+            }
+            <ichu-icon name="chevron" />
+          </span>
+        </button>
+        <mat-menu #accountMenu="matMenu">
+          <div class="account-identity">
+            <strong>{{ auth.name() }}</strong>
+            <span>{{ auth.account()?.email }}</span>
+          </div>
+          <button mat-menu-item type="button" (click)="signOut()">
+            <ichu-icon matMenuItemIcon name="logout" />
+            <span>{{ 'shell.signOut' | translate }}</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <router-outlet />
+    </main>
+    <ichu-app-footer />
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,25 +1,25 @@
 import { Injectable, inject } from '@angular/core';
-import { getApp, getApps, initializeApp } from 'firebase/app';
-import type { FirebaseApp } from 'firebase/app';
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  getIdToken,
-  onAuthStateChanged,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from 'firebase/auth';
+import type { FirebaseOptions } from 'firebase/app';
 import type { Auth, User } from 'firebase/auth';
+import { RUNTIME_CONFIG } from '../../../../core/config/runtime-config';
 import { AuthError, type AuthUser } from '../../domain/model/auth.model';
 import { AuthenticationRepository } from '../../domain/repositories/authentication.repository';
-import { IAM_CONFIG, IAM_FIREBASE_APP_NAME } from '../configuration/iam-config';
+
+const IAM_FIREBASE_APP_NAME = 'ichu-iam';
+
+type AppSdk = typeof import('firebase/app');
+type AuthSdk = typeof import('firebase/auth');
+
+/** The Firebase entry points, downloaded together on first use so the SDK stays out of the initial bundle. */
+interface FirebaseSdk {
+  readonly app: AppSdk;
+  readonly auth: AuthSdk;
+}
 
 @Injectable()
 export class FirebaseAuthRepository extends AuthenticationRepository {
-  private readonly config = inject(IAM_CONFIG);
+  private readonly config = inject(RUNTIME_CONFIG);
+  private sdkLoad: Promise<FirebaseSdk> | null = null;
   private authClient: Auth | null = null;
 
   override isConfigured(): boolean {
@@ -27,25 +27,43 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
     return Boolean(options?.apiKey && options.authDomain && options.projectId);
   }
 
+  /** The SDK loads asynchronously, so the returned function must also cancel a subscription that has not started yet. */
   override observeAuthState(
     listener: (user: AuthUser | null) => void,
     onError?: (error: AuthError) => void,
   ): () => void {
-    return onAuthStateChanged(
-      this.auth(),
-      user => listener(user ? this.toAuthUser(user) : null),
-      error => onError?.(this.toAuthError(error)),
-    );
+    let unsubscribe: (() => void) | null = null;
+    let stopped = false;
+    void this.session()
+      .then(({ sdk, client }) => {
+        if (stopped) return;
+        unsubscribe = sdk.onAuthStateChanged(
+          client,
+          user => listener(user ? this.toAuthUser(user) : null),
+          error => onError?.(this.toAuthError(error)),
+        );
+      })
+      .catch(error => {
+        if (!stopped) onError?.(this.toAuthError(error));
+      });
+    return () => {
+      stopped = true;
+      unsubscribe?.();
+      unsubscribe = null;
+    };
   }
 
+  /** Null until the SDK has loaded; callers wait for the facade's ready state before they read it. */
   override currentUser(): AuthUser | null {
-    const user = this.auth().currentUser;
+    if (!this.isConfigured()) throw new AuthError('configuration');
+    const user = this.authClient?.currentUser;
     return user ? this.toAuthUser(user) : null;
   }
 
   override async signIn(email: string, password: string): Promise<AuthUser> {
     try {
-      const result = await signInWithEmailAndPassword(this.auth(), email, password);
+      const { sdk, client } = await this.session();
+      const result = await sdk.signInWithEmailAndPassword(client, email, password);
       return this.toAuthUser(result.user);
     } catch (error) {
       throw this.toAuthError(error);
@@ -54,7 +72,8 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
 
   override async createUser(email: string, password: string): Promise<AuthUser> {
     try {
-      const result = await createUserWithEmailAndPassword(this.auth(), email, password);
+      const { sdk, client } = await this.session();
+      const result = await sdk.createUserWithEmailAndPassword(client, email, password);
       return this.toAuthUser(result.user);
     } catch (error) {
       throw this.toAuthError(error);
@@ -62,17 +81,37 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
   }
 
   override async updateDisplayName(name: string): Promise<void> {
-    const user = this.requireCurrentUser();
+    const { sdk, user } = await this.requireCurrentUser();
     try {
-      await updateProfile(user, { displayName: name });
+      await sdk.updateProfile(user, { displayName: name });
+    } catch (error) {
+      throw this.toAuthError(error);
+    }
+  }
+
+  /** Verifies the current password first, because updatePassword alone would accept any signed-in session. */
+  override async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const { sdk, user } = await this.requireCurrentUser();
+    if (!user.email) throw new AuthError('account-unavailable');
+    try {
+      await sdk.reauthenticateWithCredential(user, sdk.EmailAuthProvider.credential(user.email, currentPassword));
+    } catch (error) {
+      const code = firebaseErrorCode(error);
+      throw code === 'wrong-password' || code === 'invalid-credential'
+        ? new AuthError('current-password-incorrect')
+        : this.toAuthError(error);
+    }
+    try {
+      await sdk.updatePassword(user, newPassword);
     } catch (error) {
       throw this.toAuthError(error);
     }
   }
 
   override async sendEmailVerification(): Promise<void> {
+    const { sdk, user } = await this.requireCurrentUser();
     try {
-      await sendEmailVerification(this.requireCurrentUser());
+      await sdk.sendEmailVerification(user);
     } catch (error) {
       throw this.toAuthError(error);
     }
@@ -80,7 +119,8 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
 
   override async sendPasswordReset(email: string): Promise<void> {
     try {
-      await sendPasswordResetEmail(this.auth(), email);
+      const { sdk, client } = await this.session();
+      await sdk.sendPasswordResetEmail(client, email);
     } catch (error) {
       throw this.toAuthError(error);
     }
@@ -88,46 +128,47 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
 
   override async signOut(): Promise<void> {
     try {
-      await signOut(this.auth());
+      const { sdk, client } = await this.session();
+      await sdk.signOut(client);
     } catch (error) {
       throw this.toAuthError(error);
     }
   }
 
   override async idToken(): Promise<string> {
+    const { sdk, user } = await this.requireCurrentUser();
     try {
-      return await getIdToken(this.requireCurrentUser());
+      return await sdk.getIdToken(user);
     } catch (error) {
       throw this.toAuthError(error);
     }
   }
 
-  private auth(): Auth {
-    if (this.authClient) return this.authClient;
-    const options = this.config.firebase;
-    if (!options?.apiKey || !options.authDomain || !options.projectId) {
-      throw new AuthError(
-        'configuration',
-        'Firebase Authentication is not configured. Add Firebase runtime settings to enable sign-in.',
-      );
-    }
-    let app: FirebaseApp;
-    if (getApps().some(candidate => candidate.name === IAM_FIREBASE_APP_NAME)) {
-      app = getApp(IAM_FIREBASE_APP_NAME);
-      if (app.options.projectId !== options.projectId || app.options.apiKey !== options.apiKey) {
-        throw new AuthError('configuration', 'The existing Firebase app does not match the IAM configuration.');
-      }
-    } else {
-      app = initializeApp(options, IAM_FIREBASE_APP_NAME);
-    }
-    this.authClient = getAuth(app);
-    return this.authClient;
+  /** A failed download clears the cache so the next call retries it. */
+  private loadSdk(): Promise<FirebaseSdk> {
+    this.sdkLoad ??= Promise.all([import('firebase/app'), import('firebase/auth')])
+      .then(([app, auth]) => ({ app, auth }))
+      .catch(error => {
+        this.sdkLoad = null;
+        throw this.toAuthError(error);
+      });
+    return this.sdkLoad;
   }
 
-  private requireCurrentUser(): User {
-    const user = this.auth().currentUser;
-    if (!user) throw new AuthError('account-unavailable', 'There is no signed-in Firebase user.');
-    return user;
+  /** Configuration is checked before the SDK downloads, so a misconfigured app never fetches it. */
+  private async session(): Promise<{ readonly sdk: AuthSdk; readonly client: Auth }> {
+    const options = this.config.firebase;
+    if (!options?.apiKey || !options.authDomain || !options.projectId) throw new AuthError('configuration');
+    const loaded = await this.loadSdk();
+    this.authClient ??= iamAuthClient(loaded, options);
+    return { sdk: loaded.auth, client: this.authClient };
+  }
+
+  private async requireCurrentUser(): Promise<{ readonly sdk: AuthSdk; readonly user: User }> {
+    const { sdk, client } = await this.session();
+    const user = client.currentUser;
+    if (!user) throw new AuthError('account-unavailable');
+    return { sdk, user };
   }
 
   private toAuthUser(user: User): AuthUser {
@@ -141,21 +182,32 @@ export class FirebaseAuthRepository extends AuthenticationRepository {
 
   private toAuthError(error: unknown): AuthError {
     if (error instanceof AuthError) return error;
-    const code = typeof error === 'object' && error !== null && 'code' in error
-      ? String(error.code).replace(/^auth\//, '') : '';
-    if (code === 'email-already-in-use') return new AuthError('email-already-in-use', 'An account already uses this email address.');
-    if (code === 'weak-password' || code === 'password-does-not-meet-requirements') {
-      return new AuthError('weak-password', 'Choose a stronger password and try again.');
-    }
+    const code = firebaseErrorCode(error);
+    if (code === 'email-already-in-use') return new AuthError('email-already-in-use');
+    if (code === 'weak-password' || code === 'password-does-not-meet-requirements') return new AuthError('weak-password');
     if (code === 'invalid-credential' || code === 'user-not-found' || code === 'wrong-password' || code === 'invalid-email') {
-      return new AuthError('invalid-credentials', 'The email or password is incorrect.');
+      return new AuthError('invalid-credentials');
     }
-    if (code === 'network-request-failed' || code === 'timeout') {
-      return new AuthError('network', 'The authentication service could not be reached. Check your connection and try again.');
-    }
-    if (code === 'too-many-requests') {
-      return new AuthError('service-unavailable', 'Too many attempts were made. Wait a moment and try again.');
-    }
-    return new AuthError('unknown', 'Authentication could not be completed. Try again.');
+    if (code === 'network-request-failed' || code === 'timeout') return new AuthError('network');
+    if (code === 'too-many-requests') return new AuthError('service-unavailable');
+    if (code === 'requires-recent-login') return new AuthError('requires-recent-login');
+    return new AuthError('unknown');
   }
+}
+
+/** Reuses the IAM app when it already exists, because initializing a second app with the same name throws. */
+function iamAuthClient({ app, auth }: FirebaseSdk, options: FirebaseOptions): Auth {
+  if (!app.getApps().some(candidate => candidate.name === IAM_FIREBASE_APP_NAME)) {
+    return auth.getAuth(app.initializeApp(options, IAM_FIREBASE_APP_NAME));
+  }
+  const existing = app.getApp(IAM_FIREBASE_APP_NAME);
+  if (existing.options.projectId !== options.projectId || existing.options.apiKey !== options.apiKey) {
+    throw new AuthError('configuration');
+  }
+  return auth.getAuth(existing);
+}
+
+/** Firebase codes arrive as `auth/<code>`; the prefix is dropped so each mapping compares plain words. */
+function firebaseErrorCode(error: unknown): string {
+  return typeof error === 'object' && error !== null && 'code' in error ? String(error.code).replace(/^auth\//, '') : '';
 }

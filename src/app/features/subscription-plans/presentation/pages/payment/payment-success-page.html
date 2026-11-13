@@ -1,0 +1,59 @@
+<div class="subscription-page">
+  @switch (facade.activation()) {
+    @case ('active') {
+      <section class="panel result-panel" aria-labelledby="result-heading">
+        <div class="panel-body">
+          <h1 id="result-heading">{{ 'subscriptions.payment.activeTitle' | translate }}</h1>
+          <p class="page-lead">{{ 'subscriptions.payment.activeBody' | translate }}</p>
+          @if (facade.subscription(); as current) {
+            <dl class="fact-grid">
+              <div>
+                <dt>{{ 'subscriptions.fields.validUntil' | translate }}</dt>
+                <dd>{{ current.validUntil | localizedDate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'subscriptions.fields.maximumDevices' | translate }}</dt>
+                <dd>{{ current.maximumDevices }}</dd>
+              </div>
+            </dl>
+          }
+          @if (plans.error(); as error) {
+            <p class="form-error" role="alert">{{ error | apiErrorMessage }}</p>
+          }
+          @if (receipt.failed()) {
+            <p class="form-error" role="alert">{{ 'subscriptions.documentFailed' | translate }}</p>
+          }
+          <div class="action-row">
+            <button type="button" class="btn secondary"
+              [disabled]="!facade.subscription() || !plan() || receipt.busy()"
+              (click)="downloadReceipt()">
+              <ichu-icon name="download" />
+              {{ (receipt.busy() ? 'subscriptions.preparingDocument' : 'subscriptions.downloadReceipt') | translate }}
+            </button>
+            <a class="btn primary" routerLink="/subscriptions">{{ 'subscriptions.payment.openMyPlan' | translate }}</a>
+          </div>
+        </div>
+      </section>
+    }
+    @case ('timed-out') {
+      <section class="panel result-panel" aria-labelledby="result-heading">
+        <div class="panel-body">
+          <h1 id="result-heading">{{ 'subscriptions.payment.timedOutTitle' | translate }}</h1>
+          <p class="page-lead">{{ 'subscriptions.payment.timedOutBody' | translate }}</p>
+          <div class="action-row">
+            <a class="btn primary" routerLink="/subscriptions">{{ 'subscriptions.payment.openMyPlan' | translate }}</a>
+          </div>
+        </div>
+      </section>
+    }
+    @default {
+      <section class="panel result-panel" aria-labelledby="result-heading">
+        <div class="panel-body">
+          <h1 id="result-heading">{{ 'subscriptions.payment.receivedActivating' | translate }}</h1>
+          <mat-progress-bar mode="indeterminate" [attr.aria-label]="'subscriptions.payment.activating' | translate" />
+          <p class="page-lead" role="status">{{ 'subscriptions.payment.activatingHint' | translate }}</p>
+        </div>
+      </section>
+    }
+  }
+</div>

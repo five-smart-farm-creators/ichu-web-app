@@ -2,14 +2,16 @@ import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, inject
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthFacade } from '../../../application/services/auth.facade';
 import { type RegisterAccountRequest } from '../../../domain/model/auth.model';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { AccountAccessFrame } from '../../components/account-access-frame';
+import { ErrorMessagePipe } from '../../pipes/error-message.pipe';
 
 @Component({
   selector: 'ichu-register-page', standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame],
+  imports: [ReactiveFormsModule, MatButtonModule, RouterLink, Icon, AccountAccessFrame, TranslatePipe, ErrorMessagePipe],
   templateUrl: './register-page.html', styleUrls: ['../../styles/auth-controls.scss', '../../styles/auth-motion.scss', './register-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,7 +35,8 @@ export class RegisterPage {
     ranchName: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(120)] }),
     region: new FormControl('', { nonNullable: true }),
     district: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(120)] }),
-    estimatedHeadCount: new FormControl(0, { nonNullable: true, validators: [Validators.min(1), Validators.max(1000000)] }),
+    // The minimum lives in ranchDetailsRequired, which applies it only to ranch managers; this field is hidden for veterinarians.
+    estimatedHeadCount: new FormControl(0, { nonNullable: true, validators: [Validators.max(1000000)] }),
     terms: new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue }),
   }, { validators: registrationFormRules });
   readonly reviewing = signal(false);
