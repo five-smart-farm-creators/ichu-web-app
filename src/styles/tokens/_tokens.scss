@@ -31,6 +31,8 @@
   --nav-active: rgb(201 154 46 / .18);
   --topbar: rgb(244 242 234 / .82);
   --scrim: rgb(14 21 17 / .45);
+  // The logo artwork is dark brown on transparency, so dark mode sets it on a light tile.
+  --logo-tile: transparent;
   --status-connected: #527961;
   --status-offline: #BA9863;
   --status-unassigned: #CBD2CF;
@@ -81,6 +83,7 @@ html[data-theme='dark'] {
   --nav-active: rgb(226 188 92 / .14);
   --topbar: rgb(14 21 17 / .78);
   --scrim: rgb(0 0 0 / .6);
+  --logo-tile: #F4F2EA;
   --status-connected: #8BC9A0;
   --status-offline: #C9A86E;
   --status-unassigned: #4A5750;
