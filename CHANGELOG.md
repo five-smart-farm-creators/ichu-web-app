@@ -7,25 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- New visual design: pasture green and ichu straw palette, pill buttons, larger cards, and a dark sidebar whose links are grouped into Herd, Health, Production and Account.
-- Dialogs fade and rise in and out, pages cross-fade on navigation, and cards appear in sequence; with reduced motion the app only fades.
-- The dashboard shows a body temperature chart per lot with its ±1σ band and alert threshold, the recent alerts and the collar connectivity beside the indicators, and the period is chosen with chips.
+## [0.2.0] - 2026-11-13
 
 ### Added
 
 - Dark theme with a toggle in the top bar and on the public pages; the choice is remembered on the device.
-
-### Fixed
-
-- Veterinarians can register again: the hidden head-count field no longer blocks the form when the account is not a ranch manager.
-- Every route of the deployed site revalidates its page on each visit, so visitors get a new release at once instead of a cached page for up to an hour.
-- The map draws on the deployed site; the production bundle exposed Leaflet only as its default export.
-- Sign-in and sign-up wait for a sleeping API to start: the app wakes it on load, allows 60 s per request and explains a slow start.
-
-### Added
-
 - Firebase Hosting configuration and a deployment script that publishes the build with the production runtime configuration instead of the local one.
 - Reproduction screen for each female, with the breeding services, pregnancy diagnoses, calvings, abortions and heats in a timeline newest first, the calving intervals with the days open after each calving, confirmed pregnancies, services per pregnancy, the expected calving date of a pregnancy in progress, and Excel and PDF downloads.
 - Breeding services, pregnancy diagnoses, calvings, abortions and heats are recorded from the reproduction screen and the clinical history, with the sire, the pregnancy result and the expected calving date; only females take reproductive records, and the dialog offers the types that the account may register.
@@ -83,6 +69,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- New visual design: pasture green and ichu straw palette, pill buttons, larger cards, and a dark sidebar whose links are grouped into Herd, Health, Production and Account.
+- Dialogs fade and rise in and out, pages cross-fade on navigation, and cards appear in sequence; with reduced motion the app only fades.
+- The dashboard shows a body temperature chart per lot with its ±1σ band and alert threshold, the recent alerts and the collar connectivity beside the indicators, and the period is chosen with chips.
 - Signed-in users land on My herd after sign-in, from the root address, and from the not-found and terms links; the brand opens My herd.
 - Account and advisories are separate pages: the account page shows identity, ranch access, and the professional profile; the advisories page handles access requests and decisions.
 - Professional profile changes are checked for specialty, license number, and years of experience before saving.
@@ -103,6 +92,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Veterinarians can register again: the hidden head-count field no longer blocks the form when the account is not a ranch manager.
+- Every route of the deployed site revalidates its page on each visit, so visitors get a new release at once instead of a cached page for up to an hour.
+- The map draws on the deployed site; the production bundle exposed Leaflet only as its default export.
+- Sign-in and sign-up wait for a sleeping API to start: the app wakes it on load, allows 60 s per request and explains a slow start.
 - The account workspace no longer nests a second main landmark inside the app shell.
 - Counts show the singular for one in English and Spanish, so one animal, event, case, day, or collar never reads with a plural word.
 - Date picker controls, such as Open calendar and the month and year navigation, follow the selected language.
