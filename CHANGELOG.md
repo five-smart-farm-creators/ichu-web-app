@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- New visual design: pasture green and ichu straw palette, pill buttons, larger cards, and a dark sidebar whose links are grouped into Herd, Health, Production and Account.
+- Dialogs fade and rise in and out, pages cross-fade on navigation, and cards appear in sequence; with reduced motion the app only fades.
+
+### Added
+
+- Dark theme with a toggle in the top bar and on the public pages; the choice is remembered on the device.
+
 ### Fixed
 
 - Veterinarians can register again: the hidden head-count field no longer blocks the form when the account is not a ranch manager.
