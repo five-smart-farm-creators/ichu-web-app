@@ -22,6 +22,14 @@ export interface DailyLotMean {
   readonly animalCount: number;
 }
 
+/** Lot value of one local day with its spread across animals; a single animal leaves the spread null. */
+export interface DailyLotBand {
+  readonly day: string;
+  readonly mean: number;
+  readonly spread: number | null;
+  readonly animalCount: number;
+}
+
 /** Averages each animal's valid readings; non-finite values are skipped rather than counted as zero. */
 export function animalAverages(points: readonly TrendPoint[]): AnimalAverage[] {
   const totals = new Map<string, { sum: number; count: number }>();
@@ -67,6 +75,20 @@ export function animalDailyMeans(points: readonly TrendPoint[]): AnimalDailyMean
 
 /** The lot's daily mean: each day averages the animals' daily means, ordered by day. */
 export function dailyLotMeans(points: readonly TrendPoint[]): DailyLotMean[] {
+  return animalMeansByDay(points).map(({ day, values }) => ({
+    day, value: average(values), animalCount: values.length,
+  }));
+}
+
+/** Each day's lot mean with the spread across animals, which the temperature band draws as mean ± one standard deviation. */
+export function dailyLotBands(points: readonly TrendPoint[]): DailyLotBand[] {
+  return animalMeansByDay(points).map(({ day, values }) => ({
+    day, mean: average(values), spread: sampleStandardDeviation(values), animalCount: values.length,
+  }));
+}
+
+/** Groups each animal's daily mean by local day, ordered by day. */
+function animalMeansByDay(points: readonly TrendPoint[]): { day: string; values: number[] }[] {
   const byDay = new Map<string, number[]>();
   for (const { day, value } of animalDailyMeans(points)) {
     const values = byDay.get(day) ?? [];
@@ -75,7 +97,7 @@ export function dailyLotMeans(points: readonly TrendPoint[]): DailyLotMean[] {
   }
   return [...byDay]
     .sort(([first], [second]) => first.localeCompare(second))
-    .map(([day, values]) => ({ day, value: average(values), animalCount: values.length }));
+    .map(([day, values]) => ({ day, values }));
 }
 
 function average(values: readonly number[]): number {
