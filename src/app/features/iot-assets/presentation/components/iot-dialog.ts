@@ -13,7 +13,7 @@ export const IOT_DIALOG_CONFIG: MatDialogConfig = {
 
 /** Two-column form grid and warning note shared by the IoT asset dialogs; one column on narrow screens. */
 export const IOT_DIALOG_STYLES = '.dialog-lead{margin:0 0 16px;color:var(--muted);font-size:.875rem}'
-  + '.dialog-warning{margin:0 0 16px;padding:12px 14px;border:1px solid #eed7c9;border-radius:10px;background:#fbf1ec;color:#7d3b2f;font-size:.875rem}'
+  + '.dialog-warning{margin:0 0 16px;padding:12px 14px;border:1px solid color-mix(in srgb, var(--danger) 25%, transparent);border-radius:10px;background:var(--danger-soft);color:var(--danger);font-size:.875rem}'
   + '.device-serial{margin:0 0 14px;font-size:.875rem}.device-serial strong{font-weight:650}'
   + '.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}'
   + '.dialog-grid mat-form-field,.full-width{width:100%}.span-two{grid-column:1/-1}'

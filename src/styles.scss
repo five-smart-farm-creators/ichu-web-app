@@ -171,6 +171,40 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; accent-colo
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
+// The sidebar scrolls on short screens; a thin muted thumb keeps it from glaring on the dark background.
+#app-navigation .mat-drawer-inner-container { scrollbar-width: thin; scrollbar-color: var(--nav-muted) transparent; }
+
+// Section tab bars read as one pill control; the pill carries the active state, so the ink bar and divider are hidden.
+.mat-mdc-tab-nav-bar {
+  --mat-tab-container-height: 44px;
+  --mat-tab-active-indicator-height: 0;
+  --mat-tab-divider-height: 0;
+  --mat-tab-label-text-weight: 600;
+  --mat-tab-inactive-label-text-color: var(--muted);
+  --mat-tab-inactive-hover-label-text-color: var(--ink);
+  --mat-tab-active-label-text-color: var(--forest-text);
+  --mat-tab-active-hover-label-text-color: var(--forest-text);
+  --mat-tab-active-focus-label-text-color: var(--forest-text);
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.mat-mdc-tab-nav-bar .mat-mdc-tab-link { border-radius: 999px; }
+.mat-mdc-tab-nav-bar .mat-mdc-tab-link.mdc-tab--active { background: var(--green-soft); }
+
+// Form fields, selects and menus follow the card radius and surface tokens.
+html {
+  @include mat.form-field-overrides((outlined-container-shape: var(--radius-field)));
+  @include mat.select-overrides((panel-background-color: var(--surface)));
+  @include mat.menu-overrides((container-shape: 14px, container-color: var(--surface)));
+}
+// Material hard-codes the select panel corners; the overlay class outranks its defaults.
+.cdk-overlay-pane .mat-mdc-select-panel,
+.cdk-overlay-pane.mat-mdc-select-panel-above .mat-mdc-select-panel { border-radius: 14px; }
+
 @media print {
   @page { size: A4; margin: 16mm; }
   body { background: white; color: #111; font-size: 10pt; }

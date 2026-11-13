@@ -41,7 +41,7 @@
 
 .plan-card.is-selected {
   border-color: var(--forest);
-  box-shadow: 0 0 0 2px rgb(51 81 62 / .18);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--forest) 18%, transparent);
 }
 
 .plan-card h2 {

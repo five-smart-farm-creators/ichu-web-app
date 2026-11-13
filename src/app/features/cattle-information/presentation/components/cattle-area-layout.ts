@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'ichu-cattle-area-layout',
   imports: [MatTabsModule, RouterLink, RouterLinkActive, RouterOutlet, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<nav mat-tab-nav-bar class="area-tabs" [tabPanel]="areaPanel" [attr.aria-label]="'cattle.areaNavigation' | translate">
+  template: `<nav mat-tab-nav-bar class="area-tabs" mat-stretch-tabs="false" [tabPanel]="areaPanel" [attr.aria-label]="'cattle.areaNavigation' | translate">
       <a mat-tab-link routerLink="/cattle" routerLinkActive #animalsTab="routerLinkActive"
         [routerLinkActiveOptions]="{ exact: true }" [active]="animalsTab.isActive" ariaCurrentWhenActive="page">
         {{ 'cattle.tabs.animals' | translate }}

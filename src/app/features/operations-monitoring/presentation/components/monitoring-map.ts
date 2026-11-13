@@ -37,10 +37,10 @@ export interface MapDraft {
   readonly vertices: readonly GeoPoint[];
 }
 
-// Leaflet writes SVG attributes, which cannot read CSS variables, so these copy the forest, danger and muted tokens.
-const FOREST = '#33513e';
-const DANGER = '#a4463c';
-const MUTED = '#657166';
+// Leaflet writes SVG attributes, which cannot read CSS variables; OSM tiles stay light, so these copy the light tokens.
+const FOREST = '#2E5B43';
+const DANGER = '#A93D2C';
+const MUTED = '#56635A';
 
 const PERU_CENTER: GeoPoint = { latitude: -9.19, longitude: -75.02 };
 const PERU_ZOOM = 5;
@@ -79,8 +79,19 @@ interface MapView {
   styles: `
     .ichu-map-frame{position:relative;width:100%;overflow:hidden;border:1px solid var(--border);border-radius:12px;isolation:isolate}
     .ichu-map-canvas{height:100%;width:100%}
-    .ichu-map-vertex{box-sizing:border-box;background:var(--danger);border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgb(0 0 0 / .3);cursor:grab}
+    .ichu-map-vertex{box-sizing:border-box;background:var(--danger);border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent);cursor:grab}
     .ichu-map-vertex:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
+    /* Tiles keep their own palette in every theme (no filter); only the controls and tooltips follow the tokens. */
+    .ichu-map-frame .leaflet-container{background:var(--surface-2);filter:none}
+    .ichu-map-frame .leaflet-bar a{background-color:var(--surface);border-bottom-color:var(--border);color:var(--ink)}
+    .ichu-map-frame .leaflet-bar a:hover,.ichu-map-frame .leaflet-bar a:focus{background-color:var(--surface-2)}
+    .ichu-map-frame .leaflet-bar a.leaflet-disabled{background-color:var(--surface-2);color:var(--muted)}
+    .ichu-map-frame .leaflet-container .leaflet-control-attribution{background:color-mix(in srgb, var(--surface) 80%, transparent);color:var(--ink);text-shadow:none}
+    .ichu-map-frame .leaflet-tooltip{background-color:var(--surface);border-color:var(--border);color:var(--ink)}
+    .ichu-map-frame .leaflet-tooltip-top:before{border-top-color:var(--surface)}
+    .ichu-map-frame .leaflet-tooltip-bottom:before{border-bottom-color:var(--surface)}
+    .ichu-map-frame .leaflet-tooltip-left:before{border-left-color:var(--surface)}
+    .ichu-map-frame .leaflet-tooltip-right:before{border-right-color:var(--surface)}
   `,
 })
 export class MonitoringMap implements AfterViewInit, OnDestroy {

@@ -15,7 +15,7 @@ import { activityStateKey, activityStateTone } from '../activity-state';
       <span class="activity-animal">{{ animalLabel() || ('planning.calendar.ranchWide' | translate) }}</span>
       <span class="badge" [class]="'badge ' + tone()">{{ stateKey() | translate: { count: entry().progress.daysLate } }}</span>
     </button>`,
-  styles: `.activity-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);text-align:left}
+  styles: `.activity-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);text-align:left}
     .activity-when,.activity-animal{grid-column:1;color:var(--muted);font-size:.75rem}
     .activity-title{grid-column:1;font-size:.875rem;overflow-wrap:anywhere}
     .activity-row .badge{grid-column:2;grid-row:1 / span 3;align-self:center}`,

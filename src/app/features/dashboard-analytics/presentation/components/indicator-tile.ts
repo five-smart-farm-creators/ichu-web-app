@@ -40,7 +40,7 @@ let nextTileId = 0;
     .unit{font-size:.8125rem;font-weight:600;color:var(--muted)}
     .unavailable{font-size:1.25rem;color:var(--muted)}
     .formula-toggle{align-self:flex-start;margin-top:10px;padding:0;border:0;background:none;color:var(--forest);font-size:.75rem;font-weight:650;text-decoration:underline}
-    .formula{margin-top:6px;padding:10px 12px;border-radius:8px;background:#f6f8f3;font-size:.8125rem}
+    .formula{margin-top:6px;padding:10px 12px;border-radius:8px;background:var(--surface-2);font-size:.8125rem}
     .formula p{margin:0}`,
 })
 export class IndicatorTile {

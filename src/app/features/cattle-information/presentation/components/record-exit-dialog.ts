@@ -70,7 +70,7 @@ import type { CattleDialogOutcome } from './cattle-dialog';
         </button>
       </mat-dialog-actions>
     </form>`,
-  styles: '.dialog-warning{margin:0 0 16px;padding:12px 14px;border:1px solid #eed7c9;border-radius:10px;background:#fbf1ec;color:#7d3b2f;font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
+  styles: '.dialog-warning{margin:0 0 16px;padding:12px 14px;border:1px solid color-mix(in srgb, var(--danger) 25%, transparent);border-radius:10px;background:var(--danger-soft);color:var(--danger);font-size:.875rem}.dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}.dialog-grid mat-form-field{width:100%}@media (max-width:560px){.dialog-grid{grid-template-columns:1fr}}',
 })
 export class RecordExitDialog {
   readonly errorKeys = CATTLE_ERROR_KEYS;
