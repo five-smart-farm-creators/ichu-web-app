@@ -1,3 +1,10 @@
+/* Column layout lets the sidenav container grow to the viewport without a header-height calc. */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
 .shell-header {
   position: sticky;
   top: 0;
@@ -5,13 +12,15 @@
 }
 
 .shell-toolbar {
-  --mat-toolbar-container-background-color: var(--surface);
+  --mat-toolbar-container-background-color: var(--topbar);
   --mat-toolbar-container-text-color: var(--ink);
   gap: 12px;
   min-width: 0;
-  padding: 0 clamp(12px, 2vw, 20px);
+  height: auto;
+  padding: 14px clamp(16px, 3vw, 36px);
   border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
 }
 
 .brand {
@@ -27,12 +36,12 @@
   width: 22px;
   height: auto;
   flex: none;
+  border-radius: 6px;
+  background: var(--logo-tile);
 }
 
 .brand strong {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 600;
+  font: 600 1.1rem var(--font-heading);
   letter-spacing: -.02em;
 }
 
@@ -41,19 +50,42 @@
 }
 
 .ranch-field {
+  --mat-form-field-outlined-container-shape: 28px;
   width: min(240px, 34vw);
 }
 
-.role-chip {
+.badge.role-chip {
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+  color: var(--accent-text);
   white-space: nowrap;
 }
 
 .account-trigger {
+  min-height: 44px;
   max-width: min(240px, 40vw);
-  color: var(--ink);
 }
 
-.account-trigger span {
+.account-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--on-forest);
+  font: 600 .8125rem var(--font-heading);
+}
+
+.account-name {
   display: inline-block;
   max-width: 180px;
   overflow: hidden;
@@ -75,31 +107,125 @@
 }
 
 .shell-container {
-  min-height: calc(100svh - 65px);
-  background: var(--bg);
+  flex: 1 0 auto;
+  --mat-sidenav-content-background-color: var(--bg);
+  --mat-sidenav-content-text-color: var(--ink);
 }
 
 mat-sidenav {
-  width: 248px;
-  background: var(--surface);
+  --mat-sidenav-container-width: 264px;
+  --mat-sidenav-container-background-color: var(--nav-bg);
+  --mat-sidenav-container-text-color: var(--nav-ink);
+  --mat-sidenav-container-divider-color: transparent;
 }
 
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 12px 22px;
+  color: var(--nav-ink);
+  text-decoration: none;
+}
+
+.sidebar-logo {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  // The logo artwork is dark, so it needs a light tile on the dark sidebar in both themes.
+  background: var(--nav-ink);
+}
+
+.sidebar-logo img {
+  width: 22px;
+  height: auto;
+}
+
+.sidebar-title {
+  display: grid;
+  min-width: 0;
+}
+
+.sidebar-title strong {
+  font: 600 19px/1.1 var(--font-heading);
+  letter-spacing: -.02em;
+}
+
+.sidebar-title span {
+  color: var(--nav-muted);
+  font-size: 11px;
+}
+
+/* Material paints list items from its own tokens; overriding them keeps the labels on the dark sidebar. */
 .shell-navigation {
-  padding-top: 8px;
+  padding: 20px 14px;
+  --mat-list-list-item-one-line-container-height: 44px;
+  --mat-list-active-indicator-shape: 10px;
+  --mat-list-list-item-label-text-size: .875rem;
+  --mat-list-list-item-label-text-color: var(--nav-ink);
+  --mat-list-list-item-hover-label-text-color: var(--nav-ink);
+  --mat-list-list-item-focus-label-text-color: var(--nav-ink);
+  --mat-list-list-item-leading-icon-color: var(--nav-ink);
+  --mat-list-list-item-hover-leading-icon-color: var(--nav-ink);
+  --mat-list-list-item-leading-icon-start-space: 0;
+  --mat-list-list-item-leading-icon-end-space: 12px;
+  --mat-list-list-item-hover-state-layer-color: var(--nav-ink);
+  --mat-list-list-item-hover-state-layer-opacity: .06;
+  --mat-list-list-item-focus-state-layer-color: var(--nav-ink);
+  --mat-list-list-item-focus-state-layer-opacity: .06;
 }
 
-a.is-active {
-  background: var(--green-soft);
-  color: var(--forest);
+.shell-navigation a[mat-list-item] {
+  position: relative;
+  padding: 0 12px;
+}
+
+.shell-navigation a.is-active {
+  --mat-list-list-item-label-text-color: #fff;
+  --mat-list-list-item-label-text-weight: 650;
+  background: var(--nav-active);
+}
+
+/* Material uses ::before for hover and focus layers, so the active bar sits on ::after. */
+.shell-navigation a.is-active::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+}
+
+.nav-group + .nav-group {
+  margin-top: 16px;
+}
+
+.nav-group-label {
+  display: block;
+  padding: 0 12px 6px;
+  color: var(--nav-muted);
+  font: 700 10.5px var(--font-body);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+ichu-app-footer {
+  border-top: 1px solid var(--border);
 }
 
 main {
+  padding: clamp(20px, 3vw, 36px);
   outline: none;
   view-transition-name: ichu-page;
 }
 
 @media (max-width: 720px) {
-  .role-chip {
+  .badge.role-chip {
     display: none;
   }
 }
@@ -108,7 +234,6 @@ main {
 @media (max-width: 600px) {
   .shell-toolbar {
     flex-wrap: wrap;
-    height: auto;
     row-gap: 4px;
     padding-block: 6px;
   }
@@ -118,7 +243,7 @@ main {
     width: 100%;
   }
 
-  .account-trigger span,
+  .account-name,
   .brand strong {
     display: none;
   }

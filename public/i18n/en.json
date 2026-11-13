@@ -106,7 +106,14 @@
     "mySubscription": "My plan",
     "plans": "Plans",
     "nutrition": "Nutrition",
-    "reproduction": "Reproduction"
+    "reproduction": "Reproduction",
+    "tagline": "Livestock monitoring",
+    "groups": {
+      "herd": "Herd",
+      "health": "Health",
+      "production": "Production",
+      "account": "Account"
+    }
   },
   "terms": {
     "back": "Back to account",

@@ -106,7 +106,14 @@
     "mySubscription": "Mi plan",
     "plans": "Planes",
     "nutrition": "Nutrición",
-    "reproduction": "Reproducción"
+    "reproduction": "Reproducción",
+    "tagline": "Monitoreo de ganado",
+    "groups": {
+      "herd": "Hato",
+      "health": "Salud",
+      "production": "Producción",
+      "account": "Cuenta"
+    }
   },
   "terms": {
     "back": "Volver a mi cuenta",
