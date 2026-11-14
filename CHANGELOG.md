@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Heart rate of each animal in the latest values, the readings, the statistics, a chart against its normal range, the herd monitoring table, the clinical history, the Excel and PDF exports, the normal ranges and the alerts.
+- Methane index of each animal in the latest values, the readings, the statistics, a chart and the exports, labelled as a relative index rather than ppm.
+
+### Fixed
+
+- Nutrition plans, planned activities and planning campaigns call the routes that the ICHU service now serves, which no longer include the ranch in the path of a lot, activity or campaign.
+
 ## [0.2.0] - 2026-11-13
 
 ### Added

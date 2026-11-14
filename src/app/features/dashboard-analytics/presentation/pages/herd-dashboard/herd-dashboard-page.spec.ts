@@ -183,6 +183,20 @@ describe('HerdDashboardPage', () => {
     expect(text).toContain('Critical');
   });
 
+  it('labels heart rate alerts in the type breakdown and in the list', async () => {
+    indicators.dashboard.mockResolvedValue({ ...report, openAlertsByType: { heartrate: 1 } });
+    monitoring.recentAlerts.mockResolvedValue([
+      alert({ alertId: 'alert-3', cattleId: 'cattle-1', type: 'HeartRate', severity: 'Warning', detectedValue: 96, unit: 'bpm' }),
+    ]);
+    cattle.cattleSummaries.mockResolvedValue([{ cattleId: 'cattle-1', earTag: 'A-102', status: 'Active' }]);
+
+    const text = textOf(await render());
+
+    expect(text).toContain('Heart rate 1');
+    expect(text).toContain('A-102 · Heart rate');
+    expect(text).toContain('96 bpm');
+  });
+
   it('says that no alert is pending when the ranch has none', async () => {
     expect(textOf(await render())).toContain('No pending alerts.');
   });

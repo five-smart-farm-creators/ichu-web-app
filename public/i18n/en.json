@@ -792,12 +792,15 @@
     },
     "metric": {
       "BodyTemperature": "Body temperature",
+      "HeartRate": "Heart rate",
       "ActivityIndex": "Activity index",
+      "MethaneIndex": "Methane index (relative, not ppm)",
       "RuminationMinutes": "Rumination (minutes)",
       "BatteryLevel": "Battery level"
     },
     "units": {
       "celsius": "°C",
+      "bpm": "bpm",
       "index": "index",
       "minutes": "min",
       "percent": "%",
@@ -825,6 +828,7 @@
     "alertType": {
       "Temperature": "Body temperature",
       "Activity": "Activity",
+      "HeartRate": "Heart rate",
       "Geofence": "Geofence"
     },
     "alertStatus": {
@@ -900,7 +904,10 @@
       "noThresholds": "No threshold is configured for this animal's stage, so its readings are not compared with a normal range.",
       "truncated": "Only the latest {{limit}} readings of {{total}} in this period are loaded. Choose a shorter period to see earlier ones.",
       "temperatureChart": "Body temperature readings over time, with the threshold limits",
+      "heartRateChart": "Heart rate readings over time, with the threshold limits",
       "activityChart": "Activity index readings over time, with the threshold limits",
+      "methaneChart": "Methane index readings over time",
+      "methaneHint": "The methane index is relative and is not a concentration in ppm.",
       "statistics": "Statistics of the period",
       "metric": "Metric",
       "readings": "Readings of the period",
@@ -922,7 +929,7 @@
     },
     "alerts": {
       "title": "Alerts",
-      "lead": "Alerts raised for body temperature, activity and geofences. Attend each alert with a finding and, when relevant, the action taken.",
+      "lead": "Alerts raised for body temperature, heart rate, activity and geofences. Attend each alert with a finding and, when relevant, the action taken.",
       "filters": "Alert filters",
       "allStatuses": "All statuses",
       "animal": "Animal",
@@ -1404,6 +1411,7 @@
     "alertTypes": {
       "temperature": "Temperature",
       "activity": "Activity",
+      "heartrate": "Heart rate",
       "geofence": "Geofence"
     },
     "export": {

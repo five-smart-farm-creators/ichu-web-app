@@ -1,5 +1,5 @@
 /** Metrics that have normal ranges; the API uses these names in thresholds and alerts. */
-export const MONITORED_METRICS = ['BodyTemperature', 'ActivityIndex'] as const;
+export const MONITORED_METRICS = ['BodyTemperature', 'ActivityIndex', 'HeartRate'] as const;
 export type MonitoredMetric = (typeof MONITORED_METRICS)[number];
 
 /** A latest value is current, stale (captured more than 24 hours ago) or unavailable; an unavailable value is never zero. */
@@ -28,7 +28,9 @@ export interface LatestTelemetry {
   readonly evaluatedAt: string;
   readonly lastReadingRecordedAt: string | null;
   readonly bodyTemperature: LatestIndicator;
+  readonly heartRate: LatestIndicator;
   readonly activityIndex: LatestIndicator;
+  readonly methaneIndex: LatestIndicator;
   readonly ruminationMinutes: LatestIndicator;
   readonly lastKnownPosition: LastKnownPosition;
 }
@@ -54,7 +56,9 @@ export interface TelemetryReading {
   readonly readingId: string;
   readonly recordedAt: string;
   readonly bodyTemperature: TelemetryMeasurement;
+  readonly heartRate: TelemetryMeasurement;
   readonly activityIndex: TelemetryMeasurement;
+  readonly methaneIndex: TelemetryMeasurement;
   readonly ruminationMinutes: TelemetryMeasurement;
   readonly batteryLevel: TelemetryMeasurement;
   readonly position: TelemetryPosition;

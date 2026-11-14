@@ -13,12 +13,14 @@ function measurement(value: number | null, unit: string): TelemetryMeasurement {
   return { value, unit, status: value === null ? 'Absent' : 'Valid', invalidReason: null };
 }
 
-function reading(index: number, temperature: number | null): TelemetryReading {
+function reading(index: number, temperature: number | null, heartRate: number | null = 70): TelemetryReading {
   return {
     readingId: `reading-${index}`,
     recordedAt: '2026-11-10T00:00:00Z',
     bodyTemperature: measurement(temperature, 'celsius'),
+    heartRate: measurement(heartRate, 'bpm'),
     activityIndex: measurement(10, 'index'),
+    methaneIndex: measurement(4.2, 'index'),
     ruminationMinutes: measurement(null, 'minutes'),
     batteryLevel: measurement(80, 'percent'),
     position: { latitude: null, longitude: null, accuracyMeters: null, status: 'Absent', invalidReason: null },
@@ -33,6 +35,9 @@ const animal: MonitoredCattleSummary = { cattleId: 'cattle-1', earTag: '101', st
 const latest = { cattleId: 'cattle-1' } as LatestTelemetry;
 const calfFever: MonitoringThreshold = {
   thresholdId: 'threshold-1', lifeStage: 'Calf', metric: 'BodyTemperature', minValue: 38, maxValue: 39.5, severity: 'Warning', revision: 1,
+};
+const calfHeartRate: MonitoringThreshold = {
+  thresholdId: 'threshold-2', lifeStage: 'Calf', metric: 'HeartRate', minValue: 60, maxValue: 90, severity: 'Warning', revision: 1,
 };
 
 describe('CattleTelemetryFacade', () => {
@@ -97,6 +102,22 @@ describe('CattleTelemetryFacade', () => {
     expect(facade.statistics().bodyTemperature.count).toBe(3);
     expect(facade.statistics().bodyTemperature.outsideBandPercent).toBeCloseTo(66.67, 1);
     expect(facade.statistics().activityIndex.outsideBandPercent).toBeNull();
+  });
+
+  it('measures heart rate against the band of the animal stage and summarizes methane without one', async () => {
+    thresholds.list.mockResolvedValue([calfFever, calfHeartRate]);
+    telemetry.readings.mockResolvedValue(page(
+      [reading(1, 38, 70), reading(2, 38, 95), reading(3, 38, null), reading(4, 38, 80)],
+      4,
+    ));
+
+    await facade.open('ranch-1', 'cattle-1', period);
+
+    expect(facade.heartRateBand()).toEqual({ min: 60, max: 90 });
+    expect(facade.statistics().heartRate.count).toBe(3);
+    expect(facade.statistics().heartRate.outsideBandPercent).toBeCloseTo(33.33, 1);
+    expect(facade.statistics().methaneIndex.count).toBe(4);
+    expect(facade.statistics().methaneIndex.outsideBandPercent).toBeNull();
   });
 
   it('keeps the readings of the previous period when a newer request replaces them', async () => {

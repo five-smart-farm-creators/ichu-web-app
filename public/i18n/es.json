@@ -792,12 +792,15 @@
     },
     "metric": {
       "BodyTemperature": "Temperatura corporal",
+      "HeartRate": "Frecuencia cardiaca",
       "ActivityIndex": "Índice de actividad",
+      "MethaneIndex": "Índice de metano (relativo, no ppm)",
       "RuminationMinutes": "Rumia (minutos)",
       "BatteryLevel": "Nivel de batería"
     },
     "units": {
       "celsius": "°C",
+      "bpm": "lpm",
       "index": "índice",
       "minutes": "min",
       "percent": "%",
@@ -825,6 +828,7 @@
     "alertType": {
       "Temperature": "Temperatura corporal",
       "Activity": "Actividad",
+      "HeartRate": "Frecuencia cardiaca",
       "Geofence": "Geocerca"
     },
     "alertStatus": {
@@ -900,7 +904,10 @@
       "noThresholds": "No hay umbral configurado para la etapa de este animal, así que sus lecturas no se comparan con un rango normal.",
       "truncated": "Solo se cargan las {{limit}} lecturas más recientes de {{total}} de este periodo. Elige un periodo más corto para ver las anteriores.",
       "temperatureChart": "Lecturas de temperatura corporal en el tiempo, con los límites del umbral",
+      "heartRateChart": "Lecturas de frecuencia cardiaca en el tiempo, con los límites del umbral",
       "activityChart": "Lecturas del índice de actividad en el tiempo, con los límites del umbral",
+      "methaneChart": "Lecturas del índice de metano en el tiempo",
+      "methaneHint": "El índice de metano es relativo y no es una concentración en ppm.",
       "statistics": "Estadísticas del periodo",
       "metric": "Métrica",
       "readings": "Lecturas del periodo",
@@ -922,7 +929,7 @@
     },
     "alerts": {
       "title": "Alertas",
-      "lead": "Alertas generadas por temperatura corporal, actividad y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
+      "lead": "Alertas generadas por temperatura corporal, frecuencia cardiaca, actividad y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
       "filters": "Filtros de alertas",
       "allStatuses": "Todos los estados",
       "animal": "Animal",
@@ -1404,6 +1411,7 @@
     "alertTypes": {
       "temperature": "Temperatura",
       "activity": "Actividad",
+      "heartrate": "Frecuencia cardiaca",
       "geofence": "Geocerca"
     },
     "export": {

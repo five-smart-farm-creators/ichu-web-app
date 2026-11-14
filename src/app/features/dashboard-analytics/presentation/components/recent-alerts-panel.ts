@@ -17,6 +17,7 @@ const ALERT_STYLES: Readonly<Record<RecentAlert['type'], { readonly tone: StatTo
   Temperature: { tone: 'danger', icon: 'thermometer', typeKey: 'analytics.alertTypes.temperature' },
   Geofence: { tone: 'warning', icon: 'pin', typeKey: 'analytics.alertTypes.geofence' },
   Activity: { tone: 'accent', icon: 'pulse', typeKey: 'analytics.alertTypes.activity' },
+  HeartRate: { tone: 'danger', icon: 'health', typeKey: 'analytics.alertTypes.heartrate' },
 };
 
 /** One alert line with its measure and time already formatted for the current language. */
