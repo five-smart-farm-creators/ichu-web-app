@@ -9,12 +9,12 @@ import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api
 import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
 import { DeviceInventoryFacade } from '../../application/services/device-inventory.facade';
 import {
-  DEVICE_SERIAL_MAX_LENGTH, DEVICE_TYPES, type DeviceType, FIRMWARE_VERSION_MAX_LENGTH,
+  DEVICE_SERIAL_MAX_LENGTH, type DeviceType, FIRMWARE_VERSION_MAX_LENGTH, MANAGED_DEVICE_TYPES,
 } from '../../domain/model/device.model';
 import { IOT_ERROR_KEYS } from '../iot-error-keys';
 import { IOT_DIALOG_STYLES, type IotDialogOutcome } from './iot-dialog';
 
-/** Adds a collar or water controller to the ranch; the dialog stays open when the API refuses the serial. */
+/** Adds a collar to the ranch; the dialog stays open when the API refuses the serial. */
 @Component({
   selector: 'ichu-register-device-dialog',
   imports: [ApiErrorMessagePipe, MatDialogModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, TranslatePipe],
@@ -61,7 +61,7 @@ import { IOT_DIALOG_STYLES, type IotDialogOutcome } from './iot-dialog';
 export class RegisterDeviceDialog {
   private readonly dialogRef = inject<MatDialogRef<RegisterDeviceDialog, IotDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(DeviceInventoryFacade);
-  readonly types = DEVICE_TYPES;
+  readonly types = MANAGED_DEVICE_TYPES;
   readonly maxSerialLength = DEVICE_SERIAL_MAX_LENGTH;
   readonly maxFirmwareLength = FIRMWARE_VERSION_MAX_LENGTH;
   readonly errorKeys = IOT_ERROR_KEYS;

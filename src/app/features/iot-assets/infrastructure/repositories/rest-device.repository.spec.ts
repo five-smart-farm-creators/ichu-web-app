@@ -47,11 +47,11 @@ describe('RestDeviceRepository', () => {
   });
 
   it('registers a device with its serial, type and firmware', async () => {
-    const result = repository.register('ranch-1', { serial: 'SN-2', type: 'WaterController', firmwareVersion: '2.1' });
+    const result = repository.register('ranch-1', { serial: 'SN-2', type: 'SmartCollar', firmwareVersion: '2.1' });
     const request = http.expectOne(collectionUrl);
 
     expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual({ serial: 'SN-2', type: 'WaterController', firmwareVersion: '2.1' });
+    expect(request.request.body).toEqual({ serial: 'SN-2', type: 'SmartCollar', firmwareVersion: '2.1' });
     request.flush(device({ serial: 'SN-2' }));
     await result;
   });

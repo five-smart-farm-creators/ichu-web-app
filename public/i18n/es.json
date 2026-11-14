@@ -63,7 +63,6 @@
     "lots": "Lotes",
     "animalProfile": "Perfil del animal",
     "iotDevices": "Dispositivos IoT",
-    "waterTroughs": "Abrevaderos",
     "edgeGateways": "Nodos de borde",
     "monitoring": "Monitoreo",
     "monitoringCattle": "Monitoreo del animal",
@@ -530,7 +529,6 @@
     "areaNavigation": "Áreas de dispositivos IoT",
     "tabs": {
       "devices": "Dispositivos",
-      "waterTroughs": "Abrevaderos",
       "gateways": "Nodos de borde"
     },
     "type": {
@@ -568,7 +566,7 @@
     },
     "inventory": {
       "title": "Dispositivos IoT",
-      "lead": "Registra collares inteligentes y controladores de agua, asígnalos a animales y abrevaderos, y revisa la batería, la comunicación y el mantenimiento.",
+      "lead": "Registra collares inteligentes, asígnalos a animales y revisa la batería, la comunicación y el mantenimiento.",
       "register": "Registrar dispositivo",
       "filters": "Filtros de dispositivos",
       "allTypes": "Todos los tipos",
@@ -613,13 +611,9 @@
     },
     "assign": {
       "collarTitle": "Asignar collar",
-      "controllerTitle": "Asignar controlador de agua",
       "collarLead": "Elige un animal activo que no tenga collar. El collar reporta la actividad y la ubicación del animal.",
-      "controllerLead": "Elige un abrevadero que no tenga controlador. El controlador reporta la temperatura del abrevadero.",
       "animal": "Animal activo sin collar",
-      "trough": "Abrevadero sin controlador",
       "noAnimals": "Todos los animales activos ya tienen collar.",
-      "noTroughs": "Todos los abrevaderos ya tienen controlador.",
       "submit": "Asignar",
       "saved": "Dispositivo asignado."
     },
@@ -644,48 +638,6 @@
     "validation": {
       "serialRequired": "Ingresa un número de serie de hasta 50 caracteres.",
       "reasonRequired": "Ingresa un motivo de hasta 120 caracteres."
-    }
-  },
-  "waterTroughs": {
-    "noLot": "Sin lote",
-    "unknownLot": "Lote no listado",
-    "fields": {
-      "name": "Nombre",
-      "lot": "Lote",
-      "temperatureRange": "Rango de temperatura",
-      "minimum": "Mínimo (°C)",
-      "maximum": "Máximo (°C)"
-    },
-    "list": {
-      "title": "Abrevaderos",
-      "lead": "Nombra cada abrevadero y define el rango de temperatura con el que se revisará.",
-      "register": "Registrar abrevadero",
-      "loading": "Cargando abrevaderos",
-      "tableLabel": "Abrevaderos de la unidad productiva",
-      "actions": "Acciones",
-      "setRange": "Definir rango",
-      "rangeValue": "{{minimum}} °C a {{maximum}} °C",
-      "noRange": "Sin rango definido",
-      "emptyTitle": "Aún no hay abrevaderos",
-      "empty": "No hay abrevaderos registrados en esta unidad productiva.",
-      "emptyManage": "Registra el primer abrevadero para iniciar la lista."
-    },
-    "register": {
-      "title": "Registrar abrevadero",
-      "lead": "Registrar un abrevadero no usa un collar. El lote es opcional.",
-      "submit": "Registrar abrevadero",
-      "saved": "Abrevadero registrado."
-    },
-    "range": {
-      "title": "Definir rango de temperatura",
-      "lead": "Define el rango con el que se revisará el abrevadero. Esta versión todavía no muestra lecturas de temperatura.",
-      "submit": "Guardar rango",
-      "saved": "Rango de temperatura guardado."
-    },
-    "validation": {
-      "nameRequired": "Ingresa un nombre de hasta 80 caracteres.",
-      "temperatureLimits": "Ingresa una temperatura entre -10 y 60 °C.",
-      "temperatureOrder": "El mínimo debe ser menor que el máximo, con como máximo un decimal."
     }
   },
   "gateways": {

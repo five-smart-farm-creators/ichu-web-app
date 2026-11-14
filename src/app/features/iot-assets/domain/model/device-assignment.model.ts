@@ -1,4 +1,4 @@
-/** What a device serves: a collar serves an animal and a water controller serves a water trough. */
+/** What a device serves; WaterTrough is kept only so API responses for other device families still parse. */
 export type AssignmentTargetType = 'Cattle' | 'WaterTrough';
 
 /** One period during which a device served a target; closed periods keep their release reason as history. */
