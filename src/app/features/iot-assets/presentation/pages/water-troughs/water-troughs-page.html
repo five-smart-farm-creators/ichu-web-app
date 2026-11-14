@@ -38,9 +38,6 @@
     @if (facade.error(); as apiError) {
       <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
     }
-    @if (facade.statusError()) {
-      <p class="notice" role="status">{{ 'waterTroughs.status.loadFailed' | translate }}</p>
-    }
 
     <section class="panel table-panel" [attr.aria-busy]="facade.loading()">
       @if (facade.loading()) {
@@ -72,76 +69,15 @@
               }
             </td>
           </ng-container>
-          <ng-container matColumnDef="temperature">
-            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.status.fields.waterTemperature' | translate }}</th>
-            <td mat-cell *matCellDef="let trough">
-              @if (facade.statusOf(trough.id); as status) {
-                @let temperature = status.latestReading?.temperature ?? null;
-                @if (temperature !== null) {
-                  {{ temperature | number: '1.0-1' : dateLocale() }} {{ 'monitoring.units.celsius' | translate }}
-                  <span class="meta">{{ status.latestReading?.capturedAt | localizedDate: 'short' }}</span>
-                } @else {
-                  <span class="text-muted">{{ ('waterTroughs.status.measurement.' + status.measurementStatus) | translate }}</span>
-                }
-              } @else {
-                <span class="text-muted">–</span>
-              }
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="rangeStatus">
-            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.status.fields.rangeStatus' | translate }}</th>
-            <td mat-cell *matCellDef="let trough">
-              @if (facade.statusOf(trough.id); as status) {
-                <span class="badge" [class.success]="status.rangeStatus === 'WithinRange'"
-                  [class.warning]="status.rangeStatus === 'BelowRange' || status.rangeStatus === 'AboveRange'">
-                  {{ ('waterTroughs.status.range.' + status.rangeStatus) | translate }}
-                </span>
-              } @else {
-                <span class="text-muted">–</span>
-              }
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="controller">
-            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.status.fields.controller' | translate }}</th>
-            <td mat-cell *matCellDef="let trough">
-              @if (facade.statusOf(trough.id); as status) {
-                {{ ('waterTroughs.status.controller.' + status.controllerStatus) | translate }}
-                @if (status.lastCommunicationAt; as lastCommunication) {
-                  <span class="meta">{{ lastCommunication | localizedDate: 'short' }}</span>
-                }
-              } @else {
-                <span class="text-muted">–</span>
-              }
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="heater">
-            <th mat-header-cell *matHeaderCellDef>{{ 'waterTroughs.status.fields.heater' | translate }}</th>
-            <td mat-cell *matCellDef="let trough">
-              @if (facade.statusOf(trough.id)?.latestReading; as reading) {
-                {{ ('waterTroughs.status.heater.' + reading.heaterState) | translate }}
-              } @else {
-                <span class="text-muted">–</span>
-              }
-            </td>
-          </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">{{ 'waterTroughs.list.actions' | translate }}</span></th>
             <td mat-cell *matCellDef="let trough">
-              <div class="row-actions">
-                @if (canManage()) {
-                  <button type="button" class="btn secondary" [attr.aria-label]="('waterTroughs.list.setRange' | translate) + ': ' + trough.name"
-                    (click)="openRange(trough)">
-                    {{ 'waterTroughs.list.setRange' | translate }}
-                  </button>
-                }
-                @if (facade.statusOf(trough.id)?.controllerId; as controllerId) {
-                  <button type="button" class="btn secondary"
-                    [attr.aria-label]="('waterTroughs.status.history.action' | translate) + ': ' + trough.name"
-                    (click)="openHistory(trough, controllerId)">
-                    {{ 'waterTroughs.status.history.action' | translate }}
-                  </button>
-                }
-              </div>
+              @if (canManage()) {
+                <button type="button" class="btn secondary" [attr.aria-label]="('waterTroughs.list.setRange' | translate) + ': ' + trough.name"
+                  (click)="openRange(trough)">
+                  {{ 'waterTroughs.list.setRange' | translate }}
+                </button>
+              }
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
