@@ -14,7 +14,7 @@ export interface CollarConnectivity {
 export class IotAssetsContextFacade {
   private readonly devices = inject(DeviceRepository);
 
-  /** Counts only the collars; water controllers have their own status and are not part of the herd's collar health. */
+  /** Counts only the collars; other device families the API returns are not part of the herd's collar health. */
   async collarConnectivity(ranchId: string): Promise<CollarConnectivity> {
     const collars = (await this.devices.list(ranchId)).filter(device => device.type === 'SmartCollar');
     return {

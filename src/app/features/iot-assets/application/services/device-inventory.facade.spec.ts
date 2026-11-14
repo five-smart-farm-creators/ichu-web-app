@@ -3,10 +3,8 @@ import { ApiError } from '../../../../shared/infrastructure/http/api-error';
 import { CattleInformationContextFacade, type CattleSummary } from '../../../cattle-information/application/acl/cattle-information-context.facade';
 import type { DeviceAssignment } from '../../domain/model/device-assignment.model';
 import type { Device } from '../../domain/model/device.model';
-import type { WaterTrough } from '../../domain/model/water-trough.model';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 import { DeviceRepository } from '../../domain/repositories/device.repository';
-import { WaterTroughRepository } from '../../domain/repositories/water-trough.repository';
 import { DeviceInventoryFacade } from './device-inventory.facade';
 
 const RANCH = 'ranch-1';
@@ -27,10 +25,6 @@ function assignment(targetType: DeviceAssignment['targetType'], targetId: string
   };
 }
 
-function trough(id: string, name: string): WaterTrough {
-  return { id, ranchId: RANCH, name, lotId: null, temperatureRange: null, version: 'trough-version-' + id };
-}
-
 function animal(cattleId: string, earTag: string, status: CattleSummary['status'] = 'Active'): CattleSummary {
   return { cattleId, earTag, status };
 }
@@ -45,7 +39,6 @@ describe('DeviceInventoryFacade', () => {
     release: ReturnType<typeof vi.fn>;
     assignments: ReturnType<typeof vi.fn>;
   };
-  let troughRepository: { list: ReturnType<typeof vi.fn> };
   let cattleContext: { cattleSummaries: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -57,14 +50,12 @@ describe('DeviceInventoryFacade', () => {
       release: vi.fn(),
       assignments: vi.fn(async () => [] as DeviceAssignment[]),
     };
-    troughRepository = { list: vi.fn(async () => [] as WaterTrough[]) };
     cattleContext = { cattleSummaries: vi.fn(async () => [] as CattleSummary[]) };
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [
         DeviceInventoryFacade,
         { provide: DeviceRepository, useValue: deviceRepository },
-        { provide: WaterTroughRepository, useValue: troughRepository },
         { provide: CattleInformationContextFacade, useValue: cattleContext },
       ],
     });
@@ -75,24 +66,22 @@ describe('DeviceInventoryFacade', () => {
     TestBed.resetTestingModule();
   });
 
-  it('loads devices, troughs and animal labels for the ranch, with devices sorted by serial', async () => {
+  it('loads the collars and animal labels for the ranch, with devices sorted by serial', async () => {
     deviceRepository.list.mockResolvedValue([device('SN-2'), device('SN-1')]);
-    troughRepository.list.mockResolvedValue([trough('trough-1', 'North trough')]);
     cattleContext.cattleSummaries.mockResolvedValue([animal('cattle-1', '101')]);
 
     await facade.open(RANCH);
 
     expect(facade.devices().map(item => item.serial)).toEqual(['SN-1', 'SN-2']);
-    expect(facade.troughs()).toHaveLength(1);
     expect(deviceRepository.list).toHaveBeenCalledWith(RANCH);
     expect(cattleContext.cattleSummaries).toHaveBeenCalledWith(RANCH);
   });
 
   it('filters the loaded devices without asking the API again', async () => {
-    deviceRepository.list.mockResolvedValue([device('SN-1'), device('SN-2', { type: 'WaterController', status: 'Maintenance' })]);
+    deviceRepository.list.mockResolvedValue([device('SN-1'), device('SN-2', { status: 'Maintenance' })]);
     await facade.open(RANCH);
 
-    facade.setFilter({ type: 'WaterController' });
+    facade.setFilter({ status: 'Maintenance' });
     expect(facade.visibleDevices().map(item => item.serial)).toEqual(['SN-2']);
 
     facade.setFilter({ status: 'Available' });
@@ -112,27 +101,13 @@ describe('DeviceInventoryFacade', () => {
     expect(facade.assignableCattle().map(item => item.earTag)).toEqual(['101']);
   });
 
-  it('offers only troughs that have no controller', async () => {
-    deviceRepository.list.mockResolvedValue([
-      device('CTRL-1', {
-        type: 'WaterController', status: 'InService', isAvailable: false,
-        currentAssignment: assignment('WaterTrough', 'trough-1'),
-      }),
-    ]);
-    troughRepository.list.mockResolvedValue([trough('trough-1', 'North'), trough('trough-2', 'South')]);
-    await facade.open(RANCH);
-
-    expect(facade.assignableTroughs().map(item => item.name)).toEqual(['South']);
-  });
-
-  it('labels an assignment with the ear tag or the trough name, and stays empty for an unknown target', async () => {
-    troughRepository.list.mockResolvedValue([trough('trough-1', 'North')]);
+  it('labels an assignment with the ear tag, and stays empty for an unknown animal or another target', async () => {
     cattleContext.cattleSummaries.mockResolvedValue([animal('cattle-1', '101')]);
     await facade.open(RANCH);
 
     expect(facade.targetLabel(assignment('Cattle', 'cattle-1'))).toBe('101');
-    expect(facade.targetLabel(assignment('WaterTrough', 'trough-1'))).toBe('North');
     expect(facade.targetLabel(assignment('Cattle', 'cattle-gone'))).toBeNull();
+    expect(facade.targetLabel(assignment('WaterTrough', 'cattle-1'))).toBeNull();
   });
 
   it('assigns a device with the version that was loaded and the chosen target', async () => {

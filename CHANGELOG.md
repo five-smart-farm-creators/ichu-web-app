@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Methane alerts raised from the methane index, shown in the alerts queue, the alert detail and the dashboard.
 - Warning and Critical normal ranges per productive stage and metric; a Critical range must contain its Warning range, and the charts and statistics measure against the Warning range.
 
+### Removed
+
+- Water troughs and water controllers are no longer shown; the web focuses on the collar and the alert display.
+
 ### Fixed
 
 - Nutrition plans, planned activities and planning campaigns call the routes that the ICHU service now serves, which no longer include the ranch in the path of a lot, activity or campaign.

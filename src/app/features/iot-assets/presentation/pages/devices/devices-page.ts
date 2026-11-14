@@ -21,7 +21,8 @@ import { TranslatedPaginatorIntl } from '../../../../../shared/presentation/pagi
 import { relativeTime } from '../../../../../shared/presentation/relative-time';
 import { DeviceInventoryFacade } from '../../../application/services/device-inventory.facade';
 import {
-  COMMUNICATION_STATUSES, type CommunicationStatus, type Device, DEVICE_STATUSES, type DeviceStatus, DEVICE_TYPES, type DeviceType,
+  COMMUNICATION_STATUSES, type CommunicationStatus, type Device, DEVICE_STATUSES, type DeviceStatus, type DeviceType,
+  MANAGED_DEVICE_TYPES,
 } from '../../../domain/model/device.model';
 import { VERSION_CONFLICT } from '../../../domain/model/version-conflict';
 import { AssignDeviceDialog } from '../../components/assign-device-dialog';
@@ -61,7 +62,7 @@ export class DevicesPage {
   private readonly translate = inject(TranslateService);
   private readonly language = inject(LanguageService);
   readonly errorKeys = IOT_ERROR_KEYS;
-  readonly types = DEVICE_TYPES;
+  readonly types = MANAGED_DEVICE_TYPES;
   readonly statuses = DEVICE_STATUSES;
   readonly communications = COMMUNICATION_STATUSES;
   readonly displayedColumns = ['serial', 'type', 'status', 'communication', 'battery', 'firmware', 'assignedTo', 'actions'];

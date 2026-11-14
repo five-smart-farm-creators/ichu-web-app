@@ -16,11 +16,6 @@ export const iotAssetsRoutes: Routes = [
         loadComponent: () => import('./presentation/pages/devices/devices-page').then(module => module.DevicesPage),
       },
       {
-        path: 'water-troughs',
-        title: 'pages.waterTroughs',
-        loadComponent: () => import('./presentation/pages/water-troughs/water-troughs-page').then(module => module.WaterTroughsPage),
-      },
-      {
         path: 'gateways',
         title: 'pages.edgeGateways',
         loadComponent: () => import('./presentation/pages/edge-gateways/edge-gateways-page').then(module => module.EdgeGatewaysPage),

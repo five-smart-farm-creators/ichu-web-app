@@ -63,7 +63,6 @@
     "lots": "Lots",
     "animalProfile": "Animal profile",
     "iotDevices": "IoT devices",
-    "waterTroughs": "Water troughs",
     "edgeGateways": "Edge gateways",
     "monitoring": "Monitoring",
     "monitoringCattle": "Animal monitoring",
@@ -530,7 +529,6 @@
     "areaNavigation": "IoT device areas",
     "tabs": {
       "devices": "Devices",
-      "waterTroughs": "Water troughs",
       "gateways": "Edge gateways"
     },
     "type": {
@@ -568,7 +566,7 @@
     },
     "inventory": {
       "title": "IoT devices",
-      "lead": "Register smart collars and water controllers, assign them to animals and troughs, and track battery, communication, and maintenance.",
+      "lead": "Register smart collars, assign them to animals, and track battery, communication, and maintenance.",
       "register": "Register device",
       "filters": "Device filters",
       "allTypes": "All types",
@@ -613,13 +611,9 @@
     },
     "assign": {
       "collarTitle": "Assign collar",
-      "controllerTitle": "Assign water controller",
       "collarLead": "Choose an active animal that has no collar. The collar reports the animal's activity and location.",
-      "controllerLead": "Choose a water trough that has no controller. The controller reports the trough temperature.",
       "animal": "Active animal without a collar",
-      "trough": "Water trough without a controller",
       "noAnimals": "Every active animal already has a collar.",
-      "noTroughs": "Every water trough already has a controller.",
       "submit": "Assign",
       "saved": "Device assigned."
     },
@@ -644,48 +638,6 @@
     "validation": {
       "serialRequired": "Enter a serial number of up to 50 characters.",
       "reasonRequired": "Enter a reason of up to 120 characters."
-    }
-  },
-  "waterTroughs": {
-    "noLot": "No lot",
-    "unknownLot": "Lot not listed",
-    "fields": {
-      "name": "Name",
-      "lot": "Lot",
-      "temperatureRange": "Temperature range",
-      "minimum": "Minimum (°C)",
-      "maximum": "Maximum (°C)"
-    },
-    "list": {
-      "title": "Water troughs",
-      "lead": "Name each drinking place and set the temperature band it will be checked against.",
-      "register": "Register water trough",
-      "loading": "Loading water troughs",
-      "tableLabel": "Water troughs of the ranch",
-      "actions": "Actions",
-      "setRange": "Set range",
-      "rangeValue": "{{minimum}} °C to {{maximum}} °C",
-      "noRange": "No range set",
-      "emptyTitle": "No water troughs yet",
-      "empty": "No water troughs are registered in this ranch.",
-      "emptyManage": "Register the first water trough to start the list."
-    },
-    "register": {
-      "title": "Register water trough",
-      "lead": "Registering a water trough does not use a collar. The lot is optional.",
-      "submit": "Register water trough",
-      "saved": "Water trough registered."
-    },
-    "range": {
-      "title": "Set temperature range",
-      "lead": "Set the band the trough will be checked against. Temperature readings are not shown in this version.",
-      "submit": "Save range",
-      "saved": "Temperature range saved."
-    },
-    "validation": {
-      "nameRequired": "Enter a name of up to 80 characters.",
-      "temperatureLimits": "Enter a temperature from -10 to 60 °C.",
-      "temperatureOrder": "The minimum must be lower than the maximum, with at most one decimal."
     }
   },
   "gateways": {
