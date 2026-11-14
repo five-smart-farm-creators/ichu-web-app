@@ -37,7 +37,7 @@ describe('RestPlanningCampaignRepository', () => {
 
   it('reads one campaign by its identifier', async () => {
     const result = repository.get('ranch-1', 'campaign-1');
-    const request = http.expectOne(campaignsUrl + '/campaign-1');
+    const request = http.expectOne('https://api.example.test/api/v1/planning-campaigns/campaign-1');
 
     expect(request.request.method).toBe('GET');
     request.flush({ id: 'campaign-1' });
