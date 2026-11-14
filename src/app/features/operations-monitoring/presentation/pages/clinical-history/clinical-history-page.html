@@ -108,6 +108,16 @@
                   </dd>
                 </div>
                 <div>
+                  <dt>{{ 'monitoring.metric.HeartRate' | translate }}</dt>
+                  <dd>
+                    @if (facade.summary()?.latest; as latest) {
+                      <ichu-indicator-value [indicator]="latest.heartRate" />
+                    } @else {
+                      –
+                    }
+                  </dd>
+                </div>
+                <div>
                   <dt>{{ 'monitoring.metric.ActivityIndex' | translate }}</dt>
                   <dd>
                     @if (facade.summary()?.latest; as latest) {

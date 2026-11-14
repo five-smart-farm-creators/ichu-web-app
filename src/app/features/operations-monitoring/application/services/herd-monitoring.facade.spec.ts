@@ -17,7 +17,9 @@ function latest(cattleId: string): LatestTelemetry {
     evaluatedAt: '2026-11-11T12:00:00Z',
     lastReadingRecordedAt: null,
     bodyTemperature: unavailable,
+    heartRate: { ...unavailable, unit: 'bpm' },
     activityIndex: { ...unavailable, unit: 'index' },
+    methaneIndex: { ...unavailable, unit: 'index' },
     ruminationMinutes: { ...unavailable, unit: 'minutes' },
     lastKnownPosition: { status: 'Unavailable', latitude: null, longitude: null, accuracyMeters: null, recordedAt: null, isStale: null },
   };

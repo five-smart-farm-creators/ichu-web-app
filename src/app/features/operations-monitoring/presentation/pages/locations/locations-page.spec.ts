@@ -50,7 +50,9 @@ function latest(): LatestTelemetry {
     evaluatedAt: '2026-11-11T12:00:00Z',
     lastReadingRecordedAt: '2026-11-11T11:55:00Z',
     bodyTemperature: unavailable,
+    heartRate: { ...unavailable, unit: 'bpm' },
     activityIndex: { ...unavailable, unit: 'index' },
+    methaneIndex: { ...unavailable, unit: 'index' },
     ruminationMinutes: { ...unavailable, unit: 'minutes' },
     lastKnownPosition: {
       status: 'Available', latitude: -12.15, longitude: -77.05, accuracyMeters: 4, recordedAt: '2026-11-11T11:55:00Z', isStale: false,

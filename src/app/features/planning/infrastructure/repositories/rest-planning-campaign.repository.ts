@@ -19,7 +19,7 @@ export class RestPlanningCampaignRepository extends PlanningCampaignRepository {
   }
 
   override get(ranchId: string, campaignId: string): Promise<PlanningCampaign> {
-    return firstPlanningResponse(this.http.get<PlanningCampaign>(`${this.collectionUrl(ranchId)}/${encodeURIComponent(campaignId)}`, {
+    return firstPlanningResponse(this.http.get<PlanningCampaign>(this.campaignUrl(campaignId), {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
@@ -32,5 +32,10 @@ export class RestPlanningCampaignRepository extends PlanningCampaignRepository {
 
   private collectionUrl(ranchId: string): string {
     return apiEndpoint(this.config.apiBaseUrl, `ranches/${encodeURIComponent(ranchId)}/planning-campaigns`);
+  }
+
+  /** Campaigns are addressed by their own identifier; only listing and creating stay under the ranch. */
+  private campaignUrl(campaignId: string): string {
+    return apiEndpoint(this.config.apiBaseUrl, `planning-campaigns/${encodeURIComponent(campaignId)}`);
   }
 }

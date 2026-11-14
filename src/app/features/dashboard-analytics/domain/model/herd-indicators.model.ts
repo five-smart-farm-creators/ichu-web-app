@@ -47,7 +47,7 @@ export function isIndicatorAvailable(indicator: IndicatorValue): boolean {
 }
 
 /** Alert types the API counts, in the order a screen lists them; other types follow in arrival order. */
-export const ALERT_TYPE_ORDER = ['temperature', 'activity', 'geofence'] as const;
+export const ALERT_TYPE_ORDER = ['temperature', 'heartrate', 'activity', 'methane', 'geofence'] as const;
 
 /** Lists the open alert types in a fixed order, so the cards never reorder between refreshes. */
 export function orderedAlertTypes(counts: Readonly<Record<string, number>>): readonly string[] {
