@@ -6,12 +6,14 @@ import { LivestockOperationRepository } from '../../domain/repositories/livestoc
 import { MonitoringThresholdRepository } from '../../domain/repositories/monitoring-threshold.repository';
 import { ReproductiveHistoryRepository } from '../../domain/repositories/reproductive-history.repository';
 import { TelemetryRepository } from '../../domain/repositories/telemetry.repository';
+import { WaterStatusRepository } from '../../domain/repositories/water-status.repository';
 import { RestAlertRepository } from '../repositories/rest-alert.repository';
 import { RestGeofenceRepository } from '../repositories/rest-geofence.repository';
 import { RestLivestockOperationRepository } from '../repositories/rest-livestock-operation.repository';
 import { RestMonitoringThresholdRepository } from '../repositories/rest-monitoring-threshold.repository';
 import { RestReproductiveHistoryRepository } from '../repositories/rest-reproductive-history.repository';
 import { RestTelemetryRepository } from '../repositories/rest-telemetry.repository';
+import { RestWaterStatusRepository } from '../repositories/rest-water-status.repository';
 
 /** Composes the REST adapters and the ACL facade of the operations and monitoring context for a lazy route group. */
 export function provideOperationsMonitoring(): EnvironmentProviders {
@@ -28,6 +30,8 @@ export function provideOperationsMonitoring(): EnvironmentProviders {
     { provide: LivestockOperationRepository, useExisting: RestLivestockOperationRepository },
     RestReproductiveHistoryRepository,
     { provide: ReproductiveHistoryRepository, useExisting: RestReproductiveHistoryRepository },
+    RestWaterStatusRepository,
+    { provide: WaterStatusRepository, useExisting: RestWaterStatusRepository },
     OperationsMonitoringContextFacade,
   ]);
 }

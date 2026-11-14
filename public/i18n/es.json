@@ -686,6 +686,49 @@
       "nameRequired": "Ingresa un nombre de hasta 80 caracteres.",
       "temperatureLimits": "Ingresa una temperatura entre -10 y 60 °C.",
       "temperatureOrder": "El mínimo debe ser menor que el máximo, con como máximo un decimal."
+    },
+    "status": {
+      "fields": {
+        "waterTemperature": "Temperatura del agua",
+        "capturedAt": "Capturada el",
+        "measurement": "Medición",
+        "rangeStatus": "Estado del rango",
+        "controller": "Controlador",
+        "lastCommunication": "Última comunicación",
+        "heater": "Calefactor"
+      },
+      "controller": {
+        "NoController": "Sin controlador",
+        "NoReadings": "Sin lecturas aún",
+        "Communicating": "Comunicando",
+        "NoCommunication": "Sin comunicación"
+      },
+      "measurement": {
+        "Unavailable": "Sin lectura",
+        "Invalid": "Lectura no válida",
+        "Valid": "Válida"
+      },
+      "range": {
+        "NotConfigured": "Sin rango definido",
+        "Unavailable": "No disponible",
+        "BelowRange": "Por debajo del rango",
+        "WithinRange": "Dentro del rango",
+        "AboveRange": "Por encima del rango"
+      },
+      "heater": {
+        "On": "Encendido",
+        "Off": "Apagado"
+      },
+      "loadFailed": "No se pudo cargar el estado de los abrevaderos, así que la lista se muestra sin él.",
+      "history": {
+        "action": "Historial",
+        "title": "Historial de temperatura del agua",
+        "lead": "Lecturas capturadas en las últimas 24 horas, frente al rango de temperatura del abrevadero.",
+        "chart": "Temperatura del agua de las últimas 24 horas",
+        "loading": "Cargando lecturas",
+        "empty": "No se capturaron lecturas en las últimas 24 horas.",
+        "truncated": "Se muestran las primeras {{shown}} de {{total}} lecturas de las últimas 24 horas."
+      }
     }
   },
   "gateways": {

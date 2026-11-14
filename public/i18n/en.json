@@ -686,6 +686,49 @@
       "nameRequired": "Enter a name of up to 80 characters.",
       "temperatureLimits": "Enter a temperature from -10 to 60 °C.",
       "temperatureOrder": "The minimum must be lower than the maximum, with at most one decimal."
+    },
+    "status": {
+      "fields": {
+        "waterTemperature": "Water temperature",
+        "capturedAt": "Captured at",
+        "measurement": "Measurement",
+        "rangeStatus": "Range status",
+        "controller": "Controller",
+        "lastCommunication": "Last communication",
+        "heater": "Heater"
+      },
+      "controller": {
+        "NoController": "No controller",
+        "NoReadings": "No readings yet",
+        "Communicating": "Communicating",
+        "NoCommunication": "No communication"
+      },
+      "measurement": {
+        "Unavailable": "No reading",
+        "Invalid": "Invalid reading",
+        "Valid": "Valid"
+      },
+      "range": {
+        "NotConfigured": "No range set",
+        "Unavailable": "Unavailable",
+        "BelowRange": "Below range",
+        "WithinRange": "Within range",
+        "AboveRange": "Above range"
+      },
+      "heater": {
+        "On": "On",
+        "Off": "Off"
+      },
+      "loadFailed": "The water status could not be loaded, so the troughs are listed without it.",
+      "history": {
+        "action": "History",
+        "title": "Water temperature history",
+        "lead": "Readings captured in the last 24 hours, against the temperature band of the trough.",
+        "chart": "Water temperature over the last 24 hours",
+        "loading": "Loading readings",
+        "empty": "No readings were captured in the last 24 hours.",
+        "truncated": "Showing the first {{shown}} of {{total}} readings of the last 24 hours."
+      }
     }
   },
   "gateways": {

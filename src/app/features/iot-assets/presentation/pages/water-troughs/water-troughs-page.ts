@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { DecimalPipe, formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, Injector, signal, untracked } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -13,19 +13,24 @@ import { ApiErrorMessagePipe } from '../../../../../shared/presentation/api-erro
 import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/export/export-menu';
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
+import { LocalizedDatePipe } from '../../../../../shared/presentation/localized-date.pipe';
 import { TranslatedPaginatorIntl } from '../../../../../shared/presentation/paginator/translated-paginator-intl';
 import { WaterTroughsFacade } from '../../../application/services/water-troughs.facade';
 import type { WaterTrough } from '../../../domain/model/water-trough.model';
 import { IOT_DIALOG_CONFIG, type IotDialogOutcome } from '../../components/iot-dialog';
 import { RegisterWaterTroughDialog } from '../../components/register-water-trough-dialog';
+import { WaterTroughHistoryDialog } from '../../components/water-trough-history-dialog';
 import { WaterTroughRangeDialog } from '../../components/water-trough-range-dialog';
 import { IOT_ERROR_KEYS } from '../../iot-error-keys';
 import { slicePage } from '../../slice-page';
 
-/** Lists the ranch's water troughs with their lot and temperature band; a managing account registers them and sets bands. */
+/** Lists the ranch's water troughs with their lot, band, controller and latest temperature; a managing account registers them and sets bands. */
 @Component({
   selector: 'ichu-water-troughs-page',
-  imports: [ApiErrorMessagePipe, ExportMenu, Icon, MatPaginatorModule, MatProgressBarModule, MatTableModule, TranslatePipe],
+  imports: [
+    ApiErrorMessagePipe, DecimalPipe, ExportMenu, Icon, LocalizedDatePipe, MatPaginatorModule, MatProgressBarModule, MatTableModule,
+    TranslatePipe,
+  ],
   providers: [WaterTroughsFacade, { provide: MatPaginatorIntl, useClass: TranslatedPaginatorIntl }],
   templateUrl: './water-troughs-page.html',
   styleUrl: './water-troughs-page.scss',
@@ -40,7 +45,7 @@ export class WaterTroughsPage {
   private readonly translate = inject(TranslateService);
   private readonly language = inject(LanguageService);
   readonly errorKeys = IOT_ERROR_KEYS;
-  readonly displayedColumns = ['name', 'lot', 'range', 'actions'];
+  readonly displayedColumns = ['name', 'lot', 'range', 'temperature', 'rangeStatus', 'controller', 'heater', 'actions'];
   readonly pageSizeOptions = [10, 25];
   readonly pageIndex = signal(0);
   readonly pageSize = signal(10);
@@ -81,6 +86,11 @@ export class WaterTroughsPage {
       .subscribe(outcome => this.showOutcome(outcome, 'waterTroughs.range.saved'));
   }
 
+  /** Charts the last 24 hours of the trough's controller; only a trough with a controller offers this. */
+  openHistory(trough: WaterTrough, controllerId: string): void {
+    this.dialog.open(WaterTroughHistoryDialog, { ...IOT_DIALOG_CONFIG, injector: this.injector, data: { trough, controllerId } });
+  }
+
   async export(format: ExportFormat): Promise<void> {
     this.exporting.set(true);
     this.exportFailed.set(false);
@@ -111,11 +121,51 @@ export class WaterTroughsPage {
 
   private exportColumns(): ExportColumn<WaterTrough>[] {
     const text = (key: string): string => this.translate.instant(key);
+    const statusOf = (trough: WaterTrough) => this.facade.statusOf(trough.id);
     return [
       { header: text('waterTroughs.fields.name'), value: trough => trough.name },
       { header: text('waterTroughs.fields.lot'), value: trough => this.facade.lotName(trough.lotId) },
       { header: text('waterTroughs.fields.minimum'), value: trough => trough.temperatureRange?.minimumCelsius ?? null },
       { header: text('waterTroughs.fields.maximum'), value: trough => trough.temperatureRange?.maximumCelsius ?? null },
+      {
+        header: text('waterTroughs.status.fields.waterTemperature') + ' (' + text('monitoring.units.celsius') + ')',
+        value: trough => {
+          const status = statusOf(trough);
+          if (!status) return null;
+          return status.latestReading?.temperature ?? text('waterTroughs.status.measurement.' + status.measurementStatus);
+        },
+      },
+      { header: text('waterTroughs.status.fields.capturedAt'), value: trough => toDate(statusOf(trough)?.latestReading?.capturedAt) },
+      {
+        header: text('waterTroughs.status.fields.rangeStatus'),
+        value: trough => {
+          const status = statusOf(trough);
+          return status ? text('waterTroughs.status.range.' + status.rangeStatus) : null;
+        },
+      },
+      {
+        header: text('waterTroughs.status.fields.controller'),
+        value: trough => {
+          const status = statusOf(trough);
+          return status ? text('waterTroughs.status.controller.' + status.controllerStatus) : null;
+        },
+      },
+      {
+        header: text('waterTroughs.status.fields.lastCommunication'),
+        value: trough => toDate(statusOf(trough)?.lastCommunicationAt),
+      },
+      {
+        header: text('waterTroughs.status.fields.heater'),
+        value: trough => {
+          const reading = statusOf(trough)?.latestReading;
+          return reading ? text('waterTroughs.status.heater.' + reading.heaterState) : null;
+        },
+      },
     ];
   }
+}
+
+/** A timestamp as a Date for Excel and PDF; a missing timestamp stays empty. */
+function toDate(value: string | null | undefined): Date | null {
+  return value ? new Date(value) : null;
 }

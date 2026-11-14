@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
 import { provideCattleInformation } from '../cattle-information/infrastructure/configuration/cattle-information.providers';
+import { provideOperationsMonitoring } from '../operations-monitoring/infrastructure/configuration/operations-monitoring.providers';
 import { provideIotAssets } from './infrastructure/configuration/iot-assets.providers';
 
-/** Loaded lazily under `/devices`; the cattle providers back the ACL facade that labels assignment targets. */
+/** Loaded lazily under `/devices`; the cattle providers back the labels of assignment targets, and the monitoring providers read water trough status. */
 export const iotAssetsRoutes: Routes = [
   {
     path: '',
-    providers: [provideCattleInformation(), provideIotAssets()],
+    providers: [provideCattleInformation(), provideIotAssets(), provideOperationsMonitoring()],
     loadComponent: () => import('./presentation/components/devices-area-layout').then(module => module.DevicesAreaLayout),
     children: [
       {
