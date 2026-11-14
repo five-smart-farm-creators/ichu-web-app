@@ -34,6 +34,9 @@ const animal: MonitoredCattleSummary = { cattleId: 'cattle-1', earTag: '101', st
 const calfHeartRate: MonitoringThreshold = {
   thresholdId: 'threshold-1', lifeStage: 'Calf', metric: 'HeartRate', minValue: 60, maxValue: 90, severity: 'Warning', revision: 1,
 };
+const calfMethane: MonitoringThreshold = {
+  thresholdId: 'threshold-2', lifeStage: 'Calf', metric: 'MethaneIndex', minValue: 3, maxValue: 5, severity: 'Warning', revision: 1,
+};
 
 function indicator(value: number | null, unit: string): LatestIndicator {
   return {
@@ -158,6 +161,15 @@ describe('CattleTelemetryPage', () => {
     expect(heartRate?.band()).toEqual(expect.objectContaining({ min: 60, max: 90 }));
     expect(methane).toBeDefined();
     expect(methane?.band()).toBeNull();
+  });
+
+  it('charts the methane index against its threshold band when the stage has one', async () => {
+    thresholds.list.mockResolvedValue([calfHeartRate, calfMethane]);
+    const fixture = await render();
+    const charts = fixture.debugElement.queryAll(By.directive(LineChart)).map(item => item.componentInstance as LineChart);
+    const methane = charts.find(chart => chart.series()[0]?.label === 'Methane index (relative, not ppm)');
+
+    expect(methane?.band()).toEqual(expect.objectContaining({ min: 3, max: 5 }));
   });
 
   it('summarizes heart rate against its band and the methane index without one in the statistics table', async () => {

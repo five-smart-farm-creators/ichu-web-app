@@ -872,6 +872,7 @@
       "Temperature": "Temperatura corporal",
       "Activity": "Actividad",
       "HeartRate": "Frecuencia cardiaca",
+      "Methane": "Metano",
       "Geofence": "Geocerca"
     },
     "alertStatus": {
@@ -972,7 +973,7 @@
     },
     "alerts": {
       "title": "Alertas",
-      "lead": "Alertas generadas por temperatura corporal, frecuencia cardiaca, actividad y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
+      "lead": "Alertas generadas por temperatura corporal, frecuencia cardiaca, actividad, metano y geocercas. Atiende cada alerta con un hallazgo y, si corresponde, la acción tomada.",
       "filters": "Filtros de alertas",
       "allStatuses": "Todos los estados",
       "animal": "Animal",
@@ -1015,6 +1016,7 @@
     },
     "validation": {
       "rangeOrder": "El mínimo debe ser menor que el máximo.",
+      "thresholdLevels": "El rango crítico debe contener el rango de advertencia.",
       "findingRequired": "Describe el hallazgo antes de atender la alerta.",
       "tolerance": "Ingresa un número entero de metros de 1 a {{maximum}}."
     },
@@ -1455,6 +1457,7 @@
       "temperature": "Temperatura",
       "activity": "Actividad",
       "heartrate": "Frecuencia cardiaca",
+      "methane": "Metano",
       "geofence": "Geocerca"
     },
     "export": {

@@ -1,5 +1,5 @@
 /** Metrics that have normal ranges; the API uses these names in thresholds and alerts. */
-export const MONITORED_METRICS = ['BodyTemperature', 'ActivityIndex', 'HeartRate'] as const;
+export const MONITORED_METRICS = ['BodyTemperature', 'ActivityIndex', 'HeartRate', 'MethaneIndex'] as const;
 export type MonitoredMetric = (typeof MONITORED_METRICS)[number];
 
 /** A latest value is current, stale (captured more than 24 hours ago) or unavailable; an unavailable value is never zero. */

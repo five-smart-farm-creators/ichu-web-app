@@ -45,14 +45,14 @@ export class CattleTelemetryFacade {
   readonly bodyTemperatureBand = computed(() => this.bandFor('BodyTemperature'));
   readonly heartRateBand = computed(() => this.bandFor('HeartRate'));
   readonly activityIndexBand = computed(() => this.bandFor('ActivityIndex'));
+  readonly methaneIndexBand = computed(() => this.bandFor('MethaneIndex'));
   readonly statistics = computed<TelemetryStatistics>(() => {
     const readings = this.readings();
     return {
       bodyTemperature: summarizeSeries(readings.map(reading => measurementValue(reading.bodyTemperature)), this.bodyTemperatureBand()),
       heartRate: summarizeSeries(readings.map(reading => measurementValue(reading.heartRate)), this.heartRateBand()),
       activityIndex: summarizeSeries(readings.map(reading => measurementValue(reading.activityIndex)), this.activityIndexBand()),
-      // Methane has no normal range until the backend confirms its thresholds, so it is summarized without a band.
-      methaneIndex: summarizeSeries(readings.map(reading => measurementValue(reading.methaneIndex)), null),
+      methaneIndex: summarizeSeries(readings.map(reading => measurementValue(reading.methaneIndex)), this.methaneIndexBand()),
     };
   });
 

@@ -872,6 +872,7 @@
       "Temperature": "Body temperature",
       "Activity": "Activity",
       "HeartRate": "Heart rate",
+      "Methane": "Methane",
       "Geofence": "Geofence"
     },
     "alertStatus": {
@@ -972,7 +973,7 @@
     },
     "alerts": {
       "title": "Alerts",
-      "lead": "Alerts raised for body temperature, heart rate, activity and geofences. Attend each alert with a finding and, when relevant, the action taken.",
+      "lead": "Alerts raised for body temperature, heart rate, activity, methane and geofences. Attend each alert with a finding and, when relevant, the action taken.",
       "filters": "Alert filters",
       "allStatuses": "All statuses",
       "animal": "Animal",
@@ -1015,6 +1016,7 @@
     },
     "validation": {
       "rangeOrder": "The minimum must be below the maximum.",
+      "thresholdLevels": "The Critical range must contain the Warning range.",
       "findingRequired": "Describe the finding before attending the alert.",
       "tolerance": "Enter a whole number of meters from 1 to {{maximum}}."
     },
@@ -1455,6 +1457,7 @@
       "temperature": "Temperature",
       "activity": "Activity",
       "heartrate": "Heart rate",
+      "methane": "Methane",
       "geofence": "Geofence"
     },
     "export": {

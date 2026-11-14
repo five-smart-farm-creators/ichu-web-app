@@ -104,8 +104,11 @@ describe('CattleTelemetryFacade', () => {
     expect(facade.statistics().activityIndex.outsideBandPercent).toBeNull();
   });
 
-  it('measures heart rate against the band of the animal stage and summarizes methane without one', async () => {
-    thresholds.list.mockResolvedValue([calfFever, calfHeartRate]);
+  it('measures heart rate and methane against the band of the animal stage', async () => {
+    const calfMethane: MonitoringThreshold = {
+      thresholdId: 'threshold-3', lifeStage: 'Calf', metric: 'MethaneIndex', minValue: 3, maxValue: 4, severity: 'Warning', revision: 1,
+    };
+    thresholds.list.mockResolvedValue([calfFever, calfHeartRate, calfMethane]);
     telemetry.readings.mockResolvedValue(page(
       [reading(1, 38, 70), reading(2, 38, 95), reading(3, 38, null), reading(4, 38, 80)],
       4,
@@ -116,8 +119,10 @@ describe('CattleTelemetryFacade', () => {
     expect(facade.heartRateBand()).toEqual({ min: 60, max: 90 });
     expect(facade.statistics().heartRate.count).toBe(3);
     expect(facade.statistics().heartRate.outsideBandPercent).toBeCloseTo(33.33, 1);
+    // Every methane reading in the fixture is 4.2, above the band maximum of 4.
+    expect(facade.methaneIndexBand()).toEqual({ min: 3, max: 4 });
     expect(facade.statistics().methaneIndex.count).toBe(4);
-    expect(facade.statistics().methaneIndex.outsideBandPercent).toBeNull();
+    expect(facade.statistics().methaneIndex.outsideBandPercent).toBe(100);
   });
 
   it('keeps the readings of the previous period when a newer request replaces them', async () => {

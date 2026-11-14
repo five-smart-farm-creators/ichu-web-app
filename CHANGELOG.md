@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Heart rate of each animal in the latest values, the readings, the statistics, a chart against its normal range, the herd monitoring table, the clinical history, the Excel and PDF exports, the normal ranges and the alerts.
 - Methane index of each animal in the latest values, the readings, the statistics, a chart and the exports, labelled as a relative index rather than ppm.
 - Water trough status in the water troughs list: the latest water temperature with its capture time, the range status against the band, the controller communication and the heater state, and a 24-hour history with a chart against the band and a table; the Excel and PDF exports include the new columns.
+- Methane alerts raised from the methane index, shown in the alerts queue, the alert detail and the dashboard.
+- Warning and Critical normal ranges per productive stage and metric; a Critical range must contain its Warning range, and the charts and statistics measure against the Warning range.
 
 ### Fixed
 

@@ -8,16 +8,16 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
 import { MonitoringThresholdsFacade } from '../../application/services/monitoring-thresholds.facade';
-import { ALERT_SEVERITIES, type AlertSeverity } from '../../domain/model/alert.model';
 import {
-  isValidThresholdRange, type MonitoringThreshold, THRESHOLD_LIFE_STAGES,
+  type ConfigureThreshold, isValidThresholdRange, levelsAreNested, type MonitoringThreshold,
+  THRESHOLD_LIFE_STAGES, THRESHOLD_SEVERITIES, type ThresholdSeverity,
 } from '../../domain/model/monitoring-threshold.model';
 import { MONITORED_METRICS, type MonitoredMetric } from '../../domain/model/telemetry.model';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 import { MONITORING_ERROR_KEYS } from '../monitoring-error-keys';
 import { MONITORING_DIALOG_STYLES, type MonitoringDialogOutcome } from './monitoring-dialog';
 
-/** Saves the normal range of one stage and metric; both limits are required and the minimum must stay below the maximum. */
+/** Saves the normal range of one stage, metric and severity; both limits are required and the minimum must stay below the maximum. */
 @Component({
   selector: 'ichu-threshold-dialog',
   imports: [ApiErrorMessagePipe, MatDialogModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, TranslatePipe],
@@ -68,6 +68,9 @@ import { MONITORING_DIALOG_STYLES, type MonitoringDialogOutcome } from './monito
         @if (orderError()) {
           <p class="form-error" role="alert">{{ 'monitoring.validation.rangeOrder' | translate }}</p>
         }
+        @if (levelsError()) {
+          <p class="form-error" role="alert">{{ 'monitoring.validation.thresholdLevels' | translate }}</p>
+        }
         @if (error(); as apiError) {
           <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
         }
@@ -88,28 +91,40 @@ export class ThresholdDialog {
   private readonly existing = inject<MonitoringThreshold | null>(MAT_DIALOG_DATA);
   readonly lifeStages = THRESHOLD_LIFE_STAGES;
   readonly metrics = MONITORED_METRICS;
-  readonly severities = ALERT_SEVERITIES;
+  readonly severities = THRESHOLD_SEVERITIES;
   readonly saving = signal(false);
   readonly orderError = signal(false);
+  readonly levelsError = signal(false);
   readonly error = signal<ApiError | null>(null);
   readonly form = new FormGroup({
     lifeStage: new FormControl<string | null>(this.existing?.lifeStage ?? null, Validators.required),
     metric: new FormControl<MonitoredMetric | null>(this.existing?.metric ?? null, Validators.required),
     minValue: new FormControl<number | null>(this.existing?.minValue ?? null, Validators.required),
     maxValue: new FormControl<number | null>(this.existing?.maxValue ?? null, Validators.required),
-    severity: new FormControl<AlertSeverity | null>(this.existing?.severity ?? 'Warning', Validators.required),
+    severity: new FormControl<ThresholdSeverity | null>(this.existing?.severity ?? 'Warning', Validators.required),
   });
+
+  constructor() {
+    // The stage, metric and severity identify the threshold, so an edit cannot move it to another level.
+    if (this.existing) {
+      this.form.controls.lifeStage.disable();
+      this.form.controls.metric.disable();
+      this.form.controls.severity.disable();
+    }
+  }
 
   async save(): Promise<void> {
     this.form.markAllAsTouched();
     const { lifeStage, metric, minValue, maxValue, severity } = this.form.getRawValue();
     if (this.form.invalid || !lifeStage || !metric || minValue === null || maxValue === null || !severity || this.saving()) return;
+    const request: ConfigureThreshold = { lifeStage, metric, minValue, maxValue, severity };
     this.orderError.set(!isValidThresholdRange(minValue, maxValue));
-    if (this.orderError()) return;
+    this.levelsError.set(!this.orderError() && !levelsAreNested(this.facade.thresholds(), request));
+    if (this.orderError() || this.levelsError()) return;
     this.saving.set(true);
     this.error.set(null);
     try {
-      await this.facade.configure({ lifeStage, metric, minValue, maxValue, severity });
+      await this.facade.configure(request);
       this.dialogRef.close('saved');
     } catch (error) {
       const apiError = toApiError(error);

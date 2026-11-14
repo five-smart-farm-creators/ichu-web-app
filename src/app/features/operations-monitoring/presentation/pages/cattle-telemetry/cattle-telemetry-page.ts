@@ -93,7 +93,7 @@ export class CattleTelemetryPage {
   });
   readonly noThresholds = computed(() =>
     this.facade.animal() !== null && this.facade.bodyTemperatureBand() === null && this.facade.heartRateBand() === null
-      && this.facade.activityIndexBand() === null);
+      && this.facade.activityIndexBand() === null && this.facade.methaneIndexBand() === null);
   readonly temperatureSeries = computed<ChartSeries[]>(() => [
     { label: this.metricLabel('BodyTemperature'), color: '--forest', points: this.points('bodyTemperature') },
   ]);
@@ -109,6 +109,7 @@ export class CattleTelemetryPage {
   readonly temperatureBand = computed(() => this.bandOf(this.facade.bodyTemperatureBand()));
   readonly heartRateBand = computed(() => this.bandOf(this.facade.heartRateBand()));
   readonly activityBand = computed(() => this.bandOf(this.facade.activityIndexBand()));
+  readonly methaneBand = computed(() => this.bandOf(this.facade.methaneIndexBand()));
 
   constructor() {
     effect(() => {
@@ -211,7 +212,7 @@ export class CattleTelemetryPage {
     }));
   }
 
-  private metricLabel(metric: MonitoredMetric | 'MethaneIndex'): string {
+  private metricLabel(metric: MonitoredMetric): string {
     this.language.current();
     return this.translate.instant('monitoring.metric.' + metric);
   }

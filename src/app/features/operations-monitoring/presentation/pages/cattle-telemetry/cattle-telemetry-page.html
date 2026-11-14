@@ -156,7 +156,7 @@
       <section class="panel chart-panel" aria-labelledby="methane-heading">
         <div class="panel-head"><h2 id="methane-heading">{{ 'monitoring.metric.MethaneIndex' | translate }}</h2></div>
         <div class="panel-body">
-          <ichu-line-chart [series]="methaneSeries()" [yAxisLabel]="'monitoring.units.index' | translate"
+          <ichu-line-chart [series]="methaneSeries()" [band]="methaneBand()" [yAxisLabel]="'monitoring.units.index' | translate"
             [accessibleLabel]="'monitoring.telemetry.methaneChart' | translate" />
           <p class="read-note">{{ 'monitoring.telemetry.methaneHint' | translate }}</p>
         </div>
