@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-15
+
 ### Added
 
 - Heart rate of each animal in the latest values, the readings, the statistics, a chart against its normal range, the herd monitoring table, the clinical history, the Excel and PDF exports, the normal ranges and the alerts.
