@@ -6,7 +6,7 @@ import type { ConfigureThreshold, MonitoringThreshold } from '../../domain/model
 import { MonitoringThresholdRepository } from '../../domain/repositories/monitoring-threshold.repository';
 import { firstMonitoringResponse } from '../http/monitoring-http';
 
-/** Calls the threshold endpoints of a ranch; configuring a stage and metric replaces its previous band. */
+/** Calls the threshold endpoints of a ranch; configuring a stage, metric and severity replaces its previous band. */
 @Injectable()
 export class RestMonitoringThresholdRepository extends MonitoringThresholdRepository {
   private readonly http = inject(HttpClient);

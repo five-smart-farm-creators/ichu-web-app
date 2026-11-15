@@ -13,13 +13,12 @@ import { ExportFormat, ExportMenu } from '../../../../../shared/presentation/exp
 import { ExportColumn, TableExportService } from '../../../../../shared/presentation/export/table-export.service';
 import { Icon } from '../../../../../shared/presentation/icon';
 import { MonitoringThresholdsFacade } from '../../../application/services/monitoring-thresholds.facade';
-import type { AlertSeverity } from '../../../domain/model/alert.model';
-import type { MonitoringThreshold } from '../../../domain/model/monitoring-threshold.model';
+import type { MonitoringThreshold, ThresholdSeverity } from '../../../domain/model/monitoring-threshold.model';
 import { MONITORING_DIALOG_CONFIG, type MonitoringDialogOutcome } from '../../components/monitoring-dialog';
 import { ThresholdDialog } from '../../components/threshold-dialog';
 import { MONITORING_ERROR_KEYS } from '../../monitoring-error-keys';
 
-const SEVERITY_TONE: Readonly<Record<AlertSeverity, string>> = { Informative: 'neutral', Warning: 'warning', Critical: 'danger' };
+const SEVERITY_TONE: Readonly<Record<ThresholdSeverity, string>> = { Warning: 'warning', Critical: 'danger' };
 
 /** Lists the normal ranges of each stage and metric; a managing account configures them. */
 @Component({
@@ -56,7 +55,7 @@ export class ThresholdsPage {
     });
   }
 
-  severityTone(severity: AlertSeverity): string {
+  severityTone(severity: ThresholdSeverity): string {
     return SEVERITY_TONE[severity];
   }
 

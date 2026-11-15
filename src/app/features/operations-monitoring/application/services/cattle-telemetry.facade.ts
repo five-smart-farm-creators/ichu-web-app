@@ -19,7 +19,9 @@ export const TELEMETRY_PAGE_SIZE = 100;
 
 export interface TelemetryStatistics {
   readonly bodyTemperature: SeriesStatistics;
+  readonly heartRate: SeriesStatistics;
   readonly activityIndex: SeriesStatistics;
+  readonly methaneIndex: SeriesStatistics;
 }
 
 /** Coordinates one animal's monitoring page: latest values, thresholds and the readings of the chosen period. */
@@ -41,12 +43,16 @@ export class CattleTelemetryFacade {
   readonly error = signal<ApiError | null>(null);
   readonly truncated = computed(() => this.totalCount() > TELEMETRY_READING_LIMIT);
   readonly bodyTemperatureBand = computed(() => this.bandFor('BodyTemperature'));
+  readonly heartRateBand = computed(() => this.bandFor('HeartRate'));
   readonly activityIndexBand = computed(() => this.bandFor('ActivityIndex'));
+  readonly methaneIndexBand = computed(() => this.bandFor('MethaneIndex'));
   readonly statistics = computed<TelemetryStatistics>(() => {
     const readings = this.readings();
     return {
       bodyTemperature: summarizeSeries(readings.map(reading => measurementValue(reading.bodyTemperature)), this.bodyTemperatureBand()),
+      heartRate: summarizeSeries(readings.map(reading => measurementValue(reading.heartRate)), this.heartRateBand()),
       activityIndex: summarizeSeries(readings.map(reading => measurementValue(reading.activityIndex)), this.activityIndexBand()),
+      methaneIndex: summarizeSeries(readings.map(reading => measurementValue(reading.methaneIndex)), this.methaneIndexBand()),
     };
   });
 

@@ -5,7 +5,7 @@ import { RUNTIME_CONFIG } from '../../../../core/config/runtime-config';
 import { RestPlannedActivityRepository } from './rest-planned-activity.repository';
 
 const ranchUrl = 'https://api.example.test/api/v1/ranches/ranch-1';
-const activityUrl = ranchUrl + '/planned-activities/activity-1';
+const activityUrl = 'https://api.example.test/api/v1/planned-activities/activity-1';
 
 describe('RestPlannedActivityRepository', () => {
   let http: HttpTestingController;

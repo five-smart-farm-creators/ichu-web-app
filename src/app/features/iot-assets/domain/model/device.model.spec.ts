@@ -1,4 +1,4 @@
-import { assignmentTargetOf, type Device, matchesDeviceFilter } from './device.model';
+import { type Device, matchesDeviceFilter } from './device.model';
 
 function device(overrides: Partial<Device> = {}): Device {
   return {
@@ -10,11 +10,6 @@ function device(overrides: Partial<Device> = {}): Device {
 }
 
 describe('device model', () => {
-  it('serves animals with collars and troughs with water controllers', () => {
-    expect(assignmentTargetOf('SmartCollar')).toBe('Cattle');
-    expect(assignmentTargetOf('WaterController')).toBe('WaterTrough');
-  });
-
   it('matches a device only against the filters that are set', () => {
     const collar = device({ status: 'InService', communicationStatus: 'NoCommunication' });
 

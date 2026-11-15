@@ -25,7 +25,7 @@ export class RestPlannedActivityRepository extends PlannedActivityRepository {
   }
 
   override get(ranchId: string, activityId: string): Promise<PlannedActivity> {
-    return firstPlanningResponse(this.http.get<PlannedActivity>(this.activityUrl(ranchId, activityId), {
+    return firstPlanningResponse(this.http.get<PlannedActivity>(this.activityUrl(activityId), {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
@@ -37,31 +37,32 @@ export class RestPlannedActivityRepository extends PlannedActivityRepository {
   }
 
   override listApplications(ranchId: string, activityId: string): Promise<readonly ActivityApplication[]> {
-    return firstPlanningResponse(this.http.get<readonly ActivityApplication[]>(this.activityUrl(ranchId, activityId, 'applications'), {
+    return firstPlanningResponse(this.http.get<readonly ActivityApplication[]>(this.activityUrl(activityId, 'applications'), {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
   override recordApplication(ranchId: string, activityId: string, request: RecordApplication): Promise<ActivityApplication> {
-    return firstPlanningResponse(this.http.post<ActivityApplication>(this.activityUrl(ranchId, activityId, 'applications'), request, {
+    return firstPlanningResponse(this.http.post<ActivityApplication>(this.activityUrl(activityId, 'applications'), request, {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
   override listFollowUps(ranchId: string, activityId: string): Promise<readonly ActivityFollowUp[]> {
-    return firstPlanningResponse(this.http.get<readonly ActivityFollowUp[]>(this.activityUrl(ranchId, activityId, 'follow-ups'), {
+    return firstPlanningResponse(this.http.get<readonly ActivityFollowUp[]>(this.activityUrl(activityId, 'follow-ups'), {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
   override scheduleFollowUp(ranchId: string, activityId: string, request: ScheduleFollowUp): Promise<ActivityFollowUp> {
-    return firstPlanningResponse(this.http.post<ActivityFollowUp>(this.activityUrl(ranchId, activityId, 'follow-ups'), request, {
+    return firstPlanningResponse(this.http.post<ActivityFollowUp>(this.activityUrl(activityId, 'follow-ups'), request, {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
-  private activityUrl(ranchId: string, activityId: string, suffix = ''): string {
-    const base = this.apiUrl(`ranches/${enc(ranchId)}/planned-activities/${enc(activityId)}`);
+  /** Activities are addressed by their own identifier; only the calendar and scheduling stay under the ranch. */
+  private activityUrl(activityId: string, suffix = ''): string {
+    const base = this.apiUrl(`planned-activities/${enc(activityId)}`);
     return suffix ? `${base}/${suffix}` : base;
   }
 

@@ -74,7 +74,7 @@ export class CattleTelemetryPage {
   readonly readingLimit = TELEMETRY_READING_LIMIT;
   readonly presets: readonly RangePreset[] = ['24h', '7d', '30d', 'custom'];
   readonly pageSizeOptions = [10, 25, 50];
-  readonly readingColumns = ['recordedAt', 'temperature', 'activity', 'rumination', 'battery', 'position'];
+  readonly readingColumns = ['recordedAt', 'temperature', 'heartRate', 'activity', 'methane', 'rumination', 'battery', 'position'];
   readonly cattleId = toSignal(this.route.paramMap.pipe(map(params => params.get('cattleId') ?? '')), { initialValue: '' });
   readonly preset = signal<RangePreset>('24h');
   readonly rangeError = signal<string | null>(null);
@@ -92,15 +92,24 @@ export class CattleTelemetryPage {
     return this.facade.readings().slice(start, start + this.readingsPageSize());
   });
   readonly noThresholds = computed(() =>
-    this.facade.animal() !== null && this.facade.bodyTemperatureBand() === null && this.facade.activityIndexBand() === null);
+    this.facade.animal() !== null && this.facade.bodyTemperatureBand() === null && this.facade.heartRateBand() === null
+      && this.facade.activityIndexBand() === null && this.facade.methaneIndexBand() === null);
   readonly temperatureSeries = computed<ChartSeries[]>(() => [
     { label: this.metricLabel('BodyTemperature'), color: '--forest', points: this.points('bodyTemperature') },
+  ]);
+  readonly heartRateSeries = computed<ChartSeries[]>(() => [
+    { label: this.metricLabel('HeartRate'), color: '--ink', points: this.points('heartRate') },
   ]);
   readonly activitySeries = computed<ChartSeries[]>(() => [
     { label: this.metricLabel('ActivityIndex'), color: '--accent', points: this.points('activityIndex') },
   ]);
+  readonly methaneSeries = computed<ChartSeries[]>(() => [
+    { label: this.metricLabel('MethaneIndex'), color: '--muted', points: this.points('methaneIndex') },
+  ]);
   readonly temperatureBand = computed(() => this.bandOf(this.facade.bodyTemperatureBand()));
+  readonly heartRateBand = computed(() => this.bandOf(this.facade.heartRateBand()));
   readonly activityBand = computed(() => this.bandOf(this.facade.activityIndexBand()));
+  readonly methaneBand = computed(() => this.bandOf(this.facade.methaneIndexBand()));
 
   constructor() {
     effect(() => {
@@ -196,7 +205,7 @@ export class CattleTelemetryPage {
     return from < to ? { from, to } : null;
   }
 
-  private points(metric: 'bodyTemperature' | 'activityIndex'): ChartPoint[] {
+  private points(metric: 'bodyTemperature' | 'heartRate' | 'activityIndex' | 'methaneIndex'): ChartPoint[] {
     return this.facade.readings().map((reading: TelemetryReading) => ({
       x: new Date(reading.recordedAt),
       y: measurementValue(reading[metric]),
@@ -227,7 +236,12 @@ export class CattleTelemetryPage {
         header: text('monitoring.metric.BodyTemperature') + ' (' + text('monitoring.units.celsius') + ')',
         value: reading => measurementValue(reading.bodyTemperature),
       },
+      {
+        header: text('monitoring.metric.HeartRate') + ' (' + text('monitoring.units.bpm') + ')',
+        value: reading => measurementValue(reading.heartRate),
+      },
       { header: text('monitoring.metric.ActivityIndex'), value: reading => measurementValue(reading.activityIndex) },
+      { header: text('monitoring.metric.MethaneIndex'), value: reading => measurementValue(reading.methaneIndex) },
       { header: text('monitoring.metric.RuminationMinutes'), value: reading => measurementValue(reading.ruminationMinutes) },
       { header: text('monitoring.metric.BatteryLevel'), value: reading => measurementValue(reading.batteryLevel) },
       {

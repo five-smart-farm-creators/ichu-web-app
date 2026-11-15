@@ -1,7 +1,7 @@
 export const ALERT_STATUSES = ['Pending', 'Acknowledged'] as const;
 export type AlertStatus = (typeof ALERT_STATUSES)[number];
 
-export const ALERT_TYPES = ['Temperature', 'Activity', 'Geofence'] as const;
+export const ALERT_TYPES = ['Temperature', 'Activity', 'HeartRate', 'Methane', 'Geofence'] as const;
 export type AlertType = (typeof ALERT_TYPES)[number];
 
 export const ALERT_SEVERITIES = ['Informative', 'Warning', 'Critical'] as const;

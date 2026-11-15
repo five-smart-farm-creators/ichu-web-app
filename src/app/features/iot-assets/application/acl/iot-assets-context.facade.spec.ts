@@ -29,13 +29,13 @@ describe('IotAssetsContextFacade', () => {
     TestBed.resetTestingModule();
   });
 
-  it('counts the collars by communication status and leaves the water controllers out', async () => {
+  it('counts the collars by communication status and leaves other device families out', async () => {
     devices.list.mockResolvedValue([
       device('collar-1', { communicationStatus: 'Communicating' }),
       device('collar-2', { communicationStatus: 'Communicating' }),
       device('collar-3', { communicationStatus: 'NoCommunication' }),
       device('collar-4', { communicationStatus: 'NeverReported' }),
-      device('trough-1', { type: 'WaterController', communicationStatus: 'NoCommunication' }),
+      device('controller-1', { type: 'WaterController', communicationStatus: 'NoCommunication' }),
     ]);
 
     expect(await facade.collarConnectivity('ranch-1')).toEqual({
@@ -48,7 +48,7 @@ describe('IotAssetsContextFacade', () => {
       device('collar-1', { isBatteryLow: true }),
       device('collar-2', { isBatteryLow: null }),
       device('collar-3', { isBatteryLow: false }),
-      device('trough-1', { type: 'WaterController', isBatteryLow: true }),
+      device('controller-1', { type: 'WaterController', isBatteryLow: true }),
     ]);
 
     expect((await facade.collarConnectivity('ranch-1')).lowBattery).toBe(1);

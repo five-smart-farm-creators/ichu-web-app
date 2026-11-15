@@ -7,38 +7,32 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { ApiErrorMessagePipe } from '../../../../shared/presentation/api-error-message.pipe';
 import { DeviceInventoryFacade } from '../../application/services/device-inventory.facade';
-import { assignmentTargetOf, type Device } from '../../domain/model/device.model';
+import type { Device } from '../../domain/model/device.model';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 import { IOT_ERROR_KEYS } from '../iot-error-keys';
 import { IOT_DIALOG_STYLES, type IotDialogOutcome } from './iot-dialog';
 
-/** Connects an unassigned device to an active animal or a water trough; the list offers only targets the API accepts. */
+/** Connects an unassigned collar to an active animal that has none; the list offers only animals the API accepts. */
 @Component({
   selector: 'ichu-assign-device-dialog',
   imports: [ApiErrorMessagePipe, MatDialogModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<h2 mat-dialog-title>{{ (collar ? 'devices.assign.collarTitle' : 'devices.assign.controllerTitle') | translate }}</h2>
+  template: `<h2 mat-dialog-title>{{ 'devices.assign.collarTitle' | translate }}</h2>
     <form [formGroup]="form" (ngSubmit)="save()" novalidate>
       <mat-dialog-content>
-        <p class="dialog-lead">{{ (collar ? 'devices.assign.collarLead' : 'devices.assign.controllerLead') | translate }}</p>
+        <p class="dialog-lead">{{ 'devices.assign.collarLead' | translate }}</p>
         <p class="device-serial"><strong>{{ 'devices.fields.serial' | translate }}:</strong> {{ device.serial }}</p>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ (collar ? 'devices.assign.animal' : 'devices.assign.trough') | translate }}</mat-label>
+          <mat-label>{{ 'devices.assign.animal' | translate }}</mat-label>
           <mat-select formControlName="targetId">
-            @if (collar) {
-              @for (animal of animals(); track animal.cattleId) {
-                <mat-option [value]="animal.cattleId">{{ animal.earTag }}</mat-option>
-              }
-            } @else {
-              @for (trough of troughs(); track trough.id) {
-                <mat-option [value]="trough.id">{{ trough.name }}</mat-option>
-              }
+            @for (animal of animals(); track animal.cattleId) {
+              <mat-option [value]="animal.cattleId">{{ animal.earTag }}</mat-option>
             }
           </mat-select>
           <mat-error>{{ 'common.required' | translate }}</mat-error>
         </mat-form-field>
         @if (!hasTargets()) {
-          <p class="text-muted">{{ (collar ? 'devices.assign.noAnimals' : 'devices.assign.noTroughs') | translate }}</p>
+          <p class="text-muted">{{ 'devices.assign.noAnimals' | translate }}</p>
         }
         @if (error(); as apiError) {
           <p class="form-error" role="alert">{{ apiError | apiErrorMessage: errorKeys }}</p>
@@ -57,10 +51,8 @@ export class AssignDeviceDialog {
   private readonly dialogRef = inject<MatDialogRef<AssignDeviceDialog, IotDialogOutcome>>(MatDialogRef);
   private readonly facade = inject(DeviceInventoryFacade);
   readonly device = inject<Device>(MAT_DIALOG_DATA);
-  readonly collar = assignmentTargetOf(this.device.type) === 'Cattle';
   readonly animals = this.facade.assignableCattle;
-  readonly troughs = this.facade.assignableTroughs;
-  readonly hasTargets = computed(() => (this.collar ? this.animals().length : this.troughs().length) > 0);
+  readonly hasTargets = computed(() => this.animals().length > 0);
   readonly errorKeys = IOT_ERROR_KEYS;
   readonly saving = signal(false);
   readonly error = signal<ApiError | null>(null);

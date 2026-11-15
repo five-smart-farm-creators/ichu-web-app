@@ -5,7 +5,7 @@ import { RUNTIME_CONFIG } from '../../../../core/config/runtime-config';
 import type { NutritionPlan, RegisterNutritionPlan } from '../../domain/model/nutrition-plan.model';
 import { RestNutritionPlanRepository } from './rest-nutrition-plan.repository';
 
-const plansUrl = 'https://api.example.test/api/v1/ranches/ranch-1/lots/lot-1/nutrition-plans';
+const plansUrl = 'https://api.example.test/api/v1/lots/lot-1/nutrition-plans';
 
 const plan: NutritionPlan = {
   id: 'plan-1', lotId: 'lot-1', name: 'Dry season', validFrom: '2026-11-01', validTo: null,

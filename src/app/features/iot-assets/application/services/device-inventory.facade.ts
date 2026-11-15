@@ -5,24 +5,20 @@ import {
 } from '../../../cattle-information/application/acl/cattle-information-context.facade';
 import type { AssignmentTargetType, DeviceAssignment } from '../../domain/model/device-assignment.model';
 import {
-  type Device, type DeviceFilter, matchesDeviceFilter, RELEASE_REASON_MAX_LENGTH, type RegisterDevice,
+  type Device, type DeviceFilter, MANAGED_DEVICE_TYPES, matchesDeviceFilter, RELEASE_REASON_MAX_LENGTH, type RegisterDevice,
 } from '../../domain/model/device.model';
-import type { WaterTrough } from '../../domain/model/water-trough.model';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 import { DeviceRepository } from '../../domain/repositories/device.repository';
-import { WaterTroughRepository } from '../../domain/repositories/water-trough.repository';
 
 /** Coordinates the device inventory of one ranch: filters, registration, maintenance, assignment and target labels. */
 @Injectable()
 export class DeviceInventoryFacade {
   private readonly deviceRepository = inject(DeviceRepository);
-  private readonly waterTroughRepository = inject(WaterTroughRepository);
   private readonly cattleContext = inject(CattleInformationContextFacade);
   private ranchId: string | null = null;
   private requestId = 0;
 
   readonly devices = signal<readonly Device[]>([]);
-  readonly troughs = signal<readonly WaterTrough[]>([]);
   readonly cattle = signal<readonly CattleSummary[]>([]);
   readonly filter = signal<DeviceFilter>({});
   readonly loading = signal(false);
@@ -35,20 +31,13 @@ export class DeviceInventoryFacade {
       .filter(animal => animal.status === 'Active' && !collared.has(animal.cattleId))
       .sort((first, second) => first.earTag.localeCompare(second.earTag));
   });
-  /** Troughs without a controller; the API keeps one open controller assignment per trough. */
-  readonly assignableTroughs = computed(() => {
-    const served = this.servedTargetIds('WaterTrough');
-    return this.troughs().filter(trough => !served.has(trough.id));
-  });
   private readonly earTagByCattleId = computed(() => new Map(this.cattle().map(animal => [animal.cattleId, animal.earTag] as const)));
-  private readonly troughNameById = computed(() => new Map(this.troughs().map(trough => [trough.id, trough.name] as const)));
 
   /** Shows the ranch's devices with their target labels; a null ranch clears them. */
   async open(ranchId: string | null): Promise<void> {
     this.ranchId = ranchId;
     this.filter.set({});
     this.devices.set([]);
-    this.troughs.set([]);
     this.cattle.set([]);
     this.error.set(null);
     if (!ranchId) return;
@@ -59,12 +48,10 @@ export class DeviceInventoryFacade {
     this.filter.set(filter);
   }
 
-  /** Names the animal or trough a device serves, or null while that record is not loaded. */
+  /** Names the animal a device serves, or null for other targets and while the animal is not loaded. */
   targetLabel(assignment: DeviceAssignment): string | null {
-    const label = assignment.targetType === 'Cattle'
-      ? this.earTagByCattleId().get(assignment.targetId)
-      : this.troughNameById().get(assignment.targetId);
-    return label ?? null;
+    if (assignment.targetType !== 'Cattle') return null;
+    return this.earTagByCattleId().get(assignment.targetId) ?? null;
   }
 
   /** Registers a device in the current ranch; the API decides whether the serial is free. */
@@ -129,14 +116,14 @@ export class DeviceInventoryFacade {
     this.loading.set(true);
     this.error.set(null);
     try {
-      const [devices, troughs, cattle] = await Promise.all([
+      const [devices, cattle] = await Promise.all([
         this.deviceRepository.list(ranchId),
-        this.waterTroughRepository.list(ranchId),
         this.cattleContext.cattleSummaries(ranchId),
       ]);
       if (request !== this.requestId) return;
-      this.devices.set([...devices].sort((first, second) => first.serial.localeCompare(second.serial)));
-      this.troughs.set(troughs);
+      this.devices.set(devices
+        .filter(device => MANAGED_DEVICE_TYPES.includes(device.type))
+        .sort((first, second) => first.serial.localeCompare(second.serial)));
       this.cattle.set(cattle);
     } catch (error) {
       if (request !== this.requestId) return;

@@ -17,13 +17,13 @@ export class RestNutritionPlanRepository extends NutritionPlanRepository {
   private readonly config = inject(RUNTIME_CONFIG);
 
   override list(ranchId: string, lotId: string): Promise<readonly NutritionPlan[]> {
-    return firstPlanningResponse(this.http.get<readonly NutritionPlan[]>(this.plansUrl(ranchId, lotId), {
+    return firstPlanningResponse(this.http.get<readonly NutritionPlan[]>(this.plansUrl(lotId), {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
   override current(ranchId: string, lotId: string): Promise<NutritionPlan | null> {
-    return firstPlanningResponse(this.http.get<NutritionPlan>(`${this.plansUrl(ranchId, lotId)}/current`, {
+    return firstPlanningResponse(this.http.get<NutritionPlan>(`${this.plansUrl(lotId)}/current`, {
       timeout: API_REQUEST_TIMEOUT_MS,
     })).catch((error: unknown) => {
       if (error instanceof ApiError && error.code === NO_CURRENT_PLAN_CODE) return null;
@@ -32,13 +32,14 @@ export class RestNutritionPlanRepository extends NutritionPlanRepository {
   }
 
   override register(ranchId: string, lotId: string, request: RegisterNutritionPlan): Promise<NutritionPlan> {
-    return firstPlanningResponse(this.http.post<NutritionPlan>(this.plansUrl(ranchId, lotId), request, {
+    return firstPlanningResponse(this.http.post<NutritionPlan>(this.plansUrl(lotId), request, {
       timeout: API_REQUEST_TIMEOUT_MS,
     }));
   }
 
-  private plansUrl(ranchId: string, lotId: string): string {
-    const path = `ranches/${encodeURIComponent(ranchId)}/lots/${encodeURIComponent(lotId)}/nutrition-plans`;
+  /** The API scopes lot routes by the lot alone, so the ranch stays out of the URL. */
+  private plansUrl(lotId: string): string {
+    const path = `lots/${encodeURIComponent(lotId)}/nutrition-plans`;
     return apiEndpoint(this.config.apiBaseUrl, path);
   }
 }

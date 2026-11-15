@@ -2,7 +2,7 @@ import { firstValueFrom, type Observable } from 'rxjs';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
 import { VERSION_CONFLICT } from '../../domain/model/version-conflict';
 
-/** The backend reports every stale device, trough and gateway with this code; the same code also covers other data conflicts. */
+/** The backend reports every stale device and gateway with this code; the same code also covers other data conflicts. */
 const VERSION_MISMATCH_CODE = 'IoTAssets.Conflict';
 
 /** Awaits one response; a stale version leaves as the shared version-conflict code so the screen reloads the record. */

@@ -47,7 +47,7 @@ export class MonitoringOverviewPage {
   private readonly language = inject(LanguageService);
   readonly errorKeys = MONITORING_ERROR_KEYS;
   readonly herdLimit = HERD_LATEST_LIMIT;
-  readonly displayedColumns = ['earTag', 'stage', 'temperature', 'activity', 'rumination', 'lastReading', 'status'];
+  readonly displayedColumns = ['earTag', 'stage', 'temperature', 'heartRate', 'activity', 'rumination', 'lastReading', 'status'];
   readonly dateLocale = computed(() => formatLocaleTag(this.language.current()));
   readonly exporting = signal(false);
   readonly exportFailed = signal(false);
@@ -96,10 +96,12 @@ export class MonitoringOverviewPage {
   private exportColumns(): ExportColumn<HerdRow>[] {
     const text = (key: string): string => this.translate.instant(key);
     const celsius = ' (' + text('monitoring.units.celsius') + ')';
+    const bpm = ' (' + text('monitoring.units.bpm') + ')';
     return [
       { header: text('cattle.fields.earTag'), value: row => row.animal.earTag },
       { header: text('cattle.fields.stage'), value: row => text('cattle.stage.' + row.animal.lifeStage) },
       { header: text('monitoring.metric.BodyTemperature') + celsius, value: row => row.latest?.bodyTemperature.value ?? null },
+      { header: text('monitoring.metric.HeartRate') + bpm, value: row => row.latest?.heartRate.value ?? null },
       { header: text('monitoring.metric.ActivityIndex'), value: row => row.latest?.activityIndex.value ?? null },
       { header: text('monitoring.metric.RuminationMinutes'), value: row => row.latest?.ruminationMinutes.value ?? null },
       { header: text('monitoring.fields.lastReading'), value: row => (row.latest?.lastReadingRecordedAt ? new Date(row.latest.lastReadingRecordedAt) : null) },

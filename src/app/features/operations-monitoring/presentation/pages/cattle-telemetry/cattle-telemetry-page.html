@@ -48,9 +48,19 @@
           <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.bodyTemperature.recordedAt | localizedDate: 'short') || '–' }}</span>
         </div>
         <div class="stat">
+          <span class="stat-label">{{ 'monitoring.metric.HeartRate' | translate }}</span>
+          <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.heartRate" /></div>
+          <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.heartRate.recordedAt | localizedDate: 'short') || '–' }}</span>
+        </div>
+        <div class="stat">
           <span class="stat-label">{{ 'monitoring.metric.ActivityIndex' | translate }}</span>
           <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.activityIndex" /></div>
           <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.activityIndex.recordedAt | localizedDate: 'short') || '–' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">{{ 'monitoring.metric.MethaneIndex' | translate }}</span>
+          <div class="stat-indicator"><ichu-indicator-value [indicator]="latest.methaneIndex" /></div>
+          <span class="stat-note">{{ 'monitoring.fields.lastReading' | translate }}: {{ (latest.methaneIndex.recordedAt | localizedDate: 'short') || '–' }}</span>
         </div>
         <div class="stat">
           <span class="stat-label">{{ 'monitoring.metric.RuminationMinutes' | translate }}</span>
@@ -129,11 +139,26 @@
             [accessibleLabel]="'monitoring.telemetry.temperatureChart' | translate" />
         </div>
       </section>
+      <section class="panel chart-panel" aria-labelledby="heart-rate-heading">
+        <div class="panel-head"><h2 id="heart-rate-heading">{{ 'monitoring.metric.HeartRate' | translate }}</h2></div>
+        <div class="panel-body">
+          <ichu-line-chart [series]="heartRateSeries()" [band]="heartRateBand()" [yAxisLabel]="'monitoring.units.bpm' | translate"
+            [accessibleLabel]="'monitoring.telemetry.heartRateChart' | translate" />
+        </div>
+      </section>
       <section class="panel chart-panel" aria-labelledby="activity-heading">
         <div class="panel-head"><h2 id="activity-heading">{{ 'monitoring.metric.ActivityIndex' | translate }}</h2></div>
         <div class="panel-body">
           <ichu-line-chart [series]="activitySeries()" [band]="activityBand()" [yAxisLabel]="'monitoring.units.index' | translate"
             [accessibleLabel]="'monitoring.telemetry.activityChart' | translate" />
+        </div>
+      </section>
+      <section class="panel chart-panel" aria-labelledby="methane-heading">
+        <div class="panel-head"><h2 id="methane-heading">{{ 'monitoring.metric.MethaneIndex' | translate }}</h2></div>
+        <div class="panel-body">
+          <ichu-line-chart [series]="methaneSeries()" [band]="methaneBand()" [yAxisLabel]="'monitoring.units.index' | translate"
+            [accessibleLabel]="'monitoring.telemetry.methaneChart' | translate" />
+          <p class="read-note">{{ 'monitoring.telemetry.methaneHint' | translate }}</p>
         </div>
       </section>
     </div>
@@ -165,6 +190,15 @@
               <td>{{ pct(stats.bodyTemperature.outsideBandPercent) }}</td>
             </tr>
             <tr>
+              <th scope="row">{{ 'monitoring.metric.HeartRate' | translate }}</th>
+              <td>{{ stats.heartRate.count }}</td>
+              <td>{{ number(stats.heartRate.min) }}</td>
+              <td>{{ number(stats.heartRate.max) }}</td>
+              <td>{{ number(stats.heartRate.mean) }}</td>
+              <td>{{ number(stats.heartRate.standardDeviation) }}</td>
+              <td>{{ pct(stats.heartRate.outsideBandPercent) }}</td>
+            </tr>
+            <tr>
               <th scope="row">{{ 'monitoring.metric.ActivityIndex' | translate }}</th>
               <td>{{ stats.activityIndex.count }}</td>
               <td>{{ number(stats.activityIndex.min) }}</td>
@@ -172,6 +206,15 @@
               <td>{{ number(stats.activityIndex.mean) }}</td>
               <td>{{ number(stats.activityIndex.standardDeviation) }}</td>
               <td>{{ pct(stats.activityIndex.outsideBandPercent) }}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'monitoring.metric.MethaneIndex' | translate }}</th>
+              <td>{{ stats.methaneIndex.count }}</td>
+              <td>{{ number(stats.methaneIndex.min) }}</td>
+              <td>{{ number(stats.methaneIndex.max) }}</td>
+              <td>{{ number(stats.methaneIndex.mean) }}</td>
+              <td>{{ number(stats.methaneIndex.standardDeviation) }}</td>
+              <td>{{ pct(stats.methaneIndex.outsideBandPercent) }}</td>
             </tr>
           </tbody>
         </table>
@@ -196,6 +239,16 @@
               }
             </td>
           </ng-container>
+          <ng-container matColumnDef="heartRate">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.HeartRate' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.heartRate); as value) {
+                {{ value }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.heartRate.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
           <ng-container matColumnDef="activity">
             <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.ActivityIndex' | translate }}</th>
             <td mat-cell *matCellDef="let reading">
@@ -203,6 +256,16 @@
                 {{ value }}
               } @else {
                 <span class="text-muted">{{ ('monitoring.measurement.' + reading.activityIndex.status) | translate }}</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="methane">
+            <th mat-header-cell *matHeaderCellDef>{{ 'monitoring.metric.MethaneIndex' | translate }}</th>
+            <td mat-cell *matCellDef="let reading">
+              @if (measurement(reading.methaneIndex); as value) {
+                {{ value }}
+              } @else {
+                <span class="text-muted">{{ ('monitoring.measurement.' + reading.methaneIndex.status) | translate }}</span>
               }
             </td>
           </ng-container>

@@ -1,9 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ApiError, toApiError } from '../../../../shared/infrastructure/http/api-error';
-import type { ConfigureThreshold, MonitoringThreshold } from '../../domain/model/monitoring-threshold.model';
+import {
+  type ConfigureThreshold, type MonitoringThreshold, THRESHOLD_SEVERITIES,
+} from '../../domain/model/monitoring-threshold.model';
 import { MonitoringThresholdRepository } from '../../domain/repositories/monitoring-threshold.repository';
 
-/** Lists and configures the normal ranges of one ranch; saving a stage and metric replaces its previous band. */
+/** Lists and configures the normal ranges of one ranch; saving a stage, metric and severity replaces its previous band. */
 @Injectable()
 export class MonitoringThresholdsFacade {
   private readonly repository = inject(MonitoringThresholdRepository);
@@ -35,14 +37,17 @@ export class MonitoringThresholdsFacade {
     if (!ranchId) throw new ApiError(0, 'configuration', null);
     const saved = await this.repository.configure(ranchId, request);
     this.thresholds.update(thresholds => sortThresholds([
-      ...thresholds.filter(item => item.lifeStage !== saved.lifeStage || item.metric !== saved.metric),
+      ...thresholds.filter(item =>
+        item.lifeStage !== saved.lifeStage || item.metric !== saved.metric || item.severity !== saved.severity),
       saved,
     ]));
     return saved;
   }
 }
 
+// THRESHOLD_SEVERITIES lists Warning first, so the rows read Warning before Critical.
 function sortThresholds(thresholds: readonly MonitoringThreshold[]): MonitoringThreshold[] {
-  return [...thresholds].sort((first, second) =>
-    first.lifeStage.localeCompare(second.lifeStage) || first.metric.localeCompare(second.metric));
+  return [...thresholds].sort((first, second) => first.lifeStage.localeCompare(second.lifeStage)
+    || first.metric.localeCompare(second.metric)
+    || THRESHOLD_SEVERITIES.indexOf(first.severity) - THRESHOLD_SEVERITIES.indexOf(second.severity));
 }

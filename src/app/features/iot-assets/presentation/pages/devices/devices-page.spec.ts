@@ -7,7 +7,6 @@ import { CattleInformationContextFacade } from '../../../../cattle-information/a
 import { LanguageService } from '../../../../../shared/infrastructure/i18n/language.service';
 import type { Device } from '../../../domain/model/device.model';
 import { DeviceRepository } from '../../../domain/repositories/device.repository';
-import { WaterTroughRepository } from '../../../domain/repositories/water-trough.repository';
 import { DevicesPage } from './devices-page';
 
 const translations = {
@@ -15,7 +14,7 @@ const translations = {
   devices: {
     inventory: { title: 'IoT devices', register: 'Register device', loading: 'Loading devices' },
     fields: { serial: 'Serial number', assignedTo: 'Assigned to' },
-    type: { SmartCollar: 'Smart collar', WaterController: 'Water controller' },
+    type: { SmartCollar: 'Smart collar' },
     status: { Available: 'Available', InService: 'In service', Maintenance: 'Maintenance' },
     communication: { NeverReported: 'Never reported', Communicating: 'Communicating', NoCommunication: 'No communication' },
     actions: {
@@ -49,12 +48,12 @@ function buttonLabels(fixture: ComponentFixture<DevicesPage>): string[] {
 describe('DevicesPage', () => {
   let scope: 'Manage' | 'Read';
 
-  function render(): ComponentFixture<DevicesPage> {
+  function render(devices: Device[] = [
+    device('SN-100'),
+    device('SN-200', { status: 'Maintenance', batteryPercentage: 12, isBatteryLow: true }),
+  ]): ComponentFixture<DevicesPage> {
     const deviceRepository = {
-      list: vi.fn(async () => [
-        device('SN-100'),
-        device('SN-200', { type: 'WaterController', status: 'Maintenance', batteryPercentage: 12, isBatteryLow: true }),
-      ]),
+      list: vi.fn(async () => devices),
       register: vi.fn(),
       setMaintenance: vi.fn(),
       assign: vi.fn(),
@@ -78,7 +77,6 @@ describe('DevicesPage', () => {
         LanguageService,
         { provide: IamContextFacade, useValue: context },
         { provide: DeviceRepository, useValue: deviceRepository },
-        { provide: WaterTroughRepository, useValue: { list: vi.fn(async () => []), register: vi.fn(), configureTemperatureRange: vi.fn() } },
         { provide: CattleInformationContextFacade, useValue: { cattleSummaries: vi.fn(async () => []) } },
       ],
     });
@@ -105,6 +103,15 @@ describe('DevicesPage', () => {
     expect(text).toContain('SN-200');
     expect(buttonLabels(fixture)).toContain('Register device');
     expect(buttonLabels(fixture)).toContain('Assign');
+  });
+
+  it('does not list water controllers that the API returns', async () => {
+    const fixture = render([device('SN-100'), device('CTRL-300', { type: 'WaterController' })]);
+    await settle(fixture);
+
+    const text: string = fixture.nativeElement.textContent;
+    expect(text).toContain('SN-100');
+    expect(text).not.toContain('CTRL-300');
   });
 
   it('hides registration, assignment, and maintenance from an account that only reads the ranch', async () => {
